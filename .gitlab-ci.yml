@@ -1,35 +1,26 @@
-stages:    
-  - prepare
+stages:
   - build    
   - test
   - deploy
-job1:
-  stage: prepare
+  - cleanup
+build:   
+  stage: build
   script:
    - apt update
    - apt -y install curl
    - curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
    - bash nodesource_setup.sh
-job2:   
-  stage: build
-  script:
    - npm i
    - npm run build
-   - pwd
-job3:
+   - echo 
+   - ls -l dist/
+test:
   stage: test
   script:
-#   - npm i --save-dev jest ts-jest
-#   - npm run test
-    - echo "run tests"
-job4:
-  stage: deploy
-  script:
-    - echo "deploy job4"
-  only:
-    - branches
-  except:
-    - master
+   - npm i --save-dev jest ts-jest
+   - npm run test
+  needs:
+    - build
 deploy_prod:
   stage: deploy
   script:
@@ -37,6 +28,16 @@ deploy_prod:
   environment:
     name: production
     url: https://maia.press
+  needs:
+    - build
   when: manual
   only:
+    - master
+deploy_review:
+  stage: deploy
+  script:
+    - echo "Deploy to review server"
+  only:
+    - branches
+  except:
     - master
