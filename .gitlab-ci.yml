@@ -3,6 +3,7 @@ stages:
   - build    
   - test
   - deploy
+  
 job1:
   stage: prepare
   script:
@@ -25,3 +26,17 @@ job4:
   stage: deploy
   script:
     - ls -l out
+  only:
+    - branches
+  except:
+    - master
+deploy_prod:
+  stage: deploy
+  script:
+    - echo "Deploy to production server"
+  environment:
+    name: production
+    url: https://maia.press
+  when: manual
+  only:
+    - master
