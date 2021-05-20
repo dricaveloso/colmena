@@ -12,8 +12,6 @@ build:
    - bash nodesource_setup.sh
    - npm i
    - npm run build
-   - echo 
-   - ls -l dist/
 test:
   stage: test
   script:
