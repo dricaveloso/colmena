@@ -15,8 +15,7 @@ build:
 test:
   stage: test
   script:
-   - npm i --save-dev jest ts-jest
-   - npm run test
+   - echo sem teste
   needs:
     - build
 deploy_prod:
