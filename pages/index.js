@@ -39,7 +39,12 @@ export default function Home() {
           comunitarias
         </Typography>
         {divider()}
-        <Button variant="contained" color="primary" naked onClick={navigate}>
+        <Button
+          variant="contained"
+          color="primary"
+          naked={true}
+          onClick={navigate}
+        >
           Aceptar invitación
         </Button>
       </Box>
