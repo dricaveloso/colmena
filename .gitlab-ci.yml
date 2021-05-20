@@ -18,6 +18,7 @@ job2:
   script:
    - npm i
    - npm run build
+   - pwd
    - ls -l .next/server/chuncks
 job3:
   stage: test
