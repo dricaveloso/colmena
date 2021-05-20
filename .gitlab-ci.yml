@@ -2,6 +2,7 @@ stages:
   - prepare
   - build    
   - test
+  - deploy
 job1:
   stage: prepare
   script:
@@ -9,19 +10,18 @@ job1:
    - apt -y install curl
    - curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
    - bash nodesource_setup.sh
-   #- npm install --save-dev jest
-   #- npm i -g --save-dev rimraf jest
-   #- npm --version
-   #- node --version   
 job2:   
   stage: build
   script:
    - npm i
    - npm run build
    - pwd
-   - ls -l .next/server/chuncks
 job3:
   stage: test
   script:
    - npm i --save-dev jest ts-jest
    - npm run test
+job4:
+  stage: deploy
+  script:
+    - ls -l out
