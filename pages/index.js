@@ -1,65 +1,53 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const divider = (value = 40) => <div style={{ marginTop: value }} />;
+
+  const router = useRouter();
+
+  const navigate = () => {
+    console.log("teste");
+    router.push("/intro");
+  };
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Container
+      maxWidth="sm"
+      style={{
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "white",
+      }}
+    >
+      <Box my={4} style={{ textAlign: "center", padding: 10 }}>
+        <MailOutlineIcon style={{ fontSize: "100px" }} />
+        {divider()}
+        <Typography variant="h5" component="h4" gutterBottom>
+          Hola
+        </Typography>
+        {divider(10)}
+        <Typography component="p" gutterBottom>
+          LA DWA te invita a hacer parte de la sala de redación de radios
+          comunitarias
+        </Typography>
+        {divider()}
+        <Button
+          variant="contained"
+          color="primary"
+          naked={true}
+          onClick={navigate}
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+          Aceptar invitación
+        </Button>
+      </Box>
+    </Container>
+  );
 }
