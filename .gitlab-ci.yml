@@ -3,7 +3,6 @@ stages:
   - build    
   - test
   - deploy
-  
 job1:
   stage: prepare
   script:
@@ -26,7 +25,7 @@ job3:
 job4:
   stage: deploy
   script:
-    - ls -l out
+    - echo "deploy job4"
   only:
     - branches
   except:
