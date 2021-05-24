@@ -29,7 +29,7 @@ deploy_prod:
 deploy_dev:
   stage: deploy
   script:
-    - npm run dev
+    - echo "TESTE"
   only:
     - branches
   except:
