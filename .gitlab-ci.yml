@@ -26,10 +26,10 @@ deploy_prod:
   when: manual
   only:
     - master
-deploy_review:
+deploy_dev:
   stage: deploy
   script:
-    - echo "Deploy to review server"
+    - npm run dev
   only:
     - branches
   except:
