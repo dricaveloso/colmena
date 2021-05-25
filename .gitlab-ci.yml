@@ -9,6 +9,7 @@ cache:
     - out
     - pages
     - public 
+    - styles
 build:   
   stage: build
   script:
