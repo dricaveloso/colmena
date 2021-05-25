@@ -35,7 +35,7 @@ export default function Home() {
         </Typography>
         {divider(10)}
         <Typography component="p" gutterBottom>
-          LA DWA te invita a hacer parte de la sala de redación de radios
+          Redes AC y DWA te invita a hacer parte de la sala de redación de radios
           comunitarias
         </Typography>
         {divider()}
