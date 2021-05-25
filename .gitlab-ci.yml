@@ -18,5 +18,5 @@ build:
 test:
   stage: test
   script: 
-    - echo "Teste OK!"
+    - npm teste
  
