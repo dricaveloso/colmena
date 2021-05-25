@@ -18,7 +18,8 @@ build:
 test:
   stage: test
   artifacts:
-    - bin/
+    paths:
+      - bin/
   script: 
     - echo "Teste OK!"
  
