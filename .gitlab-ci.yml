@@ -18,5 +18,5 @@ build:
 test:
   stage: test
   script: 
-    - npm teste
+    - npm test
  
