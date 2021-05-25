@@ -17,6 +17,8 @@ build:
    - npm run build
 test:
   stage: test
+  artifacts:
+    - bin/
   script: 
     - echo "Teste OK!"
  
