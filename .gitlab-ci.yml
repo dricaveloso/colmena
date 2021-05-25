@@ -8,9 +8,7 @@ cache:
     - node_modules/
     - out
     - pages
-    - intro
-    - public
-    - styles   
+    - public 
 build:   
   stage: build
   script:
