@@ -8,6 +8,7 @@ cache:
     - node_modules/
     - out
     - pages
+    - intro
     - public
     - styles   
 build:   
@@ -17,9 +18,6 @@ build:
    - npm run build
 test:
   stage: test
-  artifacts:
-    paths:
-      - bin/
   script: 
     - echo "Teste OK!"
  
