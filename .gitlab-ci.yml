@@ -3,9 +3,20 @@ stages:
   - test
   - deploy
   - cleanup
+cache:
+  paths:
+    - node_modules/
+    - out
+    - pages
+    - public
+    - styles   
 build:   
   stage: build
   script:
    - npm i
    - npm run build
+teste:
+  stage: teste
+  script: 
+    - echo "Teste OK!"
  
