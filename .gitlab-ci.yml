@@ -19,8 +19,5 @@ test:
   stage: test
   script: 
     - npm -v
-deploy:
-  stage: deploy
-  script:
-    - ssh  publisher@maia.press "/etc/init.d/nginx restart"
+ 
  
