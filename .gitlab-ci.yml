@@ -19,5 +19,8 @@ test:
   stage: test
   script: 
     - npm -v
- 
+deploy_prod:
+  stage: deploy
+  script:
+    - echo "Deploy to production server" 
  
