@@ -21,8 +21,6 @@ test:
     - npm -v
 deploy:
   stage: deploy
-  environment:
-   url: maia.press
   script:
     - ssh  publisher@maia.press "/etc/init.d/nginx restart"
  
