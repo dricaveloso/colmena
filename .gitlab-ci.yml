@@ -22,5 +22,5 @@ test:
 deploy_prod:
   stage: deploy
   script:
-    - docker restart 216
+    - echo "deploy"
  
