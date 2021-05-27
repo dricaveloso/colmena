@@ -9,15 +9,8 @@ Given an initial context
 When some action happens 
 Then I expect a result
 
+## Wireframe_designs
 
-#Description 
+## Dependencies
 
-descrição das mudanças - descrição geral e detalhes (checklist)
-
-#Criterios de aceitação 
-
-#User stories 
-
-#Dependencies
-
-##test results
+## Test results
