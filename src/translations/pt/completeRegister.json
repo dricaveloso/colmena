@@ -1,0 +1,8 @@
+{
+  "description": "E qual será sua senha ?",
+  "forms": {
+    "placeholderPassword": "senha",
+    "placeholderPasswordConfirmation": "confirmação senha",
+    "submitButton": "Finalizar"
+  }
+}

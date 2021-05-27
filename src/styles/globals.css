@@ -14,3 +14,18 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@media all and (max-width: 480px) {
+  .blocked-button {
+    width: 100%;
+    display: block;
+  }
+}
+
+@media all and (min-width: 480px) {
+  .blocked-button {
+    width: 50%;
+    display: flex;
+    align-self: center;
+  }
+}
