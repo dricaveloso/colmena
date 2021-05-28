@@ -19,8 +19,10 @@ build_dev:
     - branches
   except: 
     - main
-#deploy_prod:
-#  stage: deploy
-#  script:
-#    - echo "deploy"
+build_prod:
+  stage: deploy
+  script:
+    - echo "fake deploy"
+  only:
+    - main
  
