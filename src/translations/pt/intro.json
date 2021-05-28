@@ -1,0 +1,18 @@
+{
+  "step1": {
+    "description": "MAIA é um pacote de produtividade 100% gratuito, seguro e 100% gratuito para mídia local."
+  },
+  "step2": {
+    "description": "Grave, edite e publique áudios de seu celular. Crie salas de gravação e convide remotamente com uma ou várias pessoas."
+  },
+  "step3": {
+    "description": "Salve seus arquivos com nosso serviço de nuvem especializado para mídia."
+  },
+  "step4": {
+    "description": "Pensado para trabalhar áreas de baixa conectividade e permite a integração de chamadas de voz, para otimizar."
+  },
+  "forms": {
+    "nextButton": "Próximo",
+    "skipButton": "Pular"
+  }
+}

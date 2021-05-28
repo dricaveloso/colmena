@@ -1,0 +1,26 @@
+stages:
+  - build    
+  - test
+  - deploy
+  - cleanup
+cache:
+  paths:
+    - node_modules/
+    - out
+    - pages
+    - public 
+    - styles
+build:   
+  stage: build
+  script:
+   - npm i
+   - npm run build
+test:
+  stage: test
+  script: 
+    - npm -v
+#deploy_prod:
+#  stage: deploy
+#  script:
+#    - echo "deploy"
+ 

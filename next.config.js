@@ -1,5 +1,9 @@
-/*const withPWA = require("next-pwa");
+module.exports = {
+  webpack: (config, { isServer, dev }) => {
+    if (!isServer) {
+      config.node = { fs: "empty", module: "empty" };
+    }
 
-module.exports = withPWA({
-  // other next config
-});*/
+    return config;
+  },
+};
