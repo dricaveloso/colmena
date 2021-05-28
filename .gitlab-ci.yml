@@ -3,10 +3,10 @@ stages:
   - test
  # - deploy
  # - cleanup
-cache:
-  paths:
+#cache:
+#  paths:
 #    - node_modules/
-    - out
+#    - out
 #    - pages
 #    - public 
 #    - styles
@@ -24,6 +24,11 @@ build_dev:
     - branches
   except: 
     - main
+  artifacts:
+    name: ${CI_PROJECT_NAME}-${CI_BUILD_REF}-${CI_BUILD_NAME}
+    paths:
+      - out
+    expire_in: 10 days
 build_prod:
   stage: build
   script:
