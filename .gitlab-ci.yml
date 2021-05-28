@@ -10,15 +10,15 @@ cache:
     - pages
     - public 
     - styles
-build:   
+build_dev:
   stage: build
   script:
    - npm i
    - npm run build
-test:
-  stage: test
-  script: 
-    - npm -v
+  only:
+    - branches
+  except:
+    - main
 #deploy_prod:
 #  stage: deploy
 #  script:
