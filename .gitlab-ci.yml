@@ -23,7 +23,7 @@ build:
 deploy_dev:
   stage: deploy
   script: #change this
-    - cp -a out/* /pub/frontend/prod/  
+    - cp -a out/* /pub/frontend/dev/  
   only:
     - branches
   except: 
@@ -31,7 +31,8 @@ deploy_dev:
 deploy_prod:
   stage: build
   script:
-    - echo "building artifact"
+    - cp -a out/* /pub/frontend/prod/  
+    - echo "deploying to prod and building artifact"
   only:
     - main
   artifacts:
