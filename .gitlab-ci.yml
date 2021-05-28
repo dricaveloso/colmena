@@ -19,8 +19,8 @@ test:
   stage: test
   script: 
     - npm -v
-deploy_prod:
-  stage: deploy
-  script:
-    - echo "deploy"
+#deploy_prod:
+#  stage: deploy
+#  script:
+#    - echo "deploy"
  
