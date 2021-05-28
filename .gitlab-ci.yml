@@ -3,13 +3,13 @@ stages:
   - test
   - deploy
   - cleanup
-cache:
-  paths:
-    - node_modules/
-    - out
-    - pages
-    - public 
-    - styles
+#cache:
+#  paths:
+#    - node_modules/
+#    - out
+#    - pages
+#    - public 
+#    - styles
 build_dev:
   stage: build
   script:
