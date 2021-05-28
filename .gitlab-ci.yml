@@ -1,28 +1,42 @@
 stages:
+  - prepare
   - build    
- # - test
- # - deploy
+  #- test
+  - deploy
  # - cleanup
 cache:
   paths:
-#    - node_modules/
-    - out
-#    - pages
-#    - public 
-#    - styles
-build_dev:
+    - node_modules/
+    - out/
+prepare_all:
+  stage: prepare
+  script:
+    - npm i
+#test_all:
+#  stage: test
+#  script:
+#    - npm v
+build:
   stage: build
   script:
-   - npm i
-   - npm run build
+    - npm run build
+deploy_dev:
+  stage: deploy
+  script: #change this
+    - cp -a out/* /pub/frontend/dev/  
   only:
     - branches
   except: 
     - main
-build_prod:
+deploy_prod:
   stage: build
   script:
-    - echo "fake deploy"
+    - cp -a out/* /pub/frontend/prod/  
+    - echo "deploying to prod and building artifact"
   only:
     - main
- 
+  artifacts:
+    name: ${CI_PROJECT_NAME}-${CI_BUILD_REF}-${CI_BUILD_NAME}
+    paths:
+      - out
+    expire_in: 10 days
