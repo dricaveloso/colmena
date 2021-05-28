@@ -1,15 +1,20 @@
 stages:
   - build    
   - test
-  - deploy
-  - cleanup
-#cache:
-#  paths:
+ # - deploy
+ # - cleanup
+cache:
+  paths:
 #    - node_modules/
-#    - out
+    - out
 #    - pages
 #    - public 
 #    - styles
+test_all:
+  stage: test
+  script:
+    - npm v
+
 build_dev:
   stage: build
   script:
@@ -17,10 +22,19 @@ build_dev:
    - npm run build
   only:
     - branches
-  except:
+  except: 
     - main
-#deploy_prod:
-#  stage: deploy
-#  script:
-#    - echo "deploy"
+build_prod:
+  stage: build
+  script:
+    - npm i
+    - npm run build
+  only:
+    - main
+  artifacts:
+    name: ${CI_PROJECT_NAME}-${CI_BUILD_REF}-${CI_BUILD_NAME}
+    paths:
+      - out
+    expire_in: 10 days
+
  
