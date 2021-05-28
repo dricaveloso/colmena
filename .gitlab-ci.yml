@@ -3,10 +3,10 @@ stages:
  # - test
  # - deploy
  # - cleanup
-#cache:
-#  paths:
+cache:
+  paths:
 #    - node_modules/
-#    - out
+    - out
 #    - pages
 #    - public 
 #    - styles
