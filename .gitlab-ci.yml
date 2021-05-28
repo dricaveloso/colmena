@@ -30,6 +30,8 @@ deploy_dev:
     - main
 deploy_prod:
   stage: build
+  script:
+    - echo "building artifact"
   only:
     - main
   artifacts:
