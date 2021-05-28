@@ -11,10 +11,10 @@ prepare_all:
   stage: prepare
   script:
     - npm i
-test_all:
-  stage: test
-  script:
-    - npm v
+#test_all:
+#  stage: test
+#  script:
+#    - npm v
 build_dev:
   stage: build
   script:
