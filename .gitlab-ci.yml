@@ -20,7 +20,7 @@ build_dev:
   except: 
     - main
 build_prod:
-  stage: deploy
+  stage: build
   script:
     - echo "fake deploy"
   only:
