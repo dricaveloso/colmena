@@ -1,24 +1,24 @@
 stages:
   - build    
-  - test
-  - deploy
-  - cleanup
-cache:
-  paths:
-    - node_modules/
-    - out
-    - pages
-    - public 
-    - styles
-build:   
+ # - test
+ # - deploy
+ # - cleanup
+#cache:
+#  paths:
+#    - node_modules/
+#    - out
+#    - pages
+#    - public 
+#    - styles
+build_dev:
   stage: build
   script:
    - npm i
    - npm run build
-test:
-  stage: test
-  script: 
-    - npm -v
+  only:
+    - branches
+  except: 
+    - main
 #deploy_prod:
 #  stage: deploy
 #  script:
