@@ -5,12 +5,16 @@ import Button from "component/ui/Button";
 import FlexBox from "component/ui/FlexBox";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import PasswordField from "component/ui/PasswordField";
+import PasswordField from "component/statefull/PasswordField";
 import Divider from "component/ui/Divider";
 import useTranslation from "hooks/useTranslation";
+import Box100 from "component/ui/Box100";
+import { useRouter } from "next/router";
 
 export default function CompleteRegister(props) {
   const { t } = useTranslation(props.lang, "completeRegister");
+  const router = useRouter();
+
   return (
     <Container>
       <FlexBox>
@@ -21,16 +25,24 @@ export default function CompleteRegister(props) {
           </Typography>
           <Divider />
           <Box>
-            <PasswordField title={t?.forms.placeholderPassword} id="password" />
-            <Divider />
-            <PasswordField
-              id="passwordConfirmation"
-              title={t?.forms.placeholderPasswordConfirmation}
-            />
-            <Divider />
+            <Box100>
+              <PasswordField
+                title={t?.forms.placeholderPassword}
+                id="password"
+              />
+              <Divider />
+              <PasswordField
+                id="passwordConfirmation"
+                title={t?.forms.placeholderPasswordConfirmation}
+              />
+              <Divider />
+            </Box100>
           </Box>
           <Box style={{ display: "flex", flexDirection: "column" }}>
-            <Button title={t?.forms.submitButton} handleClick={() => {}} />
+            <Button
+              title={t?.forms.submitButton}
+              handleClick={() => router.push("/home")}
+            />
           </Box>
         </Box>
         <FooterApp about={true} terms={true} lang={props.lang} />

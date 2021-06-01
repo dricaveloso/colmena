@@ -7,15 +7,22 @@ export default function Btn({
   naked = true,
   variant = "contained",
   handleClick = () => {},
+  style = {},
+  size = "medium",
+  block = false,
+  endIcon = null,
 }) {
   return (
     <Button
-      style={{ textTransform: "capitalize" }}
+      style={{ textTransform: "capitalize", ...style }}
       variant={variant}
       color={color}
       naked={naked}
+      size={size}
+      block={block}
       onClick={handleClick}
-      className="blocked-button"
+      className="width-based-device"
+      endIcon={endIcon}
     >
       {title}
     </Button>

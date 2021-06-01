@@ -16,16 +16,16 @@ a {
 }
 
 @media all and (max-width: 480px) {
-  .blocked-button {
+  .width-based-device {
     width: 100%;
     display: block;
   }
 }
 
 @media all and (min-width: 480px) {
-  .blocked-button {
-    width: 50%;
-    display: flex;
-    align-self: center;
+  .width-based-device {
+    width: 30% !important;
+    display: flex !important;
+    align-self: center !important;
   }
 }

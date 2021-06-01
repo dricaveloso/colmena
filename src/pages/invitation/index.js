@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import MailOutlineSharpIcon from "@material-ui/icons/MailOutlineSharp";
 import { useRouter } from "next/router";
 import useTranslation from "hooks/useTranslation";
+import Box100 from "component/ui/Box100";
 
 function Invitation(props) {
   const router = useRouter();
@@ -31,9 +32,11 @@ function Invitation(props) {
           {t?.greeting}
         </Typography>
         <Divider marginTop={10} />
-        <Typography component="p" gutterBottom>
-          {t?.description}
-        </Typography>
+        <Box100>
+          <Typography component="p" gutterBottom className="width-based-device">
+            {t?.description}
+          </Typography>
+        </Box100>
         <Divider />
         <Box
           style={{

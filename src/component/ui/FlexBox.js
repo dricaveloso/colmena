@@ -5,6 +5,7 @@ export default function Bx({
   padding = 10,
   flexDirection = "column",
   justifyContent = "space-between",
+  extraStyle = {},
   children,
 }) {
   return (
@@ -17,6 +18,7 @@ export default function Bx({
         flex: 1,
         flexDirection,
         justifyContent,
+        ...extraStyle,
       }}
     >
       {children}
