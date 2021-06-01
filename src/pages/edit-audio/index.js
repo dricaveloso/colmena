@@ -2,7 +2,6 @@ import React from "react";
 import Container from "component/ui/Container";
 import FlexBox from "component/ui/FlexBox";
 import AppBar from "component/statefull/AppBar";
-import Image from "next/image";
 import IconButton from "component/ui/IconButton";
 import useTranslation from "hooks/useTranslation";
 
@@ -15,11 +14,10 @@ function EditAudio(props) {
         <AppBar title={t?.title} />
         <p>{t?.description}</p>
 
-        <Image
+        <img
           src="/images/sound-waves.jpg"
           alt="Sound Waves images"
-          width={500}
-          height={250}
+          width="100%"
         />
 
         <div
