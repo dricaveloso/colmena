@@ -2,9 +2,9 @@ import Container from "@material-ui/core/Container";
 
 export default function Ctnr({
   justifyContent = "center",
-  maxWidth = "sm",
-  extraStyle = {},
+  maxWidth = "lg",
   children,
+  extraStyle = {},
 }) {
   return (
     <Container

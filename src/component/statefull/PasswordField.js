@@ -26,7 +26,7 @@ function PasswordField({ id, title }) {
   };
 
   return (
-    <FormControl variant="outlined" className="blocked-button">
+    <FormControl variant="outlined" className="width-based-device">
       <InputLabel htmlFor={id}>{title}</InputLabel>
       <Input
         id={id}

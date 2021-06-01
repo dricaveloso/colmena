@@ -2,23 +2,20 @@ import React from "react";
 import Container from "component/ui/Container";
 import FlexBox from "component/ui/FlexBox";
 import AppBar from "component/statefull/AppBar";
-import useTranslation from "hooks/useTranslation";
+import TabsMediateca from "component/statefull/TabsMediateca";
 import IconButton from "component/ui/IconButton";
-import FooterApp from "component/layout/FooterApp";
+import SearchInput from "component/ui/SearchInput";
+import useTranslation from "hooks/useTranslation";
 import { useRouter } from "next/router";
 
-function Home(props) {
+function Mediateca(props) {
   const router = useRouter();
-  const { t } = useTranslation(props.lang, "home");
+  const { t } = useTranslation(props.lang, "mediateca");
 
   return (
     <Container extraStyle={{ padding: 0 }}>
       <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar title="MAIA" />
-        <div>
-          <h3>{t?.greeting} Maria</h3>
-          <p>{t?.question}</p>
-        </div>
+        <AppBar title="Mediateca" />
         <div>
           <div
             style={{
@@ -29,35 +26,39 @@ function Home(props) {
             }}
           >
             <IconButton
-              title={t?.inviteText}
+              title={t?.myCloudTextButton}
               variantTitle="p"
-              icon="PersonAddIcon"
               fontSizeIcon="1.8em"
-              handleClick={() => router.push("/invite")}
               color="black"
+              icon="CloudIcon"
             />
             <IconButton
-              title="Mediateca"
+              title={t?.mediaCloudTextButton}
               variantTitle="p"
-              icon="LibraryMusicIcon"
               fontSizeIcon="1.8em"
-              handleClick={() => router.push("/mediateca")}
               color="black"
+              icon="CloudQueueIcon"
             />
           </div>
           <IconButton
-            title={t?.record}
+            title="Mediateca"
             variantTitle="p"
-            icon="FiberManualRecordIcon"
-            fontSizeIcon="2.1em"
-            handleClick={() => router.push("/dashboard")}
-            color="red"
+            fontSizeIcon="1.8em"
+            color="black"
+            icon="LibraryMusicIcon"
+            handleClick={() => router.push("/mediateca")}
           />
         </div>
-        <FooterApp about={true} terms={true} lang={props.lang} />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <SearchInput placeholder={t?.textSearchInput} />
+          <TabsMediateca
+            title1={t?.textCategoryTab}
+            title2={t?.textFavoriteTab}
+          />
+        </div>
       </FlexBox>
     </Container>
   );
 }
 
-export default Home;
+export default Mediateca;
