@@ -11,7 +11,7 @@ cache:
 prepare_all:
   stage: prepare
   script:
-    - npm i
+    - npm install
 #test_all:
 #  stage: test
 #  script:
