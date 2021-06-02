@@ -70,7 +70,18 @@ function Record(props) {
         )}
 
         <button style={{ background: "none", border: "none" }} onClick={start}>
-          <Lottie options={recordingOptions} height={100} width={100} />
+          <Lottie
+            options={{
+              loop: false,
+              autoplay: false,
+              animationData: Recording,
+              rendererSettings: {
+                preserveAspectRatio: "xMidYMid slice",
+              },
+            }}
+            height={100}
+            width={100}
+          />
         </button>
       </FlexBox>
     </Container>
