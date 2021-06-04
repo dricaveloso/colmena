@@ -6,14 +6,14 @@ import IconButton from "component/ui/IconButton";
 import FooterApp from "component/layout/FooterApp";
 import Divider from "component/ui/Divider";
 import useTranslation from "hooks/useTranslation";
+import LayoutApp from "component/statefull/LayoutApp";
 
 function Profile(props) {
   const { t } = useTranslation(props.lang, "profile");
 
   return (
-    <Container extraStyle={{ padding: 0 }}>
-      <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar title={t?.title} />
+    <LayoutApp title={t?.title} back={true} drawer={false}>
+      <FlexBox justifyContent="center">
         <div style={{ display: "flex", flexDirection: "column" }}>
           <IconButton
             title={t?.textEditButton}
@@ -29,9 +29,8 @@ function Profile(props) {
             fontSizeIcon="1.8em"
           />
         </div>
-        <FooterApp about={true} terms={true} lang={props.lang} />
       </FlexBox>
-    </Container>
+    </LayoutApp>
   );
 }
 

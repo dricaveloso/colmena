@@ -5,7 +5,7 @@ import Button from "component/ui/Button";
 import FlexBox from "component/ui/FlexBox";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import WifiOffSharpIcon from "@material-ui/icons/WifiOffSharp";
+import SupervisedUserCircleSharpIcon from "@material-ui/icons/SupervisedUserCircleSharp";
 import Divider from "component/ui/Divider";
 import SkipButton from "component/pages/intro/SkipButton";
 import { useRouter } from "next/router";
@@ -21,7 +21,7 @@ export default function Intro4(props) {
       <FlexBox>
         <HeaderApp />
         <Box my={4} style={{ textAlign: "center", padding: 10 }}>
-          <WifiOffSharpIcon style={{ fontSize: "150px" }} />
+          <SupervisedUserCircleSharpIcon style={{ fontSize: "150px" }} />
           <Divider marginTop={10} />
           <Box100>
             <Typography

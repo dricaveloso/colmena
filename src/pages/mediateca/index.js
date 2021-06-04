@@ -1,45 +1,43 @@
 import React from "react";
-import Container from "component/ui/Container";
 import FlexBox from "component/ui/FlexBox";
-import AppBar from "component/statefull/AppBar";
 import TabsMediateca from "component/statefull/TabsMediateca";
 import IconButton from "component/ui/IconButton";
-import SearchInput from "component/ui/SearchInput";
 import useTranslation from "hooks/useTranslation";
 import { useRouter } from "next/router";
+import LayoutApp from "component/statefull/LayoutApp";
+import SearchInput from "component/pages/mediateca/SearchInput";
+import AudioList from "component/pages/mediateca/AudioList";
 
 function Mediateca(props) {
   const router = useRouter();
   const { t } = useTranslation(props.lang, "mediateca");
 
   return (
-    <Container extraStyle={{ padding: 0 }}>
-      <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar title="Mediateca" />
-        <div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              marginBottom: 20,
-            }}
-          >
-            <IconButton
-              title={t?.myCloudTextButton}
-              variantTitle="p"
-              fontSizeIcon="1.8em"
-              color="black"
-              icon="CloudIcon"
-            />
-            <IconButton
-              title={t?.mediaCloudTextButton}
-              variantTitle="p"
-              fontSizeIcon="1.8em"
-              color="black"
-              icon="CloudQueueIcon"
-            />
-          </div>
+    <LayoutApp title="Mediateca" back={true}>
+      <FlexBox justifyContent="space-between">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          <IconButton
+            title={t?.myCloudTextButton}
+            variantTitle="p"
+            fontSizeIcon="1.8em"
+            color="black"
+            icon="CloudIcon"
+            handleClick={() => {}}
+          />
+          <IconButton
+            title={t?.mediaCloudTextButton}
+            variantTitle="p"
+            fontSizeIcon="1.8em"
+            color="black"
+            icon="CloudQueueIcon"
+            handleClick={() => {}}
+          />
           <IconButton
             title="Mediateca"
             variantTitle="p"
@@ -49,15 +47,27 @@ function Mediateca(props) {
             handleClick={() => router.push("/mediateca")}
           />
         </div>
+
+        <SearchInput label={t?.textSearchInput} />
+
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "flex-start",
+            flexDirection: "column",
+          }}
+        >
+          <AudioList />
+        </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <SearchInput placeholder={t?.textSearchInput} />
           <TabsMediateca
             title1={t?.textCategoryTab}
             title2={t?.textFavoriteTab}
           />
         </div>
       </FlexBox>
-    </Container>
+    </LayoutApp>
   );
 }
 

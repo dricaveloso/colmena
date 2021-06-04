@@ -21,15 +21,16 @@ function FooterApp({ about = false, terms = true, fixed = false, lang }) {
           style={{ textTransform: "capitalize", color: "gray" }}
           onClick={() => router.push("/intro-1")}
         >
-          {t?.termsOfUse}
+          {t?.aboutMaia}
         </Button>
       )}
       {terms && (
         <Button
           size="small"
           style={{ textTransform: "capitalize", color: "gray" }}
+          onClick={() => router.push("/terms")}
         >
-          {t?.aboutMaia}
+          {t?.termsOfUse}
         </Button>
       )}
     </Box>

@@ -4,14 +4,14 @@ import FlexBox from "component/ui/FlexBox";
 import AppBar from "component/statefull/AppBar";
 import IconButton from "component/ui/IconButton";
 import useTranslation from "hooks/useTranslation";
+import LayoutApp from "component/statefull/LayoutApp";
 
 function ShareAudio(props) {
   const { t } = useTranslation(props.lang, "shareAudio");
 
   return (
-    <Container extraStyle={{ padding: 0 }}>
-      <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar title={t?.title} />
+    <LayoutApp title={t?.title} back={true}>
+      <FlexBox>
         <div
           style={{
             display: "flex",
@@ -59,7 +59,7 @@ function ShareAudio(props) {
           </div>
         </div>
       </FlexBox>
-    </Container>
+    </LayoutApp>
   );
 }
 
