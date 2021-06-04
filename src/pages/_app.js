@@ -2,6 +2,7 @@ import universalLanguageDetect from "@unly/universal-language-detector";
 import get from "lodash.get";
 import NextCookies from "next-cookies";
 import NextApp from "next/app";
+import Head from "next/head";
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { FALLBACK_LANG, SUPPORTED_LANGUAGES } from "utils/i18n";
@@ -58,6 +59,13 @@ class App extends NextApp {
 
     return (
       <>
+        <Head>
+          <title>MAIA - Media Asset for Independent Associations</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+          />
+        </Head>
         <CssBaseline />
         <Component {...modifiedPageProps} />
       </>

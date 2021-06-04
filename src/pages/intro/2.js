@@ -5,7 +5,7 @@ import Button from "component/ui/Button";
 import FlexBox from "component/ui/FlexBox";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import SupervisedUserCircleSharpIcon from "@material-ui/icons/SupervisedUserCircleSharp";
+import PermDataSettingSharpIcon from "@material-ui/icons/PermDataSettingSharp";
 import Divider from "component/ui/Divider";
 import { useRouter } from "next/router";
 import SkipButton from "component/pages/intro/SkipButton";
@@ -21,7 +21,7 @@ export default function Intro2(props) {
       <FlexBox>
         <HeaderApp />
         <Box my={4} style={{ textAlign: "center", padding: 10 }}>
-          <SupervisedUserCircleSharpIcon style={{ fontSize: "150px" }} />
+          <PermDataSettingSharpIcon style={{ fontSize: "150px" }} />
           <Divider marginTop={10} />
           <Box100>
             <Typography

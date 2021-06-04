@@ -1,25 +1,24 @@
 import React from "react";
-import Container from "component/ui/Container";
 import FlexBox from "component/ui/FlexBox";
-import AppBar from "component/statefull/AppBar";
 import IconButton from "component/ui/IconButton";
+import LayoutApp from "component/statefull/LayoutApp";
 import useTranslation from "hooks/useTranslation";
+import Divider from "component/ui/Divider";
 
 function EditAudio(props) {
   const { t } = useTranslation(props.lang, "editAudio");
 
   return (
-    <Container extraStyle={{ padding: 0 }}>
-      <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar title={t?.title} />
+    <LayoutApp title={t?.title} back={true}>
+      <FlexBox justifyContent="center">
         <p>{t?.description}</p>
-
+        <Divider marginBottom={10} />
         <img
           src="/images/sound-waves.jpg"
           alt="Sound Waves images"
           width="100%"
         />
-
+        <Divider marginBottom={10} />
         <div
           style={{
             display: "flex",
@@ -62,7 +61,7 @@ function EditAudio(props) {
           <IconButton fontSizeIcon="1.4em" color="black" icon="CropIcon" />
         </div>
       </FlexBox>
-    </Container>
+    </LayoutApp>
   );
 }
 

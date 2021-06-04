@@ -1,6 +1,7 @@
 {
-  "greeting": "Holla",
+  "greeting": "Hola",
   "question": "Que quieres hacer ahora?",
   "inviteText": "Invitar",
-  "record": "Grabar"
+  "recordText": "Grabar",
+  "profileText": "Editar Perfil"
 }

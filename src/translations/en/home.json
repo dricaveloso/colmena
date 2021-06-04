@@ -2,5 +2,6 @@
   "greeting": "Hello",
   "question": "What would you do to do now ?",
   "inviteText": "Invite",
-  "record": "Record"
+  "recordText": "Record",
+  "profileText": "Edit Profile"
 }

@@ -21,18 +21,29 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import CloudCircleIcon from "@material-ui/icons/CloudCircle";
+import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
+import MicIcon from "@material-ui/icons/Mic";
+import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
+import WifiOffSharpIcon from "@material-ui/icons/WifiOffSharp";
+import PermDataSettingSharpIcon from "@material-ui/icons/PermDataSettingSharp";
+import CloudUploadSharpIcon from "@material-ui/icons/CloudUploadSharp";
+import SupervisedUserCircleSharpIcon from "@material-ui/icons/SupervisedUserCircleSharp";
+import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
+import SearchIcon from "@material-ui/icons/Search";
 
 function IconButtonCtr({
   title = null,
   fontSizeIcon = "3.5em",
   variantTitle = "h5",
   color = "black",
-  handleClick = () => {},
+  handleClick = null,
   icon,
+  extraStyleIcon = {},
 }) {
   const iconProps = {
     fontSize: fontSizeIcon,
     color,
+    style: { ...extraStyleIcon },
   };
 
   const discoverIcon = (iconName) => {
@@ -77,15 +88,38 @@ function IconButtonCtr({
         return <WhatsAppIcon style={{ ...iconProps }} />;
       case "CloudCircleIcon":
         return <CloudCircleIcon style={{ ...iconProps }} />;
+      case "MicIcon":
+        return <MicIcon style={{ ...iconProps }} />;
+      case "PhoneAndroidIcon":
+        return <PhoneAndroidIcon style={{ ...iconProps }} />;
+      case "DesktopWindowsIcon":
+        return <DesktopWindowsIcon style={{ ...iconProps }} />;
+      case "WifiOffSharpIcon":
+        return <WifiOffSharpIcon style={{ ...iconProps }} />;
+      case "PermDataSettingSharpIcon":
+        return <PermDataSettingSharpIcon style={{ ...iconProps }} />;
+      case "CloudUploadSharpIcon":
+        return <CloudUploadSharpIcon style={{ ...iconProps }} />;
+      case "SupervisedUserCircleSharpIcon":
+        return <SupervisedUserCircleSharpIcon style={{ ...iconProps }} />;
+      case "SupervisedUserCircleIcon":
+        return <SupervisedUserCircleIcon style={{ ...iconProps }} />;
+      case "SearchIcon":
+        return <SearchIcon style={{ ...iconProps }} />;
       default:
         return <GroupAddIcon style={{ ...iconProps }} />;
     }
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <IconButton
-        style={{ margin: 0, fontSize: fontSizeIcon, color }}
+        style={{ margin: 0, padding: 5, fontSize: fontSizeIcon, color }}
         onClick={handleClick}
       >
         {discoverIcon(icon)}

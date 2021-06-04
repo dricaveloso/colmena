@@ -1,13 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import AppBar from "@material-ui/core/AppBar";
 import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import Avatar from "@material-ui/core/Avatar";
 import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,15 +17,14 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   title: {
     flexGrow: 1,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 }));
 
-function AppBarSys({ title }) {
+function AppBarSys({ title, back, drawer = true }) {
   const classes = useStyles();
   const router = useRouter();
 
@@ -43,21 +42,34 @@ function AppBarSys({ title }) {
   return (
     <AppBar position="static">
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          color="inherit"
-          aria-label="menu"
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography
-          variant="h6"
+        <div>
+          {drawer && (
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => {}}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          {back && (
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => router.back()}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          )}
+        </div>
+        <p
           onClick={() => router.push("/home")}
-          className={classes.title}
+          style={{ fontSize: 14, fontWeight: "bold" }}
         >
           {title}
-        </Typography>
+        </p>
         <div>
           <IconButton
             aria-label="account of current user"
@@ -66,7 +78,7 @@ function AppBarSys({ title }) {
             onClick={handleMenu}
             color="inherit"
           >
-            <AccountCircle />
+            <Avatar alt="Remy Sharp" src="/avatar/1.jpg" />
           </IconButton>
           <Menu
             id="menu-appbar"
@@ -84,7 +96,6 @@ function AppBarSys({ title }) {
             onClose={handleClose}
           >
             <MenuItem onClick={() => router.push("/profile")}>Profile</MenuItem>
-            {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
           </Menu>
         </div>
       </Toolbar>

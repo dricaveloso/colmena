@@ -41,11 +41,11 @@ export default function CompleteRegister(props) {
           <Box style={{ display: "flex", flexDirection: "column" }}>
             <Button
               title={t?.forms.submitButton}
-              handleClick={() => router.push("/home")}
+              handleClick={() => router.push("/platform")}
             />
           </Box>
         </Box>
-        <FooterApp about={true} terms={true} lang={props.lang} />
+        <FooterApp about={false} terms={true} lang={props.lang} />
       </FlexBox>
     </Container>
   );

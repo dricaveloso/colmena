@@ -1,9 +1,8 @@
-module.exports = {
-  webpack: (config, { isServer, dev }) => {
-    if (!isServer) {
-      config.node = { fs: "empty", module: "empty" };
-    }
+const withPWA = require("next-pwa");
 
-    return config;
+module.exports = withPWA({
+  pwa: {
+    dest: "public",
+    disable: true,
   },
-};
+});
