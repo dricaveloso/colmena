@@ -1,5 +1,6 @@
 {
   "title": "Convidar colaboradores",
   "emailPlaceholder": "Digite o e-mail do colaborador",
-  "submitTextButton": "Enviar"
+  "submitTextButton": "Enviar",
+  "successText": "E-mail enviado com sucesso."
 }

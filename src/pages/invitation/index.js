@@ -56,7 +56,7 @@ function Invitation(props) {
           />
         </Box>
       </Box>
-      <FooterApp about={true} terms={false} fixed={true} lang={props.lang} />
+      <FooterApp about={false} terms={true} fixed={true} lang={props.lang} />
     </Container>
   );
 }

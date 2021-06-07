@@ -13,7 +13,7 @@ function LayoutApp({
   return (
     <Container extraStyle={{ padding: 0 }}>
       <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar title={title} back={back} drawer={drawer} />
+        <AppBar title={title} back={back} drawer={drawer} lang={lang} />
         {children}
       </FlexBox>
     </Container>
