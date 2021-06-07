@@ -1,5 +1,6 @@
 {
   "title": "Invite collaborators",
   "emailPlaceholder": "Enter the collaborator's email",
-  "submitTextButton": "Send"
+  "submitTextButton": "Send",
+  "successText": "Email successfully sent."
 }

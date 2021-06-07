@@ -9,17 +9,17 @@ import Divider from "@material-ui/core/Divider";
 function About(props) {
   const router = useRouter();
   const fontSize = "2.1em";
-  const fontSizeExtra = "1.6em";
+  const fontSizeExtra = "1.9em";
   const color = "black";
   const { t } = useTranslation(props.lang, "intro");
 
   const items = [
     {
-      icon: "WifiOffSharpIcon",
+      icon: "PermDataSettingSharpIcon",
       text: t?.step1.description,
     },
     {
-      icon: "PermDataSettingSharpIcon",
+      icon: "WifiOffSharpIcon",
       text: t?.step2.description,
     },
     {
@@ -39,6 +39,7 @@ function About(props) {
     {
       icon: "LibraryMusicIcon",
       text: "Mediateca",
+      handleClick: () => router.push("/mediateca"),
     },
   ];
 
@@ -81,7 +82,7 @@ function About(props) {
             gridColumnGap: "50px",
           }}
         >
-          {extraItems.map(({ icon, text }) => (
+          {extraItems.map(({ icon, text, handleClick = null }) => (
             <FlexBox
               extraStyle={{ alignItems: "center" }}
               justifyContent="center"
@@ -90,6 +91,7 @@ function About(props) {
                 fontSizeIcon={fontSizeExtra}
                 color={color}
                 icon={icon}
+                handleClick={handleClick}
               />
               <p style={{ fontSize: "12px" }}>{text}</p>
             </FlexBox>

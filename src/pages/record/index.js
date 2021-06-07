@@ -13,7 +13,7 @@ function Record(props) {
 
   return (
     <LayoutApp title={t?.title} back={true} lang={props.lang}>
-      <FlexBox justifyContent="space-between">
+      <FlexBox justifyContent="space-around">
         <ShareLinkComponent
           title={t?.textInvite}
           titleShareLink={t?.titleShareLink}

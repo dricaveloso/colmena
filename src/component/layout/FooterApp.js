@@ -19,7 +19,7 @@ function FooterApp({ about = false, terms = true, fixed = false, lang }) {
           size="small"
           variant="text"
           style={{ textTransform: "capitalize", color: "gray" }}
-          onClick={() => router.push("/intro-1")}
+          onClick={() => router.push("/about")}
         >
           {t?.aboutMaia}
         </Button>
