@@ -27,7 +27,7 @@ deploy_dev:
   except:
     - main
 deploy_prod:
-  stage: build
+  stage: deploy
   script:
     - cp -a out/* /pub/frontend/prod/
     - echo "deploying to prod and building artifact"
