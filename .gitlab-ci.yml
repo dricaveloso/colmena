@@ -14,12 +14,12 @@ prepare_all:
     - npm install --force
 build:
   stage: build
-  tags: 
-    - node
   script:
     - npm run build
 deploy_dev:
   stage: deploy
+  tags: 
+    - node
   script: #change this
     - cp -a out/* /pub/frontend/dev/
   only:
