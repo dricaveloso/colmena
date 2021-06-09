@@ -10,9 +10,20 @@
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
+    "@unly/universal-language-detector": "^2.0.3",
+    "i18next": "^20.3.0",
+    "i18next-browser-languagedetector": "^6.1.1",
+    "i18next-http-backend": "^1.2.6",
+    "lodash.get": "^4.4.2",
     "next": "10.2.2",
+    "next-cookies": "^2.0.3",
     "next-pwa": "^5.2.21",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-i18next": "^11.9.0",
+    "react-lottie": "^1.2.3",
+    "react-share": "^4.4.0",
+    "react-timer-hook": "^3.0.3"
   }
 }

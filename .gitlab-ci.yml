@@ -1,9 +1,9 @@
 stages:
   - prepare
-  - build    
+  - build
   #- test
   - deploy
- # - cleanup
+  # - cleanup
 cache:
   paths:
     - node_modules/
@@ -11,7 +11,7 @@ cache:
 prepare_all:
   stage: prepare
   script:
-    - npm install
+    - npm install --force
 #test_all:
 #  stage: test
 #  script:
@@ -23,15 +23,15 @@ build:
 deploy_dev:
   stage: deploy
   script: #change this
-    - cp -a out/* /pub/frontend/dev/  
+    - cp -a out/* /pub/frontend/dev/
   only:
     - branches
-  except: 
+  except:
     - main
 deploy_prod:
   stage: build
   script:
-    - cp -a out/* /pub/frontend/prod/  
+    - cp -a out/* /pub/frontend/prod/
     - echo "deploying to prod and building artifact"
   only:
     - main
