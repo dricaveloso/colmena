@@ -1,8 +1,8 @@
 stages:
   - prepare
   - build
-  - test
   - deploy
+  - livetest
   # - cleanup
 cache:
   paths:
@@ -12,14 +12,6 @@ prepare_all:
   stage: prepare
   script:
     - npm install --force
-test_all:
-  stage: test
-  image: cypress/browsers:node10.16.0-chrome77
-  script:
-    - npm install
-    - npm run build
-    - npm install -g @lhci/cli@0.3.x
-    - lhci autorun --upload.target=temporary-public-storage --collect.settings.chromeFlags="--no-sandbox" || echo "LHCI failed!"
 build:
   stage: build
   script:
@@ -44,3 +36,12 @@ deploy_prod:
     paths:
       - out
     expire_in: 10 days
+live_test_all:
+  stage: livetest
+  #image: cypress/browsers:node10.16.0-chrome77
+  tags: lighthouse
+  script:
+    - npm install
+    - npm run build
+    - npm install -g @lhci/cli@0.3.x
+    - lhci autorun --upload.target=temporary-public-storage --collect.settings.chromeFlags="--no-sandbox" || echo "LHCI failed!"
