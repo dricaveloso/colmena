@@ -14,6 +14,8 @@ prepare_all:
     - npm install --force
 build:
   stage: build
+  tags: 
+    - node
   script:
     - npm run build
 deploy_dev:
@@ -38,7 +40,6 @@ deploy_prod:
     expire_in: 10 days
 test_all:
   stage: livetest
-  #image: cypress/browsers:node10.16.0-chrome77
   tags: 
     - lighthouse
   script:
