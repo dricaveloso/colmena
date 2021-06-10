@@ -8,12 +8,19 @@ function LayoutApp({
   lang = "es",
   back = false,
   drawer = true,
+  headerPosition = "static",
   children,
 }) {
   return (
     <Container extraStyle={{ padding: 0 }}>
       <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar title={title} back={back} drawer={drawer} lang={lang} />
+        <AppBar
+          title={title}
+          back={back}
+          headerPosition={headerPosition}
+          drawer={drawer}
+          lang={lang}
+        />
         {children}
       </FlexBox>
     </Container>

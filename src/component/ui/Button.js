@@ -17,9 +17,9 @@ export default function Btn({
       style={{ textTransform: "capitalize", ...style }}
       variant={variant}
       color={color}
-      naked={naked}
+      naked={naked.toString()}
       size={size}
-      block={block}
+      block={block.toString()}
       onClick={handleClick}
       className="width-based-device"
       endIcon={endIcon}

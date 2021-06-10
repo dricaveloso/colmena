@@ -19,12 +19,12 @@ function Index() {
       <Typography variant="h4" component="h3" gutterBottom>
         MAIA
       </Typography>
-      <Typography variant="p" gutterBottom style={{ marginBottom: 40 }}>
-        Media Asset for Independent Associations
+      <Typography variant="p" gutterBottom style={{ marginBottom: 20 }}>
+        Create, Collaborate and Share
       </Typography>
       <Link href="/invitation">
         <Button color="primary" variant="outlined">
-          Invitation
+          Demo
         </Button>
       </Link>
     </Container>

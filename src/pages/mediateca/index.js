@@ -7,10 +7,13 @@ import { useRouter } from "next/router";
 import LayoutApp from "component/statefull/LayoutApp";
 import SearchInput from "component/pages/mediateca/SearchInput";
 import AudioList from "component/pages/mediateca/AudioList";
+import { getAudios } from "services/audios";
+import axios from "axios";
 
 function Mediateca(props) {
   const router = useRouter();
   const { t } = useTranslation(props.lang, "mediateca");
+  const { data } = getAudios();
 
   return (
     <LayoutApp title="Mediateca" back={true}>
@@ -58,7 +61,7 @@ function Mediateca(props) {
             flexDirection: "column",
           }}
         >
-          <AudioList />
+          <AudioList data={data || props.data} />
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <TabsMediateca
@@ -69,6 +72,17 @@ function Mediateca(props) {
       </FlexBox>
     </LayoutApp>
   );
+}
+
+export async function getStaticProps() {
+  const response = await axios.get(
+    "https://60c09a3db8d3670017555507.mockapi.io/api/v1/audios"
+  );
+  return {
+    props: {
+      data: response.data,
+    },
+  };
 }
 
 export default Mediateca;

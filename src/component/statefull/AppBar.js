@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AppBarSys({ title, back, lang, drawer = true }) {
+function AppBarSys({ title, back, lang, headerPosition, drawer = true }) {
   const classes = useStyles();
   const [openDrawer, setOpenDrawer] = useState(false);
   const router = useRouter();
@@ -89,7 +89,7 @@ function AppBarSys({ title, back, lang, drawer = true }) {
   );
 
   return (
-    <AppBar position="static">
+    <AppBar position={headerPosition}>
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
           {drawer && (
@@ -116,6 +116,7 @@ function AppBarSys({ title, back, lang, drawer = true }) {
         <SwipeableDrawer
           anchor="left"
           open={openDrawer}
+          onOpen={() => {}}
           onClose={() => setOpenDrawer(false)}
         >
           {drawerMenu()}
