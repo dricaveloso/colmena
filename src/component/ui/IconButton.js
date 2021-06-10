@@ -125,12 +125,7 @@ function IconButtonCtr({
         {discoverIcon(icon)}
       </IconButton>
       {!!title && (
-        <Typography
-          component={variantTitle}
-          variant={variantTitle}
-          align="center"
-          gutterBottom
-        >
+        <Typography component={variantTitle} align="center" gutterBottom>
           {title}
         </Typography>
       )}

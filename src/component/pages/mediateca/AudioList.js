@@ -8,21 +8,13 @@ import Divider from "@material-ui/core/Divider";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertSharpIcon from "@material-ui/icons/MoreVertSharp";
 
-function generate(element) {
-  return [0, 1, 2, 3, 4].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    })
-  );
-}
-
-export default function AudioList() {
+export default function AudioList({ data }) {
   return (
     <List dense={true}>
-      {generate(
+      {data.map((item, idx) => (
         <>
-          <ListItem>
-            <ListItemText primary="Single-line item" secondary="Category 1" />
+          <ListItem key={idx}>
+            <ListItemText primary={item.name} secondary={item.category.name} />
             <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="favorite">
                 <BookmarkBorderIcon />
@@ -34,7 +26,7 @@ export default function AudioList() {
           </ListItem>
           <Divider />
         </>
-      )}
+      ))}
     </List>
   );
 }

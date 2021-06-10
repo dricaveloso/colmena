@@ -1,20 +1,20 @@
-{
-  "aboutTitle": "About MAIA",
-  "step1": {
-    "description": "Maia is a 100% free, secure, and 100% free productivity suite for local media."
-  },
-  "step2": {
-    "description": "Thought to work areas of low connectivity and allows the integration of voice calls."
-  },
-  "step3": {
-    "description": "Save your files with our specialized cloud service for media."
-  },
-  "step4": {
-    "description": "Record, edit and publish audios from your mobile. Create recording rooms and invite remotely with one or multiple people."
-  },
-  "communityTitle": "Community",
-  "forms": {
-    "nextButton": "Next",
-    "skipButton": "Skip"
-  }
-}
+{ 
+  "aboutTitle": "About MAIA", 
+  "step1": { 
+    "description": "Maia is a 100% free of charge and secure productivity suite for local and community media. An integrated Open Source solution for mobile and desktop environments." 
+  }, 
+  "step2": { 
+    "description": "Collaborative audio recording, conferences and editing designed to work in areas of low connectivity." 
+  }, 
+  "step3": { 
+    "description": "Save and share your work in progress with colleagues and media partners using our specialized cloud service." 
+  }, 
+  "step4": { 
+    "description": "Distribute and publish your work on your website, social media, podcast platforms, a personalized landing page or the native MAIA web library." 
+  }, 
+  "communityTitle": "Community", 
+  "forms": { 
+    "nextButton": "Next", 
+    "skipButton": "Skip" 
+  } 
+} 
