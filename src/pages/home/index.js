@@ -20,7 +20,7 @@ function Home(props) {
           <div
             style={{
               display: "inline-grid",
-              gridTemplateColumns: "auto auto auto",
+              gridTemplateColumns: "30% 30% 30%",
               gridColumnGap: "20px",
             }}
           >

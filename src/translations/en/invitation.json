@@ -1,8 +1,9 @@
-{
-  "greeting": "Hello",
-  "description": "AC and DWA networks invite you to be part of the community radio newsroom",
-  "forms": {
-    "button1": "Accept invitation",
-    "button2": "About Maia"
-  }
-}
+{ 
+  "greeting": "Hello", 
+  "description": "DW Akademie and REDES A.C. invite you to be part of the community media ecosystem.", 
+  "forms": { 
+    "button1": "Accept invitation", 
+    "button2": "About Maia" 
+  } 
+} 
+

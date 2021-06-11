@@ -60,7 +60,7 @@ class App extends NextApp {
     return (
       <>
         <Head>
-          <title>MAIA - Media Asset for Independent Associations</title>
+          <title>MAIA - Create, Collaborate and Share </title>
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"

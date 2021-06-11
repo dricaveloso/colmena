@@ -19,7 +19,7 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="MAIA" />
           <meta
             name="description"
-            content="MAIA - Media Asset for Independent Associations"
+            content="MAIA - Create, Collaborate and Share"
           />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
