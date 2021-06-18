@@ -1,3 +1,8 @@
+variables:
+  CONTAINER_IMAGE: maia/frontend:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: http://localhost:5000/maia/frontend:$CI_BUILD_REF_NAME
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  
 stages:
   - prepare
   - build
@@ -15,7 +20,11 @@ prepare_all:
 build:
   stage: build
   script:
-    - npm run build
+    #- npm run build
+    - echo docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
 deploy_dev:
   stage: deploy
   tags: 
