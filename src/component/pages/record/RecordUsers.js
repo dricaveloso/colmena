@@ -34,26 +34,18 @@ export default function RecordUsers() {
         </Badge>
         <small style={{ display: "block", marginTop: 5 }}>Makena</small>
       </div>
-      <div>
-        <Badge color="secondary" variant="dot">
-          <Avatar
-            alt="Remy Sharp"
-            src="/avatar/2.jpg"
-            className={classes.large}
-          />
-        </Badge>
-        <small style={{ display: "block", marginTop: 5 }}>Makena</small>
-      </div>
-      <div>
-        <Badge color="secondary" variant="dot">
-          <Avatar
-            alt="Remy Sharp"
-            src="/avatar/1.jpg"
-            className={classes.large}
-          />
-        </Badge>
-        <small style={{ display: "block", marginTop: 5 }}>Makena</small>
-      </div>
+      {[0, 1].map((item, idx) => (
+        <div key={idx}>
+          <Badge color="secondary" variant="dot">
+            <Avatar
+              alt="Remy Sharp"
+              src="/avatar/2.jpg"
+              className={classes.large}
+            />
+          </Badge>
+          <small style={{ display: "block", marginTop: 5 }}>Makena</small>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,33 +1,85 @@
 import React from "react";
-import Container from "component/ui/Container";
 import FlexBox from "component/ui/FlexBox";
-import AppBar from "component/statefull/AppBar";
-import IconButton from "component/ui/IconButton";
-import FooterApp from "component/layout/FooterApp";
-import Divider from "component/ui/Divider";
-import useTranslation from "hooks/useTranslation";
 import LayoutApp from "component/statefull/LayoutApp";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import TextField from "component/ui/TextField";
+import { makeStyles } from "@material-ui/styles";
+import MaterialIcon from "component/ui/MaterialIcon";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import InstagramIcon from "@material-ui/icons/Instagram";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import Text from "component/ui/Text";
+import Button from "component/ui/Button";
+import IconButton from "component/ui/IconButton";
+import { useRouter } from "next/router";
 
-function Profile(props) {
-  const { t } = useTranslation(props.lang, "profile");
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["profile", "drawer"])),
+    },
+  };
+};
+
+const useStyles = makeStyles((theme) => ({
+  marginInputDivs: {
+    "& > div": {
+      marginBottom: 15,
+    },
+  },
+}));
+
+function Profile() {
+  const { t } = useTranslation("profile");
+  const classes = useStyles();
+  const router = useRouter();
 
   return (
-    <LayoutApp title={t?.title} back={true} drawer={false}>
-      <FlexBox justifyContent="center">
-        <div style={{ display: "flex", flexDirection: "column" }}>
+    <LayoutApp title={t("title")} back={true}>
+      <FlexBox justifyContent="flex-start">
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            marginTop: 70,
+            marginRight: 10,
+          }}
+        >
           <IconButton
-            title={t?.textEditButton}
-            icon="EditIcon"
-            variantTitle="p"
             fontSizeIcon="1.8em"
+            title={t("mediaTitle")}
+            color="black"
+            icon="settings"
+            handleClick={() => router.push("/media-profile")}
           />
-          <Divider marginBottom={20} />
-          <IconButton
-            title={t?.textPhotoButton}
-            icon="PhotoCameraIcon"
-            variantTitle="p"
-            fontSizeIcon="1.8em"
+        </div>
+        <div className={classes.marginInputDivs}>
+          <div className="boxColumnCenter">
+            <MaterialIcon icon="add_a_photo" style={{ fontSize: 120 }} />
+            <Text>Juan</Text>
+          </div>
+          <TextField id="name" label={t("nameField")} variant="outlined" />
+          <TextField id="email" label={t("emailField")} variant="outlined" />
+          <TextField
+            id="url_blog"
+            className="width-based-device"
+            label={t("urlField")}
+            variant="outlined"
           />
+          <Text>{t("socialMediaTitle")}</Text>
+          <div className="boxRowCenter marginTop15">
+            <FacebookIcon className="marginRight15" style={{ fontSize: 50 }} />
+            <WhatsAppIcon className="marginRight15" style={{ fontSize: 50 }} />
+            <InstagramIcon className="marginRight15" style={{ fontSize: 50 }} />
+          </div>
+          <div className="marginTop15">
+            <Button title={t("editButton")} />
+          </div>
+          <div className="marginTop15">
+            <Button title={t("resetPasswordButton")} variant="outlined" />
+          </div>
         </div>
       </FlexBox>
     </LayoutApp>

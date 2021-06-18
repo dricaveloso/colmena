@@ -6,12 +6,21 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import MailOutlineSharpIcon from "@material-ui/icons/MailOutlineSharp";
 import { useRouter } from "next/router";
-import useTranslation from "hooks/useTranslation";
 import Box100 from "component/ui/Box100";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-function Invitation(props) {
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["invitation", "common"])),
+    },
+  };
+};
+
+function Invitation() {
   const router = useRouter();
-  const { t } = useTranslation(props.lang, "invitation");
+  const { t } = useTranslation("invitation");
 
   return (
     <Container>
@@ -29,12 +38,12 @@ function Invitation(props) {
         <MailOutlineSharpIcon style={{ fontSize: "150px" }} />
         <Divider marginTop={10} />
         <Typography variant="h5" component="h4" gutterBottom>
-          {t?.greeting}
+          {t("greeting")}
         </Typography>
         <Divider marginTop={10} />
         <Box100>
           <Typography component="p" gutterBottom className="width-based-device">
-            {t?.description}
+            {t("description")}
           </Typography>
         </Box100>
         <Divider />
@@ -46,17 +55,17 @@ function Invitation(props) {
           }}
         >
           <Button
-            title={t?.forms?.button1}
+            title={t("forms.button1")}
             handleClick={() => router.push("/intro/1")}
           />
           <Divider marginTop={15} />
           <Button
-            title={t?.forms?.button2}
+            title={t("forms.button2")}
             handleClick={() => router.push("/intro/1")}
           />
         </Box>
       </Box>
-      <FooterApp about={false} terms={true} fixed={true} lang={props.lang} />
+      <FooterApp about={false} terms={true} fixed={true} />
     </Container>
   );
 }

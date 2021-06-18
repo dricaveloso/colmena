@@ -9,6 +9,7 @@ function SearchInput({ label, variant = "outlined", handleClick = () => {} }) {
         display: "inline-grid",
         gridTemplateColumns: "80% 20%",
         padding: 5,
+        width: "100%",
       }}
     >
       <input
@@ -36,7 +37,7 @@ function SearchInput({ label, variant = "outlined", handleClick = () => {} }) {
         <IconButton
           fontSizeIcon="1.8em"
           color="black"
-          icon="SearchIcon"
+          icon="search"
           handleClick={handleClick}
         />
       </div>

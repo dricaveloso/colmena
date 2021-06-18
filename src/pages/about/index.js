@@ -1,50 +1,59 @@
 import React from "react";
 import FlexBox from "component/ui/FlexBox";
-import useTranslation from "hooks/useTranslation";
 import IconButton from "component/ui/IconButton";
 import { useRouter } from "next/router";
 import LayoutApp from "component/statefull/LayoutApp";
 import Divider from "@material-ui/core/Divider";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["intro", "drawer"])),
+    },
+  };
+};
 
 function About(props) {
   const router = useRouter();
   const fontSize = "2.1em";
   const fontSizeExtra = "1.9em";
   const color = "black";
-  const { t } = useTranslation(props.lang, "intro");
+  const { t } = useTranslation("intro");
 
   const items = [
     {
-      icon: "PermDataSettingSharpIcon",
-      text: t?.step1.description,
+      icon: "perm_data_setting_sharp",
+      text: t("step1.description"),
     },
     {
-      icon: "WifiOffSharpIcon",
-      text: t?.step2.description,
+      icon: "wifi_off_sharp",
+      text: t("step2.description"),
     },
     {
-      icon: "CloudUploadSharpIcon",
-      text: t?.step3.description,
+      icon: "cloud_upload_sharp",
+      text: t("step3.description"),
     },
     {
-      icon: "SupervisedUserCircleSharpIcon",
-      text: t?.step4.description,
+      icon: "supervised_user_circle_sharp",
+      text: t("step4.description"),
     },
   ];
   const extraItems = [
     {
-      icon: "SupervisedUserCircleIcon",
-      text: t?.communityTitle,
+      icon: "supervised_user_circle",
+      text: t("communityTitle"),
     },
     {
-      icon: "LibraryMusicIcon",
+      icon: "library_music",
       text: "Mediateca",
       handleClick: () => router.push("/mediateca"),
     },
   ];
 
   return (
-    <LayoutApp title={t?.aboutTitle} lang={props.lang} back={true}>
+    <LayoutApp title={t("aboutTitle")} back={true}>
       <FlexBox>
         <div
           style={{

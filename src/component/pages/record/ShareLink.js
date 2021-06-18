@@ -11,6 +11,7 @@ import {
   WhatsappIcon,
 } from "react-share";
 import Divider from "@material-ui/core/Divider";
+import { useTranslation } from "next-i18next";
 
 const BoxItemShare = ({ title, children }) => {
   return (
@@ -55,7 +56,9 @@ function SimpleDialog({ onClose, open, url, titleShareLink }) {
   );
 }
 
-export default function ShareLink({ title, titleShareLink, url }) {
+export default function ShareLink({ url }) {
+  const { t } = useTranslation("record");
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -68,18 +71,20 @@ export default function ShareLink({ title, titleShareLink, url }) {
 
   return (
     <>
-      <IconButton
-        title={title}
-        variantTitle="p"
-        icon="PersonAddIcon"
-        fontSizeIcon="1.8em"
-        color="black"
-        handleClick={handleClickOpen}
-      />
+      <div>
+        <IconButton
+          title={t("textInvite")}
+          variantTitle="p"
+          icon="person_add"
+          fontSizeIcon="1.8em"
+          color="black"
+          handleClick={handleClickOpen}
+        />
+      </div>
       <SimpleDialog
         open={open}
         onClose={handleClose}
-        titleShareLink={titleShareLink}
+        titleShareLink={t("titleShareLink")}
         url={url}
       />
     </>

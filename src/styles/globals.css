@@ -24,8 +24,76 @@ a {
 
 @media all and (min-width: 480px) {
   .width-based-device {
-    width: 30% !important;
+    width: 30vw !important;
     display: flex !important;
     align-self: center !important;
   }
+}
+
+.scrollingContainer {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  margin-bottom: 10;
+}
+
+.scrollingContainer div {
+  display: inline-block;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 5px;
+  font-size: 12px;
+  background-color: #f7f7f7;
+  text-align: center;
+  color: #606060;
+}
+
+.boxRowSpaceAround {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.boxColumnCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.boxRowCenter {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.boxRowSpaceBetween {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.marginTop15 {
+  margin-top: 15px;
+}
+
+.marginRight15 {
+  margin-right: 15px;
+}
+
+.boxGridTwoColumns {
+  display: inline-grid;
+  grid-template-columns: 50% 50%;
+  padding: 5;
+  width: 100%;
 }

@@ -9,12 +9,21 @@ import SupervisedUserCircleSharpIcon from "@material-ui/icons/SupervisedUserCirc
 import Divider from "component/ui/Divider";
 import SkipButton from "component/pages/intro/SkipButton";
 import { useRouter } from "next/router";
-import useTranslation from "hooks/useTranslation";
 import Box100 from "component/ui/Box100";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["intro", "common"])),
+    },
+  };
+};
 
 export default function Intro4(props) {
   const router = useRouter();
-  const { t } = useTranslation(props.lang, "intro");
+  const { t } = useTranslation("intro");
 
   return (
     <Container>
@@ -30,20 +39,20 @@ export default function Intro4(props) {
               gutterBottom
               className="width-based-device"
             >
-              {t?.step4.description}
+              {t("step4.description")}
             </Typography>
           </Box100>
           <Divider />
           <Box style={{ display: "flex", flexDirection: "column" }}>
             <Button
-              title={t?.forms.nextButton}
+              title={t("forms.nextButton")}
               handleClick={() => router.push("/complete-register")}
             />
             <Divider marginTop={15} />
-            <SkipButton title={t?.forms.skipButton} />
+            <SkipButton title={t("forms.skipButton")} />
           </Box>
         </Box>
-        <FooterApp about={false} terms={true} lang={props.lang} />
+        <FooterApp about={false} terms={true} />
       </FlexBox>
     </Container>
   );

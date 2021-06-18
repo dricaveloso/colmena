@@ -1,76 +1,39 @@
-import universalLanguageDetect from "@unly/universal-language-detector";
-import get from "lodash.get";
-import NextCookies from "next-cookies";
-import NextApp from "next/app";
-import Head from "next/head";
 import React from "react";
+import Head from "next/head";
+import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { FALLBACK_LANG, SUPPORTED_LANGUAGES } from "utils/i18n";
-import "../styles/globals.css";
+import theme from "styles/theme";
+import { appWithTranslation } from "next-i18next";
 
-class App extends NextApp {
-  static async getInitialProps(props) {
-    const { ctx } = props;
-    const { req } = ctx;
-    const cookies = NextCookies(ctx); // Parses Next.js cookies in a universal way (server + client) - It's an object
+import "styles/globals.css";
 
-    // Universally detects the user's language
-    const lang = universalLanguageDetect({
-      supportedLanguages: SUPPORTED_LANGUAGES, // Whitelist of supported languages, will be used to filter out languages that aren't supported
-      fallbackLanguage: FALLBACK_LANG, // Fallback language in case the user's language cannot be resolved
-      acceptLanguageHeader: get(req, "headers.accept-language"), // Optional - Accept-language header will be used when resolving the language on the server side
-      serverCookies: cookies, // Optional - Cookie "i18next" takes precedence over navigator configuration (ex: "i18next: fr"), will only be used on the server side
-      errorHandler: (error, level, origin, context) => {
-        // Optional - Use you own logger here, Sentry, etc.
-        console.log("Custom error handler:");
-        console.error(error);
+function MyApp(props) {
+  const { Component, pageProps } = props;
 
-        // Example if using Sentry in your app:
-        // Sentry.withScope((scope): void => {
-        //   scope.setExtra('level', level);
-        //   scope.setExtra('origin', origin);
-        //   scope.setContext('context', context);
-        //   Sentry.captureException(error);
-        // });
-      },
-    });
-    // console.log("lang", lang);
+  React.useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector("#jss-server-side");
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
 
-    // Calls page's `getInitialProps` and fills `appProps.pageProps` - XXX See https://nextjs.org/docs#custom-app
-    const appProps = await NextApp.getInitialProps(props);
-
-    appProps.pageProps = {
-      ...appProps.pageProps,
-      cookies, // Object containing all cookies
-      lang, // i.e: 'en'
-      isSSR: !!req,
-    };
-
-    return { ...appProps };
-  }
-
-  render() {
-    const { Component, pageProps, router, err } = this.props;
-    const modifiedPageProps = {
-      ...pageProps,
-      err,
-      router,
-    };
-
-    return (
-      <>
-        <Head>
-          <title>MAIA - Create, Collaborate and Share </title>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
-          />
-        </Head>
+  return (
+    <React.Fragment>
+      <Head>
+        <title>MAIA - Create, Collaborate and Share </title>
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+        />
+      </Head>
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...modifiedPageProps} />
-      </>
-    );
-  }
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </React.Fragment>
+  );
 }
 
-export default App;
+export default appWithTranslation(MyApp);

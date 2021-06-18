@@ -9,12 +9,22 @@ import WifiOffSharpIcon from "@material-ui/icons/WifiOffSharp";
 import Divider from "component/ui/Divider";
 import { useRouter } from "next/router";
 import SkipButton from "component/pages/intro/SkipButton";
-import useTranslation from "hooks/useTranslation";
 import Box100 from "component/ui/Box100";
+
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["intro", "common"])),
+    },
+  };
+};
 
 export default function Intro2(props) {
   const router = useRouter();
-  const { t } = useTranslation(props.lang, "intro");
+  const { t } = useTranslation("intro");
 
   return (
     <Container>
@@ -30,20 +40,20 @@ export default function Intro2(props) {
               variantMapping="p"
               className="width-based-device"
             >
-              {t?.step2.description}
+              {t("step2.description")}
             </Typography>
           </Box100>
           <Divider />
           <Box style={{ display: "flex", flexDirection: "column" }}>
             <Button
-              title={t?.forms.nextButton}
+              title={t("forms.nextButton")}
               handleClick={() => router.push("/intro/3")}
             />
             <Divider marginTop={15} />
-            <SkipButton title={t?.forms.skipButton} />
+            <SkipButton title={t("forms.skipButton")} />
           </Box>
         </Box>
-        <FooterApp about={false} terms={true} lang={props.lang} />
+        <FooterApp about={false} terms={true} />
       </FlexBox>
     </Container>
   );
