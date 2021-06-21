@@ -38,21 +38,15 @@ export default function Terms(props) {
               {t("termsOfUse")}
             </p>
             <p style={{ textAlign: "justify" }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in
-              odio molestie justo eleifend dignissim sed sit amet augue. Donec
-              tristique vitae arcu in tincidunt. Phasellus gravida commodo
-              libero et cursus. Aliquam erat volutpat. Vestibulum ante ipsum
-              primis in faucibus orci luctus et ultrices posuere cubilia curae;
-              Integer posuere malesuada nunc. Fusce fringilla consectetur sem,
-              eu gravida purus volutpat et. In laoreet metus commodo purus
-              commodo, ac euismod turpis posuere. Aenean mattis suscipit leo,
-              eget suscipit purus volutpat ac. Donec porta, nibh sit amet
-              viverra facilisis, libero elit rutrum diam, vel pellentesque enim
-              ex at ligula. Aliquam feugiat nunc ac felis porta, ut tempus purus
-              hendrerit. Nulla ornare ipsum at purus ullamcorper, ut fermentum
-              massa porttitor. Nullam rhoncus vestibulum ante, eget pellentesque
-              nibh aliquet in. Aliquam condimentum elementum mauris, at rhoncus
-              nisi porttitor sed. Etiam vitae ante erat.
+              
+              All human beings are born free and equal in dignity and rights. 
+              
+              Everyone has the right to life, liberty and security of person.
+              
+              No one shall be subjected to torture or to cruel, inhuman or degrading treatment or punishment.
+
+              Everyone has the right to recognition everywhere as a person before the law.
+              
             </p>
           </Box>
         </div>

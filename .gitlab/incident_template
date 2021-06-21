@@ -1,0 +1,17 @@
+### Description
+Title, start time and date, severity, print
+
+### Timeline
+Date HH:MM action taken
+
+### Link
+links to page, logs, chats
+
+### Steps to Reproduce
+given X, when Y, then Z happend
+
+### Actual result
+Describe the failure
+
+### Expected result
+Describe the correct behaviour
