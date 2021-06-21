@@ -4,20 +4,22 @@ variables:
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   
 stages:
-  - prepare
+#  - prepare
   - build
-  #- deploy
-  - livetest
+  # - deploy
+  # - livetest
   # - cleanup
 cache:
   paths:
     - node_modules/
     - out/
-prepare_all:
-  stage: prepare
-  script:
-    - npm install --force
+#prepare_all:
+#  stage: prepare
+#  script:
+#    - npm install --force
 build:
+  tags: 
+    - docker
   stage: build
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
