@@ -1,8 +1,13 @@
+variables:
+  CONTAINER_IMAGE: maia/frontend:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: http://localhost:5000/maia/frontend:$CI_BUILD_REF_NAME
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  
 stages:
   - prepare
   - build
-  #- test
-  - deploy
+  #- deploy
+  - livetest
   # - cleanup
 cache:
   paths:
@@ -12,31 +17,40 @@ prepare_all:
   stage: prepare
   script:
     - npm install --force
-#test_all:
-#  stage: test
-#  script:
-#    - npm v
 build:
   stage: build
   script:
-    - npm run build
-deploy_dev:
-  stage: deploy
-  script: #change this
-    - cp -a out/* /pub/frontend/dev/
-  only:
-    - branches
-  except:
-    - main
-deploy_prod:
-  stage: build
-  script:
-    - cp -a out/* /pub/frontend/prod/
-    - echo "deploying to prod and building artifact"
-  only:
-    - main
-  artifacts:
-    name: ${CI_PROJECT_NAME}-${CI_BUILD_REF}-${CI_BUILD_NAME}
-    paths:
-      - out
-    expire_in: 10 days
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+#deploy_dev:
+#  stage: deploy
+#  tags: 
+#    - node
+#  script: #change this
+#    - cp -a out/* /pub/frontend/dev/
+#  only:
+#    - branches
+#  except:
+#    - main
+#deploy_prod:
+#  stage: deploy
+#  script:
+#    - cp -a out/* /pub/frontend/prod/
+#    - echo "deploying to prod and building artifact"
+#  only:
+#    - main
+#  artifacts:
+#    name: ${CI_PROJECT_NAME}-${CI_BUILD_REF}-${CI_BUILD_NAME}
+#    paths:
+#      - out
+#    expire_in: 10 days
+#test_all:
+#  stage: livetest
+#  tags: 
+#    - lighthouse
+#  script:
+#    - npm install
+#    - npm run build
+#    - npm install -g @lhci/cli@0.3.x
+#    - lhci autorun --upload.target=temporary-public-storage --collect.settings.chromeFlags="--no-sandbox" || echo "LHCI failed!"
