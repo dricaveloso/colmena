@@ -2,16 +2,25 @@ import React from "react";
 import FlexBox from "component/ui/FlexBox";
 import IconButton from "component/ui/IconButton";
 import LayoutApp from "component/statefull/LayoutApp";
-import useTranslation from "hooks/useTranslation";
 import Divider from "component/ui/Divider";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-function EditAudio(props) {
-  const { t } = useTranslation(props.lang, "editAudio");
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["editAudio"])),
+    },
+  };
+};
+
+function EditAudio() {
+  const { t } = useTranslation("editAudio");
 
   return (
-    <LayoutApp title={t?.title} back={true}>
+    <LayoutApp title={t("title")} back={true}>
       <FlexBox justifyContent="center">
-        <p>{t?.description}</p>
+        <p>{t("description")}</p>
         <Divider marginBottom={10} />
         <img
           src="/images/sound-waves.jpg"
@@ -36,9 +45,9 @@ function EditAudio(props) {
             <IconButton
               fontSizeIcon="1.8em"
               color="black"
-              icon="PlayCircleOutlineIcon"
+              icon="play_circle_outline"
             />
-            <IconButton fontSizeIcon="1.8em" color="black" icon="StopIcon" />
+            <IconButton fontSizeIcon="1.8em" color="black" icon="stop" />
           </div>
           <div
             style={{
@@ -47,18 +56,14 @@ function EditAudio(props) {
               justifyContent: "center",
             }}
           >
+            <IconButton fontSizeIcon="1.4em" color="black" icon="fast_rewind" />
             <IconButton
               fontSizeIcon="1.4em"
               color="black"
-              icon="FastRewindIcon"
-            />
-            <IconButton
-              fontSizeIcon="1.4em"
-              color="black"
-              icon="FastForwardIcon"
+              icon="fast_forward"
             />
           </div>
-          <IconButton fontSizeIcon="1.4em" color="black" icon="CropIcon" />
+          <IconButton fontSizeIcon="1.4em" color="black" icon="crop" />
         </div>
       </FlexBox>
     </LayoutApp>

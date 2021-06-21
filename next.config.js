@@ -1,16 +1,11 @@
 const withPWA = require("next-pwa");
 const withImages = require("next-images");
-
-const customExports = {
-  publicRuntimeConfig: {
-    api: {
-      baseUrl: process.env.API_BASE_URL,
-    },
-  },
-};
+const withProgressBar = require("next-progressbar");
+const { i18n } = require("./next-i18next.config");
 
 module.exports = withImages(
   withPWA({
+    i18n,
     future: { webpack5: true },
     pwa: {
       dest: "public",
@@ -21,6 +16,5 @@ module.exports = withImages(
         document: "/fallback",
       },
     },
-    ...customExports,
   })
 );

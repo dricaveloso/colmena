@@ -4,6 +4,7 @@ export default function Bx({
   textAlign = "center",
   padding = 10,
   flexDirection = "column",
+  alignItems = "center",
   justifyContent = "space-between",
   extraStyle = {},
   children,
@@ -18,6 +19,8 @@ export default function Bx({
         flex: 1,
         flexDirection,
         justifyContent,
+        alignItems,
+        marginBottom: 10,
         ...extraStyle,
       }}
     >

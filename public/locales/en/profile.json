@@ -1,0 +1,12 @@
+{
+  "title": "Profile",
+  "textEditButton": "Edit Profile",
+  "textPhotoButton": "Upload photo",
+  "mediaTitle": "Media",
+  "nameField": "Name",
+  "emailField": "E-mail",
+  "urlField": "URL / BLOG",
+  "socialMediaTitle": "Social Media",
+  "editButton": "Edit",
+  "resetPasswordButton": "Reset Password"
+}

@@ -1,16 +1,27 @@
 import React from "react";
-import Container from "component/ui/Container";
 import FlexBox from "component/ui/FlexBox";
-import AppBar from "component/statefull/AppBar";
 import IconButton from "component/ui/IconButton";
-import useTranslation from "hooks/useTranslation";
 import LayoutApp from "component/statefull/LayoutApp";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import TelegramIcon from "@material-ui/icons/Telegram";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import CloudIcon from "@material-ui/icons/Cloud";
 
-function ShareAudio(props) {
-  const { t } = useTranslation(props.lang, "shareAudio");
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["shareAudio", "drawer"])),
+    },
+  };
+};
+
+function ShareAudio() {
+  const { t } = useTranslation("shareAudio");
 
   return (
-    <LayoutApp title={t?.title} back={true}>
+    <LayoutApp title={t("title")} back={true}>
       <FlexBox>
         <div
           style={{
@@ -21,40 +32,21 @@ function ShareAudio(props) {
           }}
         >
           <div>
-            <p>{t?.description}</p>
-            <IconButton
-              fontSizeIcon="1.7em"
-              color="black"
-              icon="GraphicEqIcon"
-            />
-            <p style={{ marginTop: 50 }}>{t?.textShare}:</p>
+            <p>{t("description")}</p>
+            <IconButton fontSizeIcon="1.7em" color="black" icon="graphic_eq" />
+            <p style={{ marginTop: 50 }}>{t("textShare")}:</p>
             <div
               style={{
                 display: "inline-grid",
                 gridTemplateColumns: "auto auto",
                 gridColumnGap: "50px",
+                gridRowGap: "20px",
               }}
             >
-              <IconButton
-                fontSizeIcon="2em"
-                color="black"
-                icon="FacebookIcon"
-              />
-              <IconButton
-                fontSizeIcon="2em"
-                color="black"
-                icon="TelegramIcon"
-              />
-              <IconButton
-                fontSizeIcon="2em"
-                color="black"
-                icon="WhatsAppIcon"
-              />
-              <IconButton
-                fontSizeIcon="2em"
-                color="black"
-                icon="CloudCircleIcon"
-              />
+              <FacebookIcon fontSize="large" />
+              <TelegramIcon fontSize="large" />
+              <WhatsAppIcon fontSize="large" />
+              <CloudIcon fontSize="large" />
             </div>
           </div>
         </div>

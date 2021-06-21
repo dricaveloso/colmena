@@ -3,12 +3,21 @@ import HeaderApp from "component/layout/HeaderApp";
 import FlexBox from "component/ui/FlexBox";
 import Box from "@material-ui/core/Box";
 import { useRouter } from "next/router";
-import useTranslation from "hooks/useTranslation";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+};
 
 export default function Terms(props) {
   const router = useRouter();
-  const { t } = useTranslation(props.lang, "common");
+  const { t } = useTranslation("common");
 
   return (
     <Container>
@@ -26,7 +35,7 @@ export default function Terms(props) {
             }}
           >
             <p style={{ fontWeight: "bold", textAlign: "center" }}>
-              {t?.termsOfUse}
+              {t("termsOfUse")}
             </p>
             <p style={{ textAlign: "justify" }}>
               

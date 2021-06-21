@@ -1,0 +1,11 @@
+{
+  "greeting": "Hola",
+  "question": "Que quieres hacer ahora?",
+  "inviteText": "Invitar colaborador",
+  "mediaName": "Nombre del medio",
+  "recentPublicationsTitle": "Publicaciones recientes",
+  "recentPublicationsDescription": "Descripción de ejemplo",
+  "mediaCloudName": "Mi nube",
+  "recordText": "Grabar",
+  "profileText": "Editar Perfil"
+}

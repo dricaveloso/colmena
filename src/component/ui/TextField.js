@@ -1,24 +1,15 @@
 import React from "react";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import TextField from "@material-ui/core/TextField";
 
-function TxtFld({ label }) {
+function TxtFld({ label, multiline = false, variant = "filled", id = "asd" }) {
   return (
-    <FormControl className="width-based-device">
-      <InputLabel htmlFor="input-with-icon-adornment">{label}</InputLabel>
-      <Input
-        id="input-with-icon-adornment"
-        style={{ padding: 10 }}
-        startAdornment={
-          <InputAdornment position="start">
-            <AccountCircle />
-          </InputAdornment>
-        }
-      />
-    </FormControl>
+    <TextField
+      className="width-based-device"
+      id={id}
+      variant={variant}
+      label={label}
+      multiline={multiline}
+    />
   );
 }
 

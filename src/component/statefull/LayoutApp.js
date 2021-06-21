@@ -2,13 +2,13 @@ import React from "react";
 import Container from "component/ui/Container";
 import FlexBox from "component/ui/FlexBox";
 import AppBar from "component/statefull/AppBar";
+import FooterApp from "component/ui/FooterApp";
 
 function LayoutApp({
   title,
-  lang = "es",
   back = false,
   drawer = true,
-  headerPosition = "static",
+  headerPosition = "fixed",
   children,
 }) {
   return (
@@ -19,9 +19,9 @@ function LayoutApp({
           back={back}
           headerPosition={headerPosition}
           drawer={drawer}
-          lang={lang}
         />
         {children}
+        <FooterApp />
       </FlexBox>
     </Container>
   );
