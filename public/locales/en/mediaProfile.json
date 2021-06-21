@@ -1,0 +1,11 @@
+{
+  "title": "Media profile",
+  "name": "Media",
+  "textSaveButton": "Save",
+  "descriptionTitle": "Description",
+  "textEditCollaborators": "Edit collaborators",
+  "textInviteCollaborators": "Invite collaborators",
+  "user1": "User 1 (permission)",
+  "user2": "User 2 (permission)",
+  "socialMediaTitle": "Social Media"
+}
