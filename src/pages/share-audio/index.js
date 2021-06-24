@@ -12,7 +12,11 @@ import CloudIcon from "@material-ui/icons/Cloud";
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["shareAudio", "drawer"])),
+      ...(await serverSideTranslations(locale, [
+        "shareAudio",
+        "drawer",
+        "common",
+      ])),
     },
   };
 };

@@ -67,7 +67,9 @@ function AppBarSys({
             <p style={{ fontSize: 14, fontWeight: "bold" }}>{title}</p>
           </Link>
           <div>
-            <Avatar alt="Remy Sharp" src="/avatar/3.jpg" />
+            <Link href="/profile">
+              <Avatar alt="Remy Sharp" src="/avatar/3.jpg" />
+            </Link>
           </div>
         </Toolbar>
       </AppBar>

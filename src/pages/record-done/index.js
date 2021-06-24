@@ -10,7 +10,11 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["recordDone", "drawer"])),
+      ...(await serverSideTranslations(locale, [
+        "recordDone",
+        "drawer",
+        "common",
+      ])),
     },
   };
 };
@@ -22,23 +26,25 @@ function RecordDone() {
   return (
     <LayoutApp title={t("title")}>
       <FlexBox justifyContent="center">
-        <p>{t("description")}</p>
-        <Divider marginBottom={20} />
-        <IconButton
-          title={t("textEditButton")}
-          icon="graphic_eq"
-          variantTitle="p"
-          fontSizeIcon="1.8em"
-          handleClick={() => router.push("/edit-audio")}
-        />
-        <Divider marginBottom={20} />
-        <IconButton
-          title={t("textShareButton")}
-          icon="share"
-          variantTitle="p"
-          fontSizeIcon="1.8em"
-          handleClick={() => router.push("/share-audio")}
-        />
+        <div>
+          <p>{t("description")}</p>
+          <Divider marginBottom={20} />
+          <IconButton
+            title={t("textEditButton")}
+            icon="graphic_eq"
+            variantTitle="p"
+            fontSizeIcon="1.8em"
+            handleClick={() => router.push("/edit-audio")}
+          />
+          <Divider marginBottom={20} />
+          <IconButton
+            title={t("textShareButton")}
+            icon="share"
+            variantTitle="p"
+            fontSizeIcon="1.8em"
+            handleClick={() => router.push("/share-audio")}
+          />
+        </div>
       </FlexBox>
     </LayoutApp>
   );

@@ -1,22 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   ListItemIcon,
   SwipeableDrawer,
   List,
-  Divider,
   ListItem,
   ListItemText,
 } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import MaterialIcon from "component/ui/MaterialIcon";
+import NotificationContext from "store/notification-context";
 
-const WrapLink = ({ url, children, id }) => (
-  <Link key={id} href={url}>
-    {children}
-  </Link>
-);
+const WrapLink = ({ url, children, id, handleClick = null }) => {
+  if (!handleClick)
+    return (
+      <Link key={id} href={url}>
+        {children}
+      </Link>
+    );
+
+  return <div onClick={handleClick}>{children}</div>;
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +45,9 @@ const useStyles = makeStyles((theme) => ({
 
 function Drawer({ open, onOpen, onClose }) {
   const classes = useStyles();
+  const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("drawer");
+  const { t: c } = useTranslation("common");
   const menuArray = [
     {
       id: 1,
@@ -64,16 +71,27 @@ function Drawer({ open, onOpen, onClose }) {
       id: 4,
       icon: "crop",
       title: t("editAudioTitle"),
+      url: "/edit-audio",
     },
     {
       id: 5,
       icon: "edit",
       title: t("editTextTitle"),
+      handleClick: () =>
+        notificationCtx.showNotification({
+          message: c("featureUnavailable"),
+          status: "warning",
+        }),
     },
     {
       id: 6,
       icon: "group_work",
       title: t("communityTitle"),
+      handleClick: () =>
+        notificationCtx.showNotification({
+          message: c("featureUnavailable"),
+          status: "warning",
+        }),
     },
     {
       id: 7,
@@ -120,7 +138,7 @@ function Drawer({ open, onOpen, onClose }) {
       </div>
       <List component="nav">
         {menuArray.map((item) => {
-          const { url, icon, title, color, id } = item;
+          const { url, icon, title, color, id, handleClick } = item;
           const itemList = (
             <ListItem dense={true} divider={true} key={id}>
               <ListItemIcon>
@@ -133,9 +151,9 @@ function Drawer({ open, onOpen, onClose }) {
               <ListItemText primary={title} />
             </ListItem>
           );
-          if (item.url)
+          if (url || handleClick)
             return (
-              <WrapLink key={id} url={url}>
+              <WrapLink key={id} url={url} handleClick={handleClick}>
                 {itemList}
               </WrapLink>
             );

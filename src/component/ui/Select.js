@@ -6,7 +6,10 @@ import FormControl from "@material-ui/core/FormControl";
 
 function Slt({ id, label, variant = "outlined", handleChange = () => {} }) {
   return (
-    <FormControl variant="filled" style={{ width: "100%" }}>
+    <FormControl
+      variant={variant == "outlined" ? "filled" : ""}
+      style={{ width: "100%" }}
+    >
       <InputLabel id={id}>{label}</InputLabel>
       <Select
         variant={variant}
@@ -14,6 +17,7 @@ function Slt({ id, label, variant = "outlined", handleChange = () => {} }) {
         className="width-based-device"
         labelId={id}
         id={id}
+        style={{ textAlign: "left", paddingLeft: 0 }}
         // value={age}
         onChange={handleChange}
         label={label}

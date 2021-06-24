@@ -1,16 +1,18 @@
+import { useState, useContext } from "react";
 import Container from "component/ui/Container";
 import FooterApp from "component/layout/FooterApp";
 import HeaderApp from "component/layout/HeaderApp";
 import Button from "component/ui/Button";
 import FlexBox from "component/ui/FlexBox";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import { Typography, Box, Checkbox } from "@material-ui/core";
 import PasswordField from "component/statefull/PasswordField";
 import Divider from "component/ui/Divider";
-import Box100 from "component/ui/Box100";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import TermsOfUse from "component/statefull/TermsOfUse";
+import Box100 from "component/ui/Box100";
+import NotificationContext from "store/notification-context";
 
 export const getStaticProps = async ({ locale }) => {
   return {
@@ -21,20 +23,36 @@ export const getStaticProps = async ({ locale }) => {
 };
 
 export default function CompleteRegister(props) {
+  const [openTerms, setOpenTerms] = useState(false);
+  const [accept, setAccept] = useState(false);
   const { t } = useTranslation("completeRegister");
+  const { t: c } = useTranslation("common");
+  const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
+
+  const handleChange = (event) => {
+    setAccept(event.target.checked);
+  };
+
+  const handleSubmit = () => {
+    notificationCtx.showNotification({
+      message: "Senha criada com sucesso.",
+      status: "success",
+    });
+    router.push("/platform");
+  };
 
   return (
     <Container>
       <FlexBox>
         <HeaderApp />
-        <Box my={4} style={{ textAlign: "center", padding: 10 }}>
-          <Typography component="p" gutterBottom>
-            {t("description")}
-          </Typography>
-          <Divider />
-          <Box>
-            <Box100>
+        <Box>
+          <Box100>
+            <Typography component="p" gutterBottom>
+              {t("description")}
+            </Typography>
+            <Divider />
+            <div>
               <PasswordField
                 title={t("forms.placeholderPassword")}
                 id="password"
@@ -45,16 +63,42 @@ export default function CompleteRegister(props) {
                 title={t("forms.placeholderPasswordConfirmation")}
               />
               <Divider />
-            </Box100>
-          </Box>
-          <Box style={{ display: "flex", flexDirection: "column" }}>
-            <Button
-              title={t("forms.submitButton")}
-              handleClick={() => router.push("/platform")}
+            </div>
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Checkbox
+                  onChange={handleChange}
+                  inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                />
+                <p>
+                  {c("agreeWithTerms")}{" "}
+                  <a
+                    style={{ color: "tomato", cursor: "pointer" }}
+                    onClick={() => setOpenTerms(true)}
+                  >
+                    {c("termsOfUse")}
+                  </a>
+                </p>
+              </div>
+              <Button
+                title={t("forms.submitButton")}
+                disabled={!accept}
+                handleClick={handleSubmit}
+              />
+            </div>
+            <TermsOfUse
+              open={openTerms}
+              handleSetOpen={(flag) => setOpenTerms(flag)}
             />
-          </Box>
+          </Box100>
         </Box>
-        <FooterApp about={false} terms={true} />
+        <FooterApp about={false} terms={false} />
       </FlexBox>
     </Container>
   );

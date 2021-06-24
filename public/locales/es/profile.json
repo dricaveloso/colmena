@@ -8,5 +8,6 @@
   "urlField": "URL / BLOG",
   "socialMediaTitle": "Redes sociales",
   "editButton": "Editar",
+  "saveButton": "Salvar",
   "resetPasswordButton": "Restablecer la contraseña"
 }

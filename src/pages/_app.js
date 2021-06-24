@@ -1,25 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import theme from "styles/theme";
 import { appWithTranslation } from "next-i18next";
-
+import GlobalLayout from "component/layout/GlobalLayout";
+import { NotificationContextProvider } from "store/notification-context";
+import { UserContextProvider } from "store/user-context";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import PropTypes from "prop-types";
+import theme from "styles/theme";
 import "styles/globals.css";
+
+const cache = createCache({ key: "css" });
+cache.compat = true;
 
 function MyApp(props) {
   const { Component, pageProps } = props;
 
-  React.useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector("#jss-server-side");
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
-  }, []);
-
   return (
-    <React.Fragment>
+    <CacheProvider value={cache}>
       <Head>
         <title>MAIA - Create, Collaborate and Share </title>
         <meta
@@ -28,12 +28,21 @@ function MyApp(props) {
         />
       </Head>
       <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Component {...pageProps} />
+        <NotificationContextProvider>
+          <UserContextProvider>
+            <GlobalLayout>
+              <CssBaseline />
+              <Component {...pageProps} />
+            </GlobalLayout>
+          </UserContextProvider>
+        </NotificationContextProvider>
       </ThemeProvider>
-    </React.Fragment>
+    </CacheProvider>
   );
 }
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
+};
 
 export default appWithTranslation(MyApp);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import FlexBox from "component/ui/FlexBox";
 import TabsMediateca from "component/statefull/TabsMediateca";
 import IconButton from "component/ui/IconButton";
@@ -10,6 +10,7 @@ import { getAudios } from "services/audios";
 import axios from "axios";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import UserContext from "store/user-context";
 
 export const getStaticProps = async ({ locale }) => {
   const response = await axios.get(
@@ -18,7 +19,11 @@ export const getStaticProps = async ({ locale }) => {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["mediateca", "drawer"])),
+      ...(await serverSideTranslations(locale, [
+        "mediateca",
+        "drawer",
+        "common",
+      ])),
       data: response.data,
     },
   };
