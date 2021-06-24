@@ -3,8 +3,11 @@
     "skipButton": "Pular",
     "nextIntro": "Próximo"
   },
+  "agreeWithTerms": "Eu concordo com os",
   "termsOfUse": "Termos de uso",
+  "termsOfUseText": "Todos os seres humanos nascem livres e iguais em dignidade e direitos. Toda pessoa tem direito à vida, à liberdade e à segurança pessoal. Ninguém será submetido a tortura, nem a tratamentos ou penas cruéis, desumanos ou degradantes. Toda pessoa tem direito ao reconhecimento, em todos os lugares, como pessoa perante a lei.",
   "aboutMaia": "Sobre MAIA",
   "profileText": "Meu Perfil",
-  "textUseApp": "Usar o app"
+  "textUseApp": "Usar o app",
+  "featureUnavailable": "Esta funcionalidade não está disponível no momento."
 }

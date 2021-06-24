@@ -11,6 +11,7 @@ export default function Btn({
   size = "medium",
   block = false,
   endIcon = null,
+  disabled = false,
 }) {
   return (
     <Button
@@ -23,6 +24,7 @@ export default function Btn({
       onClick={handleClick}
       className="width-based-device"
       endIcon={endIcon}
+      disabled={disabled}
     >
       {title}
     </Button>

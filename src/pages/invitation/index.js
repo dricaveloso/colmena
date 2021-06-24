@@ -35,35 +35,41 @@ function Invitation() {
           padding: 10,
         }}
       >
-        <MailOutlineSharpIcon style={{ fontSize: "150px" }} />
-        <Divider marginTop={10} />
-        <Typography variant="h5" component="h4" gutterBottom>
-          {t("greeting")}
-        </Typography>
-        <Divider marginTop={10} />
-        <Box100>
-          <Typography component="p" gutterBottom className="width-based-device">
-            {t("description")}
+        <div style={{ textAlign: "center" }}>
+          <MailOutlineSharpIcon style={{ fontSize: "150px" }} />
+          <Divider marginTop={10} />
+          <Typography variant="h5" component="h4" gutterBottom>
+            {t("greeting")}
           </Typography>
-        </Box100>
-        <Divider />
-        <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-          }}
-        >
-          <Button
-            title={t("forms.button1")}
-            handleClick={() => router.push("/intro/1")}
-          />
-          <Divider marginTop={15} />
-          <Button
-            title={t("forms.button2")}
-            handleClick={() => router.push("/intro/1")}
-          />
-        </Box>
+          <Divider marginTop={10} />
+          <Box100>
+            <Typography
+              component="p"
+              gutterBottom
+              className="width-based-device"
+            >
+              {t("description")}
+            </Typography>
+          </Box100>
+          <Divider />
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
+          >
+            <Button
+              title={t("forms.button1")}
+              handleClick={() => router.push("/intro/1")}
+            />
+            <Divider marginTop={15} />
+            <Button
+              title={t("forms.button2")}
+              handleClick={() => router.push("/intro/1")}
+            />
+          </Box>
+        </div>
       </Box>
       <FooterApp about={false} terms={true} fixed={true} />
     </Container>

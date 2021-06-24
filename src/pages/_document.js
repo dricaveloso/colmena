@@ -3,6 +3,7 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
+import theme from "styles/theme";
 
 function getCache() {
   const cache = createCache({ key: "css", prepend: true });
@@ -15,6 +16,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta name="theme-color" content={theme.palette.primary.main} />
           <meta name="application-name" content="MAIA" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
@@ -32,9 +34,11 @@ export default class MyDocument extends Document {
             name="msapplication-config"
             content="/static/icons/browserconfig.xml"
           />
-          <meta name="msapplication-TileColor" content="#0c4d81" />
+          <meta
+            name="msapplication-TileColor"
+            content={theme.palette.primary.main}
+          />
           <meta name="msapplication-tap-highlight" content="no" />
-          <meta name="theme-color" content="#0c4d81" />
 
           <link
             rel="apple-touch-icon"
@@ -106,9 +110,12 @@ export default class MyDocument extends Document {
             href="/icons/favicon-16x16.png"
           />
           <link rel="manifest" href="/manifest.json" />
-          <meta name="msapplication-TileColor" content="#0c4d81" />
+          <meta
+            name="msapplication-TileColor"
+            content={theme.palette.primary.main}
+          />
           <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-          <meta name="theme-color" content="#0c4d81"></meta>
+          <meta name="theme-color" content={theme.palette.primary.main}></meta>
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/icon?family=Material+Icons"

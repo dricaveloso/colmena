@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import FlexBox from "component/ui/FlexBox";
 import LayoutApp from "component/statefull/LayoutApp";
 import RecordUsers from "component/pages/record/RecordUsers";
@@ -11,7 +11,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["record", "drawer"])),
+      ...(await serverSideTranslations(locale, ["record", "drawer", "common"])),
     },
   };
 };

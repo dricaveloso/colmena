@@ -1,10 +1,13 @@
-{ 
-  "form": { 
-    "skipButton": "Skip", 
-    "nextIntro": "Next" 
-  }, 
-  "termsOfUse": "Terms of Use", 
-  "aboutMaia": "About MAIA", 
-  "profileText": "My Profile", 
-  "textUseApp": "Use the app" 
-} 
+{
+  "form": {
+    "skipButton": "Skip",
+    "nextIntro": "Next"
+  },
+  "agreeWithTerms": "I agree with ",
+  "termsOfUse": "Terms of Use",
+  "termsOfUseText": "All human beings are born free and equal in dignity and rights. Everyone has the right to life, liberty and security of person. No one shall be subjected to torture or to cruel, inhuman or degrading treatment or punishment. Everyone has the right to recognition everywhere as a person before the law.",
+  "aboutMaia": "About MAIA",
+  "profileText": "My Profile",
+  "textUseApp": "Use the app",
+  "featureUnavailable": "This feature is not available at the moment."
+}

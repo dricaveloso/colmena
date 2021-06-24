@@ -13,7 +13,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["invite", "drawer"])),
+      ...(await serverSideTranslations(locale, ["invite", "drawer", "common"])),
     },
   };
 };
