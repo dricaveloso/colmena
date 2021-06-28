@@ -21,6 +21,7 @@ function About(props) {
   const fontSizeExtra = "1.9em";
   const color = "black";
   const { t } = useTranslation("intro");
+  const { t: d } = useTranslation("drawer");
 
   const items = [
     {
@@ -47,8 +48,8 @@ function About(props) {
     },
     {
       icon: "library_music",
-      text: "Mediateca",
-      handleClick: () => router.push("/mediateca"),
+      text: d("myFilesTitle"),
+      handleClick: () => router.push("/my-library"),
     },
   ];
 

@@ -21,8 +21,6 @@ function IconButtonCtr({
     <div
       style={{
         display: "flex",
-        width: "100%",
-        flex: 1,
         flexDirection: "column",
       }}
     >

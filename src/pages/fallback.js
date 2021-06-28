@@ -1,40 +1,24 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import FullCenterContainer from "component/ui/FullCenterContainer";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import ResourceUnavailable from "component/ui/ResourceUnavailable";
+
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+};
 
 function Fallback() {
-  const router = useRouter();
+  const { t } = useTranslation("common");
 
   return (
-    <Container
-      style={{
-        height: "100vh",
-        display: "flex",
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Typography variant="h4" component="h3" gutterBottom>
-        Offline page
-      </Typography>
-      <Typography variant="p" gutterBottom style={{ marginBottom: 40 }}>
-        Please access this page, at least once, with Internet enable.
-      </Typography>
-      <Link href="/invitation">
-        <Button
-          color="primary"
-          variant="outlined"
-          onClick={() => router.back()}
-        >
-          Voltar
-        </Button>
-      </Link>
-    </Container>
+    <FullCenterContainer>
+      <ResourceUnavailable icon="wifi_off" title={t("messageOffline")} />
+    </FullCenterContainer>
   );
 }
 
