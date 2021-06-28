@@ -1,7 +1,7 @@
 import React from "react";
 import MediaAvatar from "component/pages/home/MediaAvatar";
 import { Grow } from "@material-ui/core";
-import theme from "styles/theme";
+import GreetingMessage from "component/pages/home/GreetingMessage";
 
 function Greeting({ showGreeting }) {
   return (
@@ -17,10 +17,7 @@ function Greeting({ showGreeting }) {
         }}
       >
         <MediaAvatar size={17} />
-        <p style={{ fontSize: 20 }}>
-          <strong>Seja bem vindo(a)</strong>
-        </p>
-        <span>Makena</span>
+        <GreetingMessage />
       </div>
     </Grow>
   );

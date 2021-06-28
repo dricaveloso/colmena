@@ -5,7 +5,7 @@ import NotificationContext from "store/notification-context";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import MediaAvatar from "component/pages/home/MediaAvatar";
-import theme from "styles/theme";
+import GreetingMessage from "component/pages/home/GreetingMessage";
 import RecentPublications from "component/pages/home/RecentPublications";
 
 function DashboardActions({ showContent, isFirstAccess }) {
@@ -29,16 +29,16 @@ function DashboardActions({ showContent, isFirstAccess }) {
           }}
         >
           <MediaAvatar size={12} />
-          <span>{t("mediaName")}</span>
+          <GreetingMessage fontSize={16} />
         </div>
 
         <div className="boxRowSpaceAround">
           <IconButton
-            title={t("mediaCloudName")}
+            title={d("myFilesTitle")}
             variantTitle="p"
             icon="cloud"
             fontSizeIcon="1.5em"
-            handleClick={() => router.push("/mediateca")}
+            handleClick={() => router.push("/my-library")}
           />
           <IconButton
             title={d("communityTitle")}

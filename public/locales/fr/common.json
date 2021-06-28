@@ -1,7 +1,8 @@
 {
   "form": {
     "skipButton": "Sauter",
-    "nextIntro": "Prosseguir"
+    "nextIntro": "Prosseguir",
+    "backButton": "Back"
   },
   "agreeWithTerms": "je suis d'accord avec ",
   "termsOfUse": "Conditions d'utilisation",
@@ -9,5 +10,11 @@
   "aboutMaia": "À propos de MAIA",
   "profileText": "Mon profil",
   "textUseApp": "Utiliser l'application",
-  "featureUnavailable": "Cette fonctionnalité n'est pas encore disponible"
+  "featureUnavailable": "Cette fonctionnalité n'est pas encore disponible",
+  "messageOffline": "Please access this page, at least once, with Internet enable.",
+  "welcomeUserMessage": "Welcome {{userName}}",
+  "welcomeRadioMessage": "Radio {{mediaName}}",
+  "notFoundPageText": "Page not found",
+  "internErrorPageText": "Intern error",
+  "constructionPageText": "Page under construction"
 }

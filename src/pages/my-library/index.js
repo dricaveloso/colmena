@@ -12,7 +12,7 @@ export const getStaticProps = async (ctx) => {
   };
 };
 
-function TalkToUs() {
+function MyLibrary() {
   const { t } = useTranslation("common");
   return (
     <FullCenterContainer>
@@ -24,4 +24,4 @@ function TalkToUs() {
   );
 }
 
-export default TalkToUs;
+export default MyLibrary;

@@ -12,16 +12,13 @@ export const getStaticProps = async (ctx) => {
   };
 };
 
-function TalkToUs() {
+function PageNotFound() {
   const { t } = useTranslation("common");
   return (
     <FullCenterContainer>
-      <ResourceUnavailable
-        icon="construction"
-        title={t("constructionPageText")}
-      />
+      <ResourceUnavailable icon="error_outline" title={t("notFoundPageText")} />
     </FullCenterContainer>
   );
 }
 
-export default TalkToUs;
+export default PageNotFound;

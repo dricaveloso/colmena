@@ -1,7 +1,8 @@
 {
   "form": {
     "skipButton": "Pular",
-    "nextIntro": "Próximo"
+    "nextIntro": "Próximo",
+    "backButton": "Voltar"
   },
   "agreeWithTerms": "Eu concordo com os",
   "termsOfUse": "Termos de uso",
@@ -9,5 +10,11 @@
   "aboutMaia": "Sobre MAIA",
   "profileText": "Meu Perfil",
   "textUseApp": "Usar o app",
-  "featureUnavailable": "Esta funcionalidade não está disponível no momento."
+  "featureUnavailable": "Esta funcionalidade não está disponível no momento.",
+  "messageOffline": "Favor acessar esta página pelo menos uma vez com a internet habilitada.",
+  "welcomeUserMessage": "Seja bem vindo(a) {{userName}}",
+  "welcomeRadioMessage": "Radio {{mediaName}}",
+  "notFoundPageText": "Página não encontrada",
+  "internErrorPageText": "Erro interno",
+  "constructionPageText": "Página em construção"
 }

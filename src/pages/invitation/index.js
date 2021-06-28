@@ -63,11 +63,6 @@ function Invitation() {
               title={t("forms.button1")}
               handleClick={() => router.push("/intro/1")}
             />
-            <Divider marginTop={15} />
-            <Button
-              title={t("forms.button2")}
-              handleClick={() => router.push("/intro/1")}
-            />
           </Box>
         </div>
       </Box>

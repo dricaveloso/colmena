@@ -59,7 +59,7 @@ function Drawer({ open, onOpen, onClose }) {
       id: 2,
       icon: "folder",
       title: t("myFilesTitle"),
-      url: "/mediateca",
+      url: "/my-library",
     },
     {
       id: 3,
