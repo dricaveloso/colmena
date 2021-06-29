@@ -8,8 +8,9 @@ import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import CloudIcon from "@material-ui/icons/Cloud";
+import { GetStaticProps } from "next";
 
-export const getStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, [

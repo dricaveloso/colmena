@@ -10,11 +10,11 @@ import Divider from "component/ui/Divider";
 import SkipButton from "component/pages/intro/SkipButton";
 import { useRouter } from "next/router";
 import Box100 from "component/ui/Box100";
-
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetStaticProps } from "next";
 
-export const getStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["intro", "common"])),

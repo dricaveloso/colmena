@@ -13,8 +13,9 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import TermsOfUse from "component/statefull/TermsOfUse";
 import Box100 from "component/ui/Box100";
 import NotificationContext from "store/notification-context";
+import { GetStaticProps } from "next";
 
-export const getStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["completeRegister", "common"])),

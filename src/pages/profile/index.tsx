@@ -12,8 +12,9 @@ import IconButton from "component/ui/IconButton";
 import { useRouter } from "next/router";
 import NotificationContext from "store/notification-context";
 import SocialMediaIconButton from "component/statefull/SocialMediaIconButtons";
+import { GetStaticProps } from "next";
 
-export const getStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, [

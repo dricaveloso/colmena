@@ -1,5 +1,3 @@
-import React from "react";
-
 function Box100({ flexDirection = "column", children }) {
   return (
     <div

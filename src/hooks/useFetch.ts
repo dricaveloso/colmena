@@ -1,7 +1,7 @@
 import api from "services/api";
 import useSWR from "swr";
 
-const useFetch = (uri, params, { ...options }) => {
+const useFetch = (uri: string, params?: {}, options?: {}) => {
   const { data, error, mutate } = useSWR(
     uri,
     async (uri) => {

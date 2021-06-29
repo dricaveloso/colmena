@@ -11,8 +11,9 @@ import axios from "axios";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import UserContext from "store/user-context";
+import { GetStaticProps } from "next";
 
-export const getStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const response = await axios.get(
     "https://60c09a3db8d3670017555507.mockapi.io/api/v1/audios"
   );

@@ -3,8 +3,9 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ResourceUnavailable from "component/ui/ResourceUnavailable";
 import FullCenterContainer from "component/ui/FullCenterContainer";
+import { GetStaticProps } from "next";
 
-export const getStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale, ["common"])),

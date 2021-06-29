@@ -4,8 +4,9 @@ import LayoutApp from "component/statefull/LayoutApp";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import DashboardActions from "component/pages/home/DashboardActions";
 import Greeting from "component/pages/home/Greeting";
+import { GetStaticProps } from "next";
 
-export const getStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale, [
