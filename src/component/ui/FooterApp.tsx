@@ -9,8 +9,8 @@ function FooterApp() {
   return (
     <>
       <div className="footer">
-        2021 CC - MAIA - <a onClick={() => setOpenTerms(true)}>{t("termsOfUse").toLowerCase()}</a> -{" "}
-        <Link href="/about">{t("aboutMaia").toLowerCase()}</Link> -{" "}
+        2021 CCC - MAIA - <a onClick={() => setOpenTerms(true)}>{t("termsOfUse").toLowerCase()}</a>{" "}
+        - <Link href="/about">{t("aboutMaia").toLowerCase()}</Link> -{" "}
         <Link href="/talk-to-us">{t("supportTitle").toLowerCase()}</Link>
       </div>
       <TermsOfUse open={openTerms} handleSetOpen={(flag) => setOpenTerms(flag)} />
