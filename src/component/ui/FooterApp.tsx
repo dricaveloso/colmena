@@ -9,7 +9,7 @@ function FooterApp() {
   return (
     <>
       <div className="footer">
-        2020 CC - MAIA - <a onClick={() => setOpenTerms(true)}>{t("termsOfUse").toLowerCase()}</a> -{" "}
+        2021 CC - MAIA - <a onClick={() => setOpenTerms(true)}>{t("termsOfUse").toLowerCase()}</a> -{" "}
         <Link href="/about">{t("aboutMaia").toLowerCase()}</Link> -{" "}
         <Link href="/talk-to-us">{t("supportTitle").toLowerCase()}</Link>
       </div>
