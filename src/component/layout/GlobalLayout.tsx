@@ -10,17 +10,13 @@ type Props = {
 function GlobalLayout({ children }: Props) {
   const notificationCtx = useContext(NotificationContext);
 
-  const activeNotification: NotificationDataInterface | null =
-    notificationCtx.notification;
+  const activeNotification: NotificationDataInterface | null = notificationCtx.notification;
 
   return (
     <>
       {children}
       {activeNotification && (
-        <Notification
-          message={activeNotification.message}
-          status={activeNotification.status}
-        />
+        <Notification message={activeNotification.message} status={activeNotification.status} />
       )}
     </>
   );

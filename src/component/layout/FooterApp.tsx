@@ -27,7 +27,7 @@ function FooterApp({ about = false, terms = true, fixed = false }: Props) {
           onClick={() => router.push("/about")}
         >
           {t("aboutMaia")}
-        </Button>
+        </Button>,
       );
     }
     if (terms) {
@@ -38,31 +38,20 @@ function FooterApp({ about = false, terms = true, fixed = false }: Props) {
           onClick={() => setOpenTerms(true)}
         >
           {t("termsOfUse")}
-        </Button>
+        </Button>,
       );
     }
     actionsArray.push(
-      <TermsOfUse
-        open={openTerms}
-        handleSetOpen={(flag: boolean) => setOpenTerms(flag)}
-      />
+      <TermsOfUse open={openTerms} handleSetOpen={(flag: boolean) => setOpenTerms(flag)} />,
     );
     return actionsArray;
   }
 
   if (fixed) {
-    return (
-      <Box style={{ position: "fixed", bottom: 0, marginBottom: 10 }}>
-        {getActions()}
-      </Box>
-    );
+    return <Box style={{ position: "fixed", bottom: 0, marginBottom: 10 }}>{getActions()}</Box>;
   }
 
-  return (
-    <Box style={{ display: "flex", flexDirection: "column" }}>
-      {getActions()}
-    </Box>
-  );
+  return <Box style={{ display: "flex", flexDirection: "column" }}>{getActions()}</Box>;
 }
 
 export default FooterApp;

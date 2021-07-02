@@ -18,10 +18,7 @@ type Props = {
   handleCloseInviteForm: () => void;
 };
 
-export default function InviteForm({
-  openInviteForm,
-  handleCloseInviteForm,
-}: Props) {
+export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Props) {
   const { t } = useTranslation("mediaProfile");
   const notificationCtx = useContext(NotificationContext);
 
@@ -40,13 +37,9 @@ export default function InviteForm({
         onClose={handleCloseInviteForm}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">
-          {t("textInviteCollaborators")}
-        </DialogTitle>
+        <DialogTitle id="form-dialog-title">{t("textInviteCollaborators")}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {t("descriptionModalDialogInvite")}
-          </DialogContentText>
+          <DialogContentText>{t("descriptionModalDialogInvite")}</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -62,11 +55,7 @@ export default function InviteForm({
             type="email"
             fullWidth
           />
-          <Select
-            label={t("placeholderPermission")}
-            variant={SelectVariantEnum.STANDARD}
-            id="1"
-          />
+          <Select label={t("placeholderPermission")} variant={SelectVariantEnum.STANDARD} id="1" />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseInviteForm} color="primary">

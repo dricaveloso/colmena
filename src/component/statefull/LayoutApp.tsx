@@ -24,12 +24,7 @@ function LayoutApp({
   return (
     <Container extraStyle={{ padding: 0 }}>
       <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar
-          title={title}
-          back={back}
-          headerPosition={headerPosition}
-          drawer={drawer}
-        />
+        <AppBar title={title} back={back} headerPosition={headerPosition} drawer={drawer} />
         <>{children}</>
         <FooterApp />
       </FlexBox>

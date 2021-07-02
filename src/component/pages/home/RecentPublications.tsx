@@ -22,9 +22,7 @@ export default function RecentPublications() {
   return (
     <div style={{ marginBottom: 20, width: "100%" }}>
       <div style={{ marginTop: 15, marginBottom: 15, textAlign: "left" }}>
-        <Text variant={TextVariantEnum.SUBTITLE2}>
-          {t("recentPublicationsTitle")}
-        </Text>
+        <Text variant={TextVariantEnum.SUBTITLE2}>{t("recentPublicationsTitle")}</Text>
       </div>
       <div className="scrollingContainer">
         {[0, 1, 2].map((item, idx) => (
@@ -38,10 +36,7 @@ export default function RecentPublications() {
                 className={classes.media}
               />
               <CardContent style={{ whiteSpace: "normal" }}>
-                <Text
-                  variant={TextVariantEnum.BODY2}
-                  color={TextColorEnum.TEXTSECONDARY}
-                >
+                <Text variant={TextVariantEnum.BODY2} color={TextColorEnum.TEXTSECONDARY}>
                   {t("recentPublicationsDescription")}
                 </Text>
               </CardContent>

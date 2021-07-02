@@ -18,9 +18,7 @@ import { I18nInterface } from "interfaces";
 import { NotificationStatusEnum, TextVariantEnum } from "enums";
 import Text from "component/ui/Text";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["completeRegister", "common"])),
@@ -57,10 +55,7 @@ export default function CompleteRegister() {
             <Text variant={TextVariantEnum.BODY1}>{t("description")}</Text>
             <Divider />
             <div>
-              <PasswordField
-                title={t("forms.placeholderPassword")}
-                id="password"
-              />
+              <PasswordField title={t("forms.placeholderPassword")} id="password" />
               <Divider />
               <PasswordField
                 id="passwordConfirmation"
@@ -96,10 +91,7 @@ export default function CompleteRegister() {
                 handleClick={handleSubmit}
               />
             </div>
-            <TermsOfUse
-              open={openTerms}
-              handleSetOpen={(flag) => setOpenTerms(flag)}
-            />
+            <TermsOfUse open={openTerms} handleSetOpen={(flag) => setOpenTerms(flag)} />
           </Box100>
         </Box>
         <FooterApp about={false} terms={false} />

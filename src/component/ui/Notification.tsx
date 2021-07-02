@@ -10,10 +10,7 @@ type Props = {
   status: NotificationStatusProps;
 };
 
-function Notification({
-  message,
-  status = NotificationStatusEnum.INFO,
-}: Props) {
+function Notification({ message, status = NotificationStatusEnum.INFO }: Props) {
   const notificationCtx = useContext(NotificationContext);
 
   const handleClose = (event: any, reason: string) => {
@@ -25,12 +22,7 @@ function Notification({
   };
 
   return (
-    <Snackbar
-      key={"centercenter"}
-      onClose={handleClose}
-      open={true}
-      autoHideDuration={5000}
-    >
+    <Snackbar key={"centercenter"} onClose={handleClose} open={true} autoHideDuration={5000}>
       <MuiAlert elevation={6} variant="filled" severity={status}>
         {message}
       </MuiAlert>

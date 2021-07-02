@@ -19,12 +19,7 @@ type SimpleDialogProps = {
   titleShareLink: string;
 };
 
-function SimpleDialog({
-  onClose,
-  open,
-  url,
-  titleShareLink,
-}: SimpleDialogProps) {
+function SimpleDialog({ onClose, open, url, titleShareLink }: SimpleDialogProps) {
   return (
     <Dialog onClose={onClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">{titleShareLink}</DialogTitle>

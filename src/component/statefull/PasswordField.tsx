@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import {
-  InputAdornment,
-  IconButton,
-  Input,
-  FormControl,
-  InputLabel,
-} from "@material-ui/core";
+import { InputAdornment, IconButton, Input, FormControl, InputLabel } from "@material-ui/core";
 
 type Props = {
   id: string | undefined;

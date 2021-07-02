@@ -6,9 +6,7 @@ import FullCenterContainer from "component/ui/FullCenterContainer";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),

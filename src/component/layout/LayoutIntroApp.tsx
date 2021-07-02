@@ -8,11 +8,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-function LayoutIntroApp({
-  showTermsOfUse = true,
-  showAbout = false,
-  children,
-}: Props) {
+function LayoutIntroApp({ showTermsOfUse = true, showAbout = false, children }: Props) {
   return (
     <div>
       <HeaderApp />

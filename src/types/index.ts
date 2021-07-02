@@ -38,10 +38,7 @@ export type SelectVariantProps =
   | SelectVariantEnum.OUTLINED
   | SelectVariantEnum.STANDARD;
 
-export type ButtonSizeProps =
-  | ButtonSizeEnum.LARGE
-  | ButtonSizeEnum.MEDIUM
-  | ButtonSizeEnum.SMALL;
+export type ButtonSizeProps = ButtonSizeEnum.LARGE | ButtonSizeEnum.MEDIUM | ButtonSizeEnum.SMALL;
 
 export type PositionProps =
   | PositionEnum.FIXED

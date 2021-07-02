@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) =>
       width: theme.spacing(8),
       height: theme.spacing(8),
     },
-  })
+  }),
 );
 
 export default function RecordUsers() {
@@ -26,22 +26,14 @@ export default function RecordUsers() {
     <div className={classes.root}>
       <div>
         <Badge color="primary" variant="dot">
-          <Avatar
-            alt="Remy Sharp"
-            src="/avatar/3.jpg"
-            className={classes.large}
-          />
+          <Avatar alt="Remy Sharp" src="/avatar/3.jpg" className={classes.large} />
         </Badge>
         <small style={{ display: "block", marginTop: 5 }}>Makena</small>
       </div>
       {[0, 1].map((item, idx) => (
         <div key={idx}>
           <Badge color="secondary" variant="dot">
-            <Avatar
-              alt="Remy Sharp"
-              src="/avatar/2.jpg"
-              className={classes.large}
-            />
+            <Avatar alt="Remy Sharp" src="/avatar/2.jpg" className={classes.large} />
           </Badge>
           <small style={{ display: "block", marginTop: 5 }}>Makena</small>
         </div>

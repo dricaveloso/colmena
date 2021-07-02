@@ -8,9 +8,7 @@ import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 import { JustifyContentEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["home", "drawer", "common"])),
@@ -23,10 +21,7 @@ function Home() {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    if (
-      !localStorage.getItem("isFirstAccess") ||
-      localStorage.getItem("isFirstAccess") == "yes"
-    ) {
+    if (!localStorage.getItem("isFirstAccess") || localStorage.getItem("isFirstAccess") == "yes") {
       setTimeout(() => {
         setShowGreeting(true);
       }, 200);

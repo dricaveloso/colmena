@@ -12,8 +12,7 @@ import "styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
-    const jssStyles: Element | null =
-      document.querySelector("#jss-server-side");
+    const jssStyles: Element | null = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentElement) {
       jssStyles.parentElement.removeChild(jssStyles);
     }

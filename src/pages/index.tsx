@@ -19,11 +19,7 @@ function Index() {
       <Text variant={TextVariantEnum.H4} gutterBottom={true}>
         MAIA
       </Text>
-      <Text
-        variant={TextVariantEnum.BODY1}
-        gutterBottom={true}
-        style={{ marginBottom: 20 }}
-      >
+      <Text variant={TextVariantEnum.BODY1} gutterBottom={true} style={{ marginBottom: 20 }}>
         Create, Collaborate and Share
       </Text>
       <Link href="/invitation">
