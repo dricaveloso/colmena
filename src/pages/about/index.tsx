@@ -7,12 +7,11 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
-import { JustifyContentEnum } from "enums";
+import { JustifyContentEnum, TextVariantEnum } from "enums";
 import MaterialIcon from "component/ui/MaterialIcon";
+import Text from "component/ui/Text";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["intro", "drawer", "common"])),
@@ -21,9 +20,10 @@ export const getStaticProps: GetStaticProps = async ({
 };
 
 interface ItemInterface {
+  id: number;
   icon: string;
   text: string;
-  handleClick?: () => void | null;
+  handleClick?: () => void | undefined;
 }
 
 interface ItemExtraInterface extends ItemInterface {
@@ -44,29 +44,35 @@ function About() {
 
   const items: ItemInterface[] = [
     {
+      id: 1,
       icon: "perm_data_setting_sharp",
       text: t("step1.description"),
     },
     {
+      id: 2,
       icon: "wifi_off_sharp",
       text: t("step2.description"),
     },
     {
+      id: 3,
       icon: "cloud_upload_sharp",
       text: t("step3.description"),
     },
     {
+      id: 4,
       icon: "supervised_user_circle_sharp",
       text: t("step4.description"),
     },
   ];
   const extraItems: ItemExtraInterface[] = [
     {
+      id: 5,
       icon: "supervised_user_circle",
       text: t("communityTitle"),
       fontSize: "3.5em",
     },
     {
+      id: 6,
       icon: "library_music",
       text: d("myFilesTitle"),
       handleClick: () => navigate("/my-library"),
@@ -84,8 +90,9 @@ function About() {
             gridColumnGap: "50px",
           }}
         >
-          {items.map(({ icon, text }: ItemInterface) => (
+          {items.map(({ id, icon, text }: ItemInterface) => (
             <FlexBox
+              key={id}
               justifyContent={JustifyContentEnum.FLEXSTART}
               extraStyle={{
                 alignItems: "center",
@@ -113,26 +120,25 @@ function About() {
             gridColumnGap: "50px",
           }}
         >
-          {extraItems.map(
-            ({ icon, text, handleClick, fontSize }: ItemExtraInterface) => (
-              <FlexBox
-                extraStyle={{ alignItems: "center" }}
-                justifyContent={JustifyContentEnum.CENTER}
-              >
-                {!!handleClick ? (
-                  <IconButton
-                    fontSizeIcon={fontSize}
-                    color={color}
-                    icon={icon}
-                    handleClick={handleClick}
-                  />
-                ) : (
-                  <MaterialIcon icon={icon} style={{ color, fontSize }} />
-                )}
-                <p style={{ fontSize: "12px" }}>{text}</p>
-              </FlexBox>
-            )
-          )}
+          {extraItems.map(({ id, icon, text, handleClick, fontSize }: ItemExtraInterface) => (
+            <FlexBox
+              key={id}
+              extraStyle={{ alignItems: "center" }}
+              justifyContent={JustifyContentEnum.CENTER}
+            >
+              {handleClick ? (
+                <IconButton
+                  fontSizeIcon={fontSize}
+                  color={color}
+                  icon={icon}
+                  handleClick={handleClick}
+                />
+              ) : (
+                <MaterialIcon icon={icon} style={{ color, fontSize }} />
+              )}
+              <Text variant={TextVariantEnum.BODY1}>{text}</Text>
+            </FlexBox>
+          ))}
         </div>
       </FlexBox>
     </LayoutApp>

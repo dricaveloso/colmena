@@ -10,13 +10,11 @@ type Props = {
 function SkipButton({ title }: Props) {
   const router = useRouter();
 
-  return (
-    <Button
-      title={title}
-      variant={ButtonVariantEnum.OUTLINED}
-      handleClick={() => router.push("/complete-register")}
-    />
-  );
+  const navigate = () => {
+    router.push("/complete-register");
+  };
+
+  return <Button title={title} variant={ButtonVariantEnum.OUTLINED} handleClick={navigate} />;
 }
 
 export default SkipButton;

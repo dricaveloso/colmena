@@ -16,9 +16,7 @@ import { I18nInterface } from "interfaces";
 import Text from "component/ui/Text";
 import { TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["intro", "common"])),
@@ -30,6 +28,10 @@ export default function Intro3() {
   const router = useRouter();
   const { t } = useTranslation("intro");
 
+  const navigate = () => {
+    router.push("/intro/4");
+  };
+
   return (
     <Container>
       <FlexBox>
@@ -38,20 +40,13 @@ export default function Intro3() {
           <CloudUploadSharpIcon style={{ fontSize: "150px" }} />
           <Divider marginTop={10} />
           <Box100>
-            <Text
-              variant={TextVariantEnum.BODY1}
-              gutterBottom
-              className="width-based-device"
-            >
+            <Text variant={TextVariantEnum.BODY1} gutterBottom className="width-based-device">
               {t("step3.description")}
             </Text>
           </Box100>
           <Divider />
           <Box style={{ display: "flex", flexDirection: "column" }}>
-            <Button
-              title={t("forms.nextButton")}
-              handleClick={() => router.push("/intro/4")}
-            />
+            <Button title={t("forms.nextButton")} handleClick={navigate} />
             <Divider marginTop={15} />
             <SkipButton title={t("forms.skipButton")} />
           </Box>

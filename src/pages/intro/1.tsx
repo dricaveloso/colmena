@@ -16,9 +16,7 @@ import { I18nInterface } from "interfaces";
 import { TextVariantEnum, TextAlignEnum, TextDisplayEnum } from "enums";
 import Text from "component/ui/Text";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["intro", "common"])),
@@ -29,6 +27,11 @@ export const getStaticProps: GetStaticProps = async ({
 export default function Intro1() {
   const router = useRouter();
   const { t } = useTranslation("intro");
+
+  const navigate = () => {
+    router.push("/intro/2");
+  };
+
   return (
     <Container>
       <FlexBox>
@@ -49,10 +52,7 @@ export default function Intro1() {
           </Box100>
           <Divider />
           <Box style={{ display: "flex", flexDirection: "column" }}>
-            <Button
-              title={t("forms.nextButton")}
-              handleClick={() => router.push("/intro/2")}
-            />
+            <Button title={t("forms.nextButton")} handleClick={navigate} />
             <Divider marginTop={15} />
             <SkipButton title={t("forms.skipButton")} />
           </Box>

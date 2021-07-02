@@ -1,19 +1,12 @@
 import React from "react";
 import IconButton from "component/ui/IconButton";
-import { TextfieldVariantEnum } from "enums";
-import { TextfieldVariantProps } from "types";
 
 type Props = {
   label: string;
-  handleClick?: () => void;
-  variant?: TextfieldVariantProps;
+  handleClick?: () => void | undefined;
 };
 
-function SearchInput({
-  label,
-  variant = TextfieldVariantEnum.OUTLINED,
-  handleClick = () => {},
-}: Props) {
+function SearchInput({ label, handleClick }: Props) {
   return (
     <div
       style={{
@@ -45,12 +38,7 @@ function SearchInput({
           alignItems: "center",
         }}
       >
-        <IconButton
-          fontSizeIcon="1.8em"
-          color="black"
-          icon="search"
-          handleClick={handleClick}
-        />
+        <IconButton fontSizeIcon="1.8em" color="black" icon="search" handleClick={handleClick} />
       </div>
     </div>
   );

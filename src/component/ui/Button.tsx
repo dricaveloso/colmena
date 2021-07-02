@@ -6,8 +6,9 @@ type Props = {
   title: string;
   color?: ButtonColorProps | undefined;
   variant?: ButtonVariantProps | undefined;
-  handleClick?: () => void;
-  style?: object;
+  handleClick?: () => void | undefined;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  style?: Object;
   size?: ButtonSizeProps | undefined;
   endIcon?: string | null;
   disabled?: boolean;
@@ -17,7 +18,7 @@ export default function Btn({
   title,
   color = ButtonColorEnum.PRIMARY,
   variant = ButtonVariantEnum.CONTAINED,
-  handleClick = () => {},
+  handleClick,
   style = {},
   size = ButtonSizeEnum.MEDIUM,
   endIcon = null,

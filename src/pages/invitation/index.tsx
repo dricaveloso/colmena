@@ -13,9 +13,7 @@ import { I18nInterface } from "interfaces";
 import Text from "component/ui/Text";
 import { TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["invitation", "common"])),
@@ -26,6 +24,10 @@ export const getStaticProps: GetStaticProps = async ({
 function Invitation() {
   const router = useRouter();
   const { t } = useTranslation("invitation");
+
+  const navigate = () => {
+    router.push("/intro/1");
+  };
 
   return (
     <Container>
@@ -48,11 +50,7 @@ function Invitation() {
           </Text>
           <Divider marginTop={10} />
           <Box100>
-            <Text
-              variant={TextVariantEnum.BODY1}
-              gutterBottom
-              className="width-based-device"
-            >
+            <Text variant={TextVariantEnum.BODY1} gutterBottom className="width-based-device">
               {t("description")}
             </Text>
           </Box100>
@@ -64,10 +62,7 @@ function Invitation() {
               width: "100%",
             }}
           >
-            <Button
-              title={t("forms.button1")}
-              handleClick={() => router.push("/intro/1")}
-            />
+            <Button title={t("forms.button1")} handleClick={navigate} />
           </Box>
         </div>
       </Box>

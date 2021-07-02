@@ -15,12 +15,7 @@ type Props = {
   drawer?: boolean;
 };
 
-function AppBarSys({
-  title,
-  back,
-  headerPosition = PositionEnum.FIXED,
-  drawer = true,
-}: Props) {
+function AppBarSys({ title, back, headerPosition = PositionEnum.FIXED, drawer = true }: Props) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const router = useRouter();
 
@@ -52,7 +47,7 @@ function AppBarSys({
           </div>
           <Drawer
             open={openDrawer}
-            onOpen={() => {}}
+            onOpen={() => setOpenDrawer(true)}
             onClose={() => setOpenDrawer(false)}
           />
           <Link href="/home">

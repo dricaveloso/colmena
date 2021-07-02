@@ -1,6 +1,5 @@
 const withPWA = require("next-pwa");
 const withImages = require("next-images");
-const withProgressBar = require("next-progressbar");
 const { i18n } = require("./next-i18next.config");
 
 module.exports = withImages(
@@ -16,5 +15,5 @@ module.exports = withImages(
         document: "/fallback",
       },
     },
-  })
+  }),
 );

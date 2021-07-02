@@ -3,15 +3,15 @@ import { NotificationDataInterface } from "interfaces";
 
 interface NotificationContextInterface {
   notification: NotificationDataInterface | null;
-  showNotification: (
-    notificationData: NotificationDataInterface | null
-  ) => void;
+  showNotification: (notificationData: NotificationDataInterface | null) => void;
   hideNotification: () => void;
 }
 
 const NotificationContext = createContext<NotificationContextInterface>({
   notification: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   showNotification: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   hideNotification: () => {},
 });
 
@@ -20,12 +20,11 @@ type Props = {
 };
 
 export function NotificationContextProvider({ children }: Props) {
-  const [activeNotification, setActiveNotification] =
-    useState<NotificationDataInterface | null>(null);
+  const [activeNotification, setActiveNotification] = useState<NotificationDataInterface | null>(
+    null,
+  );
 
-  function showNotificationHandler(
-    notificationData: NotificationDataInterface
-  ) {
+  function showNotificationHandler(notificationData: NotificationDataInterface) {
     setActiveNotification(notificationData);
   }
 
@@ -39,11 +38,7 @@ export function NotificationContextProvider({ children }: Props) {
     hideNotification: hideNotificationHandler,
   };
 
-  return (
-    <NotificationContext.Provider value={context}>
-      {children}
-    </NotificationContext.Provider>
-  );
+  return <NotificationContext.Provider value={context}>{children}</NotificationContext.Provider>;
 }
 
 export default NotificationContext;

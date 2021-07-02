@@ -7,14 +7,7 @@ import {
   TextVariantProps,
   TextVariantMappingProps,
 } from "types";
-import {
-  TextAlignEnum,
-  TextColorEnum,
-  TextDisplayEnum,
-  TextVariantEnum,
-} from "enums";
-import { getStaticProps } from "pages/invitation";
-import { POINT_CONVERSION_UNCOMPRESSED } from "constants";
+import { TextAlignEnum, TextColorEnum, TextDisplayEnum, TextVariantEnum } from "enums";
 
 type Props = {
   align?: TextAlignProps;
@@ -25,6 +18,7 @@ type Props = {
   paragraph?: boolean;
   variant?: TextVariantProps;
   variantMapping?: TextVariantMappingProps;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   style?: object;
   children: React.ReactNode;
   [x: string]: any;

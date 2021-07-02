@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import FlexBox from "component/ui/FlexBox";
 import TabsMediateca from "component/statefull/TabsMediateca";
 import IconButton from "component/ui/IconButton";
@@ -10,25 +10,16 @@ import { getAudios } from "services/audios";
 import axios from "axios";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import UserContext from "store/user-context";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 import { JustifyContentEnum, TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
-  const response = await axios.get(
-    "https://60c09a3db8d3670017555507.mockapi.io/api/v1/audios"
-  );
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
+  const response = await axios.get("https://60c09a3db8d3670017555507.mockapi.io/api/v1/audios");
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, [
-        "mediateca",
-        "drawer",
-        "common",
-      ])),
+      ...(await serverSideTranslations(locale, ["mediateca", "drawer", "common"])),
       data: response.data,
     },
   };
@@ -54,7 +45,6 @@ function Mediateca(props: any) {
             fontSizeIcon="1.8em"
             color="black"
             icon="cloud"
-            handleClick={() => {}}
           />
           <IconButton
             title={t("mediaCloudTextButton")}
@@ -62,7 +52,6 @@ function Mediateca(props: any) {
             fontSizeIcon="1.8em"
             color="black"
             icon="cloud_queue"
-            handleClick={() => {}}
           />
           <IconButton
             title="Mediateca"
@@ -87,13 +76,8 @@ function Mediateca(props: any) {
         >
           <AudioList data={data || props.data} />
         </div>
-        <div
-          style={{ display: "flex", flexDirection: "column", width: "100%" }}
-        >
-          <TabsMediateca
-            title1={t("textCategoryTab")}
-            title2={t("textFavoriteTab")}
-          />
+        <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+          <TabsMediateca title1={t("textCategoryTab")} title2={t("textFavoriteTab")} />
         </div>
       </FlexBox>
     </LayoutApp>

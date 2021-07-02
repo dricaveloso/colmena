@@ -1,6 +1,7 @@
 import api from "services/api";
 import useSWR from "swr";
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const useFetch = (uri: string, params?: {}, options?: {}) => {
   const { data, error, mutate } = useSWR(
     uri,
@@ -11,7 +12,7 @@ const useFetch = (uri: string, params?: {}, options?: {}) => {
     },
     {
       ...options,
-    }
+    },
   );
 
   return { data, error, mutate };

@@ -7,6 +7,7 @@ type Props = {
   maxWidth?: SizeScreensProps | false;
   children: React.ReactNode;
   justifyContent?: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   extraStyle?: object;
 };
 

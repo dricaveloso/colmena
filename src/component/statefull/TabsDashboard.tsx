@@ -5,12 +5,12 @@ import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import LibraryMusicIcon from "@material-ui/icons/LibraryMusic";
 import { useRouter } from "next/router";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     flexGrow: 1,
     maxWidth: 500,
   },
-}));
+});
 
 type Props = {
   title1: string;

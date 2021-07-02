@@ -2,18 +2,16 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import Paper from "@material-ui/core/Paper";
-import LibraryMusicIcon from "@material-ui/icons/LibraryMusic";
 import ListIcon from "@material-ui/icons/List";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     flexGrow: 1,
     maxWidth: 500,
   },
-}));
+});
 
 type Props = {
   title1: string;

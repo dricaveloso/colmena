@@ -1,12 +1,6 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  ListItemIcon,
-  SwipeableDrawer,
-  List,
-  ListItem,
-  ListItemText,
-} from "@material-ui/core";
+import { ListItemIcon, SwipeableDrawer, List, ListItem, ListItemText } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import MaterialIcon from "component/ui/MaterialIcon";
@@ -127,27 +121,18 @@ function Drawer({ open, onOpen, onClose }: Props) {
     id: number,
     icon: string,
     color?: string | undefined,
-    title?: string
+    title?: string,
   ): React.ReactNode => (
     <ListItem dense={true} divider={true} key={id}>
       <ListItemIcon>
-        <MaterialIcon
-          icon={icon}
-          fontSize="small"
-          style={!!color ? { color } : {}}
-        />
+        <MaterialIcon icon={icon} fontSize="small" style={color ? { color } : {}} />
       </ListItemIcon>
       <ListItemText primary={title} />
     </ListItem>
   );
 
   const drawerMenu = (): React.ReactNode => (
-    <div
-      role="presentation"
-      onClick={onClose}
-      onKeyDown={onClose}
-      className={classes.list}
-    >
+    <div role="presentation" onClick={onClose} onKeyDown={onClose} className={classes.list}>
       <div
         style={{
           display: "flex",
@@ -170,7 +155,7 @@ function Drawer({ open, onOpen, onClose }: Props) {
             );
 
           return (
-            <div onClick={handleClick}>
+            <div onClick={handleClick} key={id}>
               {getListItemButton(id, icon, color, title)}
             </div>
           );
@@ -180,12 +165,7 @@ function Drawer({ open, onOpen, onClose }: Props) {
   );
 
   return (
-    <SwipeableDrawer
-      anchor="left"
-      open={open}
-      onOpen={onOpen}
-      onClose={onClose}
-    >
+    <SwipeableDrawer anchor="left" open={open} onOpen={onOpen} onClose={onClose}>
       {drawerMenu()}
     </SwipeableDrawer>
   );

@@ -1,17 +1,19 @@
 import React, { createContext, useState } from "react";
-
+import { UserInfoInterface } from "interfaces";
 interface UserContextInterface {
   isLogged: boolean;
-  userInfo: {} | null;
+  userInfo: UserInfoInterface | null;
   changeIsLogged: (flag: boolean) => void;
-  updateUserInfo: (data: {}) => void;
+  updateUserInfo: (data: UserInfoInterface) => void;
 }
 
 const UserContext = createContext<UserContextInterface>({
   isLogged: false,
   userInfo: null,
-  changeIsLogged: (flag: boolean) => {},
-  updateUserInfo: (data: {}) => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  changeIsLogged: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  updateUserInfo: () => {},
 });
 
 type Props = {
@@ -20,13 +22,13 @@ type Props = {
 
 export function UserContextProvider({ children }: Props) {
   const [isLogged, setIsLogged] = useState(false);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState<UserInfoInterface | null>(null);
 
   function changeIsLoggedHandler(flag: boolean) {
     setIsLogged(flag);
   }
 
-  function updateUserInfoHanlder(data: {}) {
+  function updateUserInfoHanlder(data: UserInfoInterface) {
     setUserInfo(data);
   }
 
@@ -37,9 +39,7 @@ export function UserContextProvider({ children }: Props) {
     updateUserInfo: updateUserInfoHanlder,
   };
 
-  return (
-    <UserContext.Provider value={context}>{children}</UserContext.Provider>
-  );
+  return <UserContext.Provider value={context}>{children}</UserContext.Provider>;
 }
 
 export default UserContext;

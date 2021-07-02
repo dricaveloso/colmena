@@ -10,15 +10,10 @@ type Props = {
   id: string | undefined;
   label: string;
   variant: SelectVariantProps;
-  handleChange?: () => void;
+  handleChange?: () => void | undefined;
 };
 
-function Slt({
-  id,
-  label,
-  variant = SelectVariantEnum.OUTLINED,
-  handleChange = () => {},
-}: Props) {
+function Slt({ id, label, variant = SelectVariantEnum.OUTLINED, handleChange }: Props) {
   return (
     <FormControl variant={variant} style={{ width: "100%" }}>
       <InputLabel id={id}>{label}</InputLabel>

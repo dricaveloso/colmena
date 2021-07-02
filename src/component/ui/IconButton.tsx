@@ -10,8 +10,9 @@ type Props = {
   fontSizeIcon: string;
   variantTitle?: TextVariantProps;
   color?: string;
-  handleClick?: () => void | null;
+  handleClick?: () => void | undefined;
   icon: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   style?: object;
 };
 
@@ -20,7 +21,7 @@ function IconButtonCtr({
   fontSizeIcon = "3.5em",
   variantTitle = TextVariantEnum.H5,
   color = "black",
-  handleClick = () => {},
+  handleClick,
   icon,
 }: Props) {
   const extraStyle = {

@@ -21,27 +21,21 @@ import {
   TextVariantEnum,
 } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, [
-        "mediaProfile",
-        "drawer",
-        "common",
-      ])),
+      ...(await serverSideTranslations(locale, ["mediaProfile", "drawer", "common"])),
     },
   };
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   marginInputDivs: {
     "& > *": {
       marginBottom: 25,
     },
   },
-}));
+});
 
 function Profile() {
   const { t } = useTranslation("mediaProfile");

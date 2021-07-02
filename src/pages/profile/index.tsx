@@ -22,27 +22,21 @@ import {
   TextVariantEnum,
 } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-}: I18nInterface) => {
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, [
-        "profile",
-        "drawer",
-        "common",
-      ])),
+      ...(await serverSideTranslations(locale, ["profile", "drawer", "common"])),
     },
   };
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   marginInputDivs: {
     "& > div": {
       marginBottom: 15,
     },
   },
-}));
+});
 
 function Profile() {
   const { t } = useTranslation("profile");
@@ -81,21 +75,9 @@ function Profile() {
             <MaterialIcon icon="add_a_photo" style={{ fontSize: 120 }} />
             <Text>Makena</Text>
           </div>
-          <TextField
-            id="name"
-            label={t("nameField")}
-            variant={SelectVariantEnum.OUTLINED}
-          />
-          <TextField
-            id="email"
-            label={t("emailField")}
-            variant={SelectVariantEnum.OUTLINED}
-          />
-          <TextField
-            id="url_blog"
-            label={t("urlField")}
-            variant={SelectVariantEnum.OUTLINED}
-          />
+          <TextField id="name" label={t("nameField")} variant={SelectVariantEnum.OUTLINED} />
+          <TextField id="email" label={t("emailField")} variant={SelectVariantEnum.OUTLINED} />
+          <TextField id="url_blog" label={t("urlField")} variant={SelectVariantEnum.OUTLINED} />
 
           <Text>{t("socialMediaTitle")}</Text>
           <div className="boxRowCenter marginTop15">
