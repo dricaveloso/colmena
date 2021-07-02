@@ -38,7 +38,6 @@
     "@typescript-eslint/no-unescaped-entities": 0,
     "react/no-unescaped-entities": 0,
     "quotes": ["error", "double", { "allowTemplateLiterals": true }],
-    // "object-curly-spacing": ["error", "always"],
     "no-empty-pattern": ["off"],
     "no-undef": ["error"],
     "no-var": ["error"],

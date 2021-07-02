@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "dev": "next dev -p 3006",
     "build": "next build",
     "export": "next export",
@@ -19,7 +20,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "yarn lint-staged",
       "pre-push": "yarn run type-check"
     }
   },
