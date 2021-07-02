@@ -1,7 +1,23 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import { SelectVariantProps } from "types";
+import { SelectVariantEnum } from "enums";
 
-function TxtFld({ label, multiline = false, variant = "filled", id = "asd" }) {
+type Props = {
+  label: string;
+  multiline?: boolean;
+  variant: SelectVariantProps;
+  id: string | undefined;
+  [x: string]: any;
+};
+
+function TxtFld({
+  label,
+  multiline = false,
+  variant = SelectVariantEnum.FILLED,
+  id = "asd",
+  ...props
+}: Props) {
   return (
     <TextField
       className="width-based-device"
@@ -9,6 +25,7 @@ function TxtFld({ label, multiline = false, variant = "filled", id = "asd" }) {
       variant={variant}
       label={label}
       multiline={multiline}
+      {...props}
     />
   );
 }

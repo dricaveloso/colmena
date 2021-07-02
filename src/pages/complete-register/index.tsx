@@ -1,10 +1,10 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Container from "component/ui/Container";
 import FooterApp from "component/layout/FooterApp";
 import HeaderApp from "component/layout/HeaderApp";
 import Button from "component/ui/Button";
 import FlexBox from "component/ui/FlexBox";
-import { Typography, Box, Checkbox } from "@material-ui/core";
+import { Box, Checkbox } from "@material-ui/core";
 import PasswordField from "component/statefull/PasswordField";
 import Divider from "component/ui/Divider";
 import { useRouter } from "next/router";
@@ -14,8 +14,13 @@ import TermsOfUse from "component/statefull/TermsOfUse";
 import Box100 from "component/ui/Box100";
 import NotificationContext from "store/notification-context";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { NotificationStatusEnum, TextVariantEnum } from "enums";
+import Text from "component/ui/Text";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["completeRegister", "common"])),
@@ -23,7 +28,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-export default function CompleteRegister(props) {
+export default function CompleteRegister() {
   const [openTerms, setOpenTerms] = useState(false);
   const [accept, setAccept] = useState(false);
   const { t } = useTranslation("completeRegister");
@@ -31,14 +36,14 @@ export default function CompleteRegister(props) {
   const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setAccept(event.target.checked);
   };
 
   const handleSubmit = () => {
     notificationCtx.showNotification({
-      message: "Senha criada com sucesso.",
-      status: "success",
+      message: t("messagePasswordCreated"),
+      status: NotificationStatusEnum.SUCCESS,
     });
     router.push("/platform");
   };
@@ -49,9 +54,7 @@ export default function CompleteRegister(props) {
         <HeaderApp />
         <Box>
           <Box100>
-            <Typography component="p" gutterBottom>
-              {t("description")}
-            </Typography>
+            <Text variant={TextVariantEnum.BODY1}>{t("description")}</Text>
             <Divider />
             <div>
               <PasswordField

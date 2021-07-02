@@ -2,7 +2,6 @@ import Container from "component/ui/Container";
 import FooterApp from "component/layout/FooterApp";
 import Divider from "component/ui/Divider";
 import Button from "component/ui/Button";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import MailOutlineSharpIcon from "@material-ui/icons/MailOutlineSharp";
 import { useRouter } from "next/router";
@@ -10,8 +9,13 @@ import Box100 from "component/ui/Box100";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import Text from "component/ui/Text";
+import { TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["invitation", "common"])),
@@ -39,18 +43,18 @@ function Invitation() {
         <div style={{ textAlign: "center" }}>
           <MailOutlineSharpIcon style={{ fontSize: "150px" }} />
           <Divider marginTop={10} />
-          <Typography variant="h5" component="h4" gutterBottom>
+          <Text variant={TextVariantEnum.H5} gutterBottom>
             {t("greeting")}
-          </Typography>
+          </Text>
           <Divider marginTop={10} />
           <Box100>
-            <Typography
-              component="p"
+            <Text
+              variant={TextVariantEnum.BODY1}
               gutterBottom
               className="width-based-device"
             >
               {t("description")}
-            </Typography>
+            </Text>
           </Box100>
           <Divider />
           <Box

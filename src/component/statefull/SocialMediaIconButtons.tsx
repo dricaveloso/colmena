@@ -4,6 +4,7 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import NotificationContext from "store/notification-context";
 import { useTranslation } from "next-i18next";
+import { NotificationStatusEnum } from "enums";
 
 function SocialMediaIconButton() {
   const { t: c } = useTranslation("common");
@@ -15,7 +16,7 @@ function SocialMediaIconButton() {
         onClick={() =>
           notificationCtx.showNotification({
             message: c("featureUnavailable"),
-            status: "warning",
+            status: NotificationStatusEnum.WARNING,
           })
         }
         className="marginRight15"
@@ -25,7 +26,7 @@ function SocialMediaIconButton() {
         onClick={() =>
           notificationCtx.showNotification({
             message: c("featureUnavailable"),
-            status: "warning",
+            status: NotificationStatusEnum.WARNING,
           })
         }
         className="marginRight15"
@@ -35,7 +36,7 @@ function SocialMediaIconButton() {
         onClick={() =>
           notificationCtx.showNotification({
             message: c("featureUnavailable"),
-            status: "warning",
+            status: NotificationStatusEnum.WARNING,
           })
         }
         className="marginRight15"

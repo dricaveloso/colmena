@@ -2,7 +2,11 @@ import React from "react";
 import { Avatar } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
-function MediaAvatar({ size }) {
+type Props = {
+  size: number;
+};
+
+function MediaAvatar({ size }: Props) {
   const useStyles = makeStyles((theme) =>
     createStyles({
       size: {

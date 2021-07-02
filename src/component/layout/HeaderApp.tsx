@@ -1,14 +1,14 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
+import Text from "component/ui/Text";
+import { TextVariantEnum } from "enums";
 
-function HeaderApp({ about = false }) {
+function HeaderApp() {
   return (
     <Box>
-      <Typography component="p" gutterBottom>
+      <Text variant={TextVariantEnum.BODY1} gutterBottom>
         Logo
-      </Typography>
+      </Text>
     </Box>
   );
 }

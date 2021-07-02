@@ -1,8 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { CardContent, CardMedia, Typography, Card } from "@material-ui/core";
+import { CardContent, CardMedia, Card } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
 import Text from "component/ui/Text";
+import { TextColorEnum, TextVariantEnum } from "enums";
 
 const useStyles = makeStyles({
   root: {
@@ -21,7 +22,9 @@ export default function RecentPublications() {
   return (
     <div style={{ marginBottom: 20, width: "100%" }}>
       <div style={{ marginTop: 15, marginBottom: 15, textAlign: "left" }}>
-        <Text>{t("recentPublicationsTitle")}</Text>
+        <Text variant={TextVariantEnum.SUBTITLE2}>
+          {t("recentPublicationsTitle")}
+        </Text>
       </div>
       <div className="scrollingContainer">
         {[0, 1, 2].map((item, idx) => (
@@ -35,9 +38,12 @@ export default function RecentPublications() {
                 className={classes.media}
               />
               <CardContent style={{ whiteSpace: "normal" }}>
-                <Typography variant="body2" color="textSecondary" component="p">
+                <Text
+                  variant={TextVariantEnum.BODY2}
+                  color={TextColorEnum.TEXTSECONDARY}
+                >
                   {t("recentPublicationsDescription")}
-                </Typography>
+                </Text>
               </CardContent>
             </Card>
           </div>

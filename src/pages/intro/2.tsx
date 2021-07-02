@@ -3,7 +3,6 @@ import FooterApp from "component/layout/FooterApp";
 import HeaderApp from "component/layout/HeaderApp";
 import Button from "component/ui/Button";
 import FlexBox from "component/ui/FlexBox";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import WifiOffSharpIcon from "@material-ui/icons/WifiOffSharp";
 import Divider from "component/ui/Divider";
@@ -11,11 +10,15 @@ import { useRouter } from "next/router";
 import SkipButton from "component/pages/intro/SkipButton";
 import Box100 from "component/ui/Box100";
 import { GetStaticProps } from "next";
-
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { I18nInterface } from "interfaces";
+import Text from "component/ui/Text";
+import { TextVariantEnum, TextDisplayEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["intro", "common"])),
@@ -23,7 +26,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-export default function Intro2(props) {
+export default function Intro2() {
   const router = useRouter();
   const { t } = useTranslation("intro");
 
@@ -35,14 +38,14 @@ export default function Intro2(props) {
           <WifiOffSharpIcon style={{ fontSize: "150px" }} />
           <Divider marginTop={10} />
           <Box100>
-            <Typography
-              component="p"
+            <Text
+              variant={TextVariantEnum.BODY1}
               gutterBottom
-              variantMapping="p"
+              display={TextDisplayEnum.BLOCK}
               className="width-based-device"
             >
               {t("step2.description")}
-            </Typography>
+            </Text>
           </Box100>
           <Divider />
           <Box style={{ display: "flex", flexDirection: "column" }}>

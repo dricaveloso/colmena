@@ -7,8 +7,13 @@ import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertSharpIcon from "@material-ui/icons/MoreVertSharp";
+import { FileInterface } from "interfaces";
 
-export default function AudioList({ data }) {
+interface WrapperFileInterface {
+  data: FileInterface[];
+}
+
+export default function AudioList({ data }: WrapperFileInterface) {
   return (
     <List dense={true}>
       {data.map((item, idx) => (

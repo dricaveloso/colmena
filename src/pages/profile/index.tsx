@@ -13,8 +13,18 @@ import { useRouter } from "next/router";
 import NotificationContext from "store/notification-context";
 import SocialMediaIconButton from "component/statefull/SocialMediaIconButtons";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import {
+  ButtonVariantEnum,
+  JustifyContentEnum,
+  NotificationStatusEnum,
+  SelectVariantEnum,
+  TextVariantEnum,
+} from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -41,9 +51,13 @@ function Profile() {
   const classes = useStyles();
   const router = useRouter();
 
+  const navigate = () => {
+    router.push("/media-profile");
+  };
+
   return (
     <LayoutApp title={t("title")} back={true}>
-      <FlexBox justifyContent="flex-start">
+      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <div
           style={{
             position: "absolute",
@@ -58,7 +72,8 @@ function Profile() {
             title={t("mediaTitle")}
             color="black"
             icon="settings"
-            handleClick={() => router.push("/media-profile")}
+            handleClick={navigate}
+            variantTitle={TextVariantEnum.BODY2}
           />
         </div>
         <div className={classes.marginInputDivs}>
@@ -66,13 +81,20 @@ function Profile() {
             <MaterialIcon icon="add_a_photo" style={{ fontSize: 120 }} />
             <Text>Makena</Text>
           </div>
-          <TextField id="name" label={t("nameField")} variant="outlined" />
-          <TextField id="email" label={t("emailField")} variant="outlined" />
+          <TextField
+            id="name"
+            label={t("nameField")}
+            variant={SelectVariantEnum.OUTLINED}
+          />
+          <TextField
+            id="email"
+            label={t("emailField")}
+            variant={SelectVariantEnum.OUTLINED}
+          />
           <TextField
             id="url_blog"
-            className="width-based-device"
             label={t("urlField")}
-            variant="outlined"
+            variant={SelectVariantEnum.OUTLINED}
           />
 
           <Text>{t("socialMediaTitle")}</Text>
@@ -85,7 +107,7 @@ function Profile() {
               handleClick={() =>
                 notificationCtx.showNotification({
                   message: "Informações salvas com sucesso.",
-                  status: "success",
+                  status: NotificationStatusEnum.SUCCESS,
                 })
               }
             />
@@ -93,11 +115,11 @@ function Profile() {
           <div className="marginTop15">
             <Button
               title={t("resetPasswordButton")}
-              variant="outlined"
+              variant={ButtonVariantEnum.OUTLINED}
               handleClick={() =>
                 notificationCtx.showNotification({
                   message: c("featureUnavailable"),
-                  status: "warning",
+                  status: NotificationStatusEnum.WARNING,
                 })
               }
             />

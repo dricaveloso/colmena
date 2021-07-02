@@ -7,13 +7,23 @@ import { useTranslation } from "next-i18next";
 import MediaAvatar from "component/pages/home/MediaAvatar";
 import GreetingMessage from "component/pages/home/GreetingMessage";
 import RecentPublications from "component/pages/home/RecentPublications";
+import { TextVariantEnum, NotificationStatusEnum } from "enums";
 
-function DashboardActions({ showContent, isFirstAccess }) {
+type Props = {
+  showContent: boolean;
+  isFirstAccess: boolean;
+};
+
+function DashboardActions({ showContent, isFirstAccess }: Props) {
   const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("home");
   const { t: d } = useTranslation("drawer");
   const { t: c } = useTranslation("common");
+
+  const navigate = (url: string) => {
+    router.push(url);
+  };
 
   function getContent() {
     return (
@@ -35,20 +45,20 @@ function DashboardActions({ showContent, isFirstAccess }) {
         <div className="boxRowSpaceAround">
           <IconButton
             title={d("myFilesTitle")}
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             icon="cloud"
             fontSizeIcon="1.5em"
-            handleClick={() => router.push("/my-library")}
+            handleClick={() => navigate("/my-library")}
           />
           <IconButton
             title={d("communityTitle")}
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             icon="public"
             fontSizeIcon="1.5em"
             handleClick={() =>
               notificationCtx.showNotification({
                 message: c("featureUnavailable"),
-                status: "warning",
+                status: NotificationStatusEnum.WARNING,
               })
             }
           />
@@ -56,36 +66,36 @@ function DashboardActions({ showContent, isFirstAccess }) {
         <div style={{ marginTop: 20, marginBottom: 20 }}>
           <IconButton
             title={t("recordText")}
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             icon="mic"
             fontSizeIcon="2.3em"
-            handleClick={() => router.push("/record")}
+            handleClick={() => navigate("/record")}
             color="red"
           />
         </div>
         <div className="boxRowSpaceAround">
           <IconButton
             title={d("editTextTitle")}
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             icon="edit"
             fontSizeIcon="1.5em"
             handleClick={() =>
               notificationCtx.showNotification({
                 message: c("featureUnavailable"),
-                status: "warning",
+                status: NotificationStatusEnum.WARNING,
               })
             }
           />
           <IconButton
             title={d("editAudioTitle")}
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             icon="crop"
             fontSizeIcon="1.5em"
-            handleClick={() => router.push("/edit-audio")}
+            handleClick={() => navigate("/edit-audio")}
           />
         </div>
 
-        <Divider elevation={3} style={{ marginTop: 30, width: "100%" }} />
+        <Divider variant="fullWidth" style={{ marginTop: 30 }} />
         <RecentPublications />
       </div>
     );

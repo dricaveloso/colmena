@@ -7,8 +7,12 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { JustifyContentEnum, TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -24,26 +28,30 @@ function RecordDone() {
   const router = useRouter();
   const { t } = useTranslation("recordDone");
 
+  const navigate = (url: string) => {
+    router.push(url);
+  };
+
   return (
     <LayoutApp title={t("title")}>
-      <FlexBox justifyContent="center">
+      <FlexBox justifyContent={JustifyContentEnum.CENTER}>
         <div>
           <p>{t("description")}</p>
           <Divider marginBottom={20} />
           <IconButton
             title={t("textEditButton")}
             icon="graphic_eq"
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             fontSizeIcon="1.8em"
-            handleClick={() => router.push("/edit-audio")}
+            handleClick={() => navigate("/edit-audio")}
           />
           <Divider marginBottom={20} />
           <IconButton
             title={t("textShareButton")}
             icon="share"
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             fontSizeIcon="1.8em"
-            handleClick={() => router.push("/share-audio")}
+            handleClick={() => navigate("/share-audio")}
           />
         </div>
       </FlexBox>

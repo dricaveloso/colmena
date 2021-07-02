@@ -8,8 +8,12 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
@@ -21,6 +25,10 @@ export default function Platform() {
   const { t } = useTranslation("common");
   const router = useRouter();
 
+  const navigate = () => {
+    router.push("/home");
+  };
+
   return (
     <Container>
       <FlexBox>
@@ -30,20 +38,20 @@ export default function Platform() {
           <Divider marginTop={30} />
           <IconButton
             title="Desktop"
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY1}
             icon="desktop_windows"
             fontSizeIcon="2.6em"
             color="black"
-            handleClick={() => router.push("/home")}
+            handleClick={navigate}
           />
           <Divider marginTop={30} />
           <IconButton
             title="Mobile"
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY1}
             icon="phone_android"
             fontSizeIcon="2.6em"
             color="black"
-            handleClick={() => router.push("/home")}
+            handleClick={navigate}
           />
         </div>
         <FooterApp about={false} terms={true} />

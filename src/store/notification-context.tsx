@@ -1,25 +1,35 @@
 import React, { createContext, useState } from "react";
+import { NotificationDataInterface } from "interfaces";
 
 interface NotificationContextInterface {
-  notification: {};
-  showNotification: (notificationData: {}) => void;
+  notification: NotificationDataInterface | null;
+  showNotification: (
+    notificationData: NotificationDataInterface | null
+  ) => void;
   hideNotification: () => void;
 }
 
 const NotificationContext = createContext<NotificationContextInterface>({
   notification: null,
-  showNotification: (notificationData: {}) => {},
+  showNotification: () => {},
   hideNotification: () => {},
 });
 
-export function NotificationContextProvider(props): React.ReactNode {
-  const [activeNotification, setActiveNotification] = useState<{} | null>();
+type Props = {
+  children: React.ReactNode;
+};
 
-  function showNotificationHandler(notificationData: {}): void {
+export function NotificationContextProvider({ children }: Props) {
+  const [activeNotification, setActiveNotification] =
+    useState<NotificationDataInterface | null>(null);
+
+  function showNotificationHandler(
+    notificationData: NotificationDataInterface
+  ) {
     setActiveNotification(notificationData);
   }
 
-  function hideNotificationHandler(): void {
+  function hideNotificationHandler() {
     setActiveNotification(null);
   }
 
@@ -31,7 +41,7 @@ export function NotificationContextProvider(props): React.ReactNode {
 
   return (
     <NotificationContext.Provider value={context}>
-      {props.children}
+      {children}
     </NotificationContext.Provider>
   );
 }

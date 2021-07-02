@@ -11,16 +11,15 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import MaterialIcon from "component/ui/MaterialIcon";
 import NotificationContext from "store/notification-context";
+import { NotificationStatusEnum } from "enums";
 
-const WrapLink = ({ url, children, id, handleClick = null }) => {
-  if (!handleClick)
-    return (
-      <Link key={id} href={url}>
-        {children}
-      </Link>
-    );
-
-  return <div onClick={handleClick}>{children}</div>;
+type ListItemProps = {
+  id: number;
+  url?: string | undefined;
+  icon: string;
+  color?: string | undefined;
+  title?: string;
+  handleClick?: () => void | undefined;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +42,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Drawer({ open, onOpen, onClose }) {
+type Props = {
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+};
+
+function Drawer({ open, onOpen, onClose }: Props) {
   const classes = useStyles();
   const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("drawer");
@@ -80,7 +85,7 @@ function Drawer({ open, onOpen, onClose }) {
       handleClick: () =>
         notificationCtx.showNotification({
           message: c("featureUnavailable"),
-          status: "warning",
+          status: NotificationStatusEnum.WARNING,
         }),
     },
     {
@@ -90,7 +95,7 @@ function Drawer({ open, onOpen, onClose }) {
       handleClick: () =>
         notificationCtx.showNotification({
           message: c("featureUnavailable"),
-          status: "warning",
+          status: NotificationStatusEnum.WARNING,
         }),
     },
     {
@@ -118,7 +123,25 @@ function Drawer({ open, onOpen, onClose }) {
     },
   ];
 
-  const drawerMenu = () => (
+  const getListItemButton = (
+    id: number,
+    icon: string,
+    color?: string | undefined,
+    title?: string
+  ): React.ReactNode => (
+    <ListItem dense={true} divider={true} key={id}>
+      <ListItemIcon>
+        <MaterialIcon
+          icon={icon}
+          fontSize="small"
+          style={!!color ? { color } : {}}
+        />
+      </ListItemIcon>
+      <ListItemText primary={title} />
+    </ListItem>
+  );
+
+  const drawerMenu = (): React.ReactNode => (
     <div
       role="presentation"
       onClick={onClose}
@@ -137,28 +160,20 @@ function Drawer({ open, onOpen, onClose }) {
         <small style={{ color: "gray" }}>version 0.0.1</small>
       </div>
       <List component="nav">
-        {menuArray.map((item) => {
-          const { url, icon, title, color, id, handleClick } = item;
-          const itemList = (
-            <ListItem dense={true} divider={true} key={id}>
-              <ListItemIcon>
-                <MaterialIcon
-                  icon={icon}
-                  fontSize="small"
-                  style={!!color ? { color } : {}}
-                />
-              </ListItemIcon>
-              <ListItemText primary={title} />
-            </ListItem>
-          );
-          if (url || handleClick)
+        {menuArray.map((item: ListItemProps) => {
+          const { id, icon, color, title, url, handleClick } = item;
+          if (url)
             return (
-              <WrapLink key={id} url={url} handleClick={handleClick}>
-                {itemList}
-              </WrapLink>
+              <Link key={id} href={url}>
+                {getListItemButton(id, icon, color, title)}
+              </Link>
             );
 
-          return itemList;
+          return (
+            <div onClick={handleClick}>
+              {getListItemButton(id, icon, color, title)}
+            </div>
+          );
         })}
       </List>
     </div>

@@ -7,5 +7,14 @@
   "textInviteCollaborators": "Invitar colaboradores",
   "user1": "Miembro 1 (permiso)",
   "user2": "Miembro 2 (permiso)",
-  "socialMediaTitle": "Midias Sociales"
+  "placeholderName": "Name",
+  "placeholderEmail": "Email",
+  "placeholderPermission": "Permission",
+  "messageSuccessInvite": "Invitation sent successfully",
+  "messageSuccessInformation": "Information saved successfully.",
+  "socialMediaTitle": "Midias Sociales",
+  "titleModalDialogInvite": "Invite collaborator",
+  "descriptionModalDialogInvite": "Enter the name, email and access profile for the employee you want to invite.",
+  "buttonOkModalDialogInvite": "Send",
+  "buttonCancelModalDialogInvite": "Cancel"
 }

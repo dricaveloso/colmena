@@ -3,14 +3,24 @@ import Container from "component/ui/Container";
 import FlexBox from "component/ui/FlexBox";
 import AppBar from "component/statefull/AppBar";
 import FooterApp from "component/ui/FooterApp";
+import { PositionProps } from "types";
+import { PositionEnum } from "enums";
+
+type Props = {
+  title: string;
+  back?: boolean;
+  drawer?: boolean;
+  headerPosition?: PositionProps | undefined;
+  children: React.ReactNode;
+};
 
 function LayoutApp({
   title,
   back = false,
   drawer = true,
-  headerPosition = "fixed",
+  headerPosition = PositionEnum.FIXED,
   children,
-}) {
+}: Props) {
   return (
     <Container extraStyle={{ padding: 0 }}>
       <FlexBox extraStyle={{ padding: 0 }}>
@@ -20,7 +30,7 @@ function LayoutApp({
           headerPosition={headerPosition}
           drawer={drawer}
         />
-        {children}
+        <>{children}</>
         <FooterApp />
       </FlexBox>
     </Container>

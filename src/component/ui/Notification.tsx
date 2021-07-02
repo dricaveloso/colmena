@@ -2,15 +2,21 @@ import React, { useContext } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import NotificationContext from "store/notification-context";
 import MuiAlert from "@material-ui/lab/Alert";
+import { NotificationStatusEnum } from "enums";
+import { NotificationStatusProps } from "types";
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+type Props = {
+  message: string;
+  status: NotificationStatusProps;
+};
 
-function Notification({ message, status = "info" }) {
+function Notification({
+  message,
+  status = NotificationStatusEnum.INFO,
+}: Props) {
   const notificationCtx = useContext(NotificationContext);
-  console.log(status);
-  const handleClose = (event, reason) => {
+
+  const handleClose = (event: any, reason: string) => {
     if (reason === "clickaway") {
       return;
     }
@@ -21,13 +27,13 @@ function Notification({ message, status = "info" }) {
   return (
     <Snackbar
       key={"centercenter"}
+      onClose={handleClose}
       open={true}
       autoHideDuration={5000}
-      onClose={() => notificationCtx.hideNotification()}
     >
-      <Alert onClose={handleClose} severity={status}>
+      <MuiAlert elevation={6} variant="filled" severity={status}>
         {message}
-      </Alert>
+      </MuiAlert>
     </Snackbar>
   );
 }

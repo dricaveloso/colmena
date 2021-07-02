@@ -1,8 +1,19 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
 import IconButton from "component/ui/IconButton";
+import { TextfieldVariantEnum } from "enums";
+import { TextfieldVariantProps } from "types";
 
-function SearchInput({ label, variant = "outlined", handleClick = () => {} }) {
+type Props = {
+  label: string;
+  handleClick?: () => void;
+  variant?: TextfieldVariantProps;
+};
+
+function SearchInput({
+  label,
+  variant = TextfieldVariantEnum.OUTLINED,
+  handleClick = () => {},
+}: Props) {
   return (
     <div
       style={{

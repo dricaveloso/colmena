@@ -8,8 +8,12 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { JustifyContentEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["record", "drawer", "common"])),
@@ -23,7 +27,7 @@ function Record() {
 
   return (
     <LayoutApp title={t("title")} back={true}>
-      <FlexBox justifyContent="space-around">
+      <FlexBox justifyContent={JustifyContentEnum.SPACEAROUND}>
         <ShareLinkComponent url="https://dev.maia.press/jghd-asde-erty" />
         <RecordUsers />
         <Timer redirectPage={() => router.push("/record-done")} />

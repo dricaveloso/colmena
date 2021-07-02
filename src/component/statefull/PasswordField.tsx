@@ -1,19 +1,26 @@
 import React, { useState } from "react";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
+import {
+  InputAdornment,
+  IconButton,
+  Input,
+  FormControl,
+  InputLabel,
+} from "@material-ui/core";
 
-function PasswordField({ id, title }) {
+type Props = {
+  id: string | undefined;
+  title: string;
+};
+
+function PasswordField({ id, title }: Props) {
   const [values, setValues] = useState({
     password: "",
     showPassword: false,
   });
 
-  const handleChange = (prop) => (event) => {
+  const handleChange = (prop: string) => (event: any) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
@@ -21,7 +28,7 @@ function PasswordField({ id, title }) {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
 

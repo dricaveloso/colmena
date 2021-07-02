@@ -3,7 +3,11 @@ import MediaAvatar from "component/pages/home/MediaAvatar";
 import { Grow } from "@material-ui/core";
 import GreetingMessage from "component/pages/home/GreetingMessage";
 
-function Greeting({ showGreeting }) {
+type Props = {
+  showGreeting: boolean;
+};
+
+function Greeting({ showGreeting }: Props) {
   return (
     <Grow in={showGreeting} timeout={1500}>
       <div

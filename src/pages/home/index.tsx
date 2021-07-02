@@ -5,15 +5,15 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import DashboardActions from "component/pages/home/DashboardActions";
 import Greeting from "component/pages/home/Greeting";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { JustifyContentEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
-      ...(await serverSideTranslations(ctx.locale, [
-        "home",
-        "drawer",
-        "common",
-      ])),
+      ...(await serverSideTranslations(locale, ["home", "drawer", "common"])),
     },
   };
 };
@@ -44,12 +44,12 @@ function Home() {
   return (
     <LayoutApp title="MAIA" back={true}>
       {showGreeting && !showContent ? (
-        <FlexBox justifyContent="center">
+        <FlexBox justifyContent={JustifyContentEnum.CENTER}>
           <Greeting showGreeting={showGreeting} />
         </FlexBox>
       ) : (
         showContent && (
-          <FlexBox justifyContent="flex-start">
+          <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
             <DashboardActions
               showContent={showContent}
               isFirstAccess={

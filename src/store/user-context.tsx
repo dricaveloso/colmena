@@ -14,9 +14,13 @@ const UserContext = createContext<UserContextInterface>({
   updateUserInfo: (data: {}) => {},
 });
 
-export function UserContextProvider(props): React.ReactNode {
-  const [isLogged, setIsLogged] = useState<boolean>();
-  const [userInfo, setUserInfo] = useState<{}>();
+type Props = {
+  children: React.ReactNode;
+};
+
+export function UserContextProvider({ children }: Props) {
+  const [isLogged, setIsLogged] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
 
   function changeIsLoggedHandler(flag: boolean) {
     setIsLogged(flag);
@@ -34,9 +38,7 @@ export function UserContextProvider(props): React.ReactNode {
   };
 
   return (
-    <UserContext.Provider value={context}>
-      {props.children}
-    </UserContext.Provider>
+    <UserContext.Provider value={context}>{children}</UserContext.Provider>
   );
 }
 

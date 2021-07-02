@@ -7,5 +7,14 @@
   "textInviteCollaborators": "Convidar colaboradores",
   "user1": "Integrante 1 (permissão)",
   "user2": "Integrante 2 (permissão)",
-  "socialMediaTitle": "Mídias Sociais"
+  "placeholderName": "Nome",
+  "placeholderEmail": "E-mail",
+  "placeholderPermission": "Permissão",
+  "socialMediaTitle": "Mídias Sociais",
+  "messageSuccessInvite": "Convite enviado com sucesso.",
+  "messageSuccessInformation": "Informações salvas com sucesso.",
+  "titleModalDialogInvite": "Convidar colaborador",
+  "descriptionModalDialogInvite": "Digite o nome, e-mail e perfil de acesso para o colaborador que deseja convidar.",
+  "buttonOkModalDialogInvite": "Enviar",
+  "buttonCancelModalDialogInvite": "Cancelar"
 }

@@ -1,7 +1,11 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 
-function FullCenterContainer({ children }) {
+type Props = {
+  children: React.ReactNode;
+};
+
+function FullCenterContainer({ children }: Props) {
   return (
     <Container
       style={{
@@ -13,7 +17,7 @@ function FullCenterContainer({ children }) {
         flexDirection: "column",
       }}
     >
-      {children}
+      <>{children}</>
     </Container>
   );
 }

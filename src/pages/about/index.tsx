@@ -6,8 +6,13 @@ import Divider from "@material-ui/core/Divider";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { JustifyContentEnum } from "enums";
+import MaterialIcon from "component/ui/MaterialIcon";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["intro", "drawer", "common"])),
@@ -15,15 +20,29 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-function About(props) {
+interface ItemInterface {
+  icon: string;
+  text: string;
+  handleClick?: () => void | null;
+}
+
+interface ItemExtraInterface extends ItemInterface {
+  fontSize: string;
+}
+
+function About() {
   const router = useRouter();
-  const fontSize = "2.1em";
+  const fontSize = "4.0em";
   const fontSizeExtra = "1.9em";
   const color = "black";
   const { t } = useTranslation("intro");
   const { t: d } = useTranslation("drawer");
 
-  const items = [
+  const navigate = (url: string) => {
+    router.push(url);
+  };
+
+  const items: ItemInterface[] = [
     {
       icon: "perm_data_setting_sharp",
       text: t("step1.description"),
@@ -41,15 +60,17 @@ function About(props) {
       text: t("step4.description"),
     },
   ];
-  const extraItems = [
+  const extraItems: ItemExtraInterface[] = [
     {
       icon: "supervised_user_circle",
       text: t("communityTitle"),
+      fontSize: "3.5em",
     },
     {
       icon: "library_music",
       text: d("myFilesTitle"),
-      handleClick: () => router.push("/my-library"),
+      handleClick: () => navigate("/my-library"),
+      fontSize: fontSizeExtra,
     },
   ];
 
@@ -63,14 +84,14 @@ function About(props) {
             gridColumnGap: "50px",
           }}
         >
-          {items.map(({ icon, text }) => (
+          {items.map(({ icon, text }: ItemInterface) => (
             <FlexBox
-              justifyContent="flex-start"
+              justifyContent={JustifyContentEnum.FLEXSTART}
               extraStyle={{
                 alignItems: "center",
               }}
             >
-              <IconButton fontSizeIcon={fontSize} color={color} icon={icon} />
+              <MaterialIcon icon={icon} style={{ fontSize, color }} />
 
               <p
                 style={{
@@ -92,20 +113,26 @@ function About(props) {
             gridColumnGap: "50px",
           }}
         >
-          {extraItems.map(({ icon, text, handleClick = null }) => (
-            <FlexBox
-              extraStyle={{ alignItems: "center" }}
-              justifyContent="center"
-            >
-              <IconButton
-                fontSizeIcon={fontSizeExtra}
-                color={color}
-                icon={icon}
-                handleClick={handleClick}
-              />
-              <p style={{ fontSize: "12px" }}>{text}</p>
-            </FlexBox>
-          ))}
+          {extraItems.map(
+            ({ icon, text, handleClick, fontSize }: ItemExtraInterface) => (
+              <FlexBox
+                extraStyle={{ alignItems: "center" }}
+                justifyContent={JustifyContentEnum.CENTER}
+              >
+                {!!handleClick ? (
+                  <IconButton
+                    fontSizeIcon={fontSize}
+                    color={color}
+                    icon={icon}
+                    handleClick={handleClick}
+                  />
+                ) : (
+                  <MaterialIcon icon={icon} style={{ color, fontSize }} />
+                )}
+                <p style={{ fontSize: "12px" }}>{text}</p>
+              </FlexBox>
+            )
+          )}
         </div>
       </FlexBox>
     </LayoutApp>

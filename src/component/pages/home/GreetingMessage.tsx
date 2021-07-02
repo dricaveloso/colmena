@@ -1,7 +1,11 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
 
-function GreetingMessage({ fontSize = 20 }) {
+type Props = {
+  fontSize?: number;
+};
+
+function GreetingMessage({ fontSize = 20 }: Props) {
   const { t } = useTranslation("common");
   return (
     <>

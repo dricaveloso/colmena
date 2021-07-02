@@ -1,5 +1,6 @@
 {
   "description": "E qual será sua senha ?",
+  "messagePasswordCreated": "Senha criada com sucesso.",
   "forms": {
     "placeholderPassword": "senha",
     "placeholderPasswordConfirmation": "confirmação senha",

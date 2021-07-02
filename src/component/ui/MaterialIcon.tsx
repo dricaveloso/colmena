@@ -1,7 +1,12 @@
 import React from "react";
 import Icon from "@material-ui/core/Icon";
 
-function MaterialIcon({ icon, ...props }) {
+type Props = {
+  icon: string;
+  [x: string]: any;
+};
+
+function MaterialIcon({ icon, ...props }: Props) {
   return <Icon {...props}>{icon}</Icon>;
 }
 

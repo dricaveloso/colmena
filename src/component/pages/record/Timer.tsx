@@ -3,15 +3,18 @@ import { useStopwatch } from "react-timer-hook";
 import Lottie from "react-lottie";
 import Recording from "component/ui/lottie/recording-blink.json";
 
-function format2digits(value) {
+function format2digits(value: number) {
   return value < 10 ? "0" + value.toString() : value;
 }
 
-export default function Timer({ redirectPage }) {
+type Props = {
+  redirectPage: () => void;
+};
+
+export default function Timer({ redirectPage }: Props) {
   const [stop, setStop] = useState(true);
-  const { seconds, minutes, hours, start, isRunning } = useStopwatch({
+  const { seconds, minutes, hours, start } = useStopwatch({
     autoStart: false,
-    format: "24-hour",
   });
 
   const recordingOptions = {

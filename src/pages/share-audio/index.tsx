@@ -9,8 +9,11 @@ import TelegramIcon from "@material-ui/icons/Telegram";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import CloudIcon from "@material-ui/icons/Cloud";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, [

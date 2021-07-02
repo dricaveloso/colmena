@@ -12,8 +12,12 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import UserContext from "store/user-context";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { JustifyContentEnum, TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   const response = await axios.get(
     "https://60c09a3db8d3670017555507.mockapi.io/api/v1/audios"
   );
@@ -30,19 +34,23 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-function Mediateca(props) {
+function Mediateca(props: any) {
   const router = useRouter();
   const { t } = useTranslation("mediateca");
 
   const { data } = getAudios();
 
+  const navigate = () => {
+    router.push("/mediateca");
+  };
+
   return (
     <LayoutApp title="Mediateca" back={true}>
-      <FlexBox justifyContent="space-between">
+      <FlexBox justifyContent={JustifyContentEnum.SPACEBETWEEN}>
         <div className="boxRowSpaceAround">
           <IconButton
             title={t("myCloudTextButton")}
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             fontSizeIcon="1.8em"
             color="black"
             icon="cloud"
@@ -50,7 +58,7 @@ function Mediateca(props) {
           />
           <IconButton
             title={t("mediaCloudTextButton")}
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             fontSizeIcon="1.8em"
             color="black"
             icon="cloud_queue"
@@ -58,11 +66,11 @@ function Mediateca(props) {
           />
           <IconButton
             title="Mediateca"
-            variantTitle="p"
+            variantTitle={TextVariantEnum.BODY2}
             fontSizeIcon="1.8em"
             color="black"
             icon="library_music"
-            handleClick={() => router.push("/mediateca")}
+            handleClick={navigate}
           />
         </div>
 

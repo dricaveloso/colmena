@@ -15,11 +15,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TabsMediateca({ title1, title2 }) {
+type Props = {
+  title1: string;
+  title2: string;
+};
+
+function TabsMediateca({ title1, title2 }: Props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: any, newValue: number) => {
     setValue(newValue);
   };
 

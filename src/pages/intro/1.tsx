@@ -4,7 +4,6 @@ import HeaderApp from "component/layout/HeaderApp";
 import Button from "component/ui/Button";
 import Box100 from "component/ui/Box100";
 import FlexBox from "component/ui/FlexBox";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import PermDataSettingSharpIcon from "@material-ui/icons/PermDataSettingSharp";
 import Divider from "component/ui/Divider";
@@ -13,8 +12,13 @@ import SkipButton from "component/pages/intro/SkipButton";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { TextVariantEnum, TextAlignEnum, TextDisplayEnum } from "enums";
+import Text from "component/ui/Text";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["intro", "common"])),
@@ -33,16 +37,15 @@ export default function Intro1() {
           <PermDataSettingSharpIcon style={{ fontSize: "150px" }} />
           <Divider marginTop={10} />
           <Box100>
-            <Typography
-              component="p"
-              variantMapping="p"
-              align="center"
-              display="block"
-              gutterBottom
+            <Text
+              variant={TextVariantEnum.BODY1}
+              align={TextAlignEnum.CENTER}
+              display={TextDisplayEnum.BLOCK}
               className="width-based-device"
+              gutterBottom
             >
               {t("step1.description")}
-            </Typography>
+            </Text>
           </Box100>
           <Divider />
           <Box style={{ display: "flex", flexDirection: "column" }}>

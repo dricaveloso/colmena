@@ -1,25 +1,34 @@
 import Button from "@material-ui/core/Button";
+import { ButtonColorProps, ButtonVariantProps, ButtonSizeProps } from "types";
+import { ButtonColorEnum, ButtonVariantEnum, ButtonSizeEnum } from "enums";
+
+type Props = {
+  title: string;
+  color?: ButtonColorProps | undefined;
+  variant?: ButtonVariantProps | undefined;
+  handleClick?: () => void;
+  style?: object;
+  size?: ButtonSizeProps | undefined;
+  endIcon?: string | null;
+  disabled?: boolean;
+};
 
 export default function Btn({
   title,
-  color = "primary",
-  naked = true,
-  variant = "contained",
+  color = ButtonColorEnum.PRIMARY,
+  variant = ButtonVariantEnum.CONTAINED,
   handleClick = () => {},
   style = {},
-  size = "medium",
-  block = false,
+  size = ButtonSizeEnum.MEDIUM,
   endIcon = null,
   disabled = false,
-}) {
+}: Props) {
   return (
     <Button
       style={{ textTransform: "capitalize", ...style }}
       variant={variant}
       color={color}
-      naked={naked.toString()}
       size={size}
-      block={block.toString()}
       onClick={handleClick}
       className="width-based-device"
       endIcon={endIcon}

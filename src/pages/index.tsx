@@ -1,8 +1,8 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import { Container, Button } from "@material-ui/core";
 import Link from "next/link";
+import Text from "component/ui/Text";
+import { TextVariantEnum } from "enums";
 
 function Index() {
   return (
@@ -16,12 +16,16 @@ function Index() {
         flexDirection: "column",
       }}
     >
-      <Typography variant="h4" component="h3" gutterBottom>
+      <Text variant={TextVariantEnum.H4} gutterBottom={true}>
         MAIA
-      </Typography>
-      <Typography variant="p" gutterBottom style={{ marginBottom: 20 }}>
+      </Text>
+      <Text
+        variant={TextVariantEnum.BODY1}
+        gutterBottom={true}
+        style={{ marginBottom: 20 }}
+      >
         Create, Collaborate and Share
-      </Typography>
+      </Text>
       <Link href="/invitation">
         <Button color="primary" variant="outlined">
           Demo

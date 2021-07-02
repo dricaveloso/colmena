@@ -2,11 +2,17 @@ import React from "react";
 import HeaderApp from "component/layout/HeaderApp";
 import FooterApp from "component/layout/FooterApp";
 
+type Props = {
+  showTermsOfUse?: boolean;
+  showAbout?: boolean;
+  children: React.ReactNode;
+};
+
 function LayoutIntroApp({
   showTermsOfUse = true,
   showAbout = false,
   children,
-}) {
+}: Props) {
   return (
     <div>
       <HeaderApp />

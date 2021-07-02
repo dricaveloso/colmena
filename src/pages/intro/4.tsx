@@ -3,7 +3,6 @@ import FooterApp from "component/layout/FooterApp";
 import HeaderApp from "component/layout/HeaderApp";
 import Button from "component/ui/Button";
 import FlexBox from "component/ui/FlexBox";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import SupervisedUserCircleSharpIcon from "@material-ui/icons/SupervisedUserCircleSharp";
 import Divider from "component/ui/Divider";
@@ -13,8 +12,13 @@ import Box100 from "component/ui/Box100";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import Text from "component/ui/Text";
+import { TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["intro", "common"])),
@@ -22,7 +26,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-export default function Intro4(props) {
+export default function Intro4() {
   const router = useRouter();
   const { t } = useTranslation("intro");
 
@@ -34,14 +38,13 @@ export default function Intro4(props) {
           <SupervisedUserCircleSharpIcon style={{ fontSize: "150px" }} />
           <Divider marginTop={10} />
           <Box100>
-            <Typography
-              component="p"
-              variantMapping="p"
+            <Text
+              variant={TextVariantEnum.BODY1}
               gutterBottom
               className="width-based-device"
             >
               {t("step4.description")}
-            </Typography>
+            </Text>
           </Box100>
           <Divider />
           <Box style={{ display: "flex", flexDirection: "column" }}>

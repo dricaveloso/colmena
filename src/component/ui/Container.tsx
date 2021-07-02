@@ -1,11 +1,21 @@
+import React from "react";
 import Container from "@material-ui/core/Container";
+import { SizeScreensProps } from "types";
+import { SizeScreensEnum } from "enums";
+
+type Props = {
+  maxWidth?: SizeScreensProps | false;
+  children: React.ReactNode;
+  justifyContent?: string;
+  extraStyle?: object;
+};
 
 export default function Ctnr({
   justifyContent = "center",
-  maxWidth = "lg",
+  maxWidth = SizeScreensEnum.LG,
   children,
   extraStyle = {},
-}) {
+}: Props) {
   return (
     <Container
       maxWidth={maxWidth}
@@ -18,7 +28,7 @@ export default function Ctnr({
         ...extraStyle,
       }}
     >
-      {children}
+      <>{children}</>
     </Container>
   );
 }

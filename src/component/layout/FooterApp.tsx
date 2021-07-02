@@ -5,19 +5,21 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import TermsOfUse from "component/statefull/TermsOfUse";
 
-function FooterApp({ about = false, terms = true, fixed = false }) {
+type Props = {
+  about?: boolean;
+  terms?: boolean;
+  fixed?: boolean;
+};
+
+function FooterApp({ about = false, terms = true, fixed = false }: Props) {
   const [openTerms, setOpenTerms] = useState(false);
   const { t } = useTranslation("common");
-
-  const customStyle = fixed
-    ? { position: "fixed", bottom: 0, marginBottom: 10 }
-    : { display: "flex", flexDirection: "column" };
-
   const router = useRouter();
 
-  return (
-    <Box style={customStyle}>
-      {about && (
+  function getActions() {
+    const actionsArray = [];
+    if (about) {
+      actionsArray.push(
         <Button
           size="small"
           variant="text"
@@ -26,8 +28,10 @@ function FooterApp({ about = false, terms = true, fixed = false }) {
         >
           {t("aboutMaia")}
         </Button>
-      )}
-      {terms && (
+      );
+    }
+    if (terms) {
+      actionsArray.push(
         <Button
           size="small"
           style={{ textTransform: "capitalize", color: "gray" }}
@@ -35,11 +39,28 @@ function FooterApp({ about = false, terms = true, fixed = false }) {
         >
           {t("termsOfUse")}
         </Button>
-      )}
+      );
+    }
+    actionsArray.push(
       <TermsOfUse
         open={openTerms}
-        handleSetOpen={(flag) => setOpenTerms(flag)}
+        handleSetOpen={(flag: boolean) => setOpenTerms(flag)}
       />
+    );
+    return actionsArray;
+  }
+
+  if (fixed) {
+    return (
+      <Box style={{ position: "fixed", bottom: 0, marginBottom: 10 }}>
+        {getActions()}
+      </Box>
+    );
+  }
+
+  return (
+    <Box style={{ display: "flex", flexDirection: "column" }}>
+      {getActions()}
     </Box>
   );
 }

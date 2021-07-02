@@ -1,4 +1,11 @@
-function Box100({ flexDirection = "column", children }) {
+import React from "react";
+
+type Props = {
+  flexDirection?: "column" | "row";
+  children: React.ReactNode;
+};
+
+function Box100({ flexDirection = "column", children }: Props) {
   return (
     <div
       style={{
@@ -9,7 +16,7 @@ function Box100({ flexDirection = "column", children }) {
         flexDirection,
       }}
     >
-      {children}
+      <>{children}</>
     </div>
   );
 }

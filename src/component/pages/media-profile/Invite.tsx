@@ -1,23 +1,34 @@
 import React, { useContext } from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import Select from "component/ui/Select";
 import { useTranslation } from "next-i18next";
 import NotificationContext from "store/notification-context";
+import { SelectVariantEnum, NotificationStatusEnum } from "enums";
 
-export default function InviteForm({ openInviteForm, handleCloseInviteForm }) {
+type Props = {
+  openInviteForm: boolean;
+  handleCloseInviteForm: () => void;
+};
+
+export default function InviteForm({
+  openInviteForm,
+  handleCloseInviteForm,
+}: Props) {
   const { t } = useTranslation("mediaProfile");
   const notificationCtx = useContext(NotificationContext);
 
   const handleSubmit = () => {
     notificationCtx.showNotification({
-      message: "Convite enviado com sucesso.",
-      status: "success",
+      message: t("messageSuccessInvite"),
+      status: NotificationStatusEnum.SUCCESS,
     });
     handleCloseInviteForm();
   };
@@ -29,35 +40,40 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }) {
         onClose={handleCloseInviteForm}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Convidar colaborador</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          {t("textInviteCollaborators")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Digite o nome, e-mail e perfil de acesso para o colaborador que
-            deseja convidar.
+            {t("descriptionModalDialogInvite")}
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Nome"
+            label={t("placeholderName")}
             type="text"
             fullWidth
           />
           <TextField
             margin="dense"
             id="email"
-            label="E-mail"
+            label={t("placeholderEmail")}
             type="email"
             fullWidth
           />
-          <Select label={t("Permissão")} variant="standard" id="1" />
+          <Select
+            label={t("placeholderPermission")}
+            variant={SelectVariantEnum.STANDARD}
+            id="1"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseInviteForm} color="primary">
-            Cancelar
+            {t("buttonCancelModalDialogInvite")}
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Enviar
+            {t("buttonOkModalDialogInvite")}
           </Button>
         </DialogActions>
       </Dialog>

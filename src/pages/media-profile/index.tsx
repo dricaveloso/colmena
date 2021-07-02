@@ -9,13 +9,21 @@ import MaterialIcon from "component/ui/MaterialIcon";
 import Text from "component/ui/Text";
 import Button from "component/ui/Button";
 import IconButton from "component/ui/IconButton";
-import { useRouter } from "next/router";
 import InviteForm from "component/pages/media-profile/Invite";
 import NotificationContext from "store/notification-context";
 import SocialMediaIconButton from "component/statefull/SocialMediaIconButtons";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import {
+  JustifyContentEnum,
+  NotificationStatusEnum,
+  SelectVariantEnum,
+  TextVariantEnum,
+} from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -43,14 +51,14 @@ function Profile() {
   const classes = useStyles();
   return (
     <LayoutApp title={t("title")} back={true}>
-      <FlexBox justifyContent="flex-start">
+      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <div className={classes.marginInputDivs}>
           <div className="boxColumnCenter">
             <MaterialIcon
               onClick={() =>
                 notificationCtx.showNotification({
                   message: c("featureUnavailable"),
-                  status: "warning",
+                  status: NotificationStatusEnum.SUCCESS,
                 })
               }
               icon="add_a_photo"
@@ -62,7 +70,7 @@ function Profile() {
             id="description"
             label={t("descriptionTitle")}
             multiline={true}
-            variant="outlined"
+            variant={SelectVariantEnum.OUTLINED}
           />
           <div className="boxGridTwoColumns">
             <IconButton
@@ -70,10 +78,11 @@ function Profile() {
               title={t("textEditCollaborators")}
               color="black"
               icon="edit_note"
+              variantTitle={TextVariantEnum.BODY2}
               handleClick={() =>
                 notificationCtx.showNotification({
                   message: c("featureUnavailable"),
-                  status: "warning",
+                  status: NotificationStatusEnum.WARNING,
                 })
               }
             />
@@ -82,6 +91,7 @@ function Profile() {
               title={t("textInviteCollaborators")}
               color="black"
               icon="group_add"
+              variantTitle={TextVariantEnum.BODY2}
               handleClick={() => setOpenInviteForm(true)}
             />
             <InviteForm
@@ -98,8 +108,8 @@ function Profile() {
               title={t("textSaveButton")}
               handleClick={() =>
                 notificationCtx.showNotification({
-                  message: "Informações salvas com sucesso.",
-                  status: "success",
+                  message: t("messageSuccessInformation"),
+                  status: NotificationStatusEnum.SUCCESS,
                 })
               }
             />

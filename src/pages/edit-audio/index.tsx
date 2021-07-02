@@ -1,13 +1,17 @@
 import React from "react";
 import FlexBox from "component/ui/FlexBox";
-import IconButton from "component/ui/IconButton";
 import LayoutApp from "component/statefull/LayoutApp";
 import Divider from "component/ui/Divider";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { I18nInterface } from "interfaces";
+import { JustifyContentEnum } from "enums";
+import MaterialIcon from "component/ui/MaterialIcon";
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({
+  locale,
+}: I18nInterface) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -24,7 +28,7 @@ function EditAudio() {
 
   return (
     <LayoutApp title={t("title")} back={true}>
-      <FlexBox justifyContent="center">
+      <FlexBox justifyContent={JustifyContentEnum.CENTER}>
         <p>{t("description")}</p>
         <Divider marginBottom={10} />
         <img
@@ -37,6 +41,8 @@ function EditAudio() {
           style={{
             display: "flex",
             flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
             paddingBottom: 20,
           }}
         >
@@ -47,12 +53,14 @@ function EditAudio() {
               justifyContent: "center",
             }}
           >
-            <IconButton
-              fontSizeIcon="1.8em"
-              color="black"
+            <MaterialIcon
               icon="play_circle_outline"
+              style={{ fontSize: "3.4em", color: "black" }}
             />
-            <IconButton fontSizeIcon="1.8em" color="black" icon="stop" />
+            <MaterialIcon
+              icon="stop"
+              style={{ fontSize: "3.4em", color: "black" }}
+            />
           </div>
           <div
             style={{
@@ -61,14 +69,19 @@ function EditAudio() {
               justifyContent: "center",
             }}
           >
-            <IconButton fontSizeIcon="1.4em" color="black" icon="fast_rewind" />
-            <IconButton
-              fontSizeIcon="1.4em"
-              color="black"
+            <MaterialIcon
+              icon="fast_rewind"
+              style={{ fontSize: "2.3em", color: "black" }}
+            />
+            <MaterialIcon
               icon="fast_forward"
+              style={{ fontSize: "2.3em", color: "black" }}
             />
           </div>
-          <IconButton fontSizeIcon="1.4em" color="black" icon="crop" />
+          <MaterialIcon
+            icon="crop"
+            style={{ fontSize: "1.8em", color: "black" }}
+          />
         </div>
       </FlexBox>
     </LayoutApp>

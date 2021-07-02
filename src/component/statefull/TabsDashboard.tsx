@@ -1,9 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { Tabs, Tab, Paper } from "@material-ui/core";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
-import Paper from "@material-ui/core/Paper";
 import LibraryMusicIcon from "@material-ui/icons/LibraryMusic";
 import { useRouter } from "next/router";
 
@@ -14,12 +12,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TabsDashboard({ title1, title2 }) {
+type Props = {
+  title1: string;
+  title2: string;
+};
+
+function TabsDashboard({ title1, title2 }: Props) {
   const classes = useStyles();
   const router = useRouter();
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: any, newValue: number) => {
     setValue(newValue);
   };
 
@@ -35,7 +38,7 @@ function TabsDashboard({ title1, title2 }) {
         >
           <Tab icon={<HelpOutlineIcon fontSize="large" />} label={title1} />
           <Tab
-            onClick={() => router.push("/mediateca")}
+            onClick={() => router.push("/my-library")}
             icon={<LibraryMusicIcon fontSize="large" />}
             label={title2}
           />

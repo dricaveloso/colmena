@@ -1,11 +1,17 @@
 import React, { useContext } from "react";
 import Notification from "component/ui/Notification";
 import NotificationContext from "store/notification-context";
+import { NotificationDataInterface } from "interfaces";
 
-function GlobalLayout({ children }) {
+type Props = {
+  children: React.ReactNode;
+};
+
+function GlobalLayout({ children }: Props) {
   const notificationCtx = useContext(NotificationContext);
 
-  const activeNotification = notificationCtx.notification;
+  const activeNotification: NotificationDataInterface | null =
+    notificationCtx.notification;
 
   return (
     <>

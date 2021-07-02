@@ -1,17 +1,38 @@
 import Box from "@material-ui/core/Container";
+import {
+  FlexDirectionProps,
+  AlignItemsProps,
+  JustifyContentProps,
+  TextAlignProps,
+} from "types";
+import {
+  TextAlignEnum,
+  FlexDirectionEnum,
+  AlignItemsEnum,
+  JustifyContentEnum,
+} from "enums";
+
+type Props = {
+  textAlign?: TextAlignProps;
+  padding?: number;
+  flexDirection?: FlexDirectionProps;
+  alignItems?: AlignItemsProps;
+  justifyContent?: JustifyContentProps;
+  extraStyle?: object;
+  children: React.ReactNode;
+};
 
 export default function Bx({
-  textAlign = "center",
+  textAlign = TextAlignEnum.CENTER,
   padding = 10,
-  flexDirection = "column",
-  alignItems = "center",
-  justifyContent = "space-between",
+  flexDirection = FlexDirectionEnum.COLUMN,
+  alignItems = AlignItemsEnum.CENTER,
+  justifyContent = JustifyContentEnum.SPACEBETWEEN,
   extraStyle = {},
   children,
-}) {
+}: Props) {
   return (
     <Box
-      my={4}
       style={{
         textAlign,
         padding,
@@ -21,10 +42,11 @@ export default function Bx({
         justifyContent,
         alignItems,
         marginBottom: 10,
+        marginTop: 4,
         ...extraStyle,
       }}
     >
-      {children}
+      <>{children}</>
     </Box>
   );
 }
