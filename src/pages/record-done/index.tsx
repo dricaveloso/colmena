@@ -10,13 +10,11 @@ import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 import { JustifyContentEnum, TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["recordDone", "drawer", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["recordDone", "drawer", "common"])),
+  },
+});
 
 function RecordDone() {
   const router = useRouter();

@@ -22,13 +22,11 @@ import {
   TextVariantEnum,
 } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["profile", "drawer", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["profile", "drawer", "common"])),
+  },
+});
 
 const useStyles = makeStyles({
   marginInputDivs: {
@@ -50,7 +48,7 @@ function Profile() {
   };
 
   return (
-    <LayoutApp title={t("title")} back={true}>
+    <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <div
           style={{

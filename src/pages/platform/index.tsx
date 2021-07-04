@@ -11,13 +11,11 @@ import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 import { TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["common"])),
+  },
+});
 
 export default function Platform() {
   const { t } = useTranslation("common");
@@ -52,7 +50,7 @@ export default function Platform() {
             handleClick={navigate}
           />
         </div>
-        <FooterApp about={false} terms={true} />
+        <FooterApp about={false} terms />
       </FlexBox>
     </Container>
   );

@@ -3,10 +3,10 @@ import { IconButton, AppBar, Avatar, Toolbar } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useRouter } from "next/router";
-import Drawer from "./Drawer";
 import Link from "next/link";
 import { PositionProps } from "types";
 import { PositionEnum } from "enums";
+import Drawer from "./Drawer";
 
 type Props = {
   title: string;

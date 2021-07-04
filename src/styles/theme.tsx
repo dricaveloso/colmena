@@ -1,7 +1,7 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 
-let theme: Theme = createMuiTheme({
+const theme: Theme = createMuiTheme({
   typography: {
     caption: {
       fontSize: 16,
@@ -10,6 +10,6 @@ let theme: Theme = createMuiTheme({
   },
 });
 
-theme = responsiveFontSizes(theme);
+const themeRelease = responsiveFontSizes(theme);
 
-export default theme;
+export default themeRelease;

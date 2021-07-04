@@ -8,6 +8,7 @@ import Divider from "@material-ui/core/Divider";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertSharpIcon from "@material-ui/icons/MoreVertSharp";
 import { FileInterface } from "interfaces";
+import { uuid } from "uuidv4";
 
 interface WrapperFileInterface {
   data: FileInterface[];
@@ -15,10 +16,10 @@ interface WrapperFileInterface {
 
 export default function AudioList({ data }: WrapperFileInterface) {
   return (
-    <List dense={true}>
-      {data.map((item, idx) => (
+    <List dense>
+      {data.map((item) => (
         <>
-          <ListItem key={idx}>
+          <ListItem key={uuid()}>
             <ListItemText primary={item.name} secondary={item.category.name} />
             <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="favorite">

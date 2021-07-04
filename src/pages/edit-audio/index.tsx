@@ -9,19 +9,17 @@ import { I18nInterface } from "interfaces";
 import { JustifyContentEnum } from "enums";
 import MaterialIcon from "component/ui/MaterialIcon";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["editAudio", "drawer", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["editAudio", "drawer", "common"])),
+  },
+});
 
 function EditAudio() {
   const { t } = useTranslation("editAudio");
 
   return (
-    <LayoutApp title={t("title")} back={true}>
+    <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.CENTER}>
         <p>{t("description")}</p>
         <Divider marginBottom={10} />

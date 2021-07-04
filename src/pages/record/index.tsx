@@ -11,20 +11,18 @@ import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 import { JustifyContentEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["record", "drawer", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["record", "drawer", "common"])),
+  },
+});
 
 function Record() {
   const router = useRouter();
   const { t } = useTranslation("record");
 
   return (
-    <LayoutApp title={t("title")} back={true}>
+    <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.SPACEAROUND}>
         <ShareLinkComponent url="https://dev.maia.press/jghd-asde-erty" />
         <RecordUsers />

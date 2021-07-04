@@ -6,6 +6,7 @@ import Link from "next/link";
 import MaterialIcon from "component/ui/MaterialIcon";
 import NotificationContext from "store/notification-context";
 import { NotificationStatusEnum } from "enums";
+import { uuid } from "uuidv4";
 
 type ListItemProps = {
   id: number;
@@ -123,7 +124,7 @@ function Drawer({ open, onOpen, onClose }: Props) {
     color?: string | undefined,
     title?: string,
   ): React.ReactNode => (
-    <ListItem dense={true} divider={true} key={id}>
+    <ListItem dense divider key={id}>
       <ListItemIcon>
         <MaterialIcon icon={icon} fontSize="small" style={color ? { color } : {}} />
       </ListItemIcon>
@@ -149,13 +150,13 @@ function Drawer({ open, onOpen, onClose }: Props) {
           const { id, icon, color, title, url, handleClick } = item;
           if (url)
             return (
-              <Link key={id} href={url}>
+              <Link key={uuid()} href={url}>
                 {getListItemButton(id, icon, color, title)}
               </Link>
             );
 
           return (
-            <div onClick={handleClick} key={id}>
+            <div onClick={handleClick} key={uuid()}>
               {getListItemButton(id, icon, color, title)}
             </div>
           );

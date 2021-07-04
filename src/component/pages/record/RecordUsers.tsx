@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
+import { uuid } from "uuidv4";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -30,8 +31,8 @@ export default function RecordUsers() {
         </Badge>
         <small style={{ display: "block", marginTop: 5 }}>Makena</small>
       </div>
-      {[0, 1].map((item, idx) => (
-        <div key={idx}>
+      {[0, 1].map(() => (
+        <div key={uuid()}>
           <Badge color="secondary" variant="dot">
             <Avatar alt="Remy Sharp" src="/avatar/2.jpg" className={classes.large} />
           </Badge>

@@ -36,7 +36,7 @@ function Mediateca(props: any) {
   };
 
   return (
-    <LayoutApp title="Mediateca" back={true}>
+    <LayoutApp title="Mediateca" back>
       <FlexBox justifyContent={JustifyContentEnum.SPACEBETWEEN}>
         <div className="boxRowSpaceAround">
           <IconButton
@@ -74,6 +74,7 @@ function Mediateca(props: any) {
             width: "100%",
           }}
         >
+          {/* eslint-disable-next-line react/destructuring-assignment */}
           <AudioList data={data || props.data} />
         </div>
         <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>

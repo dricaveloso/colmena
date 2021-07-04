@@ -4,6 +4,7 @@ import { CardContent, CardMedia, Card } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
 import Text from "component/ui/Text";
 import { TextColorEnum, TextVariantEnum } from "enums";
+import { uuid } from "uuidv4";
 
 const useStyles = makeStyles({
   root: {
@@ -25,8 +26,9 @@ export default function RecentPublications() {
         <Text variant={TextVariantEnum.SUBTITLE2}>{t("recentPublicationsTitle")}</Text>
       </div>
       <div className="scrollingContainer">
-        {[0, 1, 2].map((item, idx) => (
-          <div key={idx} style={{ marginRight: 15 }}>
+        {/* eslint-disable-next-line no-unused-vars */}
+        {[0, 1, 2].map((_item, _idx) => (
+          <div key={uuid()} style={{ marginRight: 15 }}>
             <Card className={classes.root}>
               <CardMedia
                 component="img"

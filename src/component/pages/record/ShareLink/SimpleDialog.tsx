@@ -26,19 +26,19 @@ function SimpleDialog({ onClose, open, url, titleShareLink }: SimpleDialogProps)
       <div style={{ padding: 10, display: "flex", flexDirection: "column" }}>
         <EmailShareButton url={url} onShareWindowClose={onClose}>
           <BoxItemShare title="E-mail">
-            <EmailIcon size={32} round={true} />
+            <EmailIcon size={32} round />
           </BoxItemShare>
         </EmailShareButton>
         <Divider />
         <TelegramShareButton url={url} onShareWindowClose={onClose}>
           <BoxItemShare title="Telegram">
-            <TelegramIcon size={32} round={true} />
+            <TelegramIcon size={32} round />
           </BoxItemShare>
         </TelegramShareButton>
         <Divider />
         <WhatsappShareButton url={url} onShareWindowClose={onClose}>
           <BoxItemShare title="Whatsapp">
-            <WhatsappIcon size={32} round={true} />
+            <WhatsappIcon size={32} round />
           </BoxItemShare>
         </WhatsappShareButton>
       </div>

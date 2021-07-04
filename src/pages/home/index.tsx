@@ -8,20 +8,18 @@ import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 import { JustifyContentEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["home", "drawer", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["home", "drawer", "common"])),
+  },
+});
 
 function Home() {
   const [showGreeting, setShowGreeting] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("isFirstAccess") || localStorage.getItem("isFirstAccess") == "yes") {
+    if (!localStorage.getItem("isFirstAccess") || localStorage.getItem("isFirstAccess") === "yes") {
       setTimeout(() => {
         setShowGreeting(true);
       }, 200);
@@ -37,7 +35,7 @@ function Home() {
   }, []);
 
   return (
-    <LayoutApp title="MAIA" back={true}>
+    <LayoutApp title="MAIA" back>
       {showGreeting && !showContent ? (
         <FlexBox justifyContent={JustifyContentEnum.CENTER}>
           <Greeting showGreeting={showGreeting} />
@@ -49,7 +47,7 @@ function Home() {
               showContent={showContent}
               isFirstAccess={
                 !localStorage.getItem("isFirstAccess") ||
-                localStorage.getItem("isFirstAccess") == "yes"
+                localStorage.getItem("isFirstAccess") === "yes"
               }
             />
           </FlexBox>

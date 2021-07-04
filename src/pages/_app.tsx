@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>MAIA - Create, Collaborate and Share </title>
         <meta
@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </UserContextProvider>
         </NotificationContextProvider>
       </ThemeProvider>
-    </React.Fragment>
+    </>
   );
 }
 

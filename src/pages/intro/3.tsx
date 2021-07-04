@@ -16,13 +16,11 @@ import { I18nInterface } from "interfaces";
 import Text from "component/ui/Text";
 import { TextVariantEnum } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["intro", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["intro", "common"])),
+  },
+});
 
 export default function Intro3() {
   const router = useRouter();
@@ -51,7 +49,7 @@ export default function Intro3() {
             <SkipButton title={t("forms.skipButton")} />
           </Box>
         </Box>
-        <FooterApp about={false} terms={true} />
+        <FooterApp about={false} terms />
       </FlexBox>
     </Container>
   );

@@ -18,13 +18,11 @@ import { I18nInterface } from "interfaces";
 import { NotificationStatusEnum, TextVariantEnum } from "enums";
 import Text from "component/ui/Text";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["completeRegister", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["completeRegister", "common"])),
+  },
+});
 
 export default function CompleteRegister() {
   const [openTerms, setOpenTerms] = useState(false);
@@ -76,7 +74,7 @@ export default function CompleteRegister() {
                   inputProps={{ "aria-label": "uncontrolled-checkbox" }}
                 />
                 <p>
-                  {c("agreeWithTerms")}{" "}
+                  {c("agreeWithTerms")} {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                   <a
                     style={{ color: "tomato", cursor: "pointer" }}
                     onClick={() => setOpenTerms(true)}

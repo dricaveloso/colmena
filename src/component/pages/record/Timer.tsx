@@ -4,7 +4,7 @@ import Lottie from "react-lottie";
 import Recording from "component/ui/lottie/recording-blink.json";
 
 function format2digits(value: number) {
-  return value < 10 ? "0" + value.toString() : value;
+  return value < 10 ? `0${value.toString()}` : value;
 }
 
 type Props = {
@@ -44,7 +44,7 @@ export default function Timer({ redirectPage }: Props) {
           <span>{format2digits(seconds)}</span>
         </div>
       </div>
-      <button onClick={initStart} style={{ background: "none", border: "none" }}>
+      <button type="button" onClick={initStart} style={{ background: "none", border: "none" }}>
         <Lottie isStopped={stop} options={recordingOptions} height={95} width={95} />
       </button>
     </div>

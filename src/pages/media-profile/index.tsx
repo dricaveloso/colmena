@@ -21,13 +21,11 @@ import {
   TextVariantEnum,
 } from "enums";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["mediaProfile", "drawer", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["mediaProfile", "drawer", "common"])),
+  },
+});
 
 const useStyles = makeStyles({
   marginInputDivs: {
@@ -44,7 +42,7 @@ function Profile() {
   const [openInviteForm, setOpenInviteForm] = useState(false);
   const classes = useStyles();
   return (
-    <LayoutApp title={t("title")} back={true}>
+    <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <div className={classes.marginInputDivs}>
           <div className="boxColumnCenter">
@@ -63,7 +61,7 @@ function Profile() {
           <TextField
             id="description"
             label={t("descriptionTitle")}
-            multiline={true}
+            multiline
             variant={SelectVariantEnum.OUTLINED}
           />
           <div className="boxGridTwoColumns">

@@ -16,10 +16,10 @@ function Index() {
         flexDirection: "column",
       }}
     >
-      <Text variant={TextVariantEnum.H4} gutterBottom={true}>
+      <Text variant={TextVariantEnum.H4} gutterBottom>
         MAIA
       </Text>
-      <Text variant={TextVariantEnum.BODY1} gutterBottom={true} style={{ marginBottom: 20 }}>
+      <Text variant={TextVariantEnum.BODY1} gutterBottom style={{ marginBottom: 20 }}>
         Create, Collaborate and Share
       </Text>
       <Link href="/invitation">

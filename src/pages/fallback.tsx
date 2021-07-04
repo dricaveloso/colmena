@@ -6,13 +6,11 @@ import ResourceUnavailable from "component/ui/ResourceUnavailable";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["common"])),
+  },
+});
 
 function Fallback() {
   const { t } = useTranslation("common");

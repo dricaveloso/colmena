@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { UserInfoInterface } from "interfaces";
+
 interface UserContextInterface {
   isLogged: boolean;
   userInfo: UserInfoInterface | null;

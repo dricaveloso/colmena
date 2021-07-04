@@ -11,19 +11,17 @@ import CloudIcon from "@material-ui/icons/Cloud";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "interfaces";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["shareAudio", "drawer", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["shareAudio", "drawer", "common"])),
+  },
+});
 
 function ShareAudio() {
   const { t } = useTranslation("shareAudio");
 
   return (
-    <LayoutApp title={t("title")} back={true}>
+    <LayoutApp title={t("title")} back>
       <FlexBox>
         <div
           style={{

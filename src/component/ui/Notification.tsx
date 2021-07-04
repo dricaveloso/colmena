@@ -4,6 +4,7 @@ import NotificationContext from "store/notification-context";
 import MuiAlert from "@material-ui/lab/Alert";
 import { NotificationStatusEnum } from "enums";
 import { NotificationStatusProps } from "types";
+import { uuid } from "uuidv4";
 
 type Props = {
   message: string;
@@ -22,7 +23,7 @@ function Notification({ message, status = NotificationStatusEnum.INFO }: Props) 
   };
 
   return (
-    <Snackbar key={"centercenter"} onClose={handleClose} open={true} autoHideDuration={5000}>
+    <Snackbar key={uuid()} onClose={handleClose} open autoHideDuration={5000}>
       <MuiAlert elevation={6} variant="filled" severity={status}>
         {message}
       </MuiAlert>

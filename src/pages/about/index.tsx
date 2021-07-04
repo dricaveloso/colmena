@@ -11,13 +11,11 @@ import { JustifyContentEnum, TextVariantEnum } from "enums";
 import MaterialIcon from "component/ui/MaterialIcon";
 import Text from "component/ui/Text";
 
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["intro", "drawer", "common"])),
-    },
-  };
-};
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["intro", "drawer", "common"])),
+  },
+});
 
 interface ItemInterface {
   id: number;
@@ -81,7 +79,7 @@ function About() {
   ];
 
   return (
-    <LayoutApp title={t("aboutTitle")} back={true}>
+    <LayoutApp title={t("aboutTitle")} back>
       <FlexBox>
         <div
           style={{
