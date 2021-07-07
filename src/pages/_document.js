@@ -9,16 +9,16 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <meta name="application-name" content="MAIA" />
+          <meta name="application-name" content="Colmena" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"
             content="default"
           />
-          <meta name="apple-mobile-web-app-title" content="MAIA" />
+          <meta name="apple-mobile-web-app-title" content="Colmena" />
           <meta
             name="description"
-            content="MAIA - Create, Collaborate and Share"
+            content="Colmena - Create, Collaborate and Share"
           />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />

@@ -17,7 +17,7 @@ function Index() {
       }}
     >
       <Typography variant="h4" component="h3" gutterBottom>
-        MAIA
+        Colmena
       </Typography>
       <Typography variant="p" gutterBottom style={{ marginBottom: 20 }}>
         Create, Collaborate and Share
