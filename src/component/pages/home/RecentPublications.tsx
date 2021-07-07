@@ -4,7 +4,7 @@ import { CardContent, CardMedia, Card } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
 import Text from "component/ui/Text";
 import { TextColorEnum, TextVariantEnum } from "enums";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 
 const useStyles = makeStyles({
   root: {

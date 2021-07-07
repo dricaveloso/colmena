@@ -2,9 +2,9 @@ import React from "react";
 import Box from "@material-ui/core/Container";
 import { FlexDirectionProps, AlignItemsProps, JustifyContentProps, TextAlignProps } from "types";
 import { TextAlignEnum, FlexDirectionEnum, AlignItemsEnum, JustifyContentEnum } from "enums";
+import { v4 as uuid } from "uuid";
 
 type Props = {
-  key?: number;
   textAlign?: TextAlignProps;
   padding?: number;
   flexDirection?: FlexDirectionProps;
@@ -16,7 +16,6 @@ type Props = {
 };
 
 export default function Bx({
-  key = 1,
   textAlign = TextAlignEnum.CENTER,
   padding = 10,
   flexDirection = FlexDirectionEnum.COLUMN,
@@ -27,7 +26,7 @@ export default function Bx({
 }: Props) {
   return (
     <Box
-      key={key}
+      key={uuid()}
       style={{
         textAlign,
         padding,

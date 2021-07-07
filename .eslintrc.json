@@ -50,6 +50,7 @@
     "react-hooks/rules-of-hooks": 0,
     "react/jsx-props-no-spreading": 0,
     "implicit-arrow-linebreak": 0,
+    "linebreak-style": ["error", "unix"],
     "react/jsx-wrap-multilines": 0,
     "react/jsx-curly-newline": 0,
     "curly": 0,
@@ -88,7 +89,7 @@
     "no-console": [
       2,
       {
-        "allow": ["warn", "error"]
+        "allow": ["warn", "error", "log"]
       }
     ]
   }

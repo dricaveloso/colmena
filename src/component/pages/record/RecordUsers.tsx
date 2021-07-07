@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 
 const useStyles = makeStyles((theme) =>
   createStyles({

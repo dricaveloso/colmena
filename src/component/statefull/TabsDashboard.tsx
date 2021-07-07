@@ -38,7 +38,7 @@ function TabsDashboard({ title1, title2 }: Props) {
         >
           <Tab icon={<HelpOutlineIcon fontSize="large" />} label={title1} />
           <Tab
-            onClick={() => router.push("/my-library")}
+            onClick={() => router.push("/library")}
             icon={<LibraryMusicIcon fontSize="large" />}
             label={title2}
           />

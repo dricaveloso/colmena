@@ -34,9 +34,13 @@ function IconButtonCtr({
       style={{
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <IconButton
+        disableRipple
+        disableFocusRipple
         style={{ margin: 0, padding: 5, fontSize: fontSizeIcon, color }}
         onClick={handleClick}
       >

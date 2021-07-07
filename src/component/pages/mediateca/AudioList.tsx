@@ -8,7 +8,7 @@ import Divider from "@material-ui/core/Divider";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertSharpIcon from "@material-ui/icons/MoreVertSharp";
 import { FileInterface } from "interfaces";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 
 interface WrapperFileInterface {
   data: FileInterface[];

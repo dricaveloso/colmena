@@ -9,38 +9,38 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <meta name="application-name" content="MAIA" />
+          <meta name="application-name" content="Colmena" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-          <meta name="apple-mobile-web-app-title" content="MAIA" />
-          <meta name="description" content="MAIA - Create, Collaborate and Share" />
+          <meta name="apple-mobile-web-app-title" content="Colmena" />
+          <meta name="description" content="Colmena - Create, Collaborate and Share" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="msapplication-config" content="/static/icons/browserconfig.xml" />
           <meta name="msapplication-TileColor" content={theme.palette.primary.main} />
           <meta name="msapplication-tap-highlight" content="no" />
 
-          <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png" />
-          <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png" />
-          <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png" />
-          <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png" />
-          <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png" />
-          <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png" />
-          <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png" />
-          <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png" />
+          <link rel="apple-touch-icon" sizes="57x57" href="/icons/pwa/apple-icon-57x57.png" />
+          <link rel="apple-touch-icon" sizes="60x60" href="/icons/pwa/apple-icon-60x60.png" />
+          <link rel="apple-touch-icon" sizes="72x72" href="/icons/pwa/apple-icon-72x72.png" />
+          <link rel="apple-touch-icon" sizes="76x76" href="/icons/pwa/apple-icon-76x76.png" />
+          <link rel="apple-touch-icon" sizes="114x114" href="/icons/pwa/apple-icon-114x114.png" />
+          <link rel="apple-touch-icon" sizes="120x120" href="/icons/pwa/apple-icon-120x120.png" />
+          <link rel="apple-touch-icon" sizes="144x144" href="/icons/pwa/apple-icon-144x144.png" />
+          <link rel="apple-touch-icon" sizes="152x152" href="/icons/pwa/apple-icon-152x152.png" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/icons/pwa/apple-icon-180x180.png" />
           <link
             rel="icon"
             type="image/png"
             sizes="192x192"
-            href="/icons/android-icon-192x192.png"
+            href="/icons/pwa/android-icon-192x192.png"
           />
-          <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
-          <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+          <link rel="icon" type="image/png" sizes="32x32" href="/icons/pwa/favicon-32x32.png" />
+          <link rel="icon" type="image/png" sizes="96x96" href="/icons/pwa/favicon-96x96.png" />
+          <link rel="icon" type="image/png" sizes="16x16" href="/icons/pwa/favicon-16x16.png" />
           <link rel="manifest" href="/manifest.json" />
           <meta name="msapplication-TileColor" content={theme.palette.primary.main} />
-          <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+          <meta name="msapplication-TileImage" content="ms-icon-144x144.png" />
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         </Head>

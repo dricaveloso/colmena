@@ -73,7 +73,7 @@ function About() {
       id: 6,
       icon: "library_music",
       text: d("myFilesTitle"),
-      handleClick: () => navigate("/my-library"),
+      handleClick: () => navigate("/library"),
       fontSize: fontSizeExtra,
     },
   ];

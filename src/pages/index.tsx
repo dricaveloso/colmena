@@ -17,7 +17,7 @@ function Index() {
       }}
     >
       <Text variant={TextVariantEnum.H4} gutterBottom>
-        MAIA
+        Colmena
       </Text>
       <Text variant={TextVariantEnum.BODY1} gutterBottom style={{ marginBottom: 20 }}>
         Create, Collaborate and Share

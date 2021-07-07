@@ -1,28 +1,31 @@
-import React, { useState } from "react";
-import { useTranslation } from "next-i18next";
-import Link from "next/link";
-import TermsOfUse from "component/statefull/TermsOfUse";
+import React from "react";
+import Grid from "@material-ui/core/Grid";
+import SvgIcon from "component/ui/SvgIcon";
 
 function FooterApp() {
-  const [openTerms, setOpenTerms] = useState(false);
-  const { t } = useTranslation("drawer");
-
-  const openTermsHandle = (flag: boolean) => {
-    setOpenTerms(flag);
-  };
-
   return (
-    <>
-      <div className="footer">
-        2021 CC - MAIA -{" "}
-        <span onClick={() => openTermsHandle(true)} aria-hidden="true">
-          {t("termsOfUse").toLowerCase()}
-        </span>{" "}
-        -<Link href="/about">{t("aboutMaia").toLowerCase()}</Link>-
-        <Link href="/talk-to-us">{t("supportTitle").toLowerCase()}</Link>
-      </div>
-      <TermsOfUse open={openTerms} handleSetOpen={(flag) => setOpenTerms(flag)} />
-    </>
+    <div className="footer">
+      <Grid container spacing={1}>
+        <Grid item xs={2}>
+          <SvgIcon icon="settings" />
+        </Grid>
+        <Grid item xs={2}>
+          <SvgIcon icon="edit" />
+        </Grid>
+        <Grid item xs={2}>
+          <SvgIcon icon="microphone" />
+        </Grid>
+        <Grid item xs={2}>
+          <SvgIcon icon="library" />
+        </Grid>
+        <Grid item xs={2}>
+          <SvgIcon icon="cut" />
+        </Grid>
+        <Grid item xs={2}>
+          <SvgIcon icon="world_map" />
+        </Grid>
+      </Grid>
+    </div>
   );
 }
 

@@ -1,1 +1,1 @@
-# MAIA - Front end
+# Colmena - Front end

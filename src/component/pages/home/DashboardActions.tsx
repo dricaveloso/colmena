@@ -48,7 +48,7 @@ function DashboardActions({ showContent, isFirstAccess }: Props) {
             variantTitle={TextVariantEnum.BODY2}
             icon="cloud"
             fontSizeIcon="1.5em"
-            handleClick={() => navigate("/my-library")}
+            handleClick={() => navigate("/library")}
           />
           <IconButton
             title={d("communityTitle")}
@@ -69,7 +69,7 @@ function DashboardActions({ showContent, isFirstAccess }: Props) {
             variantTitle={TextVariantEnum.BODY2}
             icon="mic"
             fontSizeIcon="2.3em"
-            handleClick={() => navigate("/record")}
+            handleClick={() => navigate("/conference")}
             color="red"
           />
         </div>

@@ -4,7 +4,7 @@ import NotificationContext from "store/notification-context";
 import MuiAlert from "@material-ui/lab/Alert";
 import { NotificationStatusEnum } from "enums";
 import { NotificationStatusProps } from "types";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 
 type Props = {
   message: string;
