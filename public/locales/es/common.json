@@ -1,20 +1,20 @@
 {
   "form": {
-    "skipButton": "Pular",
-    "nextIntro": "Prosseguir",
-    "backButton": "Back"
+    "skipButton": "Saltar",
+    "nextIntro": "Continuar",
+    "backButton": "Volver"
   },
-  "agreeWithTerms": "estoy de acuerdo con ",
+  "agreeWithTerms": "Estoy de acuerdo con ",
   "termsOfUse": "Terminos de uso",
   "termsOfUseText": "Todos los seres humanos nacen libres e iguales en dignidad y derechos. Toda persona tiene derecho a la vida, la libertad y la seguridad personal. Nadie será sometido a torturas ni a penas o tratos crueles, inhumanos o degradantes. Toda persona tiene derecho al reconocimiento en todas partes como persona ante la ley.",
-  "aboutMaia": "Acerca de MAIA",
+  "aboutMaia": "Acerca de Colmena",
   "profileText": "Mi Perfil",
   "textUseApp": "Usar el app",
   "featureUnavailable": "Esta función aún no está disponible",
-  "messageOffline": "Please access this page, at least once, with Internet enable.",
-  "welcomeUserMessage": "Welcome {{userName}}",
+  "messageOffline": "Acceda a esta página, al menos una vez, con Internet habilitada.",
+  "welcomeUserMessage": "Bien venido/a {{userName}}",
   "welcomeRadioMessage": "Radio {{mediaName}}",
-  "notFoundPageText": "Page not found",
+  "notFoundPageText": "Página no encontrada",
   "internErrorPageText": "Intern error",
-  "constructionPageText": "Page under construction"
+  "constructionPageText": "Página en construción"
 }
