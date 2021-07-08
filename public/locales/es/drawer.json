@@ -1,14 +1,14 @@
 {
   "homeTitle": "Inicio",
-  "myFilesTitle": "Library",
+  "myFilesTitle": "Librería",
   "recordTitle": "Grabar",
-  "editAudioTitle": "Editar Audio",
-  "editTextTitle": "Editar Texto",
+  "editAudioTitle": "Editar audio",
+  "editTextTitle": "Editar texto",
   "communityTitle": "Comunidad",
-  "editMediaTitle": "Media Profile",
-  "userProfileTitle": "Mi Perfil",
+  "editMediaTitle": "Perfil medio",
+  "userProfileTitle": "Mi perfil",
   "supportTitle": "Ayuda",
-  "logoutTitle": "Logout",
-  "termsOfUse": "Terminos de uso",
-  "aboutMaia": "Acerca de MAIA"
+  "logoutTitle": "Salir",
+  "termsOfUse": "Términos de uso",
+  "aboutMaia": "Acerca de Colmena"
 }
