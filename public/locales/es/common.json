@@ -1,20 +1,20 @@
 {
   "form": {
-    "skipButton": "Pular",
-    "nextIntro": "Prosseguir",
-    "backButton": "Back"
+    "skipButton": "Saltar",
+    "nextIntro": "Siguiente",
+    "backButton": "Anterior"
   },
-  "agreeWithTerms": "estoy de acuerdo con ",
-  "termsOfUse": "Terminos de uso",
+  "agreeWithTerms": "estoy de acuerdo con los ",
+  "termsOfUse": "Términos de uso",
   "termsOfUseText": "Todos los seres humanos nacen libres e iguales en dignidad y derechos. Toda persona tiene derecho a la vida, la libertad y la seguridad personal. Nadie será sometido a torturas ni a penas o tratos crueles, inhumanos o degradantes. Toda persona tiene derecho al reconocimiento en todas partes como persona ante la ley.",
-  "aboutMaia": "Acerca de MAIA",
+  "aboutMaia": "Acerca de Colmena",
   "profileText": "Mi Perfil",
-  "textUseApp": "Usar el app",
+  "textUseApp": "Usar la aplicación",
   "featureUnavailable": "Esta función aún no está disponible",
-  "messageOffline": "Please access this page, at least once, with Internet enable.",
-  "welcomeUserMessage": "Welcome {{userName}}",
-  "welcomeRadioMessage": "Radio {{mediaName}}",
-  "notFoundPageText": "Page not found",
-  "internErrorPageText": "Intern error",
-  "constructionPageText": "Page under construction"
+  "messageOffline": "Por favor, accede a esta página, al menos una vez, con el dispositivo conectado a Internet para disponer de la aplicación en modo off-line (sin conexión).",
+  "welcomeUserMessage": "Hola {{userName}}",
+  "welcomeRadioMessage": "{{mediaName}}",
+  "notFoundPageText": "Página no encontrada",
+  "internErrorPageText": "Error interno",
+  "constructionPageText": "Página en construcción"
 }
