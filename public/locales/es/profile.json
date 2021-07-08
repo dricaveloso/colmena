@@ -1,13 +1,13 @@
 {
   "title": "Perfil",
-  "textEditButton": "Editar Perfil",
+  "textEditButton": "Editar perfil",
   "textPhotoButton": "Subir foto",
-  "mediaTitle": "Meio",
-  "nameField": "Nombre",
+  "mediaTitle": "Medio",
+  "nameField": "Nombre y apellido",
   "emailField": "E-mail",
   "urlField": "URL / BLOG",
   "socialMediaTitle": "Redes sociales",
   "editButton": "Editar",
-  "saveButton": "Salvar",
+  "saveButton": "Guardar",
   "resetPasswordButton": "Restablecer la contraseña"
 }
