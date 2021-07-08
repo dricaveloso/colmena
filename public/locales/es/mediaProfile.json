@@ -1,11 +1,11 @@
 {
   "title": "Perfil medio",
   "name": "Medio",
-  "textSaveButton": "Salvar",
+  "textSaveButton": "Guardar",
   "descriptionTitle": "Descripción",
-  "textEditCollaborators": "Editar colaboradores",
-  "textInviteCollaborators": "Invitar colaboradores",
-  "user1": "Miembro 1 (permiso)",
-  "user2": "Miembro 2 (permiso)",
-  "socialMediaTitle": "Midias Sociales"
+  "textEditCollaborators": "Editar equipo",
+  "textInviteCollaborators": "Invita a tu equipo",
+  "user1": "Persona 1 (permiso)",
+  "user2": "Persona 2 (permiso)",
+  "socialMediaTitle": "Redes sociales"
 }
