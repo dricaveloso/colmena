@@ -1,16 +1,16 @@
 {
-  "aboutTitle": "À propos de MAIA",
+  "aboutTitle": "À propos de Colmena",
   "step1": {
-    "description": "Maia est une suite de productivité 100% gratuite, sécurisée et 100% gratuite pour les médias locaux."
+    "description": "Colmena est une suite de productivité 100% gratuite, sécurisée et 100% gratuite pour les médias locaux et communautaires. Une solution Open Source intégrée pour les environnements mobiles et de bureau.."
   },
   "step2": {
-    "description": "Pensé pour travailler les zones de faible connectivité et permet l'intégration des appels vocaux, à optimiser."
+    "description": "Enregistrement, conférences et montage audio collaboratifs conçus pour fonctionner dans des zones à faible connectivité."
   },
   "step3": {
-    "description": "Enregistrez vos fichiers avec notre service cloud spécialisé pour les médias."
+    "description": "Sauvegardez et partagez vos travaux en cours avec vos collègues et partenaires médiatiques grâce à notre service spécialisé dans le cloud."
   },
   "step4": {
-    "description": "Enregistrez, modifiez et publiez des audios depuis votre mobile. Créez des salles d'enregistrement et invitez à distance avec une ou plusieurs personnes."
+    "description": "Distribuez et publiez votre travail sur votre site web, les médias sociaux, les plateformes de podcast, une page de renvoi personnalisée ou la bibliothèque web native de Colmena."
   },
   "communityTitle": "Communauté",
   "forms": {
