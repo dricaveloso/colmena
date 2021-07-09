@@ -2,12 +2,12 @@
   "title": "Profil",
   "textEditButton": "Editer le profil",
   "textPhotoButton": "Envoyer la photo",
-  "mediaTitle": "Media",
+  "mediaTitle": "Média",
   "nameField": "Nom",
   "emailField": "E-mail",
   "urlField": "URL / BLOG",
-  "socialMediaTitle": "Des médias sociaux",
+  "socialMediaTitle": "Médias sociaux",
   "editButton": "Éditer",
-  "saveButton": "Enregistrer",
+  "saveButton": "Sauver",
   "resetPasswordButton": "Réinitialiser le mot de passe"
 }
