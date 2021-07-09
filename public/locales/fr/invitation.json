@@ -1,8 +1,8 @@
 {
   "greeting": "Salut",
-  "description": "Les réseaux AC et DWA vous invitent à faire partie de la salle de presse de la radio communautaire",
+  "description": "DW Akademie et Redes A.C. vous invitent à faire partie de Colmena, un espace où la communauté et les médias locaux peuvent travailler ensemble : créer, collaborer, partager.",
   "forms": {
     "button1": "Accepter l'invitation",
-    "button2": "À propos de Maia"
+    "button2": "À propos de Colmena"
   }
 }
