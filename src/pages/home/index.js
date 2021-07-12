@@ -41,7 +41,7 @@ function Home() {
   }, []);
 
   return (
-    <LayoutApp title="MAIA" back={true}>
+    <LayoutApp title="Colmena" back={true}>
       {showGreeting && !showContent ? (
         <FlexBox justifyContent="center">
           <Greeting showGreeting={showGreeting} />

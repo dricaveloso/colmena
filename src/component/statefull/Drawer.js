@@ -133,7 +133,7 @@ function Drawer({ open, onOpen, onClose }) {
           marginTop: 20,
         }}
       >
-        <p style={{ fontSize: 20, fontWeight: "bold", margin: 0 }}>MAIA</p>
+        <p style={{ fontSize: 20, fontWeight: "bold", margin: 0 }}>Colmena</p>
         <small style={{ color: "gray" }}>version 0.0.1</small>
       </div>
       <List component="nav">
