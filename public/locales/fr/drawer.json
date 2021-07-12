@@ -1,14 +1,14 @@
 {
-  "homeTitle": "Démarrer",
-  "myFilesTitle": "Library",
+  "homeTitle": "Accueil",
+  "myFilesTitle": "Bibliothèque",
   "recordTitle": "Enregistrer",
   "editAudioTitle": "Modifier le son",
   "editTextTitle": "Éditer le texte",
-  "communityTitle": "Communautés",
-  "editMediaTitle": "Media Profile",
+  "communityTitle": "Échange communautaire",
+  "editMediaTitle": "Profil des médias",
   "userProfileTitle": "Mon profil",
   "supportTitle": "Contactez-nous",
-  "logoutTitle": "Se déconnecter",
+  "logoutTitle": "Déconnecter",
   "termsOfUse": "Conditions d'utilisation",
   "aboutMaia": "À propos de Colmena"
 }

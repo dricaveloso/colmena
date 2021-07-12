@@ -4,17 +4,17 @@
     "description": "Colmena es una suite de productividad para medios locales, segura, libre y 100% gratuita."
   },
   "step2": {
-    "description": "Pensado para funciona zonas de baja conectividad y permite la integración de llamadas de voz."
+    "description": "Pensada para funcionar en zonas de baja conectividad."
   },
   "step3": {
     "description": "Guarda tus archivos con nuestro servicio de nube especializado para medios."
   },
   "step4": {
-    "description": "Graba, edita y publica audios desde tu móvil. Crea salas de grabación e invita de manera remota con uno o múltiples personas."
+    "description": "Graba, edita y publica audios desde tu celular. Crea salas de grabación e invita de manera remota a múltiples personas."
   },
   "communityTitle": "Comunidad",
   "forms": {
-    "nextButton": "Prosseguir",
-    "skipButton": "Pular"
+    "nextButton": "Continuar",
+    "skipButton": "Saltar"
   }
 }

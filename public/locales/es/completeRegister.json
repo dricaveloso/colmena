@@ -1,8 +1,8 @@
 {
   "description": "y cual será tu contraseña.",
   "forms": {
-    "placeholderPassword": "contrasena",
-    "placeholderPasswordConfirmation": "repete contrasena",
-    "submitButton": "Prosseguir"
+    "placeholderPassword": "contraseña",
+    "placeholderPasswordConfirmation": "repite la contraseña",
+    "submitButton": "Continuar"
   }
 }
