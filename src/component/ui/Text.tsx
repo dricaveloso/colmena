@@ -6,8 +6,8 @@ import {
   TextDisplayProps,
   TextVariantProps,
   TextVariantMappingProps,
-} from "types";
-import { TextAlignEnum, TextColorEnum, TextDisplayEnum, TextVariantEnum } from "enums";
+} from "@/types/index";
+import { TextAlignEnum, TextColorEnum, TextDisplayEnum, TextVariantEnum } from "@/enums/index";
 
 type Props = {
   align?: TextAlignProps;

@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import { SizeScreensProps } from "types";
-import { SizeScreensEnum } from "enums";
+import { SizeScreensProps } from "@/types/index";
+import { SizeScreensEnum } from "@/enums/index";
 
 type Props = {
   maxWidth?: SizeScreensProps | false;

@@ -1,10 +1,10 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import MaterialIcon from "component/ui/MaterialIcon";
+import MaterialIcon from "@/components/ui/MaterialIcon";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { TextVariantEnum } from "enums";
-import Text from "component/ui/Text";
+import { TextVariantEnum } from "@/enums/index";
+import Text from "@/components/ui/Text";
 
 type Props = {
   icon: string;

@@ -1,6 +1,6 @@
 import Button from "@material-ui/core/Button";
-import { ButtonColorProps, ButtonVariantProps, ButtonSizeProps } from "types";
-import { ButtonColorEnum, ButtonVariantEnum, ButtonSizeEnum } from "enums";
+import { ButtonColorProps, ButtonVariantProps, ButtonSizeProps } from "@/types/index";
+import { ButtonColorEnum, ButtonVariantEnum, ButtonSizeEnum } from "@/enums/index";
 
 type Props = {
   title: string;

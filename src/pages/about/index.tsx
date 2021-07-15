@@ -1,15 +1,16 @@
-import FlexBox from "component/ui/FlexBox";
-import IconButton from "component/ui/IconButton";
+import FlexBox from "@/components/ui/FlexBox";
+import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
-import LayoutApp from "component/statefull/LayoutApp";
+import LayoutApp from "@/components/statefull/LayoutApp";
 import Divider from "@material-ui/core/Divider";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
-import { I18nInterface } from "interfaces";
-import { JustifyContentEnum, TextVariantEnum } from "enums";
-import MaterialIcon from "component/ui/MaterialIcon";
-import Text from "component/ui/Text";
+import { I18nInterface } from "@/interfaces/index";
+import { FlexDirectionEnum, JustifyContentEnum, TextVariantEnum } from "@/enums/index";
+import MaterialIcon from "@/components/ui/MaterialIcon";
+import Text from "@/components/ui/Text";
+import { v4 as uuid } from "uuid";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -24,14 +25,9 @@ interface ItemInterface {
   handleClick?: () => void | undefined;
 }
 
-interface ItemExtraInterface extends ItemInterface {
-  fontSize: string;
-}
-
 function About() {
   const router = useRouter();
   const fontSize = "4.0em";
-  const fontSizeExtra = "1.9em";
   const color = "black";
   const { t } = useTranslation("intro");
   const { t: d } = useTranslation("drawer");
@@ -62,24 +58,9 @@ function About() {
       text: t("step4.description"),
     },
   ];
-  const extraItems: ItemExtraInterface[] = [
-    {
-      id: 5,
-      icon: "supervised_user_circle",
-      text: t("communityTitle"),
-      fontSize: "3.5em",
-    },
-    {
-      id: 6,
-      icon: "library_music",
-      text: d("myFilesTitle"),
-      handleClick: () => navigate("/library"),
-      fontSize: fontSizeExtra,
-    },
-  ];
 
   return (
-    <LayoutApp title={t("aboutTitle")} back>
+    <LayoutApp title={t("aboutTitle")}>
       <FlexBox>
         <div
           style={{
@@ -118,25 +99,30 @@ function About() {
             gridColumnGap: "50px",
           }}
         >
-          {extraItems.map(({ id, icon, text, handleClick, fontSize }: ItemExtraInterface) => (
-            <FlexBox
-              key={id}
-              extraStyle={{ alignItems: "center" }}
-              justifyContent={JustifyContentEnum.CENTER}
-            >
-              {handleClick ? (
-                <IconButton
-                  fontSizeIcon={fontSize}
-                  color={color}
-                  icon={icon}
-                  handleClick={handleClick}
-                />
-              ) : (
-                <MaterialIcon icon={icon} style={{ color, fontSize }} />
-              )}
-              <Text variant={TextVariantEnum.BODY1}>{text}</Text>
-            </FlexBox>
-          ))}
+          <FlexBox
+            key={uuid()}
+            justifyContent={JustifyContentEnum.SPACEBETWEEN}
+            flexDirection={FlexDirectionEnum.ROW}
+          >
+            <div key={uuid()}>
+              <MaterialIcon icon="supervised_user_circle" style={{ color, fontSize: "2.8em" }} />
+              <Text variant={TextVariantEnum.BODY1}>{t("communityTitle")}</Text>
+            </div>
+          </FlexBox>
+          <FlexBox
+            key={uuid()}
+            justifyContent={JustifyContentEnum.SPACEBETWEEN}
+            flexDirection={FlexDirectionEnum.ROW}
+          >
+            <div key={uuid()}>
+              <IconButton
+                icon="library"
+                handleClick={() => navigate("/library")}
+                iconStyle={{ fontSize: "2.8em" }}
+              />
+              <Text variant={TextVariantEnum.BODY1}>{d("myFilesTitle")}</Text>
+            </div>
+          </FlexBox>
         </div>
       </FlexBox>
     </LayoutApp>

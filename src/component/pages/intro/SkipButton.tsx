@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "component/ui/Button";
+import Button from "@/components/ui/Button";
 import { useRouter } from "next/router";
-import { ButtonVariantEnum } from "enums";
+import { ButtonVariantEnum } from "@/enums/index";
 
 type Props = {
   title: string;

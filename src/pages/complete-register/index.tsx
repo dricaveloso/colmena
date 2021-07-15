@@ -1,22 +1,22 @@
 import React, { useState, useContext } from "react";
-import Container from "component/ui/Container";
-import FooterApp from "component/layout/FooterApp";
-import HeaderApp from "component/layout/HeaderApp";
-import Button from "component/ui/Button";
-import FlexBox from "component/ui/FlexBox";
+import Container from "@/components/ui/Container";
+import FooterApp from "@/components/layout/FooterApp";
+import HeaderApp from "@/components/layout/HeaderApp";
+import Button from "@/components/ui/Button";
+import FlexBox from "@/components/ui/FlexBox";
 import { Box, Checkbox } from "@material-ui/core";
-import PasswordField from "component/statefull/PasswordField";
-import Divider from "component/ui/Divider";
+import PasswordField from "@/components/statefull/PasswordField";
+import Divider from "@/components/ui/Divider";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import TermsOfUse from "component/statefull/TermsOfUse";
-import Box100 from "component/ui/Box100";
-import NotificationContext from "store/notification-context";
+import TermsOfUse from "@/components/statefull/TermsOfUse";
+import Box100 from "@/components/ui/Box100";
+import NotificationContext from "@/store/notification-context";
 import { GetStaticProps } from "next";
-import { I18nInterface } from "interfaces";
-import { NotificationStatusEnum, TextVariantEnum } from "enums";
-import Text from "component/ui/Text";
+import { I18nInterface } from "@/interfaces/index";
+import { NotificationStatusEnum, TextVariantEnum } from "@/enums/index";
+import Text from "@/components/ui/Text";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -41,7 +41,7 @@ export default function CompleteRegister() {
       message: t("messagePasswordCreated"),
       status: NotificationStatusEnum.SUCCESS,
     });
-    router.push("/platform");
+    router.push("/home");
   };
 
   return (

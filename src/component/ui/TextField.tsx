@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { SelectVariantProps } from "types";
-import { SelectVariantEnum } from "enums";
+import { SelectVariantProps } from "@/types/index";
+import { SelectVariantEnum } from "@/enums/index";
 
 type Props = {
   label: string;

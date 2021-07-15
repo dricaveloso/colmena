@@ -3,9 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ListItemIcon, SwipeableDrawer, List, ListItem, ListItemText } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import MaterialIcon from "component/ui/MaterialIcon";
-import NotificationContext from "store/notification-context";
-import { NotificationStatusEnum } from "enums";
+import MaterialIcon from "@/components/ui/MaterialIcon";
+import NotificationContext from "@/store/notification-context";
+import { NotificationStatusEnum } from "@/enums/index";
+import CONSTANTS from "@/constants/index";
 import { v4 as uuid } from "uuid";
 
 type ListItemProps = {
@@ -65,7 +66,7 @@ function Drawer({ open, onOpen, onClose }: Props) {
       id: 3,
       icon: "mic",
       title: t("recordTitle"),
-      url: "/conference",
+      url: "/call",
     },
     {
       id: 4,
@@ -142,7 +143,7 @@ function Drawer({ open, onOpen, onClose }: Props) {
           marginTop: 20,
         }}
       >
-        <p style={{ fontSize: 20, fontWeight: "bold", margin: 0 }}>Colmena</p>
+        <p style={{ fontSize: 20, fontWeight: "bold", margin: 0 }}>{CONSTANTS.APP_NAME}</p>
         <small style={{ color: "gray" }}>version 0.0.1</small>
       </div>
       <List component="nav">

@@ -1,17 +1,17 @@
-import Container from "component/ui/Container";
-import FooterApp from "component/layout/FooterApp";
-import Divider from "component/ui/Divider";
-import Button from "component/ui/Button";
+import Container from "@/components/ui/Container";
+import FooterApp from "@/components/layout/FooterApp";
+import Divider from "@/components/ui/Divider";
+import Button from "@/components/ui/Button";
 import Box from "@material-ui/core/Box";
 import MailOutlineSharpIcon from "@material-ui/icons/MailOutlineSharp";
 import { useRouter } from "next/router";
-import Box100 from "component/ui/Box100";
+import Box100 from "@/components/ui/Box100";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
-import { I18nInterface } from "interfaces";
-import Text from "component/ui/Text";
-import { TextVariantEnum } from "enums";
+import { I18nInterface } from "@/interfaces/index";
+import Text from "@/components/ui/Text";
+import { TextVariantEnum } from "@/enums/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -24,7 +24,7 @@ function Invitation() {
   const { t } = useTranslation("invitation");
 
   const navigate = () => {
-    router.push("/intro/1");
+    router.push("/complete-register");
   };
 
   return (

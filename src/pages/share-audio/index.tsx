@@ -1,7 +1,7 @@
 import React from "react";
-import FlexBox from "component/ui/FlexBox";
-import IconButton from "component/ui/IconButton";
-import LayoutApp from "component/statefull/LayoutApp";
+import FlexBox from "@/components/ui/FlexBox";
+import IconButton from "@/components/ui/IconButton";
+import LayoutApp from "@/components/statefull/LayoutApp";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
@@ -9,7 +9,7 @@ import TelegramIcon from "@material-ui/icons/Telegram";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import CloudIcon from "@material-ui/icons/Cloud";
 import { GetStaticProps } from "next";
-import { I18nInterface } from "interfaces";
+import { I18nInterface } from "@/interfaces/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -21,7 +21,7 @@ function ShareAudio() {
   const { t } = useTranslation("shareAudio");
 
   return (
-    <LayoutApp title={t("title")} back>
+    <LayoutApp title={t("title")}>
       <FlexBox>
         <div
           style={{
@@ -33,7 +33,7 @@ function ShareAudio() {
         >
           <div>
             <p>{t("description")}</p>
-            <IconButton fontSizeIcon="1.7em" color="black" icon="graphic_eq" />
+            <IconButton fontSizeIcon="large" icon="equalize" />
             <p style={{ marginTop: 50 }}>{t("textShare")}:</p>
             <div
               style={{

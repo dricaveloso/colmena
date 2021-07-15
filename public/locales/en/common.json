@@ -13,8 +13,11 @@
   "featureUnavailable": "This feature is not available at the moment.",
   "messageOffline": "Please access this page, at least once, with Internet enable.",
   "welcomeUserMessage": "Welcome {{userName}}",
-  "welcomeRadioMessage": "Radio {{mediaName}}",
+  "welcomeRadioMessage": "{{mediaName}}",
   "notFoundPageText": "Page not found",
   "internErrorPageText": "Intern error",
-  "constructionPageText": "Page under construction"
+  "constructionPageText": "Page under construction",
+  "chooseAnOption": "Choose an option",
+  "callDrawerBottomTitle": "Call",
+  "recordingDrawerBottomTitle": "Recording"
 }

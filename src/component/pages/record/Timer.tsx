@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useStopwatch } from "react-timer-hook";
 import Lottie from "react-lottie";
-import Recording from "component/ui/lottie/recording-blink.json";
+import Recording from "@/components/ui/lottie/recording-blink.json";
 
 function format2digits(value: number) {
   return value < 10 ? `0${value.toString()}` : value;

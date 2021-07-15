@@ -1,8 +1,10 @@
 import React from "react";
 import { Container, Button } from "@material-ui/core";
 import Link from "next/link";
-import Text from "component/ui/Text";
-import { TextVariantEnum } from "enums";
+import Text from "@/components/ui/Text";
+import { TextVariantEnum } from "@/enums/index";
+import CONSTANTS from "@/constants/index";
+import Divider from "@/components/ui/Divider";
 
 function Index() {
   return (
@@ -17,14 +19,20 @@ function Index() {
       }}
     >
       <Text variant={TextVariantEnum.H4} gutterBottom>
-        Colmena
+        {CONSTANTS.APP_NAME}
       </Text>
       <Text variant={TextVariantEnum.BODY1} gutterBottom style={{ marginBottom: 20 }}>
-        Create, Collaborate and Share
+        {CONSTANTS.APP_DESCRIPTION}
       </Text>
+      <Link href="/home">
+        <Button color="primary" variant="outlined">
+          Home Flow
+        </Button>
+      </Link>
+      <Divider marginTop={15} />
       <Link href="/invitation">
         <Button color="primary" variant="outlined">
-          Demo
+          Invitation Flow
         </Button>
       </Link>
     </Container>

@@ -8,10 +8,10 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import Select from "component/ui/Select";
+import Select from "@/components/ui/Select";
 import { useTranslation } from "next-i18next";
-import NotificationContext from "store/notification-context";
-import { SelectVariantEnum, NotificationStatusEnum } from "enums";
+import NotificationContext from "@/store/notification-context";
+import { SelectVariantEnum, NotificationStatusEnum } from "@/enums/index";
 
 type Props = {
   openInviteForm: boolean;

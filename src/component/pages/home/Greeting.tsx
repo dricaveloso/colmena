@@ -1,7 +1,7 @@
 import React from "react";
-import MediaAvatar from "component/pages/home/MediaAvatar";
+import MediaAvatar from "@/components/pages/home/MediaAvatar";
 import { Grow } from "@material-ui/core";
-import GreetingMessage from "component/pages/home/GreetingMessage";
+import GreetingMessage from "@/components/pages/home/GreetingMessage";
 
 type Props = {
   showGreeting: boolean;

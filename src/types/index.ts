@@ -14,7 +14,7 @@ import {
   JustifyContentEnum,
   FlexDirectionEnum,
   TextfieldVariantEnum,
-} from "enums";
+} from "@/enums/index";
 
 export type NotificationStatusProps =
   | NotificationStatusEnum.SUCCESS
@@ -136,3 +136,28 @@ export type TextfieldVariantProps =
   | TextfieldVariantEnum.CONTAINED
   | TextfieldVariantEnum.OUTLINED
   | TextfieldVariantEnum.TEXT;
+
+export type FontSizeIconProps = "default" | "inherit" | "large" | "small" | undefined;
+
+export type AllIconProps =
+  | "settings"
+  | "edit"
+  | "microphone"
+  | "library"
+  | "account_profile"
+  | "world_map"
+  | "home"
+  | "cut"
+  | "check_cloud"
+  | "phone"
+  | "off_cloud"
+  | "more_vertical"
+  | "search"
+  | "equalize"
+  | "back"
+  | "language"
+  | "share"
+  | "add_user"
+  | "dropdown_checklist"
+  | "close"
+  | "record";

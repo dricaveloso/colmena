@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { UserInfoInterface } from "interfaces";
+import { UserInfoInterface } from "@/interfaces/index";
 
 interface UserContextInterface {
   isLogged: boolean;
@@ -23,7 +23,16 @@ type Props = {
 
 export function UserContextProvider({ children }: Props) {
   const [isLogged, setIsLogged] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserInfoInterface | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfoInterface | null>({
+    id: 1,
+    name: "Makena",
+    email: "makena@colmena.media",
+    role: "admin",
+    media: {
+      id: 1,
+      name: "Radio XYZ",
+    },
+  });
 
   function changeIsLoggedHandler(flag: boolean) {
     setIsLogged(flag);

@@ -3,7 +3,10 @@
   "question": "What would you like to do now?",
   "inviteText": "Invite collaborator",
   "mediaName": "Medianame",
-  "recentPublicationsTitle": "Recent Publications",
+  "recentPublicationsTitle": "Recommended from other media",
+  "tabTitle1": "Files",
+  "tabTitle2": "Projects",
+  "tabTitle3": "Publications",
   "recentPublicationsDescription": "Example description",
   "mediaCloudName": "My cloud",
   "recordText": "Record"

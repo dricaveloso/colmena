@@ -1,7 +1,7 @@
 import React from "react";
-import IconButton from "component/ui/IconButton";
+import IconButton from "@/components/ui/IconButton";
 import { useTranslation } from "next-i18next";
-import { TextVariantEnum } from "enums";
+import { TextVariantEnum } from "@/enums/index";
 import SimpleDialog from "./SimpleDialog";
 
 type ShareLinkProps = {
@@ -9,7 +9,7 @@ type ShareLinkProps = {
 };
 
 export default function ShareLink({ url }: ShareLinkProps) {
-  const { t } = useTranslation("record");
+  const { t } = useTranslation("call");
 
   const [open, setOpen] = React.useState(false);
 
@@ -27,8 +27,8 @@ export default function ShareLink({ url }: ShareLinkProps) {
         <IconButton
           title={t("textInvite")}
           variantTitle={TextVariantEnum.SUBTITLE1}
-          icon="person_add"
-          fontSizeIcon="1.8em"
+          icon="add_user"
+          fontSizeIcon="large"
           color="black"
           handleClick={handleClickOpen}
         />

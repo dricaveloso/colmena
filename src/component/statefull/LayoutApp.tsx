@@ -1,30 +1,23 @@
 import React from "react";
-import Container from "component/ui/Container";
-import FlexBox from "component/ui/FlexBox";
-import AppBar from "component/statefull/AppBar";
-import FooterApp from "component/ui/FooterApp";
-import { PositionProps } from "types";
-import { PositionEnum } from "enums";
+import Container from "@/components/ui/Container";
+import FlexBox from "@/components/ui/FlexBox";
+import AppBar from "@/components/statefull/AppBar";
+import FooterApp from "@/components/ui/FooterApp";
+import { PositionProps } from "@/types/index";
+import { PositionEnum } from "@/enums/index";
 
 type Props = {
   title: string;
-  back?: boolean;
   drawer?: boolean;
   headerPosition?: PositionProps | undefined;
   children: React.ReactNode;
 };
 
-function LayoutApp({
-  title,
-  back = false,
-  drawer = true,
-  headerPosition = PositionEnum.FIXED,
-  children,
-}: Props) {
+function LayoutApp({ title, drawer = true, headerPosition = PositionEnum.FIXED, children }: Props) {
   return (
     <Container extraStyle={{ padding: 0 }}>
-      <FlexBox extraStyle={{ padding: 0 }}>
-        <AppBar title={title} back={back} headerPosition={headerPosition} drawer={drawer} />
+      <FlexBox extraStyle={{ margin: 0 }}>
+        <AppBar title={title} headerPosition={headerPosition} drawer={drawer} />
         <>{children}</>
         <FooterApp />
       </FlexBox>

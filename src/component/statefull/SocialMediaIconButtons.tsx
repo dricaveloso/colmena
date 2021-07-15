@@ -2,9 +2,9 @@ import { useContext } from "react";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import FacebookIcon from "@material-ui/icons/Facebook";
-import NotificationContext from "store/notification-context";
+import NotificationContext from "@/store/notification-context";
 import { useTranslation } from "next-i18next";
-import { NotificationStatusEnum } from "enums";
+import { NotificationStatusEnum } from "@/enums/index";
 
 function SocialMediaIconButton() {
   const { t: c } = useTranslation("common");

@@ -1,6 +1,6 @@
 import React from "react";
-import HeaderApp from "component/layout/HeaderApp";
-import FooterApp from "component/layout/FooterApp";
+import HeaderApp from "@/components/layout/HeaderApp";
+import FooterApp from "@/components/layout/FooterApp";
 
 type Props = {
   showTermsOfUse?: boolean;

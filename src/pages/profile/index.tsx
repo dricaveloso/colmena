@@ -1,26 +1,17 @@
 import React, { useContext } from "react";
-import FlexBox from "component/ui/FlexBox";
-import LayoutApp from "component/statefull/LayoutApp";
+import FlexBox from "@/components/ui/FlexBox";
+import LayoutApp from "@/components/statefull/LayoutApp";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import TextField from "component/ui/TextField";
 import { makeStyles } from "@material-ui/styles";
-import MaterialIcon from "component/ui/MaterialIcon";
-import Text from "component/ui/Text";
-import Button from "component/ui/Button";
-import IconButton from "component/ui/IconButton";
-import { useRouter } from "next/router";
-import NotificationContext from "store/notification-context";
-import SocialMediaIconButton from "component/statefull/SocialMediaIconButtons";
+import MaterialIcon from "@/components/ui/MaterialIcon";
+import Text from "@/components/ui/Text";
+import UserContext from "@/store/user-context";
 import { GetStaticProps } from "next";
-import { I18nInterface } from "interfaces";
-import {
-  ButtonVariantEnum,
-  JustifyContentEnum,
-  NotificationStatusEnum,
-  SelectVariantEnum,
-  TextVariantEnum,
-} from "enums";
+import { I18nInterface } from "@/interfaces/index";
+import { JustifyContentEnum } from "@/enums/index";
+import ProfileActions from "@/components/pages/profile/ProfileActions";
+import Form from "@/components/pages/profile/Form";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -38,72 +29,18 @@ const useStyles = makeStyles({
 
 function Profile() {
   const { t } = useTranslation("profile");
-  const { t: c } = useTranslation("common");
-  const notificationCtx = useContext(NotificationContext);
+  const userCtx = useContext(UserContext);
   const classes = useStyles();
-  const router = useRouter();
-
-  const navigate = () => {
-    router.push("/media-profile");
-  };
-
   return (
-    <LayoutApp title={t("title")} back>
+    <LayoutApp title={t("title")}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            marginTop: 70,
-            marginRight: 10,
-          }}
-        >
-          <IconButton
-            fontSizeIcon="1.8em"
-            title={t("mediaTitle")}
-            color="black"
-            icon="settings"
-            handleClick={navigate}
-            variantTitle={TextVariantEnum.BODY2}
-          />
-        </div>
+        <ProfileActions />
         <div className={classes.marginInputDivs}>
           <div className="boxColumnCenter">
             <MaterialIcon icon="add_a_photo" style={{ fontSize: 120 }} />
-            <Text>Makena</Text>
+            <Text>{userCtx.userInfo?.name}</Text>
           </div>
-          <TextField id="name" label={t("nameField")} variant={SelectVariantEnum.OUTLINED} />
-          <TextField id="email" label={t("emailField")} variant={SelectVariantEnum.OUTLINED} />
-          <TextField id="url_blog" label={t("urlField")} variant={SelectVariantEnum.OUTLINED} />
-
-          <Text>{t("socialMediaTitle")}</Text>
-          <div className="boxRowCenter marginTop15">
-            <SocialMediaIconButton />
-          </div>
-          <div className="marginTop15">
-            <Button
-              title={t("saveButton")}
-              handleClick={() =>
-                notificationCtx.showNotification({
-                  message: "Informações salvas com sucesso.",
-                  status: NotificationStatusEnum.SUCCESS,
-                })
-              }
-            />
-          </div>
-          <div className="marginTop15">
-            <Button
-              title={t("resetPasswordButton")}
-              variant={ButtonVariantEnum.OUTLINED}
-              handleClick={() =>
-                notificationCtx.showNotification({
-                  message: c("featureUnavailable"),
-                  status: NotificationStatusEnum.WARNING,
-                })
-              }
-            />
-          </div>
+          <Form />
         </div>
       </FlexBox>
     </LayoutApp>

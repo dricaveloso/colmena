@@ -1,14 +1,14 @@
 import React from "react";
-import FlexBox from "component/ui/FlexBox";
-import IconButton from "component/ui/IconButton";
-import Divider from "component/ui/Divider";
-import LayoutApp from "component/statefull/LayoutApp";
+import FlexBox from "@/components/ui/FlexBox";
+import IconButton from "@/components/ui/IconButton";
+import Divider from "@/components/ui/Divider";
+import LayoutApp from "@/components/statefull/LayoutApp";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
-import { I18nInterface } from "interfaces";
-import { JustifyContentEnum, TextVariantEnum } from "enums";
+import { I18nInterface } from "@/interfaces/index";
+import { JustifyContentEnum, TextVariantEnum } from "@/enums/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -32,9 +32,9 @@ function RecordDone() {
           <Divider marginBottom={20} />
           <IconButton
             title={t("textEditButton")}
-            icon="graphic_eq"
+            icon="edit"
             variantTitle={TextVariantEnum.BODY2}
-            fontSizeIcon="1.8em"
+            fontSizeIcon="large"
             handleClick={() => navigate("/edit-audio")}
           />
           <Divider marginBottom={20} />
@@ -42,7 +42,7 @@ function RecordDone() {
             title={t("textShareButton")}
             icon="share"
             variantTitle={TextVariantEnum.BODY2}
-            fontSizeIcon="1.8em"
+            fontSizeIcon="large"
             handleClick={() => navigate("/share-audio")}
           />
         </div>

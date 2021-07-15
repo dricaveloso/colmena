@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { NotificationDataInterface } from "interfaces";
+import { NotificationDataInterface } from "@/interfaces/index";
 
 interface NotificationContextInterface {
   notification: NotificationDataInterface | null;

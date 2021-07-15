@@ -1,7 +1,17 @@
 import React from "react";
 import Box from "@material-ui/core/Container";
-import { FlexDirectionProps, AlignItemsProps, JustifyContentProps, TextAlignProps } from "types";
-import { TextAlignEnum, FlexDirectionEnum, AlignItemsEnum, JustifyContentEnum } from "enums";
+import {
+  FlexDirectionProps,
+  AlignItemsProps,
+  JustifyContentProps,
+  TextAlignProps,
+} from "@/types/index";
+import {
+  TextAlignEnum,
+  FlexDirectionEnum,
+  AlignItemsEnum,
+  JustifyContentEnum,
+} from "@/enums/index";
 import { v4 as uuid } from "uuid";
 
 type Props = {

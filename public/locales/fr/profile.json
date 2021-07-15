@@ -6,7 +6,10 @@
   "nameField": "Nom",
   "emailField": "E-mail",
   "urlField": "URL / BLOG",
+  "switchLanguage": "Language",
+  "titleSwitchLanguage": "Switch Language",
   "socialMediaTitle": "Des médias sociaux",
+  "successMessage": "Information saved successfully",
   "editButton": "Éditer",
   "saveButton": "Enregistrer",
   "resetPasswordButton": "Réinitialiser le mot de passe"

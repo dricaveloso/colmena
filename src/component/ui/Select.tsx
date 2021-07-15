@@ -3,8 +3,8 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import { SelectVariantProps } from "types";
-import { SelectVariantEnum } from "enums";
+import { SelectVariantProps } from "@/types/index";
+import { SelectVariantEnum } from "@/enums/index";
 
 type Props = {
   id: string | undefined;

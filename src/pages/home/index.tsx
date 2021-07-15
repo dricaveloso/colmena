@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import FlexBox from "component/ui/FlexBox";
-import LayoutApp from "component/statefull/LayoutApp";
+import FlexBox from "@/components/ui/FlexBox";
+import LayoutApp from "@/components/statefull/LayoutApp";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import DashboardActions from "component/pages/home/DashboardActions";
-import Greeting from "component/pages/home/Greeting";
+import DashboardActions from "@/components/pages/home/DashboardActions";
+import Greeting from "@/components/pages/home/Greeting";
 import { GetStaticProps } from "next";
-import { I18nInterface } from "interfaces";
-import { JustifyContentEnum } from "enums";
+import { I18nInterface } from "@/interfaces/index";
+import { JustifyContentEnum } from "@/enums/index";
+import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
+import CONSTANTS from "@/constants/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -35,7 +37,7 @@ function Home() {
   }, []);
 
   return (
-    <LayoutApp title="Colmena" back>
+    <LayoutApp title={CONSTANTS.APP_NAME}>
       {showGreeting && !showContent ? (
         <FlexBox justifyContent={JustifyContentEnum.CENTER}>
           <Greeting showGreeting={showGreeting} />
@@ -50,6 +52,7 @@ function Home() {
                 localStorage.getItem("isFirstAccess") === "yes"
               }
             />
+            <WhiteSpaceFooter />
           </FlexBox>
         )
       )}

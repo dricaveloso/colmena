@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import Text from "component/ui/Text";
-import { TextVariantEnum } from "enums";
+import Text from "@/components/ui/Text";
+import { TextVariantEnum } from "@/enums/index";
 
 function HeaderApp() {
   return (

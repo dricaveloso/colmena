@@ -1,7 +1,8 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
-import theme from "styles/theme";
+import theme from "@/styles/theme";
+import CONSTANTS from "@/constants/index";
 
 export default class MyDocument extends Document {
   render() {
@@ -9,11 +10,14 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <meta name="application-name" content="Colmena" />
+          <meta name="application-name" content={CONSTANTS.APP_NAME} />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-          <meta name="apple-mobile-web-app-title" content="Colmena" />
-          <meta name="description" content="Colmena - Create, Collaborate and Share" />
+          <meta name="apple-mobile-web-app-title" content={CONSTANTS.APP_NAME} />
+          <meta
+            name="description"
+            content={`${CONSTANTS.APP_NAME}  - Create, Collaborate and Share`}
+          />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="msapplication-config" content="/static/icons/browserconfig.xml" />

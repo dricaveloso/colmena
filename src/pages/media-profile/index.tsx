@@ -1,25 +1,25 @@
 import React, { useState, useContext } from "react";
-import FlexBox from "component/ui/FlexBox";
-import LayoutApp from "component/statefull/LayoutApp";
+import FlexBox from "@/components/ui/FlexBox";
+import LayoutApp from "@/components/statefull/LayoutApp";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import TextField from "component/ui/TextField";
+import TextField from "@/components/ui/TextField";
 import { makeStyles } from "@material-ui/styles";
-import MaterialIcon from "component/ui/MaterialIcon";
-import Text from "component/ui/Text";
-import Button from "component/ui/Button";
-import IconButton from "component/ui/IconButton";
-import InviteForm from "component/pages/media-profile/Invite";
-import NotificationContext from "store/notification-context";
-import SocialMediaIconButton from "component/statefull/SocialMediaIconButtons";
+import MaterialIcon from "@/components/ui/MaterialIcon";
+import Text from "@/components/ui/Text";
+import Button from "@/components/ui/Button";
+import IconButton from "@/components/ui/IconButton";
+import InviteForm from "@/components/pages/media-profile/Invite";
+import NotificationContext from "@/store/notification-context";
+import SocialMediaIconButton from "@/components/statefull/SocialMediaIconButtons";
 import { GetStaticProps } from "next";
-import { I18nInterface } from "interfaces";
+import { I18nInterface } from "@/interfaces/index";
 import {
   JustifyContentEnum,
   NotificationStatusEnum,
   SelectVariantEnum,
   TextVariantEnum,
-} from "enums";
+} from "@/enums/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -42,7 +42,7 @@ function Profile() {
   const [openInviteForm, setOpenInviteForm] = useState(false);
   const classes = useStyles();
   return (
-    <LayoutApp title={t("title")} back>
+    <LayoutApp title={t("title")}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <div className={classes.marginInputDivs}>
           <div className="boxColumnCenter">
@@ -66,10 +66,9 @@ function Profile() {
           />
           <div className="boxGridTwoColumns">
             <IconButton
-              fontSizeIcon="2.1em"
+              iconStyle={{ fontSize: "3.5em" }}
               title={t("textEditCollaborators")}
-              color="black"
-              icon="edit_note"
+              icon="dropdown_checklist"
               variantTitle={TextVariantEnum.BODY2}
               handleClick={() =>
                 notificationCtx.showNotification({
@@ -79,10 +78,9 @@ function Profile() {
               }
             />
             <IconButton
-              fontSizeIcon="2.1em"
+              iconStyle={{ fontSize: "3.5em" }}
               title={t("textInviteCollaborators")}
-              color="black"
-              icon="group_add"
+              icon="add_user"
               variantTitle={TextVariantEnum.BODY2}
               handleClick={() => setOpenInviteForm(true)}
             />

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import Notification from "component/ui/Notification";
-import NotificationContext from "store/notification-context";
-import { NotificationDataInterface } from "interfaces";
+import Notification from "@/components/ui/Notification";
+import NotificationContext from "@/store/notification-context";
+import { NotificationDataInterface } from "@/interfaces/index";
 
 type Props = {
   children: React.ReactNode;
