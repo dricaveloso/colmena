@@ -2,8 +2,8 @@
   "description": "y cual será tu contraseña.",
   "messagePasswordCreated": "Password created successfully.",
   "forms": {
-    "placeholderPassword": "contrasena",
-    "placeholderPasswordConfirmation": "repete contrasena",
-    "submitButton": "Prosseguir"
+    "placeholderPassword": "contraseña",
+    "placeholderPasswordConfirmation": "repite la contraseña",
+    "submitButton": "Continuar"
   }
 }

@@ -1,9 +1,9 @@
 {
   "title": "Perfil",
-  "textEditButton": "Editar Perfil",
+  "textEditButton": "Editar perfil",
   "textPhotoButton": "Subir foto",
   "mediaTitle": "Meio",
-  "nameField": "Nombre",
+  "nameField": "Nombre y apellido",
   "switchLanguage": "Language",
   "titleSwitchLanguage": "Switch Language",
   "successMessage": "Information saved successfully",
@@ -11,6 +11,6 @@
   "urlField": "URL / BLOG",
   "socialMediaTitle": "Redes sociales",
   "editButton": "Editar",
-  "saveButton": "Salvar",
+  "saveButton": "Guardar",
   "resetPasswordButton": "Restablecer la contraseña"
 }

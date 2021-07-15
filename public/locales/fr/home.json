@@ -1,13 +1,13 @@
 {
   "greeting": "Salut",
   "question": "Que voulez-vous faire maintenant ?",
-  "inviteText": "Inviter un collaborateur",
+  "inviteText": "Invitez votre équipe",
   "mediaName": "Deuxième nom",
   "recentPublicationsTitle": "Publications récentes",
   "tabTitle1": "Files",
   "tabTitle2": "Projects",
   "tabTitle3": "Publications",
-  "recentPublicationsDescription": "Exemple Description",
+  "recentPublicationsDescription": "Exemple description",
   "mediaCloudName": "Mon nuage",
   "recordText": "Enregistrer",
   "profileText": "Editer le profil"
