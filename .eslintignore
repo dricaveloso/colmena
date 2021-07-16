@@ -1,0 +1,11 @@
+public/
+sw.js
+jest.config.js
+**/node_modules/*
+**/out/*
+**/.next/*
+test
+next.config.js
+next-env.d.ts
+next-i18next.config.js
+prepare.js

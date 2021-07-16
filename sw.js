@@ -1,21 +1,8 @@
 import { skipWaiting, clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
-import {
-  NetworkOnly,
-  NetworkFirst,
-  CacheFirst,
-  StaleWhileRevalidate,
-} from "workbox-strategies";
-import {
-  registerRoute,
-  setDefaultHandler,
-  setCatchHandler,
-} from "workbox-routing";
-import {
-  matchPrecache,
-  precacheAndRoute,
-  cleanupOutdatedCaches,
-} from "workbox-precaching";
+import { NetworkOnly, NetworkFirst, CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
+import { registerRoute, setDefaultHandler, setCatchHandler } from "workbox-routing";
+import { matchPrecache, precacheAndRoute, cleanupOutdatedCaches } from "workbox-precaching";
 
 skipWaiting();
 clientsClaim();
@@ -47,7 +34,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 registerRoute(
   /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
@@ -61,7 +48,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 registerRoute(
   /\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,
@@ -75,7 +62,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 // disable image cache, so we could observe the placeholder image when offline
 registerRoute(
@@ -90,7 +77,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 registerRoute(
   /\.(?:js)$/i,
@@ -104,7 +91,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 registerRoute(
   /\.(?:css|less)$/i,
@@ -118,7 +105,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 registerRoute(
   /\.(?:json|xml|csv)$/i,
@@ -132,7 +119,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 registerRoute(
   /\/api\/.*$/i,
@@ -147,7 +134,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 registerRoute(
   /.*/i,
@@ -162,7 +149,7 @@ registerRoute(
       }),
     ],
   }),
-  "GET"
+  "GET",
 );
 
 // following lines gives you control of the offline fallback strategies
@@ -183,11 +170,7 @@ setCatchHandler(({ event }) => {
   // One approach would be to use request.destination, see
   // https://medium.com/dev-channel/service-worker-caching-strategies-based-on-request-types-57411dd7652c
 
-  if (
-    event.request.cache === "only-if-cached" &&
-    event.request.mode !== "same-origin"
-  )
-    return;
+  if (event.request.cache === "only-if-cached" && event.request.mode !== "same-origin") return;
   switch (event.request.destination) {
     case "document":
       // If using precached URLs:

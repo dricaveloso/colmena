@@ -1,5 +1,6 @@
 {
   "description": "Et quel sera votre mot de passe.",
+  "messagePasswordCreated": "Password created successfully.",
   "forms": {
     "placeholderPassword": "Le mot de passe",
     "placeholderPasswordConfirmation": "Confirmation mot de passe",

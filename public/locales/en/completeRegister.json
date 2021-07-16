@@ -1,8 +1,9 @@
-{ 
-  "description": "And what will be your password?", 
-  "forms": { 
-    "placeholderPassword": "Password", 
-    "placeholderPasswordConfirmation": "Password confirmation", 
-    "submitButton": "Finish" 
-  } 
-} 
+{
+  "description": "And what will be your password?",
+  "messagePasswordCreated": "Password created successfully.",
+  "forms": {
+    "placeholderPassword": "Password",
+    "placeholderPasswordConfirmation": "Password confirmation",
+    "submitButton": "Finish"
+  }
+}

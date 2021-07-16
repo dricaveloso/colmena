@@ -16,5 +16,8 @@
   "welcomeRadioMessage": "{{mediaName}}",
   "notFoundPageText": "Page not found",
   "internErrorPageText": "Intern error",
-  "constructionPageText": "Page under construction"
+  "constructionPageText": "Page under construction",
+  "chooseAnOption": "Choose an option",
+  "callDrawerBottomTitle": "Call",
+  "recordingDrawerBottomTitle": "Recording"
 }

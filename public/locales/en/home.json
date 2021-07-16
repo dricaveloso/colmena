@@ -4,6 +4,9 @@
   "inviteText": "Invite your team",
   "mediaName": "Media name",
   "recentPublicationsTitle": "Recent Publications",
+  "tabTitle1": "Files",
+  "tabTitle2": "Projects",
+  "tabTitle3": "Publications",
   "recentPublicationsDescription": "Example description",
   "mediaCloudName": "My library",
   "recordText": "Record"
