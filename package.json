@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "node ./prepare.js",
     "dev": "next dev -p 3006",
     "build": "next build",
     "export": "next export",
@@ -25,8 +25,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint-staged",
-      "pre-push": "yarn run type-check"
+      "pre-commit": "yarn lint-staged"
     }
   },
   "dependencies": {

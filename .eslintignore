@@ -8,3 +8,4 @@ test
 next.config.js
 next-env.d.ts
 next-i18next.config.js
+prepare.js
