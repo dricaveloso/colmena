@@ -54,7 +54,7 @@ function AppTab({ page }: Props) {
         <IconButton
           icon="microphone"
           handleClick={handleOpenDrawer}
-          color={page === "/call" ? theme.palette.primary.main : "black"}
+          color={page === "/call" || page === "/recording" ? theme.palette.primary.main : "black"}
         />
       </Box>
       <Box>
