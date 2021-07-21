@@ -19,8 +19,9 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "yarn lint",
-      "yarn format"
+      "yarn format",
+      "yarn type-check",
+      "yarn lint"
     ]
   },
   "husky": {
@@ -29,18 +30,24 @@
     }
   },
   "dependencies": {
+    "@date-io/date-fns": "1.x",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.0",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@material-ui/core": "4.11.4",
+    "@material-ui/core": "^4.12.1",
     "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.58",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "axios": "^0.21.1",
     "babel-plugin-inline-react-svg": "^2.0.1",
     "clsx": "^1.1.1",
     "cross-env": "^7.0.3",
+    "date-fns": "^2.22.1",
     "eslint-import-resolver-typescript": "^2.4.0",
+    "formik": "^2.2.9",
+    "formik-material-ui": "^3.0.1",
+    "formik-material-ui-lab": "^0.0.8",
+    "formik-material-ui-pickers": "^0.0.12",
     "next": "10.2.2",
     "next-i18next": "^8.5.0",
     "next-images": "^1.7.0",
@@ -55,7 +62,8 @@
     "react-timer-hook": "^3.0.3",
     "sass": "^1.35.2",
     "swr": "^0.5.6",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@testing-library/dom": "^8.1.0",

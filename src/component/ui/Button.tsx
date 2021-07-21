@@ -12,6 +12,7 @@ type Props = {
   size?: ButtonSizeProps | undefined;
   endIcon?: string | null;
   disabled?: boolean;
+  component?: string;
 };
 
 export default function Btn({
@@ -20,9 +21,10 @@ export default function Btn({
   variant = ButtonVariantEnum.CONTAINED,
   handleClick,
   style = {},
-  size = ButtonSizeEnum.MEDIUM,
+  size = ButtonSizeEnum.LARGE,
   endIcon = null,
   disabled = false,
+  component = "button",
 }: Props) {
   return (
     <Button
@@ -34,6 +36,7 @@ export default function Btn({
       className="width-based-device"
       endIcon={endIcon}
       disabled={disabled}
+      component={component}
     >
       {title}
     </Button>

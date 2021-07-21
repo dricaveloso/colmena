@@ -1,3 +1,4 @@
+import { useContext, useEffect } from "react";
 import Container from "@/components/ui/Container";
 import FooterApp from "@/components/layout/FooterApp";
 import Divider from "@/components/ui/Divider";
@@ -8,10 +9,11 @@ import { useRouter } from "next/router";
 import Box100 from "@/components/ui/Box100";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { GetStaticProps } from "next";
+import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/index";
+import UserContext from "@/store/user-context";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -19,8 +21,21 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
   },
 });
 
+export const getStaticPaths: GetStaticPaths = async () => ({
+  paths: [],
+  fallback: "blocking",
+});
+
 function Invitation() {
+  const userCtx = useContext(UserContext);
   const router = useRouter();
+  const { token } = router.query;
+
+  useEffect(() => {
+    const tkn = token || "";
+    userCtx.updateInvitationToken(Array.isArray(tkn) ? tkn[0] : tkn);
+  }, [token, userCtx]);
+
   const { t } = useTranslation("invitation");
 
   const navigate = () => {
@@ -54,9 +69,9 @@ function Invitation() {
           </Box100>
           <Divider />
           <Box
+            display="flex"
+            flexDirection="column"
             style={{
-              display: "flex",
-              flexDirection: "column",
               width: "100%",
             }}
           >

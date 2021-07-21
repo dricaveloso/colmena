@@ -45,3 +45,21 @@ export interface LibraryItemInterface {
   img?: string;
   url?: string;
 }
+
+export interface UserInvitationInterface {
+  username: string;
+  name?: string;
+  sub: number;
+  role: string;
+  media: {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  iat: number;
+  exp: number;
+}
