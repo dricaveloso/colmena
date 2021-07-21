@@ -1,7 +1,7 @@
 import React from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import Timer from "@/components/pages/record/Timer";
+import Timer from "@/components/pages/call/Timer";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";

@@ -1,6 +1,6 @@
-import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
-const theme = createTheme({
+const theme = createMuiTheme({
   // typography: {
   //   caption: {
   //     fontSize: 16,
