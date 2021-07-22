@@ -6,7 +6,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { makeStyles } from "@material-ui/styles";
 import MaterialIcon from "@/components/ui/MaterialIcon";
 import Text from "@/components/ui/Text";
-import UserContext from "@/store/user-context";
+import UserContext from "@/store/context/user-context";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum } from "@/enums/index";

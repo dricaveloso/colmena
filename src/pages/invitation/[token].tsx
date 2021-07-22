@@ -13,7 +13,7 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/index";
-import UserContext from "@/store/user-context";
+import UserContext from "@/store/context/user-context";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {

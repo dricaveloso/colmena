@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useTranslation } from "next-i18next";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
-import NotificationContext from "@/store/notification-context";
+import NotificationContext from "@/store/context/notification-context";
 import SocialMediaIconButton from "@/components/statefull/SocialMediaIconButtons";
 import { ButtonVariantEnum, NotificationStatusEnum, SelectVariantEnum } from "@/enums/index";
 import { makeStyles } from "@material-ui/styles";

@@ -7,7 +7,7 @@ import TabPrimaryCategoryHomeList from "@/components/pages/home/TabPrimaryCatego
 import Divider from "@/components/ui/Divider";
 import { TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
-import UserContext from "@/store/user-context";
+import UserContext from "@/store/context/user-context";
 
 type Props = {
   showContent: boolean;

@@ -4,7 +4,7 @@ import { ListItemIcon, SwipeableDrawer, List, ListItem, ListItemText } from "@ma
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import MaterialIcon from "@/components/ui/MaterialIcon";
-import NotificationContext from "@/store/notification-context";
+import NotificationContext from "@/store/context/notification-context";
 import { NotificationStatusEnum } from "@/enums/index";
 import CONSTANTS from "@/constants/index";
 import { v4 as uuid } from "uuid";

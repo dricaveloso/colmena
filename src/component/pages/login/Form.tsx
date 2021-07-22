@@ -5,7 +5,7 @@ import PasswordField from "@/components/statefull/PasswordField";
 // import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import TermsOfUse from "@/components/statefull/TermsOfUse";
-import NotificationContext from "@/store/notification-context";
+import NotificationContext from "@/store/context/notification-context";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
 import { NotificationStatusEnum, SelectVariantEnum } from "@/enums/index";

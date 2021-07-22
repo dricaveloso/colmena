@@ -12,7 +12,7 @@ import { I18nInterface, UserInvitationInterface } from "@/interfaces/index";
 import { TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import Form from "@/components/pages/complete-register/Form";
-import UserContext from "@/store/user-context";
+import UserContext from "@/store/context/user-context";
 import { parseJwt } from "@/utils/utils";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({

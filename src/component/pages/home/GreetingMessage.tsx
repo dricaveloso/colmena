@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useTranslation } from "next-i18next";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/index";
-import UserContext from "@/store/user-context";
+import UserContext from "@/store/context/user-context";
 
 function GreetingMessage() {
   const { t } = useTranslation("common");

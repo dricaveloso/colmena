@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import Select from "@/components/ui/Select";
 import { useTranslation } from "next-i18next";
-import NotificationContext from "@/store/notification-context";
+import NotificationContext from "@/store/context/notification-context";
 import { SelectVariantEnum, NotificationStatusEnum } from "@/enums/index";
 
 type Props = {
