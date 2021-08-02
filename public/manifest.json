@@ -1,11 +1,11 @@
 {
   "name": "Colmena - Create, Collaborate and Share ",
   "short_name": "Colmena",
-  "theme_color": "#0c4d81",
-  "background_color": "#c4e5ff",
+  "theme_color": "#fafafa",
+  "background_color": "#ff9029",
   "display": "fullscreen",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/login",
   "icons": [
     {
       "src": "/icons/pwa/android-icon-36x36.png",

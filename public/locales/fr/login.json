@@ -1,0 +1,5 @@
+{
+  "description": "Entrez votre email et mot de passe pour vous connecter.",
+  "loginInvalid": "Identifiant ou mot de passe incorrect",
+  "permissionDenied": "L'accès au profil utilisateur n'est pas autorisé."
+}

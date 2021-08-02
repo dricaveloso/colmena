@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import IconButton from "@/components/ui/IconButton";
 import { NotificationStatusEnum } from "@/enums/index";
-import NotificationContext from "@/store/notification-context";
+import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
 import Box from "@material-ui/core/Box";
 

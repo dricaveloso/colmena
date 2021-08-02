@@ -1,0 +1,2 @@
+export const USER_UPDATE = "USER_UPDATE";
+export const SET_INVITATION_TOKEN = "SET_INVITATION_TOKEN";

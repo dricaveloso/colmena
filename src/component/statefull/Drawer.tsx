@@ -4,10 +4,12 @@ import { ListItemIcon, SwipeableDrawer, List, ListItem, ListItemText } from "@ma
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import MaterialIcon from "@/components/ui/MaterialIcon";
-import NotificationContext from "@/store/notification-context";
+import NotificationContext from "@/store/context/notification-context";
 import { NotificationStatusEnum } from "@/enums/index";
 import CONSTANTS from "@/constants/index";
 import { v4 as uuid } from "uuid";
+import { signOut } from "next-auth/client";
+import { useRouter } from "next/router";
 
 type ListItemProps = {
   id: number;
@@ -46,6 +48,7 @@ type Props = {
 
 function Drawer({ open, onOpen, onClose }: Props) {
   const classes = useStyles();
+  const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("drawer");
   const { t: c } = useTranslation("common");
@@ -116,6 +119,10 @@ function Drawer({ open, onOpen, onClose }: Props) {
       id: 10,
       icon: "logout",
       title: t("logoutTitle"),
+      handleClick: async () => {
+        await signOut({ redirect: false });
+        router.push("/login");
+      },
     },
   ];
 

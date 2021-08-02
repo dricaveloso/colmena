@@ -31,30 +31,24 @@ export default function TermsOfUse({ open, handleSetOpen }: Props) {
   }, [open]);
 
   return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        scroll="body"
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-      >
-        <DialogTitle id="scroll-dialog-title">{t("termsOfUse")}</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            id="scroll-dialog-description"
-            ref={descriptionElementRef}
-            tabIndex={-1}
-          >
-            {t("termsOfUseText")}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      scroll="body"
+      aria-labelledby="scroll-dialog-title"
+      aria-describedby="scroll-dialog-description"
+    >
+      <DialogTitle id="scroll-dialog-title">{t("termsOfUse")}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="scroll-dialog-description" ref={descriptionElementRef} tabIndex={-1}>
+          {t("termsOfUseText")}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Ok
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { InputAdornment, IconButton, Input, FormControl, InputLabel } from "@material-ui/core";
+import {
+  InputAdornment,
+  IconButton,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+} from "@material-ui/core";
 
 type Props = {
-  id: string | undefined;
-  title: string;
+  placeholder: string;
+  label: string;
+  required?: boolean;
+  handleChangePassword: (value: string) => void;
 };
 
-function PasswordField({ id, title }: Props) {
+function PasswordField({ label, placeholder, handleChangePassword, required = false }: Props) {
   const [values, setValues] = useState({
     password: "",
     showPassword: false,
   });
 
   const handleChange = (prop: string) => (event: any) => {
+    handleChangePassword(event.target.value);
     setValues({ ...values, [prop]: event.target.value });
   };
 
@@ -27,17 +36,20 @@ function PasswordField({ id, title }: Props) {
   };
 
   return (
-    <FormControl variant="outlined" className="width-based-device">
-      <InputLabel htmlFor={id}>{title}</InputLabel>
-      <Input
-        id={id}
+    <FormControl style={{ width: "100%" }} variant="outlined">
+      <InputLabel htmlFor={`outlined-adornment-${label}`}>{label}</InputLabel>
+      <OutlinedInput
+        id={label}
         type={values.showPassword ? "text" : "password"}
         value={values.password}
         onChange={handleChange("password")}
+        fullWidth
+        required={required}
+        label={label}
+        placeholder={placeholder}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
-              aria-label="toggle password visibility"
               onClick={handleClickShowPassword}
               onMouseDown={handleMouseDownPassword}
               edge="end"
@@ -46,6 +58,7 @@ function PasswordField({ id, title }: Props) {
             </IconButton>
           </InputAdornment>
         }
+        labelWidth={70}
       />
     </FormControl>
   );

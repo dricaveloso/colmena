@@ -10,7 +10,7 @@ import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
 import IconButton from "@/components/ui/IconButton";
 import InviteForm from "@/components/pages/media-profile/Invite";
-import NotificationContext from "@/store/notification-context";
+import NotificationContext from "@/store/context/notification-context";
 import SocialMediaIconButton from "@/components/statefull/SocialMediaIconButtons";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";

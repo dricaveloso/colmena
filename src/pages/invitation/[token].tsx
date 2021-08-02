@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Container from "@/components/ui/Container";
 import FooterApp from "@/components/layout/FooterApp";
 import Divider from "@/components/ui/Divider";
@@ -8,10 +9,13 @@ import { useRouter } from "next/router";
 import Box100 from "@/components/ui/Box100";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { GetStaticProps } from "next";
+import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/index";
+import { isJWTValidInvitation } from "@/utils/utils";
+import { useDispatch } from "react-redux";
+import { setInvitationToken } from "@/store/actions/users/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -19,13 +23,22 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
   },
 });
 
-function Invitation() {
-  const router = useRouter();
-  const { t } = useTranslation("invitation");
+export const getStaticPaths: GetStaticPaths = async () => ({
+  paths: [],
+  fallback: "blocking",
+});
 
-  const navigate = () => {
-    router.push("/complete-register");
-  };
+function Invitation() {
+  const { t } = useTranslation("invitation");
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { token } = router.query;
+
+  useEffect(() => {
+    const { token: invitationToken, valid } = isJWTValidInvitation(token);
+    if (!valid) router.push("/");
+    else dispatch(setInvitationToken({ invitationToken }));
+  }, [dispatch, router, token]);
 
   return (
     <Container>
@@ -54,13 +67,13 @@ function Invitation() {
           </Box100>
           <Divider />
           <Box
+            display="flex"
+            flexDirection="column"
             style={{
-              display: "flex",
-              flexDirection: "column",
               width: "100%",
             }}
           >
-            <Button title={t("forms.button1")} handleClick={navigate} />
+            <Button title={t("forms.button1")} url="/complete-register" />
           </Box>
         </div>
       </Box>

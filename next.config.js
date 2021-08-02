@@ -19,5 +19,14 @@ module.exports = withImages(
         document: "/fallback",
       },
     },
+    async redirects() {
+      return [
+        {
+          source: '/invitation',
+          destination: '/',
+          permanent: true,
+        },
+      ]
+    },
   }),
 );

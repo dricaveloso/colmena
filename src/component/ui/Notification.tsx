@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
-import NotificationContext from "@/store/notification-context";
+import NotificationContext from "@/store/context/notification-context";
 import MuiAlert from "@material-ui/lab/Alert";
 import { NotificationStatusEnum } from "@/enums/index";
 import { NotificationStatusProps } from "@/types/index";

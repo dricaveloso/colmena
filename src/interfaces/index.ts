@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { NotificationStatusProps } from "@/types/index";
 
 export interface I18nInterface {
@@ -9,17 +10,26 @@ export interface NotificationDataInterface {
   status: NotificationStatusProps;
 }
 
+export interface MediaInfoInterface {
+  id: number;
+  name: string;
+  image?: string;
+  status: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface UserInfoInterface {
   id: number;
   name: string;
+  photo?: string;
   email: string;
+  accessToken: string;
+  language: string;
+  url?: string;
   role: string;
-  avatar?: string;
-  language?: string;
-  media: {
-    id: number;
-    name: string;
-  };
+  media: MediaInfoInterface;
 }
 export interface FileInterface {
   id: number;
@@ -44,4 +54,22 @@ export interface LibraryItemInterface {
   subtitle?: string;
   img?: string;
   url?: string;
+}
+
+export interface UserInvitationInterface {
+  username: string;
+  name?: string;
+  sub: number;
+  role: string;
+  media: {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  iat: number;
+  exp: number;
 }

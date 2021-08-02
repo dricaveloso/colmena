@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Fade, Box } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
 import MediaAvatar from "@/components/pages/home/MediaAvatar";
@@ -7,7 +7,8 @@ import TabPrimaryCategoryHomeList from "@/components/pages/home/TabPrimaryCatego
 import Divider from "@/components/ui/Divider";
 import { TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
-import UserContext from "@/store/user-context";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
 
 type Props = {
   showContent: boolean;
@@ -16,14 +17,14 @@ type Props = {
 
 function DashboardActions({ showContent, isFirstAccess }: Props) {
   const { t: c } = useTranslation("common");
-  const userCtx = useContext(UserContext);
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   function getContent() {
     return (
       <Box padding={0} margin={0} style={{ width: "100%" }}>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold", marginBottom: 10 }}>
-            {c("welcomeUserMessage", { userName: userCtx.userInfo?.name })}
+            {c("welcomeUserMessage", { userName: userRdx?.user.name })}
           </Text>
           <MediaAvatar size={12} />
           <GreetingMessage />

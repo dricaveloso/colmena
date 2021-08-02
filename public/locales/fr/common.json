@@ -1,9 +1,4 @@
 {
-  "form": {
-    "skipButton": "Sauter",
-    "nextIntro": "Suivant",
-    "backButton": "Retourner"
-  },
   "agreeWithTerms": "Je suis d'accord avec ",
   "termsOfUse": "Conditions d'utilisation",
   "termsOfUseText": "Tous les êtres humains naissent libres et égaux en dignité et en droits. Toute personne a droit à la vie, à la liberté et à la sécurité de sa personne. Nul ne sera soumis à la torture ni à des peines ou traitements cruels, inhumains ou dégradants. Chacun a le droit d'être reconnu partout en tant que personne devant la loi.",
@@ -13,11 +8,31 @@
   "featureUnavailable": "Cette fonctionnalité n'est pas encore disponible",
   "messageOffline": "Veuillez accéder à cette page, au moins une fois, avec la possibilité d'utiliser Internet.",
   "welcomeUserMessage": "Bienvenue {{userName}}",
+  "invitationGreeting": "Hello {{name}}",
   "welcomeRadioMessage": "{{mediaName}}",
   "notFoundPageText": "Page non trouvée",
   "internErrorPageText": "Erreur interne",
   "constructionPageText": "Page en construction",
   "chooseAnOption": "Elija una opción",
   "callDrawerBottomTitle": "Call",
-  "recordingDrawerBottomTitle": "Recording"
+  "recordingDrawerBottomTitle": "Recording",
+  "enterTitleIndexPage": "Entrer",
+  "form": {
+    "skipButton": "Sauter",
+    "nextIntro": "Suivant",
+    "backButton": "Retourner",
+    "invalidEmailTitle": "Invalid email",
+    "placeholderEmail": "Email",
+    "placeholderPassword": "Password",
+    "submitLoginTitle": "Enter",
+    "invalidURLTitle": "Invalid URL",
+    "successMessageFormSave": "Saved successfully",
+    "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
+    "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",
+    "differentPasswordsTitle": "Passwords do not match",
+    "requiredTitle": "Required"  
+  },
+  "messages": {
+    "loginFailedTitle": "Incorrect username or password."
+  }
 }

@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import TermsOfUse from "@/components/statefull/TermsOfUse";
+import { v4 as uuid } from "uuid";
 
 type Props = {
   about?: boolean;
@@ -20,6 +21,7 @@ function FooterApp({ about = false, terms = true, fixed = false }: Props) {
     if (about) {
       actionsArray.push(
         <Button
+          key={uuid()}
           size="small"
           variant="text"
           style={{ textTransform: "capitalize", color: "gray" }}
@@ -32,6 +34,7 @@ function FooterApp({ about = false, terms = true, fixed = false }: Props) {
     if (terms) {
       actionsArray.push(
         <Button
+          key={uuid()}
           size="small"
           style={{ textTransform: "capitalize", color: "gray" }}
           onClick={() => setOpenTerms(true)}
@@ -41,7 +44,9 @@ function FooterApp({ about = false, terms = true, fixed = false }: Props) {
       );
     }
     actionsArray.push(
-      <TermsOfUse open={openTerms} handleSetOpen={(flag: boolean) => setOpenTerms(flag)} />,
+      <div key={uuid()}>
+        <TermsOfUse open={openTerms} handleSetOpen={(flag: boolean) => setOpenTerms(flag)} />
+      </div>,
     );
     return actionsArray;
   }
