@@ -1,3 +1,5 @@
 {
-  "title": "Ingrese su correo electrónico y contraseña para iniciar sesión."
+  "title": "Ingrese su correo electrónico y contraseña para iniciar sesión.",
+  "loginInvalid": "Usuario o contraseña incorrectos",
+  "permissionDenied": "No se permite el acceso al perfil de usuario."
 }

@@ -1,6 +1,7 @@
 {
   "description": "And what will be your password?",
   "messagePasswordCreated": "Password created successfully.",
+  "invalidToken": "Expired or used token.",
   "forms": {
     "placeholderPassword": "Password",
     "placeholderPasswordConfirmation": "Password confirmation",

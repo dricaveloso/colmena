@@ -20,18 +20,15 @@ function Slt({ id, label, variant = SelectVariantEnum.OUTLINED, handleChange }: 
       <Select
         variant={variant}
         placeholder={label}
-        className="width-based-device"
         labelId={id}
         id={id}
         style={{ textAlign: "left", paddingLeft: 0 }}
         onChange={handleChange}
         label={label}
+        fullWidth
       >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
-        <MenuItem value={10}>Restrito</MenuItem>
-        <MenuItem value={20}>Público</MenuItem>
+        <MenuItem value={20}>Colaborador</MenuItem>
+        <MenuItem value={10}>Administrador</MenuItem>
       </Select>
     </FormControl>
   );

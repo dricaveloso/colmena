@@ -12,6 +12,8 @@ import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
 import TextField from "@material-ui/core/TextField";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
 
 type MyFormValues = {
   name: string;
@@ -30,19 +32,20 @@ const useStyles = makeStyles({
 export default function FormProfile() {
   const { t } = useTranslation("profile");
   const { t: c } = useTranslation("common");
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const notificationCtx = useContext(NotificationContext);
   const classes = useStyles();
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
     email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
-    url: Yup.string().url(c("form.invalidURLTitle")),
+    url: Yup.string().url(c("form.invalidURLTitle")).nullable(),
   });
 
   const initialValues: MyFormValues = {
-    name: "",
-    email: "",
-    url: "",
+    name: userRdx.user.name,
+    email: userRdx.user.email,
+    url: userRdx.user.url,
   };
 
   return (
@@ -58,8 +61,6 @@ export default function FormProfile() {
           });
           setSubmitting(false);
         }, 1000);
-
-        console.log(values);
       }}
     >
       {({ submitForm, isSubmitting, errors, touched }: any) => (
@@ -115,11 +116,12 @@ export default function FormProfile() {
             <Divider marginTop={20} />
             {isSubmitting && <LinearProgress />}
             <div className="marginTop15">
-              <Button title={t("saveButton")} handleClick={submitForm} />
+              <Button title={t("saveButton")} disabled={isSubmitting} handleClick={submitForm} />
             </div>
             <div className="marginTop15">
               <Button
                 title={t("resetPasswordButton")}
+                disabled={isSubmitting}
                 variant={ButtonVariantEnum.OUTLINED}
                 handleClick={() =>
                   notificationCtx.showNotification({

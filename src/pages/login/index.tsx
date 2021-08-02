@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Container from "@/components/ui/Container";
 import FooterApp from "@/components/layout/FooterApp";
 import HeaderApp from "@/components/layout/HeaderApp";
 import FlexBox from "@/components/ui/FlexBox";
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
 import Divider from "@/components/ui/Divider";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -13,8 +12,9 @@ import { I18nInterface } from "@/interfaces/index";
 import { TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import Form from "@/components/pages/login/Form";
-import { useSelector, useDispatch } from "react-redux";
-import { userUpdate } from "@/store/actions/users/index";
+import { getSession } from "next-auth/client";
+import { useRouter } from "next/router";
+import CenterProgress from "@/components/ui/CenterProgress";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -23,15 +23,21 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 export default function Login() {
-  const { user, token } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   const { t } = useTranslation("login");
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const userUpdateHandle = () => {
-    dispatch(userUpdate({ user: { name: "Vinicius Gusmão", email: "vinicius-og@hotmail.com" } }));
-  };
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session) {
+        router.push("/home");
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, [router]);
 
-  console.log(user, token);
+  if (isLoading) return <CenterProgress />;
 
   return (
     <Container>
@@ -40,7 +46,6 @@ export default function Login() {
         <Box className="width-based-device" flexDirection="column" display="flex">
           <Text variant={TextVariantEnum.BODY2}>{t("title")}</Text>
           <Divider />
-          <Button onClick={userUpdateHandle}>Teste</Button>
           <Form />
         </Box>
         <FooterApp about={false} terms={false} />

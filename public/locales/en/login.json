@@ -1,3 +1,6 @@
 {
-  "title": "Enter your email and password to login."
+  "title": "Enter your email and password to login.",
+  "loginInvalid": "Incorrect username or password",
+  "permissionDenied": "User profile not allowed for access."
 }
+

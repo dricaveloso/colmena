@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import Container from "@/components/ui/Container";
 import FooterApp from "@/components/layout/FooterApp";
 import HeaderApp from "@/components/layout/HeaderApp";
@@ -12,8 +12,9 @@ import { I18nInterface, UserInvitationInterface } from "@/interfaces/index";
 import { TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import Form from "@/components/pages/complete-register/Form";
-import UserContext from "@/store/context/user-context";
 import { parseJwt } from "@/utils/utils";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -22,15 +23,10 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 export default function CompleteRegister() {
-  const userCtx = useContext(UserContext);
-  const [data, setData] = useState<UserInvitationInterface | undefined>(undefined);
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const data = parseJwt<UserInvitationInterface | undefined>(userRdx?.invitationToken);
   const { t } = useTranslation("completeRegister");
   const { t: c } = useTranslation("common");
-
-  useEffect(() => {
-    const invitationObject = parseJwt<UserInvitationInterface | undefined>(userCtx.invitationToken);
-    setData(invitationObject);
-  }, [userCtx]);
 
   return (
     <Container>
@@ -42,7 +38,7 @@ export default function CompleteRegister() {
           </Text>
           <Text variant={TextVariantEnum.BODY2}>{t("description")}</Text>
           <Divider />
-          <Form userInfo={data} />
+          <Form invitationToken={userRdx?.invitationToken} />
         </Box>
         <FooterApp about={false} terms={false} />
       </FlexBox>

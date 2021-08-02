@@ -1,6 +1,7 @@
 import Button from "@material-ui/core/Button";
 import { ButtonColorProps, ButtonVariantProps, ButtonSizeProps } from "@/types/index";
 import { ButtonColorEnum, ButtonVariantEnum, ButtonSizeEnum } from "@/enums/index";
+import Link from "next/link";
 
 type Props = {
   title: string;
@@ -12,7 +13,8 @@ type Props = {
   size?: ButtonSizeProps | undefined;
   endIcon?: string | null;
   disabled?: boolean;
-  component?: string;
+  component?: any;
+  url?: string;
 };
 
 export default function Btn({
@@ -25,8 +27,24 @@ export default function Btn({
   endIcon = null,
   disabled = false,
   component = "button",
+  url = "no-navigation",
 }: Props) {
-  return (
+  return url !== "no-navigation" ? (
+    <Link href={url}>
+      <Button
+        style={{ textTransform: "capitalize", ...style }}
+        variant={variant}
+        color={color}
+        size={size}
+        className="width-based-device"
+        endIcon={endIcon}
+        disabled={disabled}
+        component="a"
+      >
+        {title}
+      </Button>
+    </Link>
+  ) : (
     <Button
       style={{ textTransform: "capitalize", ...style }}
       variant={variant}

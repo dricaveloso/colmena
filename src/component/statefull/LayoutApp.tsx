@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { getSession } from "next-auth/client";
 import Container from "@/components/ui/Container";
 import FlexBox from "@/components/ui/FlexBox";
 import AppBar from "@/components/statefull/AppBar";
 import FooterApp from "@/components/ui/FooterApp";
 import { PositionProps } from "@/types/index";
 import { PositionEnum } from "@/enums/index";
+import { useRouter } from "next/router";
 
 type Props = {
   title: string;
@@ -14,6 +16,14 @@ type Props = {
 };
 
 function LayoutApp({ title, drawer = true, headerPosition = PositionEnum.FIXED, children }: Props) {
+  const router = useRouter();
+
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session?.error === "RefreshAccessTokenError" || !session) router.push("/login");
+    });
+  }, [router]);
+
   return (
     <Container extraStyle={{ padding: 0 }}>
       <FlexBox extraStyle={{ margin: 0 }}>

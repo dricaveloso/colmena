@@ -1,6 +1,7 @@
 {
   "description": "Et quel sera votre mot de passe.",
-  "messagePasswordCreated": "Password created successfully.",
+  "messagePasswordCreated": "Mot de passe créé avec succès.",
+  "invalidToken": "Jeton expiré ou utilisé.",
   "forms": {
     "placeholderPassword": "Le mot de passe",
     "placeholderPasswordConfirmation": "Confirmation mot de passe",

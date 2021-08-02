@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-cycle
+import { UserInfoInterface } from "@/interfaces/index";
 import {
   NotificationStatusEnum,
   ButtonColorEnum,
@@ -15,6 +17,11 @@ import {
   FlexDirectionEnum,
   TextfieldVariantEnum,
 } from "@/enums/index";
+
+export type PropsUserSelector = {
+  user: UserInfoInterface;
+  invitationToken?: string | undefined;
+};
 
 export type NotificationStatusProps =
   | NotificationStatusEnum.SUCCESS

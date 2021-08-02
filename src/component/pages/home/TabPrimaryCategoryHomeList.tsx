@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -41,7 +41,7 @@ function a11yProps(index: any) {
 
 export default function TabCategoryList() {
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const { t } = useTranslation("home");
 
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -118,13 +118,13 @@ export default function TabCategoryList() {
         index={value}
         onChangeIndex={handleChangeIndex}
       >
-        <TabPanel value={value} index={0} dir={theme.direction}>
+        <TabPanel value={value} index={value}>
           <VerticalList data={data} />
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
+        <TabPanel value={value} index={value}>
           <VerticalList data={data} />
         </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
+        <TabPanel value={value} index={value}>
           <VerticalList data={data} />
         </TabPanel>
       </SwipeableViews>

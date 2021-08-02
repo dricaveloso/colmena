@@ -9,10 +9,9 @@ import NotificationContext from "@/store/context/notification-context";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
 import { NotificationStatusEnum } from "@/enums/index";
-import { UserInvitationInterface } from "@/interfaces/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { v4 as uuid } from "uuid";
-// import axios from "axios";
+import axios from "axios";
 import * as Yup from "yup";
 
 type MyFormValues = {
@@ -21,18 +20,16 @@ type MyFormValues = {
 };
 
 type Props = {
-  userInfo?: UserInvitationInterface | undefined;
+  invitationToken: string | undefined;
 };
 
-export default function WrapperForm({ userInfo }: Props) {
+export default function WrapperForm({ invitationToken }: Props) {
   const [openTerms, setOpenTerms] = useState(false);
   const [accept, setAccept] = useState(false);
   const { t } = useTranslation("completeRegister");
   const { t: c } = useTranslation("common");
   const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
-
-  console.log(userInfo);
 
   const SignupSchema = Yup.object().shape({
     password: Yup.string()
@@ -71,13 +68,32 @@ export default function WrapperForm({ userInfo }: Props) {
         }
         (async () => {
           try {
-            // const response = await axios.post(
-            //   "https://690c09a3db8d3670017555507.mockapi.io/api/v1/RESET_PASSWORD",
-            // );
+            const response = await axios.patch(
+              `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/reset`,
+              {
+                tokenpass: invitationToken,
+                password,
+              },
+            );
+
+            if (response.data.response.errorMessage) {
+              notificationCtx.showNotification({
+                message: t("invalidToken"),
+                status: NotificationStatusEnum.ERROR,
+              });
+              router.push("/");
+              return;
+            }
+
+            notificationCtx.showNotification({
+              message: t("messagePasswordCreated"),
+              status: NotificationStatusEnum.SUCCESS,
+            });
+
             router.push("/login");
           } catch (e) {
             notificationCtx.showNotification({
-              message: "Intern Error",
+              message: e.message,
               status: NotificationStatusEnum.ERROR,
             });
           } finally {

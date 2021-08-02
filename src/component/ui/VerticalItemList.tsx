@@ -20,8 +20,8 @@ const VerticalItemList = ({ id, title, subtitle = "", img = "" }: LibraryItemInt
       primary={title}
       secondary={subtitle}
     />
-    <ListItemSecondaryAction style={{ marginRight: -20 }}>
-      <Box display="flex" flexDirection="row">
+    <ListItemSecondaryAction>
+      <Box display="flex" flexDirection="row" style={{ marginRight: -10 }}>
         <IconButton
           icon="share"
           style={{ padding: 0, margin: 0, minWidth: 30 }}

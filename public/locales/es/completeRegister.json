@@ -1,6 +1,7 @@
 {
   "description": "y cual será tu contraseña.",
-  "messagePasswordCreated": "Password created successfully.",
+  "messagePasswordCreated": "Contraseña creada con éxito.",
+  "invalidToken": "Token caducado o usado.",
   "forms": {
     "placeholderPassword": "contraseña",
     "placeholderPasswordConfirmation": "repite la contraseña",

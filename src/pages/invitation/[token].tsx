@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import Container from "@/components/ui/Container";
 import FooterApp from "@/components/layout/FooterApp";
 import Divider from "@/components/ui/Divider";
@@ -13,7 +13,9 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/index";
-import UserContext from "@/store/context/user-context";
+import { isJWTValidInvitation } from "@/utils/utils";
+import { useDispatch } from "react-redux";
+import { setInvitationToken } from "@/store/actions/users/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -27,20 +29,16 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 });
 
 function Invitation() {
-  const userCtx = useContext(UserContext);
+  const { t } = useTranslation("invitation");
+  const dispatch = useDispatch();
   const router = useRouter();
   const { token } = router.query;
 
   useEffect(() => {
-    const tkn = token || "";
-    userCtx.updateInvitationToken(Array.isArray(tkn) ? tkn[0] : tkn);
-  }, [token, userCtx]);
-
-  const { t } = useTranslation("invitation");
-
-  const navigate = () => {
-    router.push("/complete-register");
-  };
+    const { token: invitationToken, valid } = isJWTValidInvitation(token);
+    if (!valid) router.push("/");
+    else dispatch(setInvitationToken({ invitationToken }));
+  }, [dispatch, router, token]);
 
   return (
     <Container>
@@ -75,7 +73,7 @@ function Invitation() {
               width: "100%",
             }}
           >
-            <Button title={t("forms.button1")} handleClick={navigate} />
+            <Button title={t("forms.button1")} url="/complete-register" />
           </Box>
         </div>
       </Box>

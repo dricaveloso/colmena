@@ -3,14 +3,14 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["src/component/*"],
-      "@/enums/*": ["src/enums/*"],
+      "@/enums/*": ["src/enums/index"],
       "@/hooks/*": ["src/hooks/*"],
       "@/interfaces/*": ["src/interfaces/*"],
       "@/pages/*": ["src/pages/*"],
       "@/services/*": ["src/services/*"],
       "@/store/*": ["src/store/*"],
       "@/styles/*": ["src/styles/*"],
-      "@/types/*": ["src/types/*"],
+      "@/types/*": ["src/types/index"],
       "@/utils/*": ["src/utils/*"],
       "@/constants/*": ["src/constants/*"],
       "@/tests/*": ["test/*"]
