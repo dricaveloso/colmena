@@ -12,7 +12,7 @@ export default NextAuth({
         const { email, password, lang } = credentials;
         try {
           const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`,
+            `${process.env.NEXT_PUPLIC_API_BASE_URL}/users/login`,
             {
               username: email,
               password,
@@ -48,6 +48,7 @@ export default NextAuth({
             accessToken,
           };
         } catch (e) {
+          console.log(e);
           const result = searchByTerm(e.message, "permissionDenied")
             ? "permissionDenied"
             : "invalidCredentials";
