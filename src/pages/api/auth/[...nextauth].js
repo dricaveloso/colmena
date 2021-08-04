@@ -11,8 +11,6 @@ export default NextAuth({
       async authorize(credentials) {
         const { email, password, lang } = credentials;
         try {
-          console.log(process.env.NEXT_PUPLIC_API_BASE_URL);
-          console.log(process.env.NEXTAUTH_URL);
           const response = await axios.post(
             `${process.env.NEXT_PUPLIC_API_BASE_URL}/users/login`,
             {

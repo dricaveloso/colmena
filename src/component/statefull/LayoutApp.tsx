@@ -20,7 +20,10 @@ function LayoutApp({ title, drawer = true, headerPosition = PositionEnum.FIXED, 
 
   useEffect(() => {
     getSession().then((session) => {
-      if (session?.error === "RefreshAccessTokenError" || !session) router.push("/login");
+      if (session?.error === "RefreshAccessTokenError" || !session) {
+        console.log("erro", session);
+        router.push("/login");
+      }
     });
   }, [router]);
 
