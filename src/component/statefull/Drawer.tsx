@@ -8,7 +8,6 @@ import NotificationContext from "@/store/context/notification-context";
 import { NotificationStatusEnum } from "@/enums/index";
 import CONSTANTS from "@/constants/index";
 import { v4 as uuid } from "uuid";
-import { signOut } from "next-auth/client";
 import { useRouter } from "next/router";
 
 type ListItemProps = {
@@ -120,8 +119,7 @@ function Drawer({ open, onOpen, onClose }: Props) {
       icon: "logout",
       title: t("logoutTitle"),
       handleClick: async () => {
-        await signOut({ redirect: false });
-        router.push("/login");
+        router.push("/logout");
       },
     },
   ];

@@ -34,13 +34,13 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
         </ListItem>
         <ListItem button key={uuid()} onClick={() => navigate("/recording")}>
           <ListItemAvatar>
-            <SvgIcon icon="microphone" fontSize="small" />
+            <SvgIcon icon="record" htmlColor="tomato" fontSize="small" />
           </ListItemAvatar>
           <ListItemText primary={t("recordingDrawerBottomTitle")} />
         </ListItem>
         <ListItem button key={uuid()} onClick={() => navigate("/call")}>
           <ListItemAvatar>
-            <SvgIcon icon="record" htmlColor="tomato" fontSize="small" />
+            <SvgIcon icon="microphone" fontSize="small" />
           </ListItemAvatar>
           <ListItemText primary={t("callDrawerBottomTitle")} />
         </ListItem>

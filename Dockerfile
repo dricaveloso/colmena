@@ -20,6 +20,11 @@ FROM node:alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+<<<<<<< HEAD
+=======
+ENV NEXT_PUBLIC_API_BASE_URL "https://lusitana.colmena.network/col"
+ENV NEXTAUTH_URL "https://lusitana.colmena.network"
+>>>>>>> 3090ee99194bc0ab425bc88118d75708133dfa3c
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001

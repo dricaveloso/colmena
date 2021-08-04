@@ -14,12 +14,21 @@ export default NextAuth({
       async authorize(credentials) {
         const { email, password } = credentials;
         try {
+<<<<<<< HEAD
           console.log(process.env.NEXT_PUPLIC_API_BASE_URL);
           console.log(process.env.NEXTAUTH_URL);
           const response = await axios.get(
             // `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
             `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
 
+=======
+          const response = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`,
+            {
+              username: email,
+              password,
+            },
+>>>>>>> 3090ee99194bc0ab425bc88118d75708133dfa3c
             {
               auth: {
                 username: email,
@@ -154,6 +163,7 @@ async function refreshAccessToken(token) {
       accessTokenExpires: Date.now() + constants.TOKEN_EXPIRE_SECONDS * 1000,
     };
   } catch (error) {
+    console.log("error refresh token", error);
     return {
       ...token,
       error: "RefreshAccessTokenError", // This is used in the front-end, and if present, we can force a re-login, or similar
