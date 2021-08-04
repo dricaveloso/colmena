@@ -1,3 +1,6 @@
+/* eslint-disable space-infix-ops */
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-param-reassign */
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
@@ -9,46 +12,65 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       async authorize(credentials) {
-        const { email, password, lang } = credentials;
+        const { email, password } = credentials;
         try {
           console.log(process.env.NEXT_PUPLIC_API_BASE_URL);
           console.log(process.env.NEXTAUTH_URL);
-          const response = await axios.post(
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/users/login`,
+          const response = await axios.get(
+            // `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
+            `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
+
             {
-              username: email,
-              password,
-            },
-            {
+              auth: {
+                username: email,
+                password,
+              },
               headers: {
-                lang,
+                "OCS-APIRequest": true,
+
               },
             },
           );
-          // eslint-disable-next-line camelcase
-          const {
-            payload: { sub: id, role, url, name, lang: language, username, photo, media },
-            access_token: accessToken,
-          } = response.data;
 
-          if (role !== "admin") {
-            throw new Error("permissionDenied");
+          console.log(response.data.ocs);
+          console.log(response.data.ocs.meta.statuscode);
+          if (response.data.ocs.meta.statuscode === 200) {
+            console.log(`name ${response.data.ocs.data["display-name"]}`);
+            console.log(`language ${response.data.ocs.data.language}`);
+            console.log(`email ${response.data.ocs.data.email}`);
+            console.log(`phone ${response.data.ocs.data.phone}`);
+            console.log(`avatar ${response.data.ocs.data.avatarScope.always_img_avatar}`);
+            console.log(`grupos ${response.data.ocs.data.groups}`);
+            console.log(`twitter ${response.data.ocs.data.twitter}`);
+            console.log(`locale ${response.data.ocs.data.locale}`);
           }
 
-          let userLang = constants.DEFAULT_LANGUAGE;
-          if (Object.values(constants.LOCALES).includes(language)) userLang = language;
+          if (response.data.ocs.data.groups[0] !== "admin") {
+            console.log("não é admin");
+            throw new Error("permissionDenied");
+          } else {
+            console.log("é admin");
+          }
+          // // eslint-disable-next-line camelcase
+          // const {
+          //   payload: { sub: id, role, url, name, lang: language, username, photo, media },
+          //   access_token: accessToken,
+          // } = response.data;
 
-          return {
-            id,
-            name,
-            email: username,
-            url,
-            language: userLang,
-            photo,
-            media,
-            role,
-            accessToken,
-          };
+          // let userLang = constants.DEFAULT_LANGUAGE;
+          // if (Object.values(constants.LOCALES).includes(language)) userLang = language;
+
+          // return {
+          //   id,
+          //   name,
+          //   email: username,
+          //   url,
+          //   language: userLang,
+          //   photo,
+          //   media,
+          //   role,
+          //   accessToken,
+          // };
         } catch (e) {
           console.log(e);
           const result = searchByTerm(e.message, "permissionDenied")
