@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ListItemIcon, SwipeableDrawer, List, ListItem, ListItemText } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
@@ -9,6 +9,8 @@ import { NotificationStatusEnum } from "@/enums/index";
 import CONSTANTS from "@/constants/index";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/client";
+import Backdrop from "@/components/ui/Backdrop";
 
 type ListItemProps = {
   id: number;
@@ -49,8 +51,20 @@ function Drawer({ open, onOpen, onClose }: Props) {
   const classes = useStyles();
   const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
+  const [showBackdrop, setShowBackdrop] = useState(false);
   const { t } = useTranslation("drawer");
   const { t: c } = useTranslation("common");
+
+  const logoutHandler = async () => {
+    try {
+      setShowBackdrop(true);
+      await signOut({ redirect: false });
+    } finally {
+      setShowBackdrop(false);
+      router.push("/login");
+    }
+  };
+
   const menuArray = [
     {
       id: 1,
@@ -118,9 +132,7 @@ function Drawer({ open, onOpen, onClose }: Props) {
       id: 10,
       icon: "logout",
       title: t("logoutTitle"),
-      handleClick: async () => {
-        router.push("/logout");
-      },
+      handleClick: logoutHandler,
     },
   ];
 
@@ -172,9 +184,12 @@ function Drawer({ open, onOpen, onClose }: Props) {
   );
 
   return (
-    <SwipeableDrawer anchor="left" open={open} onOpen={onOpen} onClose={onClose}>
-      {drawerMenu()}
-    </SwipeableDrawer>
+    <>
+      <Backdrop open={showBackdrop} />
+      <SwipeableDrawer anchor="left" open={open} onOpen={onOpen} onClose={onClose}>
+        {drawerMenu()}
+      </SwipeableDrawer>
+    </>
   );
 }
 
