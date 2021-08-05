@@ -12,7 +12,7 @@ export default NextAuth({
         const { email, password, lang } = credentials;
         try {
           const response = await axios.post(
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/users/login`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`,
             {
               username: email,
               password,
@@ -130,6 +130,7 @@ async function refreshAccessToken(token) {
       accessTokenExpires: Date.now() + constants.TOKEN_EXPIRE_SECONDS * 1000,
     };
   } catch (error) {
+    console.log("error refresh token", error);
     return {
       ...token,
       error: "RefreshAccessTokenError", // This is used in the front-end, and if present, we can force a re-login, or similar

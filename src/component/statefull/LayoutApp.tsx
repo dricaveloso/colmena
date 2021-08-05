@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { getSession } from "next-auth/client";
+import { getSession, signOut } from "next-auth/client";
 import Container from "@/components/ui/Container";
 import FlexBox from "@/components/ui/FlexBox";
 import AppBar from "@/components/statefull/AppBar";
@@ -19,12 +19,17 @@ function LayoutApp({ title, drawer = true, headerPosition = PositionEnum.FIXED, 
   const router = useRouter();
 
   useEffect(() => {
-    getSession().then((session) => {
-      if (session?.error === "RefreshAccessTokenError" || !session) {
-        console.log("erro", session);
-        router.push("/login");
+    (async () => {
+      try {
+        const session = await getSession();
+        if (session?.error === "RefreshAccessTokenError" || !session) {
+          await signOut({ redirect: false });
+          router.push("/login");
+        }
+      } catch (e) {
+        console.log(e);
       }
-    });
+    })();
   }, [router]);
 
   return (
