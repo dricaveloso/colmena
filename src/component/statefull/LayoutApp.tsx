@@ -17,7 +17,6 @@ type Props = {
 
 function LayoutApp({ title, drawer = true, headerPosition = PositionEnum.FIXED, children }: Props) {
   const router = useRouter();
-
   useEffect(() => {
     (async () => {
       try {

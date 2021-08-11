@@ -44,6 +44,8 @@ export function isJWTValidInvitation(tkn: string | string[] | undefined) {
 }
 
 export function getFirstLettersOfTwoFirstNames(word: string): string {
+  if (!word) return "";
+
   const arr = word.split(" ");
   let result = arr[0][0];
 

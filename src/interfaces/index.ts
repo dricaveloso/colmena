@@ -1,10 +1,21 @@
 // eslint-disable-next-line import/no-cycle
-import { NotificationStatusProps } from "@/types/index";
+import { NotificationStatusProps, NXTagsProps } from "@/types/index";
 
 export interface I18nInterface {
   locale: string;
 }
 
+export interface RecordingInterface {
+  id: string;
+  title?: string;
+  url: string;
+  blob: Blob;
+  tags: NXTagsProps[];
+  type: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  userId: string | number;
+}
 export interface NotificationDataInterface {
   message: string;
   status: NotificationStatusProps;

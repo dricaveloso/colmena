@@ -24,6 +24,7 @@ export default NextAuth({
             },
           );
           // eslint-disable-next-line camelcase
+
           const {
             payload: { sub: id, role, url, name, lang: language, username, photo, media },
             access_token: accessToken,
