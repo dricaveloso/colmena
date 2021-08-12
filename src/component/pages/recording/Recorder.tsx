@@ -11,10 +11,11 @@ import { PropsUserSelector, PropsAudioSave } from "@/types/index";
 import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAudio";
 import { useRouter } from "next/router";
 import { v4 as uuid } from "uuid";
+import { blobToBase64String } from "blob-util";
 
 type AudioDataProps = {
   blob: any;
-  url: string;
+  url?: string;
   type: string;
 };
 
@@ -41,23 +42,24 @@ export default function RecorderAux() {
     setOpenDialogAudioName(true);
   };
 
-  const handleAudioSave = (values: PropsAudioSave) => {
+  const handleAudioSave = async (values: PropsAudioSave) => {
     const { name: title, tags } = values;
     if (audioData) {
-      const { blob, url, type } = audioData;
+      const { blob, type: audioType } = audioData;
       const id = uuid();
+      const blobBase64 = await blobToBase64String(blob);
+      // const blob2 = await base64StringToBlob(base64Blob, type);
       const recording: RecordingInterface = {
         title,
-        blob,
-        url,
-        type,
+        blobBase64,
+        audioType,
         tags,
         createdAt: new Date(),
         userId: userRdx.user.id,
         id,
       };
       dispatch(recordingCreate(recording));
-      router.push(`recording-done/${id}`);
+      router.push("/recording-done");
     }
     setOpenDialogAudioName(false);
   };

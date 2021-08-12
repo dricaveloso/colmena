@@ -19,7 +19,7 @@ export default function RecordingDoneOptions() {
       }}
     >
       <IconButton
-        fontSizeIcon="default"
+        fontSizeIcon="medium"
         color="black"
         icon="share"
         handleClick={faznada}
@@ -27,7 +27,7 @@ export default function RecordingDoneOptions() {
         style={{ paddingRight: 0 }}
       />
       <IconButton
-        fontSizeIcon="default"
+        fontSizeIcon="medium"
         color="black"
         icon="more_vertical"
         handleClick={faznada}

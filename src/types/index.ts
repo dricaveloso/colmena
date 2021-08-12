@@ -158,7 +158,7 @@ export type TextfieldVariantProps =
   | TextfieldVariantEnum.OUTLINED
   | TextfieldVariantEnum.TEXT;
 
-export type FontSizeIconProps = "default" | "inherit" | "large" | "small" | undefined;
+export type FontSizeIconProps = "medium" | "inherit" | "large" | "small" | undefined;
 
 export type AllIconProps =
   | "settings"

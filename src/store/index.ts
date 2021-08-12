@@ -1,10 +1,8 @@
 import { useMemo } from "react";
 import { createStore, applyMiddleware } from "redux";
-// import { createWrapper } from "next-redux-wrapper";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-// import storage from "redux-persist-indexeddb-storage";
 import reducers from "./reducers";
 
 let store: any;

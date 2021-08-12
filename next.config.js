@@ -26,11 +26,6 @@ module.exports = withImages(
           destination: '/',
           permanent: true,
         },
-        {
-          source: '/recording-done',
-          destination: '/recording',
-          permanent: true,
-        },
       ]
     },
   }),
