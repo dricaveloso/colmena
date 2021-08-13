@@ -1,3 +1,6 @@
+/* eslint-disable space-infix-ops */
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-param-reassign */
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
@@ -9,30 +12,17 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       async authorize(credentials) {
-        const { email, password, lang } = credentials;
+        const { email, password } = credentials;
         try {
-          const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`,
-            {
-              username: email,
-              password,
-            },
-            {
-              headers: {
-                lang,
-              },
-            },
-          );
-          // eslint-disable-next-line camelcase
+          const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`, {
+            username: email,
+            password,
+          });
 
           const {
             payload: { sub: id, role, url, name, lang: language, username, photo, media },
             access_token: accessToken,
           } = response.data;
-
-          if (role !== "admin") {
-            throw new Error("permissionDenied");
-          }
 
           let userLang = constants.DEFAULT_LANGUAGE;
           if (Object.values(constants.LOCALES).includes(language)) userLang = language;
