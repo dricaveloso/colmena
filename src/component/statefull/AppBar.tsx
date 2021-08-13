@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { IconButton, AppBar, Avatar, Toolbar } from "@material-ui/core";
+import { IconButton, AppBar, Toolbar } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import Link from "next/link";
 import { PositionProps, PropsUserSelector } from "@/types/index";
 import { PositionEnum, TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
+import UserAvatar from "@/components/ui/Avatar";
 import { useSelector } from "react-redux";
-import { getFirstLettersOfTwoFirstNames } from "@/utils/utils";
 import Drawer from "./Drawer";
 
 type Props = {
@@ -16,8 +16,8 @@ type Props = {
 };
 
 function AppBarSys({ title, headerPosition = PositionEnum.FIXED, drawer = true }: Props) {
-  const [openDrawer, setOpenDrawer] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   return (
     <header>
@@ -45,12 +45,9 @@ function AppBarSys({ title, headerPosition = PositionEnum.FIXED, drawer = true }
           </Text>
           <div>
             <Link href="/profile">
-              <Avatar
-                alt="user-avatar"
-                src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${userRdx.user?.photo}`}
-              >
-                {getFirstLettersOfTwoFirstNames(userRdx.user?.name)}
-              </Avatar>
+              <div>
+                <UserAvatar size={5} name={userRdx?.user.name} image={userRdx?.user.photo} />
+              </div>
             </Link>
           </div>
         </Toolbar>

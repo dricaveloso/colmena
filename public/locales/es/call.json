@@ -1,6 +1,8 @@
 {
   "title": "Call",
   "textInvite": "Agregar a la llamada",
+  "pressToStartTitle": "Press to start recording",
+  "pressToStopTitle": "Press to stop recording",
   "titleShareLink": "Compartir enlace",
   "goLiveTitle": "Stream (go live)"
 }

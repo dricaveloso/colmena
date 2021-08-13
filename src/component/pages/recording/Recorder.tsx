@@ -48,7 +48,6 @@ export default function RecorderAux() {
       const { blob, type: audioType } = audioData;
       const id = uuid();
       const blobBase64 = await blobToBase64String(blob);
-      // const blob2 = await base64StringToBlob(base64Blob, type);
       const recording: RecordingInterface = {
         title,
         blobBase64,

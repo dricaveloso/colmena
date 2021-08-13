@@ -1,7 +1,7 @@
 import React from "react";
 import { Fade, Box } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
-import MediaAvatar from "@/components/pages/home/MediaAvatar";
+import MediaAvatar from "@/components/ui/Avatar";
 import GreetingMessage from "@/components/pages/home/GreetingMessage";
 import TabPrimaryCategoryHomeList from "@/components/pages/home/TabPrimaryCategoryHomeList";
 import Divider from "@/components/ui/Divider";
@@ -26,7 +26,11 @@ function DashboardActions({ showContent, isFirstAccess }: Props) {
           <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold", marginBottom: 10 }}>
             {c("welcomeUserMessage", { userName: userRdx?.user.name })}
           </Text>
-          <MediaAvatar size={12} />
+          <MediaAvatar
+            name={userRdx?.user.media.name}
+            image={userRdx?.user.media.image}
+            size={12}
+          />
           <GreetingMessage />
         </Box>
         <Divider marginTop={15} />

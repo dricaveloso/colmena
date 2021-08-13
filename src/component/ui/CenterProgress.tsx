@@ -1,8 +1,7 @@
 import React from "react";
-// import LinearProgress from "@material-ui/core/LinearProgress";
+import Image from "next/image";
 import FlexBox from "@/components/ui/FlexBox";
 import { AlignItemsEnum, JustifyContentEnum } from "@/enums/index";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function CenterProgress() {
   return (
@@ -11,7 +10,7 @@ export default function CenterProgress() {
       justifyContent={JustifyContentEnum.CENTER}
       alignItems={AlignItemsEnum.CENTER}
     >
-      <CircularProgress />
+      <Image src="/images/loader.gif" width={70} height={70} />
     </FlexBox>
   );
 }

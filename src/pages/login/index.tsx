@@ -28,9 +28,13 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!navigator.onLine) {
+      router.replace("/home");
+      return;
+    }
     getSession().then((session) => {
       if (session) {
-        router.push("/home");
+        router.replace("/home");
       } else {
         setIsLoading(false);
       }

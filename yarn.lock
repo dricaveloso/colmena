@@ -1506,6 +1506,13 @@
   resolved "https://registry.yarnpkg.com/@panva/asn1.js/-/asn1.js-1.0.0.tgz#dd55ae7b8129e02049f009408b97c61ccf9032f6"
   integrity sha512-UdkG3mLEqXgnlKsWanWcgb6dOjUzJ+XC5f+aWw30qrtjxeNUSfKX1cd5FBzOaXQumoe9nIqeZUvrRJS03HCCtw==
 
+"@piotr-cz/redux-persist-idb-storage@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@piotr-cz/redux-persist-idb-storage/-/redux-persist-idb-storage-1.1.2.tgz#80de94aec5e79ce491183b386e26b3533eb4a396"
+  integrity sha512-nwNRHySeJj/GDZNd5bBd6ZdH1iW5AgGLRyxL7+/2MGr+yV50Ld9Wvtq5DCHVaBVKLZKXYglUMxtkUzfdZCFMiw==
+  dependencies:
+    idb "^3.0.0"
+
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-babel/-/plugin-babel-5.3.0.tgz#9cb1c5146ddd6a4968ad96f209c50c62f92f9879"
@@ -4330,6 +4337,11 @@ iconv-lite@^0.6.2:
   integrity sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
+
+idb@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/idb/-/idb-3.0.2.tgz#c8e9122d5ddd40f13b60ae665e4862f8b13fa384"
+  integrity sha512-+FLa/0sTXqyux0o6C+i2lOR0VoS60LU/jzUo5xjfY6+7sEEgy4Gz1O7yFBXvjd7N0NyIGWIRg8DcQSLEG+VSPw==
 
 identity-obj-proxy@^3.0.0:
   version "3.0.0"
