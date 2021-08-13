@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { getFirstLettersOfTwoFirstNames } from "@/utils/utils";
+import { getFirstLettersOfTwoFirstNames, isValidUrl } from "@/utils/utils";
 
 type Props = {
   size: number;
@@ -18,7 +18,7 @@ function AvatarAux({ size, name, image }: Props) {
   }));
   const classes = useStyles();
 
-  if (!image || !navigator.onLine)
+  if (!image || !isValidUrl(image) || !navigator.onLine)
     return <Avatar className={classes.size}>{getFirstLettersOfTwoFirstNames(name)}</Avatar>;
 
   return (

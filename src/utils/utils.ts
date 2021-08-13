@@ -1,5 +1,16 @@
 import { UserInvitationInterface } from "@/interfaces/index";
 
+export const isValidUrl = (url: string) => {
+  try {
+    // eslint-disable-next-line no-new
+    new URL(url);
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+  return true;
+};
+
 export function parseJwt<Type>(token: string | undefined): Type | undefined {
   if (!token) return undefined;
 
