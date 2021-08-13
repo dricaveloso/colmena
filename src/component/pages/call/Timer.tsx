@@ -18,7 +18,7 @@ type Props = {
 export default function Timer({ handleStart, handleStop }: Props) {
   const { t } = useTranslation("recording");
   const [stop, setStop] = useState(true);
-  const { seconds, minutes, hours, start, pause } = useStopwatch({
+  const { seconds, minutes, hours, start } = useStopwatch({
     autoStart: false,
   });
 
@@ -34,7 +34,6 @@ export default function Timer({ handleStart, handleStop }: Props) {
   const initStart = () => {
     if (!stop) {
       handleStop();
-      pause();
       setStop(!stop);
       return;
     }

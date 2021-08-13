@@ -27,6 +27,7 @@ export default function RecorderAux() {
   const [openDialogAudioName, setOpenDialogAudioName] = useState(false);
   const dispatch = useDispatch();
   const [recordState, setRecordState] = useState(null);
+  const [showTimer, setShowtimer] = useState(true);
   const router = useRouter();
 
   const start = () => {
@@ -38,6 +39,7 @@ export default function RecorderAux() {
   };
 
   const onStop = (audioData: AudioDataProps) => {
+    setShowtimer(false);
     setAudioData(audioData);
     setOpenDialogAudioName(true);
   };
@@ -63,6 +65,11 @@ export default function RecorderAux() {
     setOpenDialogAudioName(false);
   };
 
+  const handleCloseExtraInfo = () => {
+    setShowtimer(true);
+    setOpenDialogAudioName(false);
+  };
+
   return (
     <div>
       <AudioReactRecorder
@@ -73,10 +80,10 @@ export default function RecorderAux() {
         onStop={onStop}
       />
       <Divider marginBottom={25} />
-      <Timer handleStart={start} handleStop={stop} />
+      {showTimer && <Timer handleStart={start} handleStop={stop} />}
       <DialogExtraInfoAudio
         open={openDialogAudioName}
-        handleClose={() => setOpenDialogAudioName(false)}
+        handleClose={handleCloseExtraInfo}
         handleSubmit={handleAudioSave}
       />
     </div>

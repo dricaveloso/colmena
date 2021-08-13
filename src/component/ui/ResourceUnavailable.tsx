@@ -8,10 +8,10 @@ import Text from "@/components/ui/Text";
 
 type Props = {
   icon: string;
-  // title: string;
+  title?: string;
 };
 
-function ResourceUnavailable({ icon }: Props) {
+function ResourceUnavailable({ icon, title = "" }: Props) {
   // const { t } = useTranslation("common");
   const router = useRouter();
 
@@ -30,7 +30,7 @@ function ResourceUnavailable({ icon }: Props) {
           fontSize: 16,
         }}
       >
-        Offline
+        {title}
       </Text>
       <Button color="primary" variant="outlined" onClick={() => router.back()}>
         {/* {t("form.backButton")} */}
