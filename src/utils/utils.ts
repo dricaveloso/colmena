@@ -5,7 +5,6 @@ export const isValidUrl = (url: string) => {
     // eslint-disable-next-line no-new
     new URL(url);
   } catch (e) {
-    console.error(e);
     return false;
   }
   return true;
