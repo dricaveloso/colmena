@@ -17,19 +17,20 @@ type Props = {
 
 function LayoutApp({ title, drawer = true, headerPosition = PositionEnum.FIXED, children }: Props) {
   const router = useRouter();
-
   useEffect(() => {
-    (async () => {
-      try {
-        const session = await getSession();
-        if (session?.error === "RefreshAccessTokenError" || !session) {
-          await signOut({ redirect: false });
-          router.push("/login");
+    if (navigator.onLine) {
+      (async () => {
+        try {
+          const session = await getSession();
+          if (session?.error === "RefreshAccessTokenError" || !session) {
+            await signOut({ redirect: false });
+            router.push("/login");
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
+      })();
+    }
   }, [router]);
 
   return (

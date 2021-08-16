@@ -1,16 +1,21 @@
 import { useMemo } from "react";
 import { createStore, applyMiddleware } from "redux";
-// import { createWrapper } from "next-redux-wrapper";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import defaultStorage from "redux-persist/lib/storage";
+// import createIdbStorage from "@piotr-cz/redux-persist-idb-storage/src";
 import reducers from "./reducers";
 
 let store: any;
 
 const persistConfig = {
-  key: "primary",
-  storage,
+  key: "root",
+  // eslint-disable-next-line no-undef
+  // storage: globalThis.indexedDB
+  //   ? createIdbStorage({ name: "colmenaApp", storeName: "keyval" })
+  //   : defaultStorage,
+  storage: defaultStorage,
+  // serialize: false,
   // whitelist: ['exampleData'], // place to select which state you want to persist
 };
 

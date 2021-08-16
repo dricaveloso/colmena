@@ -17,7 +17,7 @@ self.__WB_DISABLE_DEV_LOGS = true;
 // Precache fallback route and image
 WB_MANIFEST.push({
   url: "/fallback",
-  revision: "1234567890",
+  revision: "1234567390",
 });
 precacheAndRoute(WB_MANIFEST);
 
@@ -179,7 +179,7 @@ setCatchHandler(({ event }) => {
       break;
     case "image":
       // If using precached URLs:
-      return matchPrecache("/static/images/fallback.png");
+      return matchPrecache("/images/fallback.png");
       // return caches.match('/static/images/fallback.png')
       break;
     case "font":

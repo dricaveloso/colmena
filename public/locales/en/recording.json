@@ -1,3 +1,10 @@
 {
-  "title": "Recording"
+  "title": "Recording",
+  "pressToStartTitle": "Press to start recording",
+  "pressToStopTitle": "Press to stop recording",
+  "recordingFinishLabelForm": "Title",
+  "recordingFinishTitle": "Recording finished",
+  "recordingFinishDescription": "Finally, type a title for this recording.",
+  "submitButton": "Finish",
+  "cancelButton": "Cancel"
 }

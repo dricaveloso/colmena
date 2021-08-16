@@ -13,6 +13,7 @@
       "@/types/*": ["src/types/index"],
       "@/utils/*": ["src/utils/*"],
       "@/constants/*": ["src/constants/*"],
+      "@/libs/*": ["src/libs/*"],
       "@/tests/*": ["test/*"]
     },
     "target": "es6",
@@ -33,5 +34,11 @@
     "jsx": "preserve"
   },
   "exclude": ["node_modules", ".next", "out", "test"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "src/component/pages/recording/Recorder.js"
+  ]
 }

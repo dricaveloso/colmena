@@ -56,12 +56,14 @@ function Drawer({ open, onOpen, onClose }: Props) {
   const { t: c } = useTranslation("common");
 
   const logoutHandler = async () => {
-    try {
-      setShowBackdrop(true);
-      await signOut({ redirect: false });
-    } finally {
-      setShowBackdrop(false);
-      router.push("/login");
+    if (navigator.onLine) {
+      try {
+        setShowBackdrop(true);
+        await signOut({ redirect: false });
+      } finally {
+        setShowBackdrop(false);
+        router.push("/login");
+      }
     }
   };
 

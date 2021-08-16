@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { UserInfoInterface } from "@/interfaces/index";
+import { UserInfoInterface, RecordingInterface } from "@/interfaces/index";
 import {
   NotificationStatusEnum,
   ButtonColorEnum,
@@ -21,6 +21,20 @@ import {
 export type PropsUserSelector = {
   user: UserInfoInterface;
   invitationToken?: string | undefined;
+};
+
+export type PropsAudioSave = {
+  name: string;
+  tags: NXTagsProps[];
+};
+
+export type NXTagsProps = {
+  id: number;
+  title: string;
+};
+
+export type PropsRecordingSelector = {
+  recordings: RecordingInterface[];
 };
 
 export type NotificationStatusProps =
@@ -144,7 +158,7 @@ export type TextfieldVariantProps =
   | TextfieldVariantEnum.OUTLINED
   | TextfieldVariantEnum.TEXT;
 
-export type FontSizeIconProps = "default" | "inherit" | "large" | "small" | undefined;
+export type FontSizeIconProps = "medium" | "inherit" | "large" | "small" | undefined;
 
 export type AllIconProps =
   | "settings"

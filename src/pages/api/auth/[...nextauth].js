@@ -14,72 +14,30 @@ export default NextAuth({
       async authorize(credentials) {
         const { email, password } = credentials;
         try {
-<<<<<<< HEAD
-          console.log(process.env.NEXT_PUPLIC_API_BASE_URL);
-          console.log(process.env.NEXTAUTH_URL);
-          const response = await axios.get(
-            // `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
+          const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`, {
+            username: email,
+            password,
+          });
 
-=======
-          const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`,
-            {
-              username: email,
-              password,
-            },
->>>>>>> 3090ee99194bc0ab425bc88118d75708133dfa3c
-            {
-              auth: {
-                username: email,
-                password,
-              },
-              headers: {
-                "OCS-APIRequest": true,
+          const {
+            payload: { sub: id, role, url, name, lang: language, username, photo, media },
+            access_token: accessToken,
+          } = response.data;
 
-              },
-            },
-          );
+          let userLang = constants.DEFAULT_LANGUAGE;
+          if (Object.values(constants.LOCALES).includes(language)) userLang = language;
 
-          console.log(response.data.ocs);
-          console.log(response.data.ocs.meta.statuscode);
-          if (response.data.ocs.meta.statuscode === 200) {
-            console.log(`name ${response.data.ocs.data["display-name"]}`);
-            console.log(`language ${response.data.ocs.data.language}`);
-            console.log(`email ${response.data.ocs.data.email}`);
-            console.log(`phone ${response.data.ocs.data.phone}`);
-            console.log(`avatar ${response.data.ocs.data.avatarScope.always_img_avatar}`);
-            console.log(`grupos ${response.data.ocs.data.groups}`);
-            console.log(`twitter ${response.data.ocs.data.twitter}`);
-            console.log(`locale ${response.data.ocs.data.locale}`);
-          }
-
-          if (response.data.ocs.data.groups[0] !== "admin") {
-            console.log("não é admin");
-            throw new Error("permissionDenied");
-          } else {
-            console.log("é admin");
-          }
-          // // eslint-disable-next-line camelcase
-          // const {
-          //   payload: { sub: id, role, url, name, lang: language, username, photo, media },
-          //   access_token: accessToken,
-          // } = response.data;
-
-          // let userLang = constants.DEFAULT_LANGUAGE;
-          // if (Object.values(constants.LOCALES).includes(language)) userLang = language;
-
-          // return {
-          //   id,
-          //   name,
-          //   email: username,
-          //   url,
-          //   language: userLang,
-          //   photo,
-          //   media,
-          //   role,
-          //   accessToken,
-          // };
+          return {
+            id,
+            name,
+            email: username,
+            url,
+            language: userLang,
+            photo,
+            media,
+            role,
+            accessToken,
+          };
         } catch (e) {
           console.log(e);
           const result = searchByTerm(e.message, "permissionDenied")
