@@ -2,7 +2,8 @@ import React from "react";
 import FullCenterContainer from "@/components/ui/FullCenterContainer";
 // import { useTranslation } from "next-i18next";
 // import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import ResourceUnavailable from "@/components/ui/ResourceUnavailable";
+// import ResourceUnavailable from "@/components/ui/ResourceUnavailable";
+import Image from "next/image";
 // import { GetStaticProps } from "next";
 // import { I18nInterface } from "@/interfaces/index";
 
@@ -17,7 +18,8 @@ function Fallback() {
 
   return (
     <FullCenterContainer>
-      <ResourceUnavailable icon="wifi_off" />
+      {/* <ResourceUnavailable icon="wifi_off" /> */}
+      <Image src="/images/fallback.png" width={100} height={140} />
     </FullCenterContainer>
   );
 }
