@@ -46,7 +46,7 @@ function AppBarSys({ title, headerPosition = PositionEnum.FIXED, drawer = true }
           <div>
             <Link href="/profile">
               <div>
-                <UserAvatar size={5} name={userRdx?.user.name} image={userRdx?.user.photo} />
+                <UserAvatar size={5} name={userRdx?.user?.name} image={userRdx?.user?.photo} />
               </div>
             </Link>
           </div>

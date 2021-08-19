@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AudioReactRecorder, { RecordState } from "audio-react-recorder";
 import Timer from "@/components/pages/call/Timer";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Divider from "@/components/ui/Divider";
-import { useDispatch, useSelector } from "react-redux";
-import { recordingCreate } from "@/store/actions/recordings/index";
-import { RecordingInterface } from "@/interfaces/index";
+import { useSelector } from "react-redux";
 import { PropsUserSelector, PropsAudioSave } from "@/types/index";
 import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAudio";
 import { useRouter } from "next/router";
-import { v4 as uuid } from "uuid";
-import { blobToBase64String } from "blob-util";
+import { blobToArrayBuffer } from "blob-util";
+import { createAudio } from "@/store/idb/models/audios";
+import NotificationContext from "@/store/context/notification-context";
+import { NotificationStatusEnum } from "@/enums/*";
 
 type AudioDataProps = {
   blob: any;
@@ -25,9 +25,9 @@ export default function RecorderAux() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [audioData, setAudioData] = useState<AudioDataProps | undefined>();
   const [openDialogAudioName, setOpenDialogAudioName] = useState(false);
-  const dispatch = useDispatch();
   const [recordState, setRecordState] = useState(null);
   const [showTimer, setShowtimer] = useState(true);
+  const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
 
   const start = () => {
@@ -46,23 +46,31 @@ export default function RecorderAux() {
 
   const handleAudioSave = async (values: PropsAudioSave) => {
     const { name: title, tags } = values;
-    if (audioData) {
-      const { blob, type: audioType } = audioData;
-      const id = uuid();
-      const blobBase64 = await blobToBase64String(blob);
-      const recording: RecordingInterface = {
-        title,
-        blobBase64,
-        audioType,
-        tags,
-        createdAt: new Date(),
-        userId: userRdx.user.id,
-        id,
-      };
-      dispatch(recordingCreate(recording));
-      router.push("/recording-done");
+    try {
+      if (audioData) {
+        const { blob, type: audioType } = audioData;
+        const arrayBufferBlob = await blobToArrayBuffer(blob);
+        const recording = {
+          title,
+          arrayBufferBlob,
+          audioType,
+          tags,
+          createdAt: new Date(),
+          userId: userRdx.user.id,
+        };
+        await createAudio(recording);
+        router.push("/recording-done");
+        setShowtimer(true);
+      }
+    } catch (e) {
+      console.log(e);
+      notificationCtx.showNotification({
+        message: "Não foi possível armazenar sua gravação",
+        status: NotificationStatusEnum.ERROR,
+      });
+    } finally {
+      setOpenDialogAudioName(false);
     }
-    setOpenDialogAudioName(false);
   };
 
   const handleCloseExtraInfo = () => {
