@@ -15,7 +15,7 @@ export default NextAuth({
         const { email, password } = credentials;
         try {
           const responseToken = await axios.get(
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
             // `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
 
             {
@@ -41,7 +41,7 @@ export default NextAuth({
           );
           const dataUser = responseUser.data.ocs.data;
           const responseMedia = await axios.get(
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/capabilities`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/capabilities`,
             {
 
               headers: {
