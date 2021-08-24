@@ -26,11 +26,7 @@ function DashboardActions({ showContent, isFirstAccess }: Props) {
           <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold", marginBottom: 10 }}>
             {c("welcomeUserMessage", { userName: userRdx?.user.name })}
           </Text>
-          <MediaAvatar
-            name={userRdx?.user.media.name}
-            image={userRdx?.user.media.image}
-            size={12}
-          />
+          <MediaAvatar name={userRdx?.user.media.name} image={userRdx?.user.media.logo} size={12} />
           <GreetingMessage />
         </Box>
         <Divider marginTop={15} />

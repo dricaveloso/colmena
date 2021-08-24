@@ -18,7 +18,7 @@ import { PropsUserSelector } from "@/types/index";
 type MyFormValues = {
   name: string;
   email: string;
-  url?: string;
+  website?: string;
 };
 
 const useStyles = makeStyles({
@@ -39,13 +39,13 @@ export default function FormProfile() {
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
     email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
-    url: Yup.string().url(c("form.invalidURLTitle")).nullable(),
+    website: Yup.string().url(c("form.invalidURLTitle")).nullable(),
   });
 
   const initialValues: MyFormValues = {
     name: userRdx.user.name,
     email: userRdx.user.email,
-    url: userRdx.user.url,
+    website: userRdx.user.website,
   };
 
   return (
@@ -93,10 +93,10 @@ export default function FormProfile() {
           </Field>
           {errors.email && touched.email ? <ErrorMessageForm message={errors.email} /> : null}
           <Divider marginTop={20} />
-          <Field name="url" InputProps={{ notched: true }}>
+          <Field name="website" InputProps={{ notched: true }}>
             {({ field }: FieldProps) => (
               <TextField
-                id="url"
+                id="website"
                 label={t("urlField")}
                 variant={SelectVariantEnum.OUTLINED}
                 placeholder="http://www.test.com"
@@ -106,7 +106,7 @@ export default function FormProfile() {
               />
             )}
           </Field>
-          {errors.url && touched.url ? <ErrorMessageForm message={errors.url} /> : null}
+          {errors.website && touched.website ? <ErrorMessageForm message={errors.website} /> : null}
           <Divider marginTop={20} />
           <div className={classes.marginInputDivs}>
             <Text>{t("socialMediaTitle")}</Text>

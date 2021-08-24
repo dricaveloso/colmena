@@ -23,7 +23,7 @@ function Greeting({ showGreeting }: Props) {
           marginBottom: 20,
         }}
       >
-        <MediaAvatar size={17} name={userRdx?.user.media.name} image={userRdx?.user.media.image} />
+        <MediaAvatar size={17} name={userRdx?.user.media.name} image={userRdx?.user.media.logo} />
         <GreetingMessage />
       </div>
     </Grow>
