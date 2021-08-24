@@ -21,24 +21,22 @@ export interface NotificationDataInterface {
 }
 
 export interface MediaInfoInterface {
-  id: number;
   name: string;
-  image?: string;
-  status: string;
-  description?: string;
-  createdAt: string;
-  updatedAt: string;
+  logo: string;
+  url: string;
+  slogan: string;
 }
 
 export interface UserInfoInterface {
-  id: number;
+  id: string;
   name: string;
-  photo?: string;
+  avatar?: string;
   email: string;
-  accessToken: string;
+  userToken: string;
   language: string;
-  url?: string;
-  role: string;
+  website?: string;
+  twitter?: string;
+  groups: string[];
   media: MediaInfoInterface;
 }
 export interface FileInterface {
