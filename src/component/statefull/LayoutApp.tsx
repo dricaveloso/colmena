@@ -23,7 +23,7 @@ function LayoutApp({ title, drawer = true, headerPosition = PositionEnum.FIXED, 
       (async () => {
         try {
           const session = await getSession();
-          if (session?.error === "RefreshAccessTokenError" || !session) {
+          if (!session) {
             await signOut({ redirect: false });
             router.push("/login");
           }
