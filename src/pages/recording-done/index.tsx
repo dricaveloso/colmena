@@ -58,7 +58,7 @@ function RecordingDone() {
   return (
     <LayoutApp title={t("title")}>
       <FlexBox justifyContent={JustifyContentEnum.CENTER}>
-        <RecordingDoneOptions />
+        <RecordingDoneOptions audio={audio} />
         <div>
           <Text style={{ marginBottom: 10 }} variant={TextVariantEnum.SUBTITLE1}>
             {audio?.title}

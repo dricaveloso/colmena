@@ -334,6 +334,36 @@ function SvgIconAux({
         </>
       ),
     });
+    items.set("pause", {
+      viewBox: "0 0 48 48",
+      path: () => (
+        <>
+          <path d="M12 38h8V10h-8v28zm16-28v28h8V10h-8z"></path>
+          <path d="M0 0h48v48H0z" fill="none"></path>
+        </>
+      ),
+    });
+    items.set("stop", {
+      viewBox: "0 0 48 48",
+      path: () => (
+        <>
+          <path d="M0 0h48v48H0z" fill="none"></path>
+          <path d="M12 12h24v24H12z"></path>
+        </>
+      ),
+    });
+    items.set("download", {
+      viewBox: "0 0 96 96",
+      path: () => (
+        <>
+          <title></title>
+          <g>
+            <path d="M90,54a5.9966,5.9966,0,0,0-6,6V78H12V60A6,6,0,0,0,0,60V84a5.9966,5.9966,0,0,0,6,6H90a5.9966,5.9966,0,0,0,6-6V60A5.9966,5.9966,0,0,0,90,54Z"></path>
+            <path d="M43.7578,64.2422a5.9979,5.9979,0,0,0,8.4844,0l18-18a5.9994,5.9994,0,0,0-8.4844-8.4844L54,45.5156V12a6,6,0,0,0-12,0V45.5156l-7.7578-7.7578a5.9994,5.9994,0,0,0-8.4844,8.4844Z"></path>
+          </g>
+        </>
+      ),
+    });
 
     if (!items.has(icon)) return undefined;
 

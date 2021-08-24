@@ -6,7 +6,7 @@ import { getFirstLettersOfTwoFirstNames, isValidUrl } from "@/utils/utils";
 type Props = {
   size: number;
   image: string | undefined;
-  name: string;
+  name?: string | undefined;
 };
 
 function AvatarAux({ size, name, image }: Props) {

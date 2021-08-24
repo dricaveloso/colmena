@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 
 type MyFormValues = {
-  name: string;
+  name?: string;
   email: string;
   url?: string;
 };

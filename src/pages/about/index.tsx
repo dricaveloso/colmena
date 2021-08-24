@@ -11,6 +11,7 @@ import { FlexDirectionEnum, JustifyContentEnum, TextVariantEnum } from "@/enums/
 import MaterialIcon from "@/components/ui/MaterialIcon";
 import Text from "@/components/ui/Text";
 import { v4 as uuid } from "uuid";
+import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -125,6 +126,7 @@ function About() {
           </FlexBox>
         </div>
       </FlexBox>
+      <WhiteSpaceFooter />
     </LayoutApp>
   );
 }

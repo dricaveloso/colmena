@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { getSession, signOut } from "next-auth/client";
 import Container from "@/components/ui/Container";
@@ -31,7 +32,7 @@ function LayoutApp({ title, drawer = true, headerPosition = PositionEnum.FIXED, 
         }
       })();
     }
-  }, [router]);
+  }, []);
 
   return (
     <Container extraStyle={{ padding: 0 }}>

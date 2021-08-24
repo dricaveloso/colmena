@@ -1,66 +1,40 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React from "react";
 import { useStopwatch } from "react-timer-hook";
-import Lottie from "react-lottie";
-import Recording from "@/components/ui/lottie/recording-blink.json";
-import Text from "@/components/ui/Text";
-import { TextColorEnum, TextVariantEnum } from "@/enums/*";
-import { useTranslation } from "next-i18next";
+import AudioControls from "../recording/AudioControls";
+import TimerDisplay from "../recording/TimerDisplay";
+import Box from "@material-ui/core/Box";
+// import { useDispatch } from "react-redux";
+// import { updateRecordingState } from "@/store/actions/recordings/index";
 
-function format2digits(value: number) {
-  return value < 10 ? `0${value.toString()}` : value;
-}
-
-type Props = {
-  handleStop: () => void;
-  handleStart: () => void;
-};
-
-export default function Timer({ handleStart, handleStop }: Props) {
-  const { t } = useTranslation("recording");
-  const [stop, setStop] = useState(true);
-  const { seconds, minutes, hours, start } = useStopwatch({
+export default function Timer() {
+  // const dispatch = useDispatch();
+  const { seconds, minutes, hours, isRunning, start, pause, reset } = useStopwatch({
     autoStart: false,
   });
 
-  const recordingOptions = {
-    loop: true,
-    autoplay: false,
-    animationData: Recording,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
-  const initStart = () => {
-    if (!stop) {
-      handleStop();
-      setStop(!stop);
-      return;
-    }
-
+  function handleStart() {
     start();
-    handleStart();
-    setStop(!stop);
-  };
+  }
+
+  function handlePause() {
+    pause();
+  }
+
+  function handleStop() {
+    reset(0, false);
+  }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ textAlign: "center" }}>
-        <div style={{ fontSize: "16px" }}>
-          <span>{format2digits(hours)}</span>:<span>{format2digits(minutes)}</span>:
-          <span>{format2digits(seconds)}</span>
-        </div>
-      </div>
-      <Text
-        color={TextColorEnum.TEXTSECONDARY}
-        variant={TextVariantEnum.BODY2}
-        style={{ marginTop: 5, marginBottom: 5 }}
-      >
-        {stop ? t("pressToStartTitle") : t("pressToStopTitle")}
-      </Text>
-      <button type="button" onClick={initStart} style={{ background: "none", border: "none" }}>
-        <Lottie isStopped={stop} options={recordingOptions} height={95} width={95} />
-      </button>
-    </div>
+    <Box display="flex" justifyContent="center" flexDirection="column" alignItems="center">
+      <TimerDisplay seconds={seconds} minutes={minutes} hours={hours} isRunning={isRunning} />
+      <AudioControls
+        showPause={false}
+        showStop={false}
+        handleStart={handleStart}
+        handleStop={handleStop}
+        handlePause={handlePause}
+      />
+    </Box>
   );
 }
