@@ -1,19 +1,31 @@
 import webdav from "@/services/webdav";
-import { initializeStore } from "@/store/index";
-import { DirectoryItemInterface } from "@/interfaces/index";
 import { FileStat, ResponseDataDetailed } from "webdav";
-// export default async function listAllDirectories() {
-//   const { user } = initializeStore({}).getState().user;
-//   // const createFolder = await webdav().createDirectory(`${user.id}/nameFolder9`);
-//   const contentsAll = await webdav().getDirectoryContents(`${user.id}/`, { deep: true });
-//   console.log(contentsAll);
-//   return contentsAll;
-// }
-export function listAllDirectories(
+
+// ver se não tem 404
+export function listDirectories(
   userId: string | number,
 ): Promise<Array<FileStat> | ResponseDataDetailed<Array<FileStat>>> {
-  return webdav().getDirectoryContents(`${userId}/`, { deep: true });
+  return webdav().getDirectoryContents(`${userId}/`);
 }
-// export function createFile(
 
-// )
+export function createDirectory(userId: string | number, dirPath: string) {
+  try {
+    webdav().createDirectory(`${userId}/${dirPath}`);
+  } catch (error) {
+    if (error) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function deleteDirectory(userId: string | number, filename: string): boolean {
+  try {
+    webdav().deleteFile(`${userId}/${filename}`);
+  } catch (error) {
+    if (error) {
+      return false;
+    }
+  }
+  return true;
+}
