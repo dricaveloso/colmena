@@ -1,18 +1,41 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { AuthType, createClient, FileStat, ResponseDataDetailed } from "webdav";
+import {
+  AuthType,
+  createClient,
+  FileStat,
+  ResponseDataDetailed,
+  WebDAVClientContext,
+} from "webdav";
+
 import { PropsUserSelector } from "../../types";
-import { listAllDirectories } from "@/services/webdav/directories";
+import { createDirectory, deleteDirectory, listDirectories } from "@/services/webdav/directories";
 
 export default function WebDav() {
   // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   useEffect(() => {
     async function getQuota() {
-      const teste: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> =
-        await listAllDirectories("nil");
-      teste.forEach((element) => {
+      const userTest = "nil";
+
+      const createF = await createDirectory("nil", "test5Folder");
+      console.log("create directory: ", createF);
+
+      const deleteF = await deleteDirectory("nil", "test5Folder");
+      console.log("deltete directory: ", deleteF);
+
+      const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
+        userTest,
+      );
+      listD.forEach((element) => {
         console.log(element);
       });
+      // verificar erro
+
+      // const deleteDirectory: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> =
+      //   await deleteDirectory("nil", "nameFolder6");
+      // deleteDirectory.forEach((element) => {
+      //   console.log(element);
+      // });
     }
 
     getQuota();
