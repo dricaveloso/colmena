@@ -29,7 +29,7 @@ function Call() {
         <GoLive />
         <ShareLinkComponent url="https://dev.maia.press/jghd-asde-erty" />
         <RecordUsers />
-        <Timer handleStop={() => {}} handleStart={() => {}} />
+        <Timer />
       </FlexBox>
     </LayoutApp>
   );

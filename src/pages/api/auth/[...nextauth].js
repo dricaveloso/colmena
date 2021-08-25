@@ -15,9 +15,7 @@ export default NextAuth({
         const { email, password } = credentials;
         try {
           const responseToken = await axios.get(
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
-            // `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
-
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
             {
               auth: {
                 username: email,
@@ -26,28 +24,26 @@ export default NextAuth({
               headers: {
                 "OCS-APIRequest": true,
               },
-            });
+            },
+          );
 
           const userToken = responseToken.data.ocs.data.apppassword;
+          const headers = {
+            "OCS-APIRequest": true,
+            Authorization: `Bearer ${userToken}`,
+          };
 
           const responseUser = await axios.get(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
             {
-              headers: {
-                "OCS-APIRequest": true,
-                Authorization: `Bearer ${userToken}`,
-              },
+              headers,
             },
           );
           const dataUser = responseUser.data.ocs.data;
           const responseMedia = await axios.get(
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/capabilities`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/capabilities`,
             {
-
-              headers: {
-                "OCS-APIRequest": true,
-                Authorization: `Bearer ${userToken}`,
-              },
+              headers,
             },
           );
           const dataMedia = responseMedia.data.ocs.data.capabilities.theming;
@@ -56,7 +52,15 @@ export default NextAuth({
             throw new Error("permissionDenied");
           }
           // eslint-disable-next-line camelcase
-          const { id, groups, twitter, website, "display-name": name, email: emailUser, language } = dataUser;
+          const {
+            id,
+            groups,
+            twitter,
+            website,
+            "display-name": name,
+            email: emailUser,
+            language,
+          } = dataUser;
           const { name: mediaName, url, slogan, logo } = dataMedia;
 
           let userLang = constants.DEFAULT_LANGUAGE;
@@ -72,7 +76,10 @@ export default NextAuth({
             twitter,
             userToken,
             media: {
-              name: mediaName, url, slogan, logo,
+              name: mediaName,
+              url,
+              slogan,
+              logo,
             },
           };
         } catch (e) {

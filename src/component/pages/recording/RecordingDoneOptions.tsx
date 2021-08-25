@@ -1,8 +1,13 @@
 import React from "react";
 import IconButton from "@/components/ui/IconButton";
 import { TextVariantEnum } from "@/enums/index";
+import { RecordingInterface } from "@/interfaces/index";
 
-export default function RecordingDoneOptions() {
+type Props = {
+  audio: RecordingInterface;
+};
+
+export default function RecordingDoneOptions({ audio }: Props) {
   const faznada = () => {
     console.log("nad");
   };
@@ -19,19 +24,28 @@ export default function RecordingDoneOptions() {
       }}
     >
       <IconButton
+        url={audio.audioUrl}
+        download={`${audio.title}.opus`}
+        fontSizeIcon="medium"
+        color="black"
+        icon="download"
+        variantTitle={TextVariantEnum.BODY2}
+        style={{ padding: 0 }}
+      />
+      <IconButton
         fontSizeIcon="medium"
         color="black"
         icon="share"
         handleClick={faznada}
         variantTitle={TextVariantEnum.BODY2}
-        style={{ paddingRight: 0 }}
+        style={{ padding: 0 }}
       />
       <IconButton
         fontSizeIcon="medium"
         color="black"
         icon="more_vertical"
         handleClick={faznada}
-        style={{ paddingLeft: 0 }}
+        style={{ padding: 0 }}
         variantTitle={TextVariantEnum.BODY2}
       />
     </div>

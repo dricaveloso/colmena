@@ -6,5 +6,7 @@
   "recordingFinishTitle": "Recording finished",
   "recordingFinishDescription": "Finally, type a title for this recording.",
   "submitButton": "Finish",
-  "cancelButton": "Cancel"
+  "cancelButton": "Cancel",
+  "errorStorageMessage": "Could not save this recording.",
+  "errorGetAudioStreamMessage": "You need to enable audio capture to start recording."
 }
