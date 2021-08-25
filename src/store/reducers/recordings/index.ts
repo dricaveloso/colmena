@@ -1,3 +1,4 @@
+import { RecordingInterface } from "@/interfaces/index";
 import {
   RECORDING_INSERT,
   RECORDING_UPDATE,
@@ -5,7 +6,6 @@ import {
   SET_ACTIVE_RECORDING_STATE,
   SET_ALLOW_BROWSER_RECORDING,
 } from "@/store/actions/index";
-import { RecordingInterface } from "@/interfaces/index";
 
 type initialStateProps = {
   recordings: RecordingInterface[];

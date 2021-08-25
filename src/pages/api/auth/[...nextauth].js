@@ -15,9 +15,7 @@ export default NextAuth({
         const { email, password } = credentials;
         try {
           const responseToken = await axios.get(
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
-            // `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
-
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
             {
               auth: {
                 username: email,
@@ -30,24 +28,22 @@ export default NextAuth({
           );
 
           const userToken = responseToken.data.ocs.data.apppassword;
+          const headers = {
+            "OCS-APIRequest": true,
+            Authorization: `Bearer ${userToken}`,
+          };
 
           const responseUser = await axios.get(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
             {
-              headers: {
-                "OCS-APIRequest": true,
-                Authorization: `Bearer ${userToken}`,
-              },
+              headers,
             },
           );
           const dataUser = responseUser.data.ocs.data;
           const responseMedia = await axios.get(
-            `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/capabilities`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/capabilities`,
             {
-              headers: {
-                "OCS-APIRequest": true,
-                Authorization: `Bearer ${userToken}`,
-              },
+              headers,
             },
           );
           const dataMedia = responseMedia.data.ocs.data.capabilities.theming;
