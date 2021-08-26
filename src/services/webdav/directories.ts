@@ -23,6 +23,7 @@ export function deleteDirectory(userId: string | number, filename: string): bool
   try {
     webdav().deleteFile(`${userId}/${filename}`);
   } catch (error) {
+    console.error(error.stack);
     if (error) {
       return false;
     }

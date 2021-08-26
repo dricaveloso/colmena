@@ -23,8 +23,8 @@ export default function WebDav() {
       // const createF = await createDirectory("nil", "test5Folder");
       // console.log("create directory: ", createF);
 
-      // const deleteF = await deleteDirectory("nil", "test5Folder");
-      // console.log("deltete directory: ", deleteF);
+      const deleteF = await deleteDirectory("nil", "test5Folder");
+      console.log("deltete directory: ", deleteF);
 
       // const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
       //   userTest,
@@ -41,8 +41,8 @@ export default function WebDav() {
       // const moveF = await moveFile(userTest, "teste55.md", "teste5555.md");
       // console.log(moveF);
 
-      const copyF = await copyFile(userTest, "teste5555.md", "/test3Folder/teste55.md");
-      console.log(copyF);
+      // const copyF = await copyFile(userTest, "teste5555.md", "/test3Folder/teste55.md");
+      // console.log(copyF);
 
       // const putF = await putFile(userTest, "teste5.md", "novo texto 2");
       // console.log(putF);
