@@ -23,15 +23,17 @@ function FooterApp() {
   }
 
   return (
-    <div className="footer">
+    <div
+      className="footer"
+      style={{ backgroundColor: theme.palette.primary.main, margin: 0, padding: 2 }}
+    >
       <Box
         display="flex"
-        style={{ ...style }}
+        style={{ margin: 0, ...style }}
         flexDirection="row"
         flexWrap="nowrap"
         justifyContent="space-around"
       >
-        {/* {router.route === "/home" ? <HomeTab /> : <AppTab />} */}
         <AppTab page={router.route} />
       </Box>
     </div>

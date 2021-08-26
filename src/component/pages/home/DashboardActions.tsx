@@ -24,9 +24,9 @@ function DashboardActions({ showContent, isFirstAccess }: Props) {
       <Box padding={0} margin={0} style={{ width: "100%" }}>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold", marginBottom: 10 }}>
-            {c("welcomeUserMessage", { userName: userRdx?.user.name })}
+            {c("welcomeUserMessage", { userName: userRdx?.user?.name })}
           </Text>
-          <MediaAvatar name={userRdx?.user.media.name} image={userRdx?.user.media.logo} size={12} />
+          <MediaAvatar name={userRdx?.user.media.name} image={userRdx?.user.media.logo} size={8} />
           <GreetingMessage />
         </Box>
         <Divider marginTop={15} />

@@ -83,7 +83,6 @@ export default NextAuth({
             },
           };
         } catch (e) {
-          console.log(e);
           const result = searchByTerm(e.message, "permissionDenied")
             ? "permissionDenied"
             : "invalidCredentials";
@@ -135,11 +134,11 @@ export default NextAuth({
 
       // Subsequent use of JWT, the user has been logged in before
       // access token has not expired yet
-      if (Date.now() < token.accessTokenExpires) {
-        return token;
-      }
+      // if (Date.now() < token.accessTokenExpires) {
+      return token;
+      // }
 
-      return refreshAccessToken(token);
+      // return refreshAccessToken(token);
     },
   },
 
@@ -152,23 +151,24 @@ export default NextAuth({
  * `accessToken` and `accessTokenExpires`. If an error occurs,
  * returns the old token with an error property.
  */
-async function refreshAccessToken(token) {
-  try {
-    const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/token/refresh`, {
-      oldToken: token.accessToken,
-    });
+// async function refreshAccessToken(token) {
+//   try {
+//     const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/token/refresh`, {
+//       oldToken: token.accessToken,
+//     });
 
-    const result = response.data;
-    return {
-      ...token,
-      accessToken: result.access_token,
-      accessTokenExpires: Date.now() + constants.TOKEN_EXPIRE_SECONDS * 1000,
-    };
-  } catch (error) {
-    console.log("error refresh token", error);
-    return {
-      ...token,
-      error: "RefreshAccessTokenError", // This is used in the front-end, and if present, we can force a re-login, or similar
-    };
-  }
-}
+//     const result = response.data;
+//     return {
+//       ...token,
+//       accessToken: result.access_token,
+//       accessTokenExpires: Date.now() + constants.TOKEN_EXPIRE_SECONDS * 1000,
+//     };
+//   } catch (error) {
+//     console.log("error refresh token", error);
+//     return {
+//       ...token,
+//       error: "RefreshAccessTokenError", // This is used in the front-end,
+// and if present, we can force a re-login, or similar
+//     };
+//   }
+// }
