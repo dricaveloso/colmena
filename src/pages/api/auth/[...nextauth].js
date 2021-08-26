@@ -16,8 +16,6 @@ export default NextAuth({
         try {
           const responseToken = await axios.get(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
-            // `${process.env.NEXT_PUPLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
-
             {
               auth: {
                 username: email,
@@ -26,28 +24,26 @@ export default NextAuth({
               headers: {
                 "OCS-APIRequest": true,
               },
-            });
+            },
+          );
 
           const userToken = responseToken.data.ocs.data.apppassword;
+          const headers = {
+            "OCS-APIRequest": true,
+            Authorization: `Bearer ${userToken}`,
+          };
 
           const responseUser = await axios.get(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
             {
-              headers: {
-                "OCS-APIRequest": true,
-                Authorization: `Bearer ${userToken}`,
-              },
+              headers,
             },
           );
           const dataUser = responseUser.data.ocs.data;
           const responseMedia = await axios.get(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/capabilities`,
             {
-
-              headers: {
-                "OCS-APIRequest": true,
-                Authorization: `Bearer ${userToken}`,
-              },
+              headers,
             },
           );
           const dataMedia = responseMedia.data.ocs.data.capabilities.theming;
@@ -56,7 +52,15 @@ export default NextAuth({
             throw new Error("permissionDenied");
           }
           // eslint-disable-next-line camelcase
-          const { id, groups, twitter, website, "display-name": name, email: emailUser, language } = dataUser;
+          const {
+            id,
+            groups,
+            twitter,
+            website,
+            "display-name": name,
+            email: emailUser,
+            language,
+          } = dataUser;
           const { name: mediaName, url, slogan, logo } = dataMedia;
 
           let userLang = constants.DEFAULT_LANGUAGE;
@@ -72,11 +76,13 @@ export default NextAuth({
             twitter,
             userToken,
             media: {
-              name: mediaName, url, slogan, logo,
+              name: mediaName,
+              url,
+              slogan,
+              logo,
             },
           };
         } catch (e) {
-          console.log(e);
           const result = searchByTerm(e.message, "permissionDenied")
             ? "permissionDenied"
             : "invalidCredentials";
@@ -128,11 +134,11 @@ export default NextAuth({
 
       // Subsequent use of JWT, the user has been logged in before
       // access token has not expired yet
-      if (Date.now() < token.accessTokenExpires) {
-        return token;
-      }
+      // if (Date.now() < token.accessTokenExpires) {
+      return token;
+      // }
 
-      return refreshAccessToken(token);
+      // return refreshAccessToken(token);
     },
   },
 
@@ -145,23 +151,24 @@ export default NextAuth({
  * `accessToken` and `accessTokenExpires`. If an error occurs,
  * returns the old token with an error property.
  */
-async function refreshAccessToken(token) {
-  try {
-    const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/token/refresh`, {
-      oldToken: token.accessToken,
-    });
+// async function refreshAccessToken(token) {
+//   try {
+//     const response = await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/token/refresh`, {
+//       oldToken: token.accessToken,
+//     });
 
-    const result = response.data;
-    return {
-      ...token,
-      accessToken: result.access_token,
-      accessTokenExpires: Date.now() + constants.TOKEN_EXPIRE_SECONDS * 1000,
-    };
-  } catch (error) {
-    console.log("error refresh token", error);
-    return {
-      ...token,
-      error: "RefreshAccessTokenError", // This is used in the front-end, and if present, we can force a re-login, or similar
-    };
-  }
-}
+//     const result = response.data;
+//     return {
+//       ...token,
+//       accessToken: result.access_token,
+//       accessTokenExpires: Date.now() + constants.TOKEN_EXPIRE_SECONDS * 1000,
+//     };
+//   } catch (error) {
+//     console.log("error refresh token", error);
+//     return {
+//       ...token,
+//       error: "RefreshAccessTokenError", // This is used in the front-end,
+// and if present, we can force a re-login, or similar
+//     };
+//   }
+// }

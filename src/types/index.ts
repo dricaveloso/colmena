@@ -23,6 +23,12 @@ export type PropsUserSelector = {
   invitationToken?: string | undefined;
 };
 
+export type PropsAudioData = {
+  blob: Blob;
+  blobUrl: string;
+  type?: string;
+};
+
 export type PropsAudioSave = {
   name: string;
   tags: NXTagsProps[];
@@ -35,6 +41,7 @@ export type NXTagsProps = {
 
 export type PropsRecordingSelector = {
   recordings: RecordingInterface[];
+  activeRecordingState: string;
 };
 
 export type NotificationStatusProps =
@@ -181,4 +188,10 @@ export type AllIconProps =
   | "add_user"
   | "dropdown_checklist"
   | "close"
-  | "record";
+  | "record"
+  | "pause"
+  | "stop"
+  | "download"
+  | "plus"
+  | "arrow_right_up"
+  | "burger_menu";

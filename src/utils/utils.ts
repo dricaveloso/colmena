@@ -53,7 +53,7 @@ export function isJWTValidInvitation(tkn: string | string[] | undefined) {
   return result;
 }
 
-export function getFirstLettersOfTwoFirstNames(word: string): string {
+export function getFirstLettersOfTwoFirstNames(word: string | undefined): string {
   if (!word) return "";
 
   const arr = word.split(" ");

@@ -47,6 +47,10 @@ export default class MyDocument extends Document {
           <meta name="msapplication-TileImage" content="ms-icon-144x144.png" />
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />

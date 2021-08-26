@@ -15,6 +15,7 @@ type Props = {
   color?: string;
   handleClick?: () => void | undefined;
   url?: string;
+  download?: string;
   // eslint-disable-next-line @typescript-eslint/ban-types
   iconStyle?: object;
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -28,25 +29,19 @@ function IconButtonCtr({
   variantTitle = TextVariantEnum.H5,
   color = "black",
   url = "no-navigation",
+  download = "",
   iconStyle = {},
   style = {},
   handleClick,
 }: Props) {
   const [colorActive, setColorActive] = useState(color);
   const changeColorHandler = (status: boolean) => {
-    setColorActive(status ? theme.palette.primary.main : color);
+    setColorActive(status ? theme.palette.primary.light : color);
   };
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {url !== "no-navigation" ? (
+  function showButtonWithConditions() {
+    if (url !== "no-navigation" && !download)
+      return (
         <Link href={url}>
           <Button
             component="a"
@@ -62,12 +57,17 @@ function IconButtonCtr({
             />
           </Button>
         </Link>
-      ) : (
+      );
+
+    if (download)
+      return (
         <Button
+          component="a"
+          download={download}
+          href={url}
           style={{ background: "none", ...style }}
           onMouseOver={() => changeColorHandler(true)}
           onMouseOut={() => changeColorHandler(false)}
-          onClick={handleClick}
         >
           <SvgIcon
             icon={icon}
@@ -76,7 +76,35 @@ function IconButtonCtr({
             style={{ ...iconStyle }}
           />
         </Button>
-      )}
+      );
+
+    return (
+      <Button
+        style={{ background: "none", ...style }}
+        onMouseOver={() => changeColorHandler(true)}
+        onMouseOut={() => changeColorHandler(false)}
+        onClick={handleClick}
+      >
+        <SvgIcon
+          icon={icon}
+          htmlColor={colorActive}
+          fontSize={fontSizeIcon}
+          style={{ ...iconStyle }}
+        />
+      </Button>
+    );
+  }
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {showButtonWithConditions()}
       {!!title && (
         <Text variant={variantTitle} align={TextAlignEnum.CENTER} gutterBottom>
           {title}

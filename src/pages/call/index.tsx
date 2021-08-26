@@ -24,12 +24,12 @@ function Call() {
   const { t } = useTranslation("call");
 
   return (
-    <LayoutApp title={t("title")}>
+    <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.SPACEAROUND} alignItems={AlignItemsEnum.CENTER}>
         <GoLive />
         <ShareLinkComponent url="https://dev.maia.press/jghd-asde-erty" />
         <RecordUsers />
-        <Timer handleStop={() => {}} handleStart={() => {}} />
+        <Timer />
       </FlexBox>
     </LayoutApp>
   );

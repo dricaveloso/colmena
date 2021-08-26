@@ -34,7 +34,7 @@ function Profile() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const classes = useStyles();
   return (
-    <LayoutApp title={t("title")}>
+    <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <ProfileActions />
         <div className="width-based-device">

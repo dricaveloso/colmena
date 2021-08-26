@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import IconButton from "@/components/ui/IconButton";
-import Box from "@material-ui/core/Box";
-import { useRouter } from "next/router";
-import theme from "@/styles/theme";
 import FullScreenSearch from "@/components/ui/FooterApp/FullScreenSearch";
 import DrawerBottomRecording from "@/components/ui/FooterApp/DrawerBottomRecording";
+import Grid from "@material-ui/core/Grid";
+import { useTheme } from "@material-ui/core/styles";
 
 type Props = {
   page: string;
 };
 
 function AppTab({ page }: Props) {
-  const router = useRouter();
+  const theme = useTheme();
   const [openSearch, setOpenSearch] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -33,44 +32,77 @@ function AppTab({ page }: Props) {
 
   return (
     <>
-      {page !== "/home" && (
-        <Box>
-          <IconButton
-            icon="back"
-            handleClick={() => {
-              router.back();
-            }}
-          />
-        </Box>
-      )}
-      <Box>
+      <div
+        style={{
+          position: "absolute",
+          margin: "0 auto",
+          bottom: 0,
+          width: 50,
+          height: 50,
+          backgroundColor: theme.palette.primary.main,
+          borderRadius: "50%",
+          marginBottom: 12,
+          borderColor: "white",
+          borderWidth: "medium",
+          borderStyle: "solid",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <IconButton
-          icon="home"
-          url="/home"
-          color={page === "/home" ? theme.palette.primary.main : "black"}
-        />
-      </Box>
-      <Box>
-        <IconButton
-          icon="microphone"
+          icon="plus"
+          fontSizeIcon="large"
           handleClick={handleOpenDrawer}
-          color={page === "/call" || page === "/recording" ? theme.palette.primary.main : "black"}
+          color={theme.palette.primary.contrastText}
         />
-      </Box>
-      <Box>
-        <IconButton
-          icon="search"
-          color={page === "/search" ? theme.palette.primary.main : "black"}
-          handleClick={handleOpen}
-        />
-      </Box>
-      <Box>
-        <IconButton
-          icon="library"
-          url="/library"
-          color={page === "/library" ? theme.palette.primary.main : "black"}
-        />
-      </Box>
+      </div>
+      <Grid container spacing={3}>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={2}>
+          <IconButton
+            icon="home"
+            url="/home"
+            fontSizeIcon="medium"
+            color={
+              page === "/home"
+                ? theme.palette.primary.contrastText
+                : theme.palette.primary.contrastText
+            }
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <IconButton
+            icon="library"
+            url="/library"
+            fontSizeIcon="medium"
+            color={
+              page === "/library" ? theme.palette.primary.light : theme.palette.primary.contrastText
+            }
+          />
+        </Grid>
+        <Grid item xs={2}></Grid>
+        <Grid item xs={2}>
+          <IconButton
+            icon="search"
+            fontSizeIcon="medium"
+            handleClick={handleOpen}
+            color={theme.palette.primary.contrastText}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <IconButton
+            icon="arrow_right_up"
+            fontSizeIcon="medium"
+            url="/tools"
+            color={
+              page === "/tools"
+                ? theme.palette.primary.contrastText
+                : theme.palette.primary.contrastText
+            }
+          />
+        </Grid>
+        <Grid item xs={1}></Grid>
+      </Grid>
       <FullScreenSearch open={openSearch} handleClose={handleClose} />
       <DrawerBottomRecording
         open={openDrawer}

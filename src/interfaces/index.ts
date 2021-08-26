@@ -8,7 +8,9 @@ export interface I18nInterface {
 export interface RecordingInterface {
   id: string;
   title?: string;
-  blobBase64: string;
+  arrayBufferBlob: ArrayBuffer;
+  blob: Blob;
+  audioUrl: string;
   tags: NXTagsProps[];
   audioType: string;
   createdAt?: Date;

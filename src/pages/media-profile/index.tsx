@@ -42,7 +42,7 @@ function Profile() {
   const [openInviteForm, setOpenInviteForm] = useState(false);
   const classes = useStyles();
   return (
-    <LayoutApp title={t("title")}>
+    <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <div className={classes.marginInputDivs}>
           <div className="boxColumnCenter">
