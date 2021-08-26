@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import {
   AuthType,
   createClient,
+  BufferLike,
   FileStat,
   ResponseDataDetailed,
   WebDAVClientContext,
@@ -10,6 +11,8 @@ import {
 
 import { PropsUserSelector } from "../../types";
 import { createDirectory, deleteDirectory, listDirectories } from "@/services/webdav/directories";
+import { listFile, moveFile, copyFile, deleteFile, putFile } from "@/services/webdav/files";
+import { string } from "yup/lib/locale";
 
 export default function WebDav() {
   // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -17,19 +20,35 @@ export default function WebDav() {
     async function getQuota() {
       const userTest = "nil";
 
-      const createF = await createDirectory("nil", "test5Folder");
-      console.log("create directory: ", createF);
+      // const createF = await createDirectory("nil", "test5Folder");
+      // console.log("create directory: ", createF);
 
-      const deleteF = await deleteDirectory("nil", "test5Folder");
-      console.log("deltete directory: ", deleteF);
+      // const deleteF = await deleteDirectory("nil", "test5Folder");
+      // console.log("deltete directory: ", deleteF);
 
-      const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
-        userTest,
-      );
-      listD.forEach((element) => {
-        console.log(element);
-      });
-      // verificar erro
+      // const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
+      //   userTest,
+      // );
+      // listD.forEach((element) => {
+      //   console.log(element);
+      // });
+      // // verificar erro
+
+      // volta um binário
+      // const listF = await listFile(userTest, "/Photos/Toucan.jpg");
+      // console.log(listF);
+
+      // const moveF = await moveFile(userTest, "teste55.md", "teste5555.md");
+      // console.log(moveF);
+
+      const copyF = await copyFile(userTest, "teste5555.md", "/test3Folder/teste55.md");
+      console.log(copyF);
+
+      // const putF = await putFile(userTest, "teste5.md", "novo texto 2");
+      // console.log(putF);
+
+      // const delF = await deleteFile(userTest, "teste5.md");
+      // console.log("deltete directory: ", delF);
 
       // const deleteDirectory: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> =
       //   await deleteDirectory("nil", "nameFolder6");
