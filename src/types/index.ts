@@ -191,4 +191,7 @@ export type AllIconProps =
   | "record"
   | "pause"
   | "stop"
-  | "download";
+  | "download"
+  | "plus"
+  | "arrow_right_up"
+  | "burger_menu";

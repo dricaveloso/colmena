@@ -79,7 +79,7 @@ function Recording() {
   }
 
   return (
-    <LayoutApp title={t("title")}>
+    <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.CENTER} alignItems={AlignItemsEnum.CENTER}>
         <AudioRecorder onStopRecording={onStopRecording} />
         <Divider marginBottom={25} />

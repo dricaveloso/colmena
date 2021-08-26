@@ -36,7 +36,7 @@ function IconButtonCtr({
 }: Props) {
   const [colorActive, setColorActive] = useState(color);
   const changeColorHandler = (status: boolean) => {
-    setColorActive(status ? theme.palette.primary.main : color);
+    setColorActive(status ? theme.palette.primary.light : color);
   };
 
   function showButtonWithConditions() {
