@@ -36,11 +36,12 @@ type Props = {
   open: boolean;
   onClose: () => void;
   defaultLang: string | undefined;
+  backUrl: string;
 };
 
-export default function SwitchLanguageModal({ open, onClose, defaultLang }: Props) {
+export default function SwitchLanguageModal({ open, onClose, defaultLang, backUrl }: Props) {
   const router = useRouter();
-  const { t } = useTranslation("profile");
+  const { t } = useTranslation("common");
   // const notificationCtx = useContext(NotificationContext);
 
   const changeLanguageHandler = (locale: string) => {
@@ -49,7 +50,7 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang }: Prop
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
-      router.push("/profile", "", {
+      router.push(backUrl, "", {
         locale,
       });
       // notificationCtx.showNotification({

@@ -8,7 +8,8 @@ import FooterApp from "@/components/ui/FooterApp";
 import { PositionProps, PropsUserSelector } from "@/types/index";
 import { PositionEnum } from "@/enums/index";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrentPage } from "@/store/actions/config/index";
 
 type Props = {
   title: string;
@@ -26,8 +27,10 @@ function LayoutApp({
   children,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
+    if (router.pathname !== "/profile") dispatch(setCurrentPage(router.pathname));
     if (navigator.onLine) {
       (async () => {
         try {

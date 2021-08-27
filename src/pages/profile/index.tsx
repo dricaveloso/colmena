@@ -14,6 +14,7 @@ import Form from "@/components/pages/profile/Form";
 import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
+// import { useRouter } from "next/router";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {

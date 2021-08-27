@@ -23,6 +23,10 @@ export type PropsUserSelector = {
   invitationToken?: string | undefined;
 };
 
+export type PropsConfigSelector = {
+  currentPage: string;
+};
+
 export type PropsAudioData = {
   blob: Blob;
   blobUrl: string;
@@ -194,4 +198,12 @@ export type AllIconProps =
   | "download"
   | "plus"
   | "arrow_right_up"
-  | "burger_menu";
+  | "burger_menu"
+  | "global"
+  | "download_circle"
+  | "user_group"
+  | "user"
+  | "help"
+  | "contract"
+  | "info"
+  | "logout";

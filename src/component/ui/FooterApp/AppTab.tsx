@@ -39,7 +39,7 @@ function AppTab({ page }: Props) {
           bottom: 0,
           width: 50,
           height: 50,
-          backgroundColor: theme.palette.primary.main,
+          backgroundColor: theme.palette.primary.light,
           borderRadius: "50%",
           marginBottom: 12,
           borderColor: "white",
@@ -91,7 +91,7 @@ function AppTab({ page }: Props) {
         </Grid>
         <Grid item xs={2}>
           <IconButton
-            icon="arrow_right_up"
+            icon="global"
             fontSizeIcon="medium"
             url="/tools"
             color={
