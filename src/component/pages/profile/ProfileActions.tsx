@@ -46,7 +46,12 @@ export default function ProfileActions() {
         handleClick={switchLanguageHandle}
         variantTitle={TextVariantEnum.BODY2}
       />
-      <SwitchLanguageModal defaultLang={cookies.NEXT_LOCALE} open={open} onClose={handleClose} />
+      <SwitchLanguageModal
+        backUrl="/profile"
+        defaultLang={cookies.NEXT_LOCALE}
+        open={open}
+        onClose={handleClose}
+      />
     </div>
   );
 }

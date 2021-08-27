@@ -1,21 +1,25 @@
 import React, { useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { ListItemIcon, SwipeableDrawer, List, ListItem, ListItemText } from "@material-ui/core";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import MaterialIcon from "@/components/ui/MaterialIcon";
 import NotificationContext from "@/store/context/notification-context";
-import { NotificationStatusEnum } from "@/enums/index";
-import CONSTANTS from "@/constants/index";
+import { NotificationStatusEnum, TextVariantEnum } from "@/enums/index";
+import Divider from "@material-ui/core/Divider";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/client";
 import Backdrop from "@/components/ui/Backdrop";
+import Image from "next/image";
+import Text from "@/components/ui/Text";
+import SvgIcon from "@/components/ui/SvgIcon";
+import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal";
+import { parseCookies } from "nookies";
 
 type ListItemProps = {
-  id: number;
+  id: string;
   url?: string | undefined;
-  icon: string;
+  icon: any;
   color?: string | undefined;
   title?: string;
   handleClick?: () => void | undefined;
@@ -28,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  title: {
-    flexGrow: 1,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
   list: {
-    width: "60vw",
+    [theme.breakpoints.down("sm")]: {
+      width: "80vw",
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "40vw",
+    },
   },
   fullList: {
     width: "auto",
@@ -48,10 +52,22 @@ type Props = {
 };
 
 function Drawer({ open, onOpen, onClose }: Props) {
+  const theme = useTheme();
   const classes = useStyles();
   const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
   const [showBackdrop, setShowBackdrop] = useState(false);
+  const cookies = parseCookies();
+  const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
+
+  const switchLanguageHandle = () => {
+    setOpenChangeLanguage(true);
+  };
+
+  const handleCloseChangeLanguage = () => {
+    setOpenChangeLanguage(false);
+  };
+
   const { t } = useTranslation("drawer");
   const { t: c } = useTranslation("common");
 
@@ -69,33 +85,9 @@ function Drawer({ open, onOpen, onClose }: Props) {
 
   const menuArray = [
     {
-      id: 1,
-      icon: "home",
-      title: t("homeTitle"),
-      url: "/home",
-    },
-    {
-      id: 2,
-      icon: "folder",
-      title: t("myFilesTitle"),
-      url: "/library",
-    },
-    {
-      id: 3,
-      icon: "mic",
-      title: t("recordTitle"),
-      url: "/call",
-    },
-    {
-      id: 4,
-      icon: "crop",
-      title: t("editAudioTitle"),
-      url: "/edit-audio",
-    },
-    {
-      id: 5,
-      icon: "edit",
-      title: t("editTextTitle"),
+      id: uuid(),
+      icon: <SvgIcon icon="download_circle" fontSize="large" htmlColor="white" />,
+      title: t("downloadTitle"),
       handleClick: () =>
         notificationCtx.showNotification({
           message: c("featureUnavailable"),
@@ -103,9 +95,15 @@ function Drawer({ open, onOpen, onClose }: Props) {
         }),
     },
     {
-      id: 6,
-      icon: "group_work",
-      title: t("communityTitle"),
+      id: uuid(),
+      icon: <SvgIcon icon="language" fontSize="large" htmlColor="white" />,
+      title: t("languageTitle"),
+      handleClick: switchLanguageHandle,
+    },
+    {
+      id: uuid(),
+      icon: <SvgIcon icon="settings" fontSize="large" htmlColor="white" />,
+      title: t("settingsTitle"),
       handleClick: () =>
         notificationCtx.showNotification({
           message: c("featureUnavailable"),
@@ -113,59 +111,87 @@ function Drawer({ open, onOpen, onClose }: Props) {
         }),
     },
     {
-      id: 7,
-      icon: "settings",
-      title: t("editMediaTitle"),
-      url: "/media-profile",
-    },
-    {
-      id: 8,
-      icon: "person",
+      id: uuid(),
+      icon: <SvgIcon icon="user" fontSize="large" htmlColor="white" />,
       title: t("userProfileTitle"),
       url: "/profile",
     },
     {
-      id: 9,
-      icon: "info",
+      id: uuid(),
+      icon: <SvgIcon icon="user_group" fontSize="large" htmlColor="white" />,
+      title: t("editMediaTitle"),
+      url: "/media-profile",
+    },
+    {
+      id: uuid(),
+      icon: <SvgIcon icon="help" fontSize="large" htmlColor="white" />,
       title: t("supportTitle"),
       url: "/talk-to-us",
     },
     {
-      id: 10,
-      icon: "logout",
+      id: uuid(),
+      icon: <SvgIcon icon="contract" fontSize="large" htmlColor="white" />,
+      title: t("termsOfUse"),
+      url: "/terms-of-use",
+    },
+    {
+      id: uuid(),
+      icon: <SvgIcon icon="info" fontSize="large" htmlColor="white" />,
+      title: t("aboutMaia"),
+      url: "/about",
+    },
+    {
+      id: uuid(),
+      icon: <SvgIcon icon="logout" fontSize="large" htmlColor="white" />,
       title: t("logoutTitle"),
       handleClick: logoutHandler,
     },
   ];
 
   const getListItemButton = (
-    id: number,
+    id: string,
     icon: string,
     color?: string | undefined,
     title?: string,
   ): React.ReactNode => (
-    <ListItem dense divider key={id}>
+    <ListItem key={id} className={classes.margin}>
       <ListItemIcon>
-        <MaterialIcon icon={icon} fontSize="small" style={color ? { color } : {}} />
+        {icon}
+        {/* <SvgIcon icon={icon} fontSize="large" htmlColor="white" /> */}
       </ListItemIcon>
-      <ListItemText primary={title} />
+      <ListItemText primary={title} primaryTypographyProps={{ style: { fontSize: 16 } }} />
     </ListItem>
   );
 
   const drawerMenu = (): React.ReactNode => (
-    <div role="presentation" onClick={onClose} onKeyDown={onClose} className={classes.list}>
+    <div
+      role="presentation"
+      style={{ backgroundColor: theme.palette.secondary.main }}
+      onClick={onClose}
+      onKeyDown={onClose}
+      className={classes.list}
+    >
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           marginLeft: 20,
           marginTop: 20,
+          alignItems: "center",
         }}
       >
-        <p style={{ fontSize: 20, fontWeight: "bold", margin: 0 }}>{CONSTANTS.APP_NAME}</p>
-        <small style={{ color: "gray" }}>version 0.0.1</small>
+        <Image src="/images/logo.png" width={90} height={90} alt="Colmena logo" />
+        <Text
+          style={{ color: "white", fontWeight: "bold", marginLeft: 5, marginRight: 5 }}
+          variant={TextVariantEnum.H3}
+        >
+          COLMENA.
+          <br />
+          MEDIA
+        </Text>
       </div>
-      <List component="nav">
+      <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
+      <List component="nav" style={{ color: "white" }}>
         {menuArray.map((item: ListItemProps) => {
           const { id, icon, color, title, url, handleClick } = item;
           if (url)
@@ -186,12 +212,18 @@ function Drawer({ open, onOpen, onClose }: Props) {
   );
 
   return (
-    <>
+    <div>
+      <SwitchLanguageModal
+        defaultLang={cookies.NEXT_LOCALE}
+        open={openChangeLanguage}
+        onClose={handleCloseChangeLanguage}
+        backUrl={router.pathname}
+      />
       <Backdrop open={showBackdrop} />
       <SwipeableDrawer anchor="left" open={open} onOpen={onOpen} onClose={onClose}>
-        {drawerMenu()}
+        <div style={{ flex: 1, backgroundColor: theme.palette.secondary.main }}>{drawerMenu()}</div>
       </SwipeableDrawer>
-    </>
+    </div>
   );
 }
 

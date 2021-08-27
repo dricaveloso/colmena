@@ -4,9 +4,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import Link from "next/link";
-import { PositionProps, PropsUserSelector } from "@/types/index";
-import { PositionEnum, TextVariantEnum } from "@/enums/index";
+import { PositionProps, PropsUserSelector, PropsConfigSelector } from "@/types/index";
+import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import UserAvatar from "@/components/ui/Avatar";
 import { useSelector } from "react-redux";
@@ -28,15 +27,27 @@ function AppBarSys({
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
+  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
+
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const handleBack = () => {
-    router.back();
+    if (router.pathname === "/profile") router.push(configRdx.currentPage);
+    else router.back();
+  };
+
+  const handleProfilePage = () => {
+    router.push("/profile");
   };
 
   return (
     <header>
       <AppBar position={headerPosition}>
+        <Drawer
+          open={openDrawer}
+          onOpen={() => setOpenDrawer(true)}
+          onClose={() => setOpenDrawer(false)}
+        />
         <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             {drawer && (
@@ -55,23 +66,20 @@ function AppBarSys({
               </IconButton>
             )}
           </div>
-          <Drawer
-            open={openDrawer}
-            onOpen={() => setOpenDrawer(true)}
-            onClose={() => setOpenDrawer(false)}
-          />
           <Text
             variant={TextVariantEnum.H3}
-            style={{ fontSize: 18, color: "#fff", fontWeight: "bold", textTransform: "uppercase" }}
+            align={TextAlignEnum.CENTER}
+            style={{
+              fontSize: 18,
+              color: "#fff",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+            }}
           >
             {title}
           </Text>
-          <div>
-            <Link href="/profile">
-              <div>
-                <UserAvatar size={5} name={userRdx?.user?.name} image={userRdx?.user?.avatar} />
-              </div>
-            </Link>
+          <div onClick={handleProfilePage} style={{ cursor: "pointer" }}>
+            <UserAvatar size={5} name={userRdx?.user?.name} image={userRdx?.user?.avatar} />
           </div>
         </Toolbar>
       </AppBar>

@@ -1,14 +1,16 @@
 {
-  "homeTitle": "Accueil",
-  "myFilesTitle": "Bibliothèque",
-  "recordTitle": "Enregistrer",
-  "editAudioTitle": "Modifier le son",
-  "editTextTitle": "Éditer le texte",
-  "communityTitle": "Échange communautaire",
-  "editMediaTitle": "Profil des médias",
-  "userProfileTitle": "Mon profil",
-  "supportTitle": "Contactez-nous",
-  "logoutTitle": "Déconnecter",
-  "termsOfUse": "Conditions d'utilisation",
-  "aboutMaia": "À propos de Colmena"
+  "downloadTitle": "Install Colmena (offline mode)",
+  "languageTitle": "Language",
+  "settingsTitle": "Settings",
+  "userProfileTitle": "Edit Profile",
+  "editMediaTitle": "Edit Media",
+  "supportTitle": "Support",
+  "termsOfUse": "Terms of Use",
+  "aboutMaia": "About Colmena",
+  "myFilesTitle": "Library",
+  "recordTitle": "Call",
+  "editAudioTitle": "Edit audio",
+  "editTextTitle": "Edit Text",
+  "communityTitle": "Community Exchange",
+  "logoutTitle": "Logout"
 }
