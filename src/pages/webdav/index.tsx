@@ -15,10 +15,12 @@ import { listFile, moveFile, copyFile, deleteFile, putFile } from "@/services/we
 import { string } from "yup/lib/locale";
 
 export default function WebDav() {
-  // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  console.log(userRdx.user.id);
+
   useEffect(() => {
     async function getQuota() {
-      const userTest = "nil";
+      // const userTest = "nil";
 
       // const createF = await createDirectory("nil", "test5Folder");
       // console.log("create directory: ", createF);
@@ -27,7 +29,7 @@ export default function WebDav() {
       // console.log("deltete directory: ", deleteF);
 
       const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
-        userTest,
+        userRdx.user.id,
       );
       // listD.forEach((element) => {
       console.log(listD);
