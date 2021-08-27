@@ -29,9 +29,9 @@ export default function WebDav() {
       const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
         userTest,
       );
-      listD.forEach((element) => {
-        console.log(element);
-      });
+      // listD.forEach((element) => {
+      console.log(listD);
+      // });
       // // verificar erro
 
       // volta um binário
