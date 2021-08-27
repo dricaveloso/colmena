@@ -61,7 +61,7 @@ function About() {
   ];
 
   return (
-    <LayoutApp title={t("aboutTitle")}>
+    <LayoutApp title={t("aboutTitle")} back>
       <FlexBox>
         <div
           style={{

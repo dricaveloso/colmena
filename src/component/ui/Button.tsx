@@ -19,7 +19,7 @@ type Props = {
 
 export default function Btn({
   title,
-  color = ButtonColorEnum.PRIMARY,
+  color = ButtonColorEnum.SECONDARY,
   variant = ButtonVariantEnum.CONTAINED,
   handleClick,
   style = {},

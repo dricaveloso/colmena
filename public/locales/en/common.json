@@ -17,6 +17,7 @@
   "callDrawerBottomTitle": "Call",
   "recordingDrawerBottomTitle": "Recording",
   "enterTitleIndexPage": "Login",
+  "titleSwitchLanguage": "Switch Language",
   "form": {    
       "skipButton": "Skip",
       "nextIntro": "Next",

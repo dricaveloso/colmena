@@ -1,14 +1,16 @@
 {
-  "homeTitle": "Home",
+  "downloadTitle": "Install Colmena (offline mode)",
+  "languageTitle": "Language",
+  "settingsTitle": "Settings",
+  "userProfileTitle": "Edit Profile",
+  "editMediaTitle": "Edit Media",
+  "supportTitle": "Support",
+  "termsOfUse": "Terms of Use",
+  "aboutMaia": "About Colmena",
   "myFilesTitle": "Library",
   "recordTitle": "Call",
   "editAudioTitle": "Edit audio",
   "editTextTitle": "Edit Text",
   "communityTitle": "Community Exchange",
-  "editMediaTitle": "Media Profile",
-  "userProfileTitle": "My Profile",
-  "supportTitle": "Talk to us",
-  "logoutTitle": "Logout",
-  "termsOfUse": "Terms of Use",
-  "aboutMaia": "About Colmena"
+  "logoutTitle": "Logout"
 }
