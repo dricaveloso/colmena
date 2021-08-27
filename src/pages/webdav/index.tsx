@@ -23,15 +23,15 @@ export default function WebDav() {
       // const createF = await createDirectory("nil", "test5Folder");
       // console.log("create directory: ", createF);
 
-      const deleteF = await deleteDirectory("nil", "test5Folder");
-      console.log("deltete directory: ", deleteF);
+      // const deleteF = await deleteDirectory("nil", "test5Folder");
+      // console.log("deltete directory: ", deleteF);
 
-      // const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
-      //   userTest,
-      // );
-      // listD.forEach((element) => {
-      //   console.log(element);
-      // });
+      const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
+        userTest,
+      );
+      listD.forEach((element) => {
+        console.log(element);
+      });
       // // verificar erro
 
       // volta um binário
