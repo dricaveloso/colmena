@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { ListItemIcon, SwipeableDrawer, List, ListItem, ListItemText } from "@material-ui/core";
+import { ListItemIcon, List, ListItem, ListItemText } from "@material-ui/core";
+import Drawer from "@material-ui/core/Drawer";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import NotificationContext from "@/store/context/notification-context";
@@ -14,6 +15,7 @@ import Image from "next/image";
 import Text from "@/components/ui/Text";
 import SvgIcon from "@/components/ui/SvgIcon";
 import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal";
+import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 
 type ListItemProps = {
@@ -26,13 +28,12 @@ type ListItemProps = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   margin: {
     margin: theme.spacing(1),
   },
   list: {
+    color: "white",
+    backgroundColor: theme.palette.secondary.main,
     [theme.breakpoints.down("sm")]: {
       width: "80vw",
     },
@@ -40,18 +41,15 @@ const useStyles = makeStyles((theme) => ({
       width: "40vw",
     },
   },
-  fullList: {
-    width: "auto",
-  },
 }));
 
 type Props = {
   open: boolean;
-  onOpen: () => void;
+  onOpen?: () => void;
   onClose: () => void;
 };
 
-function Drawer({ open, onOpen, onClose }: Props) {
+function DrawerAux({ open, onClose }: Props) {
   const theme = useTheme();
   const classes = useStyles();
   const router = useRouter();
@@ -154,23 +152,14 @@ function Drawer({ open, onOpen, onClose }: Props) {
     color?: string | undefined,
     title?: string,
   ): React.ReactNode => (
-    <ListItem key={id} className={classes.margin}>
-      <ListItemIcon>
-        {icon}
-        {/* <SvgIcon icon={icon} fontSize="large" htmlColor="white" /> */}
-      </ListItemIcon>
+    <ListItem key={id}>
+      <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={title} primaryTypographyProps={{ style: { fontSize: 16 } }} />
     </ListItem>
   );
 
   const drawerMenu = (): React.ReactNode => (
-    <div
-      role="presentation"
-      style={{ backgroundColor: theme.palette.secondary.main }}
-      onClick={onClose}
-      onKeyDown={onClose}
-      className={classes.list}
-    >
+    <div role="presentation" onClick={onClose} onKeyDown={onClose} className={classes.list}>
       <div
         style={{
           display: "flex",
@@ -191,7 +180,7 @@ function Drawer({ open, onOpen, onClose }: Props) {
         </Text>
       </div>
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
-      <List component="nav" style={{ color: "white" }}>
+      <List component="nav">
         {menuArray.map((item: ListItemProps) => {
           const { id, icon, color, title, url, handleClick } = item;
           if (url)
@@ -208,6 +197,9 @@ function Drawer({ open, onOpen, onClose }: Props) {
           );
         })}
       </List>
+      <div style={{ marginLeft: 15, paddingRight: 25, marginTop: 20 }}>
+        <SliderQuota />
+      </div>
     </div>
   );
 
@@ -220,11 +212,11 @@ function Drawer({ open, onOpen, onClose }: Props) {
         backUrl={router.pathname}
       />
       <Backdrop open={showBackdrop} />
-      <SwipeableDrawer anchor="left" open={open} onOpen={onOpen} onClose={onClose}>
+      <Drawer anchor="left" open={open} onClose={onClose}>
         <div style={{ flex: 1, backgroundColor: theme.palette.secondary.main }}>{drawerMenu()}</div>
-      </SwipeableDrawer>
+      </Drawer>
     </div>
   );
 }
 
-export default Drawer;
+export default DrawerAux;

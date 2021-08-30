@@ -45,7 +45,7 @@ function AppBarSys({
       <AppBar position={headerPosition}>
         <Drawer
           open={openDrawer}
-          onOpen={() => setOpenDrawer(true)}
+          // onOpen={() => setOpenDrawer(true)}
           onClose={() => setOpenDrawer(false)}
         />
         <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
