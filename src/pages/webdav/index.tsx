@@ -10,29 +10,37 @@ import {
 } from "webdav";
 
 import { PropsUserSelector } from "../../types";
-import { createDirectory, deleteDirectory, listDirectories } from "@/services/webdav/directories";
+import {
+  createDirectory,
+  deleteDirectory,
+  listDirectories,
+  existDirectory,
+} from "@/services/webdav/directories";
 import { listFile, moveFile, copyFile, deleteFile, putFile } from "@/services/webdav/files";
 import { string } from "yup/lib/locale";
 
 export default function WebDav() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  console.log(userRdx.user.id);
+  // console.log(userRdx.user.id);
 
   useEffect(() => {
     async function getQuota() {
       // const userTest = "nil";
+      // const exist = await existDirectory(userRdx.user.id, "test2Folder");
+      // console.log("exist directory: ", exist);
+      // if (!exist) {
+      //   const createF = await createDirectory("nil", "test2Folder");
+      //   console.log("create directory: ", createF);
+      // }
 
-      // const createF = await createDirectory("nil", "test5Folder");
-      // console.log("create directory: ", createF);
+      const deleteF = await deleteDirectory("nil", "test5Folder");
+      console.log("delete directory: ", deleteF);
 
-      // const deleteF = await deleteDirectory("nil", "test5Folder");
-      // console.log("deltete directory: ", deleteF);
-
-      const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
-        userRdx.user.id,
-      );
-      // listD.forEach((element) => {
-      console.log(listD);
+      // const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
+      //   userRdx.user.id,
+      // );
+      // // listD.forEach((element) => {
+      // console.log(listD);
       // });
       // // verificar erro
 
@@ -48,10 +56,6 @@ export default function WebDav() {
 
       // const putF = await putFile(userTest, "teste5.md", "novo texto 2");
       // console.log(putF);
-
-      // const delF = await deleteFile(userTest, "teste5.md");
-      // console.log("deltete directory: ", delF);
-
       // const deleteDirectory: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> =
       //   await deleteDirectory("nil", "nameFolder6");
       // deleteDirectory.forEach((element) => {

@@ -5,7 +5,7 @@ import { FileStat, ResponseDataDetailed } from "webdav";
 export function listDirectories(
   userId: string | number,
 ): Promise<Array<FileStat> | ResponseDataDetailed<Array<FileStat>>> {
-  return webdav().getDirectoryContents(`${userId}/`);
+  return webdav().getDirectoryContents(`${userId}/`, { details: true });
 }
 
 export function createDirectory(userId: string | number, dirPath: string) {
@@ -19,14 +19,18 @@ export function createDirectory(userId: string | number, dirPath: string) {
   return true;
 }
 
-export function deleteDirectory(userId: string | number, filename: string): boolean {
+export function deleteDirectory(userId: string | number, filename: string) {
   try {
-    webdav().deleteFile(`${userId}/${filename}`);
-  } catch (error) {
-    console.error(error.stack);
-    if (error) {
-      return false;
-    }
+    return webdav().deleteFile(`${userId}/${filename}`);
+  } catch (err) {
+    console.log(err);
+    console.log("aqui mais um ", err);
   }
-  return true;
+}
+export function existDirectory(userId: string | number, remotePath: string) {
+  try {
+    return webdav().exists(`${userId}/${remotePath}`);
+  } catch (err) {
+    console.log(err.response);
+  }
 }
