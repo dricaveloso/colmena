@@ -9,8 +9,12 @@ import IconButton from "@/components/ui/IconButton";
 import { FileIcon, defaultStyles } from "react-file-icon";
 
 function getExtesionFilename(filename: string) {
+  if (!filename) {
+    return "pdf";
+  }
   return filename.substring(filename.lastIndexOf(".") + 1, filename.length) || filename;
 }
+
 const VerticalItemList = ({
   filename,
   basename,
@@ -29,9 +33,8 @@ const VerticalItemList = ({
         foldColor="#8A8A8A"
         radius={4}
         type="3d"
-        glyphColor="rgba(255,255,255,0.4)"
-        extension={getExtesionFilename(basename)}
-        {...defaultStyles[getExtesionFilename(basename)]}
+        extension={getExtesionFilename(filename)}
+        {...defaultStyles[getExtesionFilename(filename)]}
       />
     </ListItemAvatar>
 

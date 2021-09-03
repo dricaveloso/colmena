@@ -38,6 +38,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@types/dom-mediacapture-record": "^1.0.10",
+    "@types/material-ui": "^0.21.9",
     "@types/react-file-icon": "^1.0.1",
     "axios": "^0.21.1",
     "babel-plugin-inline-react-svg": "^2.0.1",
