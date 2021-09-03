@@ -35,6 +35,13 @@ export function putFile(userId: string | number, filePath: string, data: string)
   }
   return true;
 }
+
+export function listImages(userId: string | number, filename: string) {
+  const images = webdav().getDirectoryContents(`${userId}/`, {
+    deep: true,
+    glob: "/**/*.{png,jpg,gif,jpeg}",
+  });
+}
 export function deleteFile(userId: string | number, filename: string): boolean {
   try {
     webdav().deleteFile(`${userId}/${filename}`);
