@@ -63,7 +63,8 @@ export interface LibraryItemWebDavInterface {
   filename: string;
   type?: string;
   size?: number;
-  lastmod: string;
+  lastmod?: string;
+  mime?: string;
 }
 export interface LibraryItemInterface {
   id: number;
