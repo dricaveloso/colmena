@@ -20,8 +20,6 @@ export default function WebDav() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [data, setData] = useState([]);
   const directory = "";
-  async function CheckExist() {}
-
   async function CreateDirectory() {
     const exist = await existDirectory(userRdx.user.id, "test2Folder");
     console.log("exist directory: ", exist);
@@ -49,7 +47,6 @@ export default function WebDav() {
     <LayoutApp title={CONSTANTS.APP_NAME}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <div style={{ width: "100vw", margin: 5 }}>
-          <button type="button">Create Directory</button>
           <FlexBox>
             <div>
               <button type="button" onClick={ListDirect}>
