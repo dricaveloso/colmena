@@ -19,16 +19,25 @@ const VerticalItemList = ({
   lastmod,
 }: LibraryItemWebDavInterface) => (
   <>
-    <ListItemAvatar style={{ width: 35, height: 35 }}>
+    <ListItemAvatar
+      style={{ width: 55, height: 55, marginLeft: 15, marginTop: 10, marginBottom: 20 }}
+    >
       <FileIcon
-        extension={getExtesionFilename(filename)}
-        {...defaultStyles[getExtesionFilename(filename)]}
+        size={48}
+        color="#7F7CAF"
+        labelColor="#5FB9AD"
+        foldColor="#8A8A8A"
+        radius={4}
+        type="3d"
+        glyphColor="rgba(255,255,255,0.4)"
+        extension={getExtesionFilename(basename)}
+        {...defaultStyles[getExtesionFilename(basename)]}
       />
     </ListItemAvatar>
 
     <ListItemText
       data-testid="title"
-      style={{ marginLeft: 5 }}
+      style={{ marginLeft: 25 }}
       primary={basename}
       secondary={lastmod}
     />

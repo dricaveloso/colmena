@@ -45,16 +45,6 @@ export default function WebDav() {
       console.log("error", e);
     }
   }
-
-  const data2 = [
-    {
-      basename: data,
-      filename: "",
-      type: "",
-      size: "",
-    },
-  ];
-
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
@@ -67,6 +57,7 @@ export default function WebDav() {
               </button>
             </div>
           </FlexBox>
+
           <VerticalListWebDav data={data} />
         </div>
       </FlexBox>
