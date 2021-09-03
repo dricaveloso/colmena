@@ -33,10 +33,10 @@ export default function WebDav() {
       const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories(
         userRdx.user.id,
       );
-      const result = listD.data.shift();
+      // const result = listD.data.shift();
 
-      console.log(result);
-      console.log(listD.data);
+      // console.log(result);
+      // console.log(listD.data);
 
       setData(listD.data);
     } catch (e) {
