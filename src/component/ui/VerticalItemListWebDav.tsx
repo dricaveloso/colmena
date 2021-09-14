@@ -26,7 +26,7 @@ const VerticalItemList = ({
         radius={4}
         type="3d"
         extension={getExtesionFilename(filename)}
-        // {...defaultStyles[getExtesionFilename(filename)]}
+        {...defaultStyles[getExtesionFilename(filename)]}
       />
     </ListItemAvatar>
 
