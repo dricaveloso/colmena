@@ -66,6 +66,14 @@ export interface LibraryItemInterface {
   url?: string;
 }
 
+export interface LibraryItemWebDavInterface {
+  filename: string;
+  basename: string;
+  type: string;
+  size: number;
+  lastmod: string;
+}
+
 export interface UserInvitationInterface {
   username: string;
   name?: string;
