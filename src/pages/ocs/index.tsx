@@ -11,6 +11,7 @@ import {
   disableUser,
   welcomeUser,
   createUser,
+  deleteUser,
 } from "../../services/ocs/users";
 
 import CONSTANTS from "@/constants/index";
@@ -83,6 +84,14 @@ export default function OCS() {
       console.log("error", e);
     }
   }
+  async function DeleteUser() {
+    try {
+      const deleteU = await deleteUserser("");
+      console.log(deleteU);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
   async function ListCababilities() {
     try {
       const listC = await capabilities();
@@ -136,6 +145,13 @@ export default function OCS() {
             <div>
               <button type="button" onClick={WelcomeUser}>
                 Welcome User
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={DeleteUser}>
+                Delete User
               </button>
             </div>
           </FlexBox>

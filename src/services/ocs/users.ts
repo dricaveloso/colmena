@@ -64,3 +64,12 @@ export function createUser(userId: string | number, email: string) {
     }
   }
 }
+export function deleteUser(userId: string | number) {
+  try {
+    ocs().delete(`/users/${userId}`);
+  } catch (error) {
+    if (error) {
+      return false;
+    }
+  }
+}
