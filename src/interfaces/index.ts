@@ -37,9 +37,11 @@ export interface UserInfoInterface {
   userToken: string;
   language: string;
   website?: string;
+  locale: string;
   twitter?: string;
   groups: string[];
   media: MediaInfoInterface;
+  quota: string[];
 }
 export interface FileInterface {
   id: number;
@@ -74,6 +76,15 @@ export interface LibraryItemWebDavInterface {
   lastmod: string;
 }
 
+export interface LibraryItemOCSUserInterface {
+  id: string;
+  address: string;
+  displayname: string;
+  email: string;
+  enable: boolean;
+  lastmod: string;
+  language: string;
+}
 export interface UserInvitationInterface {
   username: string;
   name?: string;

@@ -10,7 +10,7 @@ export function listAllUsers() {
 }
 export function listOneUser(userId: string | number) {
   try {
-    ocs().get(`/users/${userId}`);
+    return ocs().get(`/users/${userId}`);
   } catch (error) {
     if (error) {
       return false;
