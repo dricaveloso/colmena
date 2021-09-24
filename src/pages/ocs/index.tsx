@@ -13,6 +13,7 @@ import {
   createUser,
   deleteUser,
   resetPass,
+  listGroupsUser,
 } from "../../services/ocs/users";
 
 import CONSTANTS from "@/constants/index";
@@ -110,6 +111,16 @@ export default function OCS() {
     }
   }
 
+  async function ListGroupUser() {
+    try {
+      const LGU = await listGroupsUser(userRdx.user.id);
+
+      console.log(LGU);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
@@ -125,6 +136,13 @@ export default function OCS() {
             <div>
               <button type="button" onClick={ListOneU}>
                 Especific User
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={ListGroupUser}>
+                List Gropu User
               </button>
             </div>
           </FlexBox>

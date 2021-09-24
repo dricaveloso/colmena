@@ -76,9 +76,18 @@ export function deleteUser(userId: string | number) {
 
 export function resetPass(userId: string | number, password: string | number) {
   try {
-    ocs().put(`/users/${userId}`, {
+    return ocs().put(`/users/${userId}`, {
       password: `${password}`,
     });
+  } catch (error) {
+    if (error) {
+      return false;
+    }
+  }
+}
+export function listGroupsUser(userId: string | number) {
+  try {
+    return ocs().get(`/users/${userId}/groups`);
   } catch (error) {
     if (error) {
       return false;
