@@ -12,6 +12,7 @@ import {
   welcomeUser,
   createUser,
   deleteUser,
+  resetPass,
 } from "../../services/ocs/users";
 
 import CONSTANTS from "@/constants/index";
@@ -86,8 +87,16 @@ export default function OCS() {
   }
   async function DeleteUser() {
     try {
-      const deleteU = await deleteUserser("");
+      const deleteU = await deleteUser("maria2321");
       console.log(deleteU);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function ResetPass() {
+    try {
+      const resetPassU = await resetPass("nil", "rocha123");
+      console.log(resetPassU);
     } catch (e) {
       console.log("error", e);
     }
@@ -145,6 +154,13 @@ export default function OCS() {
             <div>
               <button type="button" onClick={WelcomeUser}>
                 Welcome User
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={ResetPass}>
+                Reset Password
               </button>
             </div>
           </FlexBox>

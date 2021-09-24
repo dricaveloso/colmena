@@ -73,3 +73,15 @@ export function deleteUser(userId: string | number) {
     }
   }
 }
+
+export function resetPass(userId: string | number, password: string | number) {
+  try {
+    ocs().put(`/users/${userId}`, {
+      password: `${password}`,
+    });
+  } catch (error) {
+    if (error) {
+      return false;
+    }
+  }
+}
