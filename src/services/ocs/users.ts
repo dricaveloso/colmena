@@ -32,7 +32,7 @@ export function enableUser(userId: string | number) {
 
 export function disableUser(userId: string | number) {
   try {
-    ocs().put(`/${userId}/disable`);
+    ocs().put(`/users/${userId}/disable`);
   } catch (error) {
     if (error) {
       return false;
