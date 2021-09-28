@@ -7,7 +7,7 @@ stages:
   #  - prepare
   - build
   # - deploy
-  # - livetest
+  - livetest
   # - cleanup
 cache:
   paths:
