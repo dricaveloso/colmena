@@ -6,7 +6,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Image from "next/image";
 import { LibraryItemInterface, LibraryItemWebDavInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
-import { FileIcon, defaultStyles } from "react-file-icon";
+// import { FileIcon, defaultStyles } from "react-file-icon";
 
 function getExtesionFilename(filename: string) {
   return filename.substring(filename.lastIndexOf(".") + 1, filename.length) || filename;
@@ -19,7 +19,7 @@ const VerticalItemList = ({
   lastmod,
 }: LibraryItemWebDavInterface) => (
   <>
-    <ListItemAvatar
+    {/* <ListItemAvatar
       style={{ width: 55, height: 55, marginLeft: 15, marginTop: 10, marginBottom: 20 }}
     >
       <FileIcon
@@ -28,7 +28,7 @@ const VerticalItemList = ({
         extension={getExtesionFilename(filename)}
         {...defaultStyles[getExtesionFilename(filename)]}
       />
-    </ListItemAvatar>
+    </ListItemAvatar> */}
 
     <ListItemText
       data-testid="title"

@@ -22,7 +22,7 @@ export default function VerticalList({ title = "", data }: Props) {
           </Text>
         </div>
       )}
-      <List>
+      {/* <List>
         {data
           ?.filter((item) => item.type !== "directory")
           ?.map((item) => (
@@ -30,7 +30,7 @@ export default function VerticalList({ title = "", data }: Props) {
               <VerticalItemListWebDav {...item} />
             </ListItem>
           ))}
-      </List>
+      </List> */}
     </div>
   );
 }
