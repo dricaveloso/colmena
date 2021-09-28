@@ -1,11 +1,10 @@
 module.exports = {
   ci: {
+    collect: {
+      settings: {chromeFlags: '--no-sandbox'},
+    },
     upload: {
-      target: 'lhci',
-      serverBaseUrl: LHCI_SERVER,
-      token: LHCI_TOKEN
+      target: 'temporary-public-storage',
     },
   },
 };
-
-
