@@ -15,13 +15,13 @@ cache:
     - out/
 prepare_all:
   tags: 
-    - docker
+    - node
   stage: prepare
   script:
     - npm install --force
 build:
   tags: 
-    - docker  
+    - node  
   stage: build
   script:
     #- npm run build
@@ -33,7 +33,7 @@ build:
 deploy_dev:
   stage: deploy
   tags: 
-    - docker
+    - node
   script: #change this
     - cp -a out/* /pub/frontend/dev/
   only:
