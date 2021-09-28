@@ -14,10 +14,14 @@ cache:
     - node_modules/
     - out/
 prepare_all:
+  tags: 
+    - node
   stage: prepare
   script:
     - npm install --force
 build:
+  tags: 
+    - node  
   stage: build
   script:
     #- npm run build
