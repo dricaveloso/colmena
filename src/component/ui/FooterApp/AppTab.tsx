@@ -81,7 +81,7 @@ function AppTab({ page }: Props) {
           <IconButton
             icon="gradient-panal"
             fontSizeIcon="medium"
-            handleClick={handleOpen}
+            url="/home"
             color={theme.palette.primary.main}
           />
         </Grid>
