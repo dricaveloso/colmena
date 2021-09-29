@@ -23,10 +23,7 @@ function FooterApp() {
   }
 
   return (
-    <div
-      className="footer"
-      style={{ backgroundColor: theme.palette.primary.main, margin: 0, padding: 2 }}
-    >
+    <div className="footer" style={{ backgroundColor: "#fff", margin: 0, padding: 2 }}>
       <Box
         display="flex"
         style={{ margin: 0, ...style }}

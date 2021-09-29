@@ -50,6 +50,10 @@ a {
   font-size: 12px;
   background-color: #fff;
   text-align: center;
+  border-style: solid;
+  border-color: #ddd;
+  border: 0 1px 0 0;
+  border-width: 1px;
 }
 
 .boxRowSpaceAround {
