@@ -7,7 +7,7 @@ stages:
   - prepare
   - build
   - deploy
-  - livetest
+  # - livetest
   # - cleanup
 cache:
   paths:
@@ -40,6 +40,13 @@ deploy_dev:
     - branches
   except:
     - main
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploy to staging server"
+  environment:
+    name: staging
+    url: https://staging.colmena.network
 deploy_prod:
   stage: deploy
   script:
@@ -52,12 +59,12 @@ deploy_prod:
     paths:
       - out
     expire_in: 10 days
-test_all:
-  stage: livetest
-  tags: 
-    - lighthouse
-  script:
-    - npm install
-    - npm run build
-    - npm install -g @lhci/cli@0.3.x
-    - lhci autorun --upload.target=temporary-public-storage --collect.settings.chromeFlags="--no-sandbox" || echo "LHCI failed!"
+# test_all:
+#   stage: livetest
+#   tags: 
+#     - lighthouse
+#   script:
+#     - npm install
+#     - npm run build
+#     - npm install -g @lhci/cli@0.3.x
+#     - lhci autorun --upload.target=temporary-public-storage --collect.settings.chromeFlags="--no-sandbox" || echo "LHCI failed!"
