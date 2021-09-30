@@ -47,12 +47,12 @@ build:
 #    paths:
 #      - out
 #    expire_in: 10 days
-test_all:
-  stage: livetest
-  tags:
-    - lighthouse
-  script:
-    - npm install
-    - npm run build
-    - npm install -g @lhci/cli@0.3.x
-    - lhci autorun --upload.target=temporary-public-storage --collect.settings.chromeFlags="--no-sandbox" || echo "LHCI failed!"
+#test_all:
+#  stage: livetest
+#  tags:
+#    - lighthouse
+#  script:
+#    - npm install
+#    - npm run build
+#    - npm install -g @lhci/cli@0.3.x
+#    - lhci autorun --upload.target=temporary-public-storage --collect.settings.chromeFlags="--no-sandbox" || echo "LHCI failed!"
