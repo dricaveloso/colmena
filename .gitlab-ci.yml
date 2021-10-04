@@ -26,8 +26,10 @@ build:
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
 configure cluster:
+  tags: 
+    - k8
   stage: deploy
-  script: kubectl get namespaces
+  script: echo $KUBE_NAMESPACE
   environment:
     name: production
 
