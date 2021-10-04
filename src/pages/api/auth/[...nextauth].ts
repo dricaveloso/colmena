@@ -5,47 +5,64 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import axios from "axios";
-import constants from "@/constants/index";
-import { searchByTerm } from "@/utils/utils";
+import constants from "../../../constants";
+import { searchByTerm } from "../../../utils/utils";
+import {
+  AppPasswordInterface,
+  UserInfoInterface,
+  CapabilitiesInfoInterface,
+} from "../../../interfaces/ocs";
+
+const baseUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php`;
+
+function getAppPassword(email: string, password: string): Promise<AppPasswordInterface> {
+  return axios.get(`${baseUrl}/core/getapppassword`, {
+    auth: {
+      username: email,
+      password,
+    },
+    headers: {
+      "OCS-APIRequest": true,
+    },
+  });
+}
+
+function getUserInfo(headers: {
+  "OCS-APIRequest": boolean;
+  Authorization: string;
+}): Promise<UserInfoInterface> {
+  return axios.get(`${baseUrl}/cloud/user?format=json`, {
+    headers,
+  });
+}
+
+function getCapabilitiesInfo(headers: {
+  "OCS-APIRequest": boolean;
+  Authorization: string;
+}): Promise<CapabilitiesInfoInterface> {
+  return axios.get(`${baseUrl}/cloud/capabilities?format=json`, {
+    headers,
+  });
+}
 
 export default NextAuth({
   providers: [
     Providers.Credentials({
-      async authorize(credentials) {
+      async authorize(credentials: { email: string; password: string }) {
         const { email, password } = credentials;
         try {
-          const responseToken = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/core/getapppassword`,
-            {
-              auth: {
-                username: email,
-                password,
-              },
-              headers: {
-                "OCS-APIRequest": true,
-              },
-            },
-          );
+          const resultAppPassword = await getAppPassword(email, password);
+          const userToken = resultAppPassword.data.ocs.data.apppassword;
 
-          const userToken = responseToken.data.ocs.data.apppassword;
           const headers = {
             "OCS-APIRequest": true,
             Authorization: `Bearer ${userToken}`,
           };
 
-          const responseUser = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/user`,
-            {
-              headers,
-            },
-          );
+          const responseUser = await getUserInfo(headers);
           const dataUser = responseUser.data.ocs.data;
-          const responseMedia = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/capabilities`,
-            {
-              headers,
-            },
-          );
+
+          const responseMedia = await getCapabilitiesInfo(headers);
           const dataMedia = responseMedia.data.ocs.data.capabilities.theming;
 
           if (!responseUser.data.ocs.data.groups.includes("admin")) {
@@ -63,6 +80,8 @@ export default NextAuth({
           } = dataUser;
           const { name: mediaName, url, slogan, logo } = dataMedia;
 
+          console.log(dataUser, dataMedia);
+
           let userLang = constants.DEFAULT_LANGUAGE;
           if (Object.values(constants.LOCALES).includes(language)) userLang = language;
 
@@ -75,6 +94,7 @@ export default NextAuth({
             groups,
             twitter,
             userToken,
+            password,
             media: {
               name: mediaName,
               url,
@@ -83,6 +103,7 @@ export default NextAuth({
             },
           };
         } catch (e) {
+          console.log(e);
           const result = searchByTerm(e.message, "permissionDenied")
             ? "permissionDenied"
             : "invalidCredentials";

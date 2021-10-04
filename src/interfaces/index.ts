@@ -35,6 +35,7 @@ export interface UserInfoInterface {
   avatar?: string;
   email: string;
   userToken: string;
+  password: string;
   language: string;
   website?: string;
   twitter?: string;
