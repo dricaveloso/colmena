@@ -5,9 +5,9 @@ variables:
 
 stages:
   #  - prepare
-  - build
-  # - deploy
-  - livetest
+  #- build
+  - deploy
+  #- livetest
   # - cleanup
 cache:
   paths:
