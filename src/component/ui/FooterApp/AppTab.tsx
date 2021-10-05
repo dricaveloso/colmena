@@ -3,13 +3,32 @@ import IconButton from "@/components/ui/IconButton";
 import FullScreenSearch from "@/components/ui/FooterApp/FullScreenSearch";
 import DrawerBottomRecording from "@/components/ui/FooterApp/DrawerBottomRecording";
 import Grid from "@material-ui/core/Grid";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme, makeStyles } from "@material-ui/core/styles";
 
 type Props = {
   page: string;
 };
 
+const useStyles = makeStyles(() => ({
+  gridContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    height: 60,
+  },
+  btnMore: {
+    background: "linear-gradient(118.66deg, #534BAE 5.24%, #D53E7E 103.53%)!important",
+    borderRadius: 8,
+    padding: "8px!important",
+    minWidth: "50px",
+    "& .MuiSvgIcon-root": {
+      fontSize: "1rem",
+    },
+  },
+}));
+
 function AppTab({ page }: Props) {
+  const classes = useStyles();
   const theme = useTheme();
   const [openSearch, setOpenSearch] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -18,9 +37,9 @@ function AppTab({ page }: Props) {
     setOpenSearch(false);
   };
 
-  const handleOpen = () => {
-    setOpenSearch(true);
-  };
+  // const handleOpen = () => {
+  //   setOpenSearch(true);
+  // };
 
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
@@ -32,42 +51,13 @@ function AppTab({ page }: Props) {
 
   return (
     <>
-      <div
-        style={{
-          position: "absolute",
-          margin: "0 auto",
-          bottom: 0,
-          width: 50,
-          height: 50,
-          backgroundColor: theme.palette.primary.light,
-          borderRadius: "50%",
-          marginBottom: 12,
-          borderColor: "white",
-          borderWidth: "medium",
-          borderStyle: "solid",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <IconButton
-          icon="plus"
-          fontSizeIcon="large"
-          handleClick={handleOpenDrawer}
-          color={theme.palette.primary.contrastText}
-        />
-      </div>
-      <Grid container spacing={3}>
-        <Grid item xs={1}></Grid>
+      <Grid container spacing={3} className={classes.gridContainer}>
         <Grid item xs={2}>
           <IconButton
             icon="home"
             url="/home"
             fontSizeIcon="medium"
-            color={
-              page === "/home"
-                ? theme.palette.primary.contrastText
-                : theme.palette.primary.contrastText
-            }
+            color={page === "/home" ? theme.palette.primary.main : theme.palette.primary.main}
           />
         </Grid>
         <Grid item xs={2}>
@@ -75,18 +65,24 @@ function AppTab({ page }: Props) {
             icon="library"
             url="/library"
             fontSizeIcon="medium"
-            color={
-              page === "/library" ? theme.palette.primary.light : theme.palette.primary.contrastText
-            }
+            color={page === "/library" ? theme.palette.primary.main : theme.palette.primary.main}
           />
         </Grid>
-        <Grid item xs={2}></Grid>
         <Grid item xs={2}>
           <IconButton
-            icon="search"
+            icon="plus"
             fontSizeIcon="medium"
-            handleClick={handleOpen}
-            color={theme.palette.primary.contrastText}
+            handleClick={handleOpenDrawer}
+            color="#fff"
+            className={classes.btnMore}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <IconButton
+            icon="gradient-panal"
+            fontSizeIcon="medium"
+            url="/home"
+            color={theme.palette.primary.main}
           />
         </Grid>
         <Grid item xs={2}>
@@ -94,14 +90,9 @@ function AppTab({ page }: Props) {
             icon="global"
             fontSizeIcon="medium"
             url="/tools"
-            color={
-              page === "/tools"
-                ? theme.palette.primary.contrastText
-                : theme.palette.primary.contrastText
-            }
+            color={page === "/tools" ? theme.palette.primary.main : theme.palette.primary.main}
           />
         </Grid>
-        <Grid item xs={1}></Grid>
       </Grid>
       <FullScreenSearch open={openSearch} handleClose={handleClose} />
       <DrawerBottomRecording

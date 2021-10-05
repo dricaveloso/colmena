@@ -211,4 +211,6 @@ export type AllIconProps =
   | "help"
   | "contract"
   | "info"
+  | "panal"
+  | "gradient-panal"
   | "logout";

@@ -33,6 +33,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# history plugin
+.history
+
 **/public/workbox-*.js
 **/public/workbox-*.map
 **/public/fallback-*.js
