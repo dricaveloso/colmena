@@ -135,7 +135,7 @@ export default NextAuth({
     // async redirect(url, baseUrl) { return baseUrl },
     async session(session, token) {
       if (token) {
-        session.user = token.user;
+        // session.user = token.user;
         session.accessToken = token.accessToken;
         session.error = token.error;
       }
