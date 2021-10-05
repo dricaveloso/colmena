@@ -12,7 +12,6 @@ const ocs = () => {
     },
     headers: {
       "OCS-APIRequest": true,
-      // Authorization: `Bearer ${userToken}`,
     },
   });
   return api;

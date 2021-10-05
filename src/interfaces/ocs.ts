@@ -1,24 +1,28 @@
 export interface CreateUserInterface {
-  ocs: {
-    meta: {
-      status: string;
-      statuscode: number;
-      message: string;
-    };
-    data: {
-      id: string;
+  data: {
+    ocs: {
+      meta: {
+        status: string;
+        statuscode: number;
+        message: string;
+      };
+      data: {
+        id: string;
+      };
     };
   };
 }
 
 export interface WelcomeUserInterface {
-  ocs: {
-    meta: {
-      status: string;
-      statuscode: number;
-      message: string;
+  data: {
+    ocs: {
+      meta: {
+        status: string;
+        statuscode: number;
+        message: string;
+      };
+      data: [];
     };
-    data: [];
   };
 }
 

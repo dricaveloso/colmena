@@ -47,14 +47,15 @@ export function welcomeUser(userId: string | number): Promise<WelcomeUserInterfa
 }
 
 export function createUser(
-  userId: string | number,
+  displayName: string,
   email: string,
-  group = "users",
+  groups = ["users"],
 ): Promise<CreateUserInterface> {
   return ocs().post(`/users`, {
-    userid: userId,
+    userid: email.split("@")[0],
+    displayName,
     email,
-    group,
+    groups,
   });
 }
 export function deleteUser(userId: string | number) {

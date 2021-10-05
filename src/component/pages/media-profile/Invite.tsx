@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Button from "@material-ui/core/Button";
 import {
   TextField,
@@ -10,12 +10,13 @@ import {
 } from "@material-ui/core";
 import Select from "@/components/ui/Select";
 import { useTranslation } from "next-i18next";
-// import NotificationContext from "@/store/context/notification-context";
-import { SelectVariantEnum } from "@/enums/index";
+import NotificationContext from "@/store/context/notification-context";
+import { NotificationStatusEnum, SelectVariantEnum } from "@/enums/index";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
-// import { createUser, welcomeUser } from "@/services/ocs/users";
+import { createUser, welcomeUser } from "@/services/ocs/users";
+import Backdrop from "@/components/ui/Backdrop";
 
 type Props = {
   openInviteForm: boolean;
@@ -31,15 +32,8 @@ type MyFormValues = {
 export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Props) {
   const { t } = useTranslation("mediaProfile");
   const { t: c } = useTranslation("common");
-  // const notificationCtx = useContext(NotificationContext);
-
-  // const handleSubmit = () => {
-  //   notificationCtx.showNotification({
-  //     message: t("messageSuccessInvite"),
-  //     status: NotificationStatusEnum.SUCCESS,
-  //   });
-  //   handleCloseInviteForm();
-  // };
+  const notificationCtx = useContext(NotificationContext);
+  const [showBackdrop, setShowBackdrop] = useState(false);
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
@@ -55,7 +49,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
 
   const selectData = [
     {
-      id: "users",
+      id: "colmena",
       value: t("inviteCollaboratorTitle"),
     },
     {
@@ -72,20 +66,36 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">{t("textInviteCollaborators")}</DialogTitle>
+        <Backdrop open={showBackdrop} />
         <Formik
           initialValues={initialValues}
           validationSchema={ValidationSchema}
-          onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-            console.log(values);
-            setSubmitting(true);
+          onSubmit={async (values: MyFormValues, { setSubmitting }: any) => {
+            setShowBackdrop(true);
+            setSubmitting(false);
+            const { name, email, group } = values;
+            try {
+              const groups = [];
+              groups.push(group);
+              const result = await createUser(name, email, groups);
+              const userId = result.data.ocs.data.id;
+              await welcomeUser(userId);
 
-            // setTimeout(() => {
-            //   notificationCtx.showNotification({
-            //     message: c("form.successMessageFormSave"),
-            //     status: NotificationStatusEnum.SUCCESS,
-            //   });
-            //   setSubmitting(false);
-            // }, 1000);
+              setShowBackdrop(false);
+              handleCloseInviteForm();
+              notificationCtx.showNotification({
+                message: t("messageOkModalDialogInvite"),
+                status: NotificationStatusEnum.SUCCESS,
+              });
+            } catch (e) {
+              console.log(e);
+              setShowBackdrop(false);
+              handleCloseInviteForm();
+              notificationCtx.showNotification({
+                message: t("messageErrorModalDialogInvite"),
+                status: NotificationStatusEnum.ERROR,
+              });
+            }
           }}
         >
           {({ submitForm, isSubmitting, errors, touched }: any) => (
