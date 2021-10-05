@@ -133,8 +133,9 @@ export default NextAuth({
     //   return true;
     // },
     // async redirect(url, baseUrl) { return baseUrl },
-    async session(session: { user: any; accessToken: any; error: any }, token) {
+    async session(session, token) {
       if (token) {
+        // @ts-ignore
         session.user = token.user;
         session.accessToken = token.accessToken;
         session.error = token.error;
