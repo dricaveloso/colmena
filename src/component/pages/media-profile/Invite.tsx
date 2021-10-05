@@ -70,32 +70,45 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
         <Formik
           initialValues={initialValues}
           validationSchema={ValidationSchema}
-          onSubmit={async (values: MyFormValues, { setSubmitting }: any) => {
+          onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
             setShowBackdrop(true);
             setSubmitting(false);
             const { name, email, group } = values;
-            try {
-              const groups = [];
-              groups.push(group);
-              const result = await createUser(name, email, groups);
-              const userId = result.data.ocs.data.id;
-              await welcomeUser(userId);
 
-              setShowBackdrop(false);
-              handleCloseInviteForm();
-              notificationCtx.showNotification({
-                message: t("messageOkModalDialogInvite"),
-                status: NotificationStatusEnum.SUCCESS,
-              });
-            } catch (e) {
-              console.log(e);
-              setShowBackdrop(false);
-              handleCloseInviteForm();
-              notificationCtx.showNotification({
-                message: t("messageErrorModalDialogInvite"),
-                status: NotificationStatusEnum.ERROR,
-              });
-            }
+            (async () => {
+              try {
+                const groups = [];
+                groups.push(group);
+                const result = await createUser(name, email, groups);
+
+                if (result.data.ocs.meta.statuscode !== 200) {
+                  throw new Error(t("createdErrorUser"));
+                }
+
+                console.log("uma vez");
+                const userId = result.data.ocs.data.id;
+                const result2 = await welcomeUser(userId);
+
+                if (result2.data.ocs.meta.statuscode !== 200)
+                  throw new Error(t("welcomeErrorUser"));
+
+                setShowBackdrop(false);
+                handleCloseInviteForm();
+                notificationCtx.showNotification({
+                  message: t("messageOkModalDialogInvite"),
+                  status: NotificationStatusEnum.SUCCESS,
+                });
+              } catch (e) {
+                const message = e.message ? e.message : t("messageErrorModalDialogInvite");
+
+                setShowBackdrop(false);
+                handleCloseInviteForm();
+                notificationCtx.showNotification({
+                  message,
+                  status: NotificationStatusEnum.WARNING,
+                });
+              }
+            })();
           }}
         >
           {({ submitForm, isSubmitting, errors, touched }: any) => (

@@ -18,6 +18,8 @@
   "buttonOkModalDialogInvite": "Send",
   "messageOkModalDialogInvite": "User created successfully",
   "messageErrorModalDialogInvite": "User already exists",
+  "createdErrorUser": "Error creating user",
+  "welcomeErrorUser": "User created but email not sent",
   "buttonCancelModalDialogInvite": "Cancel",
   "inviteCollaboratorTitle": "Collaborator",
   "inviteAdministratorTitle": "Administrator"
