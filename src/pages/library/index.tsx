@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { useTheme, makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@/components/ui/SvgIcon";
+import Loading from "@/components/ui/Loading";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -27,6 +28,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function MyLibrary() {
   const theme = useTheme();
   const [currentDirectory, setCurrentDirectory] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { path } = router.query;
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -46,6 +48,7 @@ function MyLibrary() {
     (async () => {
       if (currentDirectory !== "") {
         try {
+          setIsLoading(true);
           const nxDirectories = await listDirectories(userRdx.user.id, currentDirectory);
           const newItems: LibraryItemInterface[] = [];
           if (nxDirectories?.data.length > 0) {
@@ -87,6 +90,8 @@ function MyLibrary() {
         } catch (e) {
           console.log(e);
         }
+
+        setIsLoading(false);
       }
     })();
   }, [userRdx, currentDirectory]);
@@ -115,13 +120,20 @@ function MyLibrary() {
           </IconButton>
         </Box>
       </Box>
-      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
-        <Box width="100%">
+      {isLoading && (
+        <FlexBox justifyContent={JustifyContentEnum.CENTER}>
+          <Loading />
+        </FlexBox>
+      )}
+      {!isLoading && (
+        <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
           <Box width="100%">
-            <ItemList items={items} />
+            <Box width="100%">
+              <ItemList items={items} />
+            </Box>
           </Box>
-        </Box>
-      </FlexBox>
+        </FlexBox>
+      )}
     </LayoutApp>
   );
 }
