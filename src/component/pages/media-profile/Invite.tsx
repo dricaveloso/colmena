@@ -15,7 +15,8 @@ import { NotificationStatusEnum, SelectVariantEnum } from "@/enums/index";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
-import { createUser, welcomeUser } from "@/services/ocs/users";
+import { createUser } from "@/services/ocs/users";
+import { listAllGroups } from "@/services/ocs/groups";
 import Backdrop from "@/components/ui/Backdrop";
 
 type Props = {
@@ -35,6 +36,18 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
   const notificationCtx = useContext(NotificationContext);
   const [showBackdrop, setShowBackdrop] = useState(false);
 
+  const { data: options } = listAllGroups();
+
+  const optionsAux = options.ocs.data.groups.filter((item: string) => item !== "admin").sort();
+  const optionsGroup = optionsAux.map((item) => ({
+    id: item,
+    value: item,
+  }));
+  optionsGroup.unshift({
+    id: "admin",
+    value: "Administrador",
+  });
+
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
     email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
@@ -46,17 +59,6 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
     email: "",
     group: "",
   };
-
-  const selectData = [
-    {
-      id: "colmena",
-      value: t("inviteCollaboratorTitle"),
-    },
-    {
-      id: "admin",
-      value: t("inviteAdministratorTitle"),
-    },
-  ];
 
   return (
     <div>
@@ -79,18 +81,8 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
               try {
                 const groups = [];
                 groups.push(group);
-                const result = await createUser(name, email, groups);
 
-                if (result.data.ocs.meta.statuscode !== 200) {
-                  throw new Error(t("createdErrorUser"));
-                }
-
-                console.log("uma vez");
-                const userId = result.data.ocs.data.id;
-                const result2 = await welcomeUser(userId);
-
-                if (result2.data.ocs.meta.statuscode !== 200)
-                  throw new Error(t("welcomeErrorUser"));
+                await createUser(name, email, groups);
 
                 setShowBackdrop(false);
                 handleCloseInviteForm();
@@ -99,12 +91,10 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   status: NotificationStatusEnum.SUCCESS,
                 });
               } catch (e) {
-                const message = e.message ? e.message : t("messageErrorModalDialogInvite");
-
                 setShowBackdrop(false);
                 handleCloseInviteForm();
                 notificationCtx.showNotification({
-                  message,
+                  message: t("messageErrorModalDialogInvite"),
                   status: NotificationStatusEnum.WARNING,
                 });
               }
@@ -150,7 +140,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                       <Select
                         label={t("placeholderPermission")}
                         variant={SelectVariantEnum.STANDARD}
-                        options={selectData}
+                        options={optionsGroup}
                         id="group"
                         {...field}
                       />

@@ -49,7 +49,7 @@ export function welcomeUser(userId: string | number): Promise<WelcomeUserInterfa
 export function createUser(
   displayName: string,
   email: string,
-  groups = ["users"],
+  groups: string[],
 ): Promise<CreateUserInterface> {
   return ocs().post(`/users`, {
     userid: email.split("@")[0],

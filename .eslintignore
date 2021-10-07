@@ -10,3 +10,4 @@ next-env.d.ts
 next-i18next.config.js
 prepare.js
 src/pages/api/auth/*
+public/js/prod_hotjar.js

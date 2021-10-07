@@ -26,6 +26,7 @@
     "placeholderEmail": "Email",
     "placeholderPassword": "Password",
     "submitLoginTitle": "Enter",
+    "submitSaveTitle": "Save",
     "invalidURLTitle": "Invalid URL",
     "successMessageFormSave": "Saved successfully",
     "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",

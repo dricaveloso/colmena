@@ -44,6 +44,23 @@ export interface AppPasswordInterface {
   };
 }
 
+export interface GroupsInfoInterface {
+  data: {
+    ocs: {
+      meta: {
+        status: string;
+        statuscode: number;
+        message: string;
+      };
+      data: {
+        groups: string[];
+      };
+    };
+  };
+  error: any;
+  mutate: (data?: any, shouldRevalidate?: boolean | undefined) => Promise<any>;
+}
+
 export interface UserInfoInterface {
   data: {
     ocs: {

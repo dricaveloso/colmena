@@ -5,7 +5,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { v4 as uuid } from "uuid";
 import { SelectVariantProps, SelectOptionItem } from "@/types/index";
-import { SelectVariantEnum } from "@/enums/index";
+import { SelectVariantEnum, AlignItemsEnum, JustifyContentEnum } from "@/enums/index";
+import Image from "next/image";
+import FlexBox from "@/components/ui/FlexBox";
 
 type Props = {
   id: string | undefined;
@@ -25,6 +27,13 @@ function Slt({
   handleChange,
   ...props
 }: Props) {
+  if (options.length === 0)
+    return (
+      <FlexBox justifyContent={JustifyContentEnum.CENTER} alignItems={AlignItemsEnum.CENTER}>
+        <Image src="/images/loader.gif" width={40} height={40} />
+      </FlexBox>
+    );
+
   return (
     <FormControl variant={variant} style={{ width: "100%" }}>
       <InputLabel id={id}>{label}</InputLabel>

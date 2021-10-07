@@ -81,6 +81,7 @@ function Recording() {
   return (
     <LayoutApp title={t("title")} back>
       <FlexBox justifyContent={JustifyContentEnum.CENTER} alignItems={AlignItemsEnum.CENTER}>
+        {/* eslint-disable-next-line react/jsx-no-bind */}
         <AudioRecorder onStopRecording={onStopRecording} />
         <Divider marginBottom={25} />
         <Timer />

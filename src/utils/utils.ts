@@ -1,5 +1,9 @@
 import { UserInvitationInterface } from "@/interfaces/index";
 
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const isValidUrl = (url: string) => {
   try {
     // eslint-disable-next-line no-new

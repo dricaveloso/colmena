@@ -4,8 +4,11 @@ import { ServerStyleSheets } from "@material-ui/core/styles";
 import theme from "@/styles/theme";
 import CONSTANTS from "@/constants/index";
 
+const prod = process.env.NODE_ENV === "production";
+
 export default class MyDocument extends Document {
   render() {
+    const url = prod ? "/js/prod_hotjar.js" : "/js/prod_hotjar.js";
     return (
       <Html lang="en">
         <Head>
@@ -51,6 +54,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap"
             rel="stylesheet"
           />
+          <script src={url}></script>
         </Head>
         <body>
           <Main />
