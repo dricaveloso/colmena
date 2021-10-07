@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { NotificationStatusProps, NXTagsProps } from "@/types/index";
+import { NotificationStatusProps, NXTagsProps, Environment } from "@/types/index";
 
 export interface I18nInterface {
   locale: string;
@@ -66,14 +66,6 @@ export interface LibraryItemWebDavInterface {
   lastmod?: string;
   mime?: string;
 }
-export interface LibraryItemInterface {
-  id: number;
-  title: string;
-  subtitle?: string;
-  img?: string;
-  url?: string;
-}
-
 export interface UserInvitationInterface {
   username: string;
   name?: string;
@@ -90,4 +82,15 @@ export interface UserInvitationInterface {
   };
   iat: number;
   exp: number;
+}
+export interface LibraryItemInterface {
+  id: string;
+  filename?: string;
+  basename?: string;
+  type?: string;
+  tags?: NXTagsProps[];
+  arrayBufferBlob?: ArrayBuffer;
+  updatedAt?: Date;
+  createdAt?: Date;
+  environment: Environment;
 }

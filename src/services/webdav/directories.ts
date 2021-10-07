@@ -4,9 +4,11 @@ import { FileStat, ResponseDataDetailed } from "webdav";
 // ver se não tem 404
 export function listDirectories(
   userId: string | number,
+  path?: string,
 ): Promise<Array<FileStat> | ResponseDataDetailed<Array<FileStat>>> {
-  return webdav().getDirectoryContents(`${userId}/`, { details: true });
+  return webdav().getDirectoryContents(`${userId}/${path}`, { details: true });
 }
+
 export function existDirectory(userId: string | number, remotePath: string) {
   try {
     return webdav().exists(`${userId}/${remotePath}`);

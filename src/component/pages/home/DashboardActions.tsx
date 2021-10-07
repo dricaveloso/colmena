@@ -5,7 +5,7 @@ import MediaAvatar from "@/components/ui/Avatar";
 import GreetingMessage from "@/components/pages/home/GreetingMessage";
 import TabPrimaryCategoryHomeList from "@/components/pages/home/TabPrimaryCategoryHomeList";
 import Divider from "@/components/ui/Divider";
-import { TextVariantEnum } from "@/enums/index";
+import { TextVariantEnum, JustifyContentEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";

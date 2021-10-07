@@ -16,6 +16,7 @@ import {
   JustifyContentEnum,
   FlexDirectionEnum,
   TextfieldVariantEnum,
+  EnvironmentEnum,
 } from "@/enums/index";
 
 export type PropsUserSelector = {
@@ -207,5 +208,9 @@ export type AllIconProps =
   | "contract"
   | "info"
   | "panal"
-  | "gradient-panal"
-  | "logout";
+  | "gradient_panal"
+  | "logout"
+  | "grid"
+  | "settings_adjust";
+
+export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;

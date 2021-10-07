@@ -124,3 +124,8 @@ export enum TextfieldVariantEnum {
   OUTLINED = "outlined",
   TEXT = "text",
 }
+
+export enum EnvironmentEnum {
+  LOCAL = "local",
+  REMOTE = "remote",
+}

@@ -79,7 +79,7 @@ function AppTab({ page }: Props) {
         </Grid>
         <Grid item xs={2}>
           <IconButton
-            icon="gradient-panal"
+            icon="gradient_panal"
             fontSizeIcon="medium"
             url="/home"
             color={theme.palette.primary.main}
