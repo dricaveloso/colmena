@@ -7104,7 +7104,7 @@ react-fast-compare@^2.0.1:
 
 react-file-icon@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.npmjs.org/react-file-icon/-/react-file-icon-1.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-file-icon/-/react-file-icon-1.1.0.tgz#4abbdde6f005d6833683126bf934c854c1dc6ed4"
   integrity sha512-jYf+wrrdngnXal8UbgQMEsjJ2lshzAC2/gIBbPh1ui68rLe4P215cshqkur4IK+FTPNWUGbm0yuYwpYSSJUksg==
   dependencies:
     lodash.uniqueid "^4.0.1"

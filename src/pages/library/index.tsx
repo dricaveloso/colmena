@@ -102,7 +102,6 @@ function MyLibrary() {
       <Box
         bgcolor="#F9F9F9"
         color="text.primary"
-        padding={2}
         justifyContent={JustifyContentEnum.SPACEBETWEEN}
         flexDirection="row"
         display="flex"
