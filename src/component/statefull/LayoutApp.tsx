@@ -48,7 +48,7 @@ function LayoutApp({
 
   return (
     <Container extraStyle={{ padding: 0 }}>
-      <FlexBox extraStyle={{ margin: 0 }}>
+      <FlexBox extraStyle={{ margin: 0, paddingBottom: 50 }}>
         <AppBar title={title} headerPosition={headerPosition} drawer={drawer} back={back} />
         <>{children}</>
         <FooterApp />

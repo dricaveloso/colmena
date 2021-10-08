@@ -3,7 +3,12 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
-import { I18nInterface, LibraryItemInterface, RecordingInterface } from "@/interfaces/index";
+import {
+  BreadcrumbItemInterface,
+  I18nInterface,
+  LibraryItemInterface,
+  RecordingInterface,
+} from "@/interfaces/index";
 import { listDirectories } from "@/services/webdav/directories";
 import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
@@ -18,6 +23,10 @@ import { useTheme, makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@/components/ui/SvgIcon";
 import Loading from "@/components/ui/Loading";
+import { getExtensionFilename, createBreadcrumb } from "@/utils/utils";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+import Link from "@material-ui/core/Link";
+import Button from "@material-ui/core/Button";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -28,6 +37,9 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function MyLibrary() {
   const theme = useTheme();
   const [currentDirectory, setCurrentDirectory] = useState("");
+  const [breadcrumb, setBreadcrumb] = useState<Array<BreadcrumbItemInterface>>(
+    [] as Array<BreadcrumbItemInterface>,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { path } = router.query;
@@ -37,6 +49,8 @@ function MyLibrary() {
   );
 
   useEffect(() => {
+    setBreadcrumb(createBreadcrumb(path));
+
     if (path) {
       setCurrentDirectory(path.join("/"));
     } else {
@@ -61,6 +75,7 @@ function MyLibrary() {
                   filename,
                   type: directory.type,
                   environment: EnvironmentEnum.REMOTE,
+                  extension: getExtensionFilename(filename),
                 };
 
                 newItems.push(item);
@@ -77,6 +92,7 @@ function MyLibrary() {
                   id: file.id,
                   type: "audio",
                   environment: EnvironmentEnum.LOCAL,
+                  extension: "ogg",
                 };
 
                 newItems.push(item);
@@ -107,8 +123,26 @@ function MyLibrary() {
         display="flex"
         width="100%"
       >
-        <Box flex={1} textAlign="left" alignSelf="center">
-          Agregado Reciente
+        <Box flex={1} textAlign="left" alignSelf="center" p={1}>
+          <Breadcrumbs
+            aria-label="breadcrumb"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              flexWrap: "nowrap",
+              overflowY: "hidden",
+            }}
+          >
+            <IconButton color="primary" component="span">
+              <SvgIcon icon="library" htmlColor="#292929" fontSize="small" />
+            </IconButton>
+            {breadcrumb.map((dir) => (
+              <Button key={dir.path} color="inherit" onClick={() => router.push(dir.path)}>
+                {dir.description}
+              </Button>
+            ))}
+          </Breadcrumbs>
         </Box>
         <Box flexDirection="row" display="flex">
           <IconButton color="primary" component="span">

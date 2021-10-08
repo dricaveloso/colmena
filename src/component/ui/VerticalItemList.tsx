@@ -7,6 +7,8 @@ import Image from "next/image";
 import { LibraryItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
+import { FileIcon } from "react-file-icon";
+import theme from "@/styles/theme";
 
 const VerticalItemList = ({
   id,
@@ -17,21 +19,40 @@ const VerticalItemList = ({
   tags,
   type,
   arrayBufferBlob,
+  image,
+  extension,
 }: LibraryItemInterface) => {
   const router = useRouter();
 
   return (
     <>
-      {/* {img !== "" && (
-      <ListItemAvatar>
-        <Image alt={`image-${basename}-${id}`} width={60} height={60} src={img} />
+      <ListItemAvatar
+        onClick={() =>
+          type === "directory" &&
+          router.query.path !== filename &&
+          router.push(`/library/${filename}`)
+        }
+      >
+        {image !== undefined && (
+          <Image alt={`image-${basename}-${id}`} width={60} height={60} src={image} />
+        )}
+        {image === undefined && (
+          <Box width={60} px={1}>
+            <FileIcon
+              extension={extension}
+              foldColor={theme.palette.primary.dark}
+              glyphColor="#fff"
+              color={theme.palette.primary.main}
+              labelColor={theme.palette.primary.dark}
+            />
+          </Box>
+        )}
       </ListItemAvatar>
-    )} */}
       <ListItemText
         data-testid="title"
         style={{ marginLeft: 5 }}
         primary={basename}
-        secondary={filename}
+        secondary={type}
         onClick={() =>
           type === "directory" &&
           router.query.path !== filename &&

@@ -87,10 +87,16 @@ export interface LibraryItemInterface {
   id: string;
   filename?: string;
   basename?: string;
+  extension?: string | undefined;
   type?: string;
   tags?: NXTagsProps[];
   arrayBufferBlob?: ArrayBuffer;
   updatedAt?: Date;
   createdAt?: Date;
   environment: Environment;
+  image?: string;
+}
+export interface BreadcrumbItemInterface {
+  description: string;
+  path: string;
 }
