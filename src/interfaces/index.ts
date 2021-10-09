@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { NotificationStatusProps, NXTagsProps, Environment } from "@/types/index";
+import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
 
 export interface I18nInterface {
   locale: string;
@@ -97,6 +97,8 @@ export interface LibraryItemInterface {
   image?: string;
 }
 export interface BreadcrumbItemInterface {
-  description: string;
+  description: string | undefined;
   path: string;
+  isCurrent: boolean;
+  icon: AllIconProps | undefined;
 }

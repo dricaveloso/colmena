@@ -27,7 +27,7 @@ function SvgIconAux({
     setPath(element?.path());
     setViewBox(element?.viewBox);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [icon]);
+  }, [icon, htmlColor]);
 
   function getIconsByName(icon: string) {
     const items = new Map();

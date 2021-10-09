@@ -1,4 +1,6 @@
+import TermsOfUse from "@/components/statefull/TermsOfUse";
 import { UserInvitationInterface, BreadcrumbItemInterface } from "@/interfaces/index";
+import React from "react";
 
 export const isValidUrl = (url: string) => {
   try {
@@ -79,7 +81,7 @@ export function getExtensionFilename(filename: string) {
   return filename.substring(filename.lastIndexOf(".") + 1, filename.length);
 }
 
-export function createBreadcrumb(
+export function generateBreadcrumb(
   path: string | Array<string> | string[] | undefined,
 ): Array<BreadcrumbItemInterface> {
   const directories: BreadcrumbItemInterface[] = [];
@@ -94,6 +96,7 @@ export function createBreadcrumb(
     const directory: BreadcrumbItemInterface = {
       description: path,
       path: breadcrumb,
+      isCurrent: true,
     };
 
     directories.push(directory);
@@ -101,15 +104,24 @@ export function createBreadcrumb(
     return directories;
   }
 
-  path.forEach((dir: string) => {
-    breadcrumb += `/${dir}`;
-    const directory: BreadcrumbItemInterface = {
-      description: dir,
-      path: breadcrumb,
-    };
+  if (path) {
+    path.forEach((dir: string, index) => {
+      breadcrumb += `/${dir}`;
 
-    directories.push(directory);
-  });
+      const directory: BreadcrumbItemInterface = {
+        description: dir,
+        path: breadcrumb,
+        isCurrent: index === path?.length - 1,
+      };
+
+      directories.push(directory);
+    });
+  }
 
   return directories;
+}
+
+export function moveScrollToRight(element: React.RefObject<HTMLDivElement>) {
+  const width = element?.current.scrollWidth;
+  element?.current?.scrollTo(width, 0);
 }
