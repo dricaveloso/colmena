@@ -83,16 +83,17 @@ export function getExtensionFilename(filename: string) {
 
 export function generateBreadcrumb(
   path: string | Array<string> | string[] | undefined,
+  initialPath: string,
 ): Array<BreadcrumbItemInterface> {
   const directories: BreadcrumbItemInterface[] = [];
-  let breadcrumb = "";
+  let breadcrumb = initialPath;
 
   if (empty(path)) {
     return directories;
   }
 
   if (typeof path === "string") {
-    breadcrumb += `/${path}`;
+    breadcrumb += `/${initialPath}/${path}`;
     const directory: BreadcrumbItemInterface = {
       description: path,
       path: breadcrumb,
@@ -121,7 +122,9 @@ export function generateBreadcrumb(
   return directories;
 }
 
-export function moveScrollToRight(element: React.RefObject<HTMLDivElement>) {
-  const width = element?.current.scrollWidth;
-  element?.current?.scrollTo(width, 0);
+export function moveScrollToRight(element: any) {
+  if (element !== null) {
+    const width = element.current.scrollWidth;
+    element.current.scrollTo(width, 0);
+  }
 }

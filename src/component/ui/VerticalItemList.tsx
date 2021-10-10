@@ -63,10 +63,10 @@ const VerticalItemList = ({
             width={60}
             height={60}
             src={image}
-            onClick={() => handleClick}
+            onClick={() => handleClick()}
           />
         ) : (
-          <Box width={60} px={1} onClick={() => handleClick}>
+          <Box width={60} px={1} onClick={() => handleClick()}>
             <FileIcon
               extension={extension}
               foldColor={theme.palette.primary.dark}
@@ -82,7 +82,7 @@ const VerticalItemList = ({
         className={classes.description}
         primary={basename}
         secondary={type}
-        onClick={() => handleClick}
+        onClick={() => handleClick()}
       />
       <Box className={classes.options}>
         <IconButton

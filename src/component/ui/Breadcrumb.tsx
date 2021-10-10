@@ -59,10 +59,10 @@ function Breadcrumb({ breadcrumbs }: Props) {
               color="primary"
               component="span"
               disabled={dir.isCurrent}
-              onClick={() => router.push("/library")}
+              onClick={() => router.push(dir.path)}
             >
               <SvgIcon
-                icon="library"
+                icon={dir.icon}
                 htmlColor={dir.isCurrent ? "#999" : "#292929"}
                 fontSize="small"
               />

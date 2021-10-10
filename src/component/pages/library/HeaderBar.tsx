@@ -36,13 +36,15 @@ function HeaderBar({ path }: Props) {
   );
 
   useEffect(() => {
-    const generatedBreadcrumb = generateBreadcrumb(path);
+    const generatedBreadcrumb = generateBreadcrumb(path, "/library");
     const firstMenu: BreadcrumbItemInterface = {
       icon: "library",
       isCurrent: generatedBreadcrumb.length === 0,
       description: generatedBreadcrumb.length === 0 ? t("title") : undefined,
-      path: "library",
+      path: "/library",
     };
+
+    console.log(generatedBreadcrumb);
     setBreadcrumb([firstMenu, ...generatedBreadcrumb]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
