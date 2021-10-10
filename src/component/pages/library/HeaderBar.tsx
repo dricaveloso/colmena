@@ -44,7 +44,6 @@ function HeaderBar({ path }: Props) {
       path: "/library",
     };
 
-    console.log(generatedBreadcrumb);
     setBreadcrumb([firstMenu, ...generatedBreadcrumb]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
