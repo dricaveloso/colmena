@@ -48,19 +48,25 @@ const VerticalItemList = ({
   const classes = useStyles();
   const router = useRouter();
 
+  const handleClick = () => {
+    if (type === "directory" && router.query.path !== filename) {
+      router.push(`/library/${filename}`);
+    }
+  };
+
   return (
     <Box className={classes.card}>
-      <ListItemAvatar
-        onClick={() =>
-          type === "directory" &&
-          router.query.path !== filename &&
-          router.push(`/library/${filename}`)
-        }
-      >
+      <ListItemAvatar>
         {image !== undefined ? (
-          <Image alt={`image-${basename}-${id}`} width={60} height={60} src={image} />
+          <Image
+            alt={`image-${basename}-${id}`}
+            width={60}
+            height={60}
+            src={image}
+            onClick={() => handleClick}
+          />
         ) : (
-          <Box width={60} px={1}>
+          <Box width={60} px={1} onClick={() => handleClick}>
             <FileIcon
               extension={extension}
               foldColor={theme.palette.primary.dark}
@@ -76,11 +82,7 @@ const VerticalItemList = ({
         className={classes.description}
         primary={basename}
         secondary={type}
-        onClick={() =>
-          type === "directory" &&
-          router.query.path !== filename &&
-          router.push(`/library/${filename}`)
-        }
+        onClick={() => handleClick}
       />
       <Box className={classes.options}>
         <IconButton

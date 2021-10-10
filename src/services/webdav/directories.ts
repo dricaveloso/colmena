@@ -2,10 +2,7 @@ import webdav from "@/services/webdav";
 import { FileStat, ResponseDataDetailed } from "webdav";
 
 // ver se não tem 404
-export function listDirectories(
-  userId: string | number,
-  path?: string,
-): Promise<Array<FileStat> | ResponseDataDetailed<Array<FileStat>>> {
+export function listDirectories(userId: string | number, path?: string): any {
   return webdav().getDirectoryContents(`${userId}/${path}`, { details: true });
 }
 

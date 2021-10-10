@@ -55,6 +55,7 @@ function Breadcrumb({ breadcrumbs }: Props) {
         if (dir.icon !== undefined) {
           return (
             <IconButton
+              key={dir.path}
               color="primary"
               component="span"
               disabled={dir.isCurrent}

@@ -55,7 +55,7 @@ export default function TabCategoryList() {
     setValue(index);
   };
 
-  const data: Array<LibraryItemInterface> = [
+  const data: LibraryItemInterface[] = [
     {
       id: "1",
       basename: "Title Show",

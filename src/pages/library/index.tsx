@@ -34,7 +34,7 @@ function MyLibrary() {
   );
 
   useEffect(() => {
-    if (path) {
+    if (typeof path === "object") {
       setCurrentDirectory(path.join("/"));
     } else {
       setCurrentDirectory("/");
@@ -49,7 +49,7 @@ function MyLibrary() {
           const nxDirectories = await listDirectories(userRdx.user.id, currentDirectory);
           const newItems: LibraryItemInterface[] = [];
           if (nxDirectories?.data.length > 0) {
-            nxDirectories?.data.forEach((directory: FileStat) => {
+            nxDirectories.data.forEach((directory: FileStat) => {
               const filename = directory.filename.replace(/^.+?(\/|$)/, "");
               if (filename !== "" && filename !== currentDirectory) {
                 const item: LibraryItemInterface = {
@@ -83,7 +83,17 @@ function MyLibrary() {
             }
           }
 
-          newItems.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1));
+          newItems.sort((a, b) => {
+            if (
+              a.createdAt !== undefined &&
+              b.createdAt !== undefined &&
+              a.createdAt > b.createdAt
+            ) {
+              return 1;
+            }
+
+            return -1;
+          });
 
           setItems(newItems);
         } catch (e) {

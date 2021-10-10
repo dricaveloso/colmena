@@ -8,7 +8,6 @@ import { generateBreadcrumb } from "@/utils/utils";
 import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import theme from "@/styles/theme";
-import { useRouter } from "next/router";
 
 type Props = {
   path: string | string[] | undefined;
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 
 function HeaderBar({ path }: Props) {
   const { t } = useTranslation("library");
-  const router = useRouter();
   const classes = useStyles();
   const [breadcrumb, setBreadcrumb] = useState<Array<BreadcrumbItemInterface>>(
     [] as Array<BreadcrumbItemInterface>,

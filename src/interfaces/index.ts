@@ -100,5 +100,5 @@ export interface BreadcrumbItemInterface {
   description: string | undefined;
   path: string;
   isCurrent: boolean;
-  icon: AllIconProps | undefined;
+  icon?: AllIconProps | undefined;
 }
