@@ -129,3 +129,8 @@ export enum EnvironmentEnum {
   LOCAL = "local",
   REMOTE = "remote",
 }
+
+export enum ListTypeEnum {
+  LIST = "list",
+  GRID = "grid",
+}

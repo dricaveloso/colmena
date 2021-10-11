@@ -211,6 +211,7 @@ export type AllIconProps =
   | "gradient_panal"
   | "logout"
   | "grid"
-  | "settings_adjust";
+  | "settings_adjust"
+  | "checklist";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;

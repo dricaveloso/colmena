@@ -15,22 +15,38 @@ import { ListTypeEnum } from "@/enums/*";
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     flexWrap: "nowrap",
     width: "100%",
+    marginBottom: 8,
+    backgroundColor: "#fff",
+    padding: 8,
+    position: "relative",
   },
   description: {
     flexDirection: "column",
     flexGrow: 1,
-    alignSelf: "stretch",
+    alignSelf: "center",
     overflow: "hidden",
     marginLeft: 5,
+    textAlign: "center",
   },
   options: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "nowrap",
+    alignSelf: "flex-end",
+    padding: 4,
+  },
+  topOptions: {
+    position: "absolute",
+    right: 0,
+  },
+  bottomOptions: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
   },
 }));
 
@@ -57,6 +73,13 @@ const VerticalItemList = ({
 
   return (
     <Box className={classes.card}>
+      <Box className={[classes.options, classes.topOptions]}>
+        <IconButton
+          icon="more_vertical"
+          style={{ padding: 0, margin: 0, minWidth: 30 }}
+          fontSizeIcon="small"
+        />
+      </Box>
       <ListItemAvatar>
         {image !== undefined ? (
           <Image
@@ -85,14 +108,9 @@ const VerticalItemList = ({
         secondary={type}
         onClick={() => handleClick()}
       />
-      <Box className={classes.options}>
+      <Box className={[classes.options, classes.bottomOptions]}>
         <IconButton
           icon="share"
-          style={{ padding: 0, margin: 0, minWidth: 30 }}
-          fontSizeIcon="small"
-        />
-        <IconButton
-          icon="more_vertical"
           style={{ padding: 0, margin: 0, minWidth: 30 }}
           fontSizeIcon="small"
         />

@@ -8,7 +8,7 @@ import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
 import { FileStat } from "webdav";
 import { getAllAudios } from "@/store/idb/models/audios";
-import { EnvironmentEnum, JustifyContentEnum } from "@/enums/index";
+import { EnvironmentEnum, JustifyContentEnum, ListTypeEnum } from "@/enums/index";
 import FlexBox from "@/components/ui/FlexBox";
 import { Box } from "@material-ui/core";
 import ItemList from "@/components/pages/library/ItemList";
@@ -26,6 +26,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function MyLibrary() {
   const [currentDirectory, setCurrentDirectory] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [listType, setListType] = useState(ListTypeEnum.LIST);
   const router = useRouter();
   const { path } = router.query;
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -107,7 +108,7 @@ function MyLibrary() {
 
   return (
     <LayoutApp title="Library">
-      <HeaderBar path={path} />
+      <HeaderBar path={path} listType={listType} setListType={setListType} />
       {isLoading && (
         <FlexBox justifyContent={JustifyContentEnum.CENTER}>
           <Loading />
@@ -117,7 +118,7 @@ function MyLibrary() {
         <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
           <Box width="100%">
             <Box width="100%">
-              <ItemList items={items} />
+              <ItemList items={items} type={listType} />
             </Box>
           </Box>
         </FlexBox>
