@@ -24,14 +24,13 @@ export default function VerticalList({ title = "", data }: Props) {
       )}
       {/* <List>
         {data
-          // ?.filter((item) => item.type !== "directory")
+          ?.filter((item) => item.type !== "directory")
           ?.map((item) => (
             <ListItem key={uuid()} divider disableGutters>
               <VerticalItemListWebDav {...item} />
             </ListItem>
           ))}
-      </List>
-      */}
+      </List> */}
     </div>
   );
 }

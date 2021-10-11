@@ -7,6 +7,13 @@ export function listDirectories(
 ): Promise<Array<FileStat> | ResponseDataDetailed<Array<FileStat>>> {
   return webdav().getDirectoryContents(`${userId}/`, { details: true });
 }
+export function existDirectory(userId: string | number, remotePath: string) {
+  try {
+    return webdav().exists(`${userId}/${remotePath}`);
+  } catch (err) {
+    console.log(err.response);
+  }
+}
 
 export function createDirectory(userId: string | number, dirPath: string) {
   try {
@@ -25,12 +32,5 @@ export function deleteDirectory(userId: string | number, filename: string) {
   } catch (err) {
     console.log(err);
     console.log("aqui mais um ", err);
-  }
-}
-export function existDirectory(userId: string | number, remotePath: string) {
-  try {
-    return webdav().exists(`${userId}/${remotePath}`);
-  } catch (err) {
-    console.log(err.response);
   }
 }

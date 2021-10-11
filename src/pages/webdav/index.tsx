@@ -20,7 +20,6 @@ export default function WebDav() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [data, setData] = useState([]);
   const directory = "";
-
   async function CreateDirectory() {
     const exist = await existDirectory(userRdx.user.id, "test2Folder");
     console.log("exist directory: ", exist);
@@ -39,7 +38,7 @@ export default function WebDav() {
       // console.log(result);
       console.log(listD);
 
-      // setData(listD);
+      // setData(listD.data);
     } catch (e) {
       console.log("error", e);
     }
