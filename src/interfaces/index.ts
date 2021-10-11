@@ -60,14 +60,14 @@ export interface GenericHorizontalItemInterface {
   url: string;
 }
 
-export interface LibraryItemWebDavInterface {
-  basename: string;
-  filename: string;
-  type?: string;
-  size?: number;
-  lastmod?: string;
-  mime?: string;
-}
+// export interface LibraryItemWebDavInterface {
+//   basename: string;
+//   filename: string;
+//   type?: string;
+//   size?: number;
+//   lastmod?: string;
+//   mime?: string;
+// }
 export interface LibraryItemInterface {
   id: number;
   title: string;
