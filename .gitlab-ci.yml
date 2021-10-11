@@ -3,9 +3,9 @@ variables:
   CONTAINER_RELEASE_IMAGE: http://localhost:5000/maia/frontend:$CI_BUILD_REF_NAME
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
-#stages:
+stages:
   #  - prepare
-  - build
+- build
  # - deploy
   #- livetest
   # - cleanup
@@ -29,8 +29,8 @@ configure cluster:
  tags: 
   - k8
  stage: deploy
-  script: echo $KUBE_NAMESPACE
-  environment:
+ script: echo $KUBE_NAMESPACE
+ environment:
     name: production
 
 #deploy_dev:
