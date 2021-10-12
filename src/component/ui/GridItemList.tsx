@@ -2,7 +2,6 @@ import React from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Image from "next/image";
 import { LibraryItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
@@ -10,7 +9,6 @@ import { useRouter } from "next/router";
 import { FileIcon } from "react-file-icon";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
-import { ListTypeEnum } from "@/enums/*";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -19,10 +17,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     flexWrap: "nowrap",
     width: "100%",
-    marginBottom: 8,
     backgroundColor: "#fff",
-    padding: 8,
+    padding: "16px 8px",
     position: "relative",
+    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.18)",
+    borderRadius: 4,
   },
   description: {
     flexDirection: "column",
@@ -31,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     marginLeft: 5,
     textAlign: "center",
+    overflowWrap: "anywhere",
   },
   options: {
     display: "flex",
@@ -41,12 +41,13 @@ const useStyles = makeStyles((theme) => ({
   },
   topOptions: {
     position: "absolute",
-    right: 0,
+    right: 4,
+    top: 8,
   },
   bottomOptions: {
     position: "absolute",
-    right: 0,
-    bottom: 0,
+    right: 4,
+    bottom: 8,
   },
 }));
 
@@ -73,9 +74,10 @@ const VerticalItemList = ({
 
   return (
     <Box className={classes.card}>
-      <Box className={[classes.options, classes.topOptions]}>
+      <Box className={[classes.options, classes.topOptions].join(" ")}>
         <IconButton
           icon="more_vertical"
+          color="#9A9A9A"
           style={{ padding: 0, margin: 0, minWidth: 30 }}
           fontSizeIcon="small"
         />
@@ -108,9 +110,10 @@ const VerticalItemList = ({
         secondary={type}
         onClick={() => handleClick()}
       />
-      <Box className={[classes.options, classes.bottomOptions]}>
+      <Box className={[classes.options, classes.bottomOptions].join(" ")}>
         <IconButton
           icon="share"
+          color="#9A9A9A"
           style={{ padding: 0, margin: 0, minWidth: 30 }}
           fontSizeIcon="small"
         />

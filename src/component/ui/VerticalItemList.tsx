@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     flexWrap: "nowrap",
     width: "100%",
+    background: "#fff",
+    padding: 8,
   },
   description: {
     flexDirection: "column",
@@ -88,11 +90,13 @@ const VerticalItemList = ({
       <Box className={classes.options}>
         <IconButton
           icon="share"
+          color="#9A9A9A"
           style={{ padding: 0, margin: 0, minWidth: 30 }}
           fontSizeIcon="small"
         />
         <IconButton
           icon="more_vertical"
+          color="#9A9A9A"
           style={{ padding: 0, margin: 0, minWidth: 30 }}
           fontSizeIcon="small"
         />

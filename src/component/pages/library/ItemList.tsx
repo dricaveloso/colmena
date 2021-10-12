@@ -12,14 +12,15 @@ import Divider from "@material-ui/core/Divider";
 const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "left",
+    alignItems: "stretch",
   },
   gridList: {
     width: "50%",
     display: "inline-flex",
+    padding: 4,
   },
-  divider: {
-    display: "block",
-    width: 8,
+  verticalList: {
+    padding: 1,
   },
 }));
 
@@ -37,14 +38,13 @@ function ItemList({ items = [], type = ListTypeEnum.LIST }: Props) {
         items.map((item: LibraryItemInterface) => (
           <>
             {type === ListTypeEnum.LIST ? (
-              <ListItem key={uuid()} disableGutters>
+              <ListItem key={uuid()} disableGutters className={classes.verticalList}>
                 <VerticalItemList {...item} />
               </ListItem>
             ) : (
               <>
                 <ListItem key={uuid()} disableGutters className={classes.gridList}>
                   <GridItemList {...item} />
-                  <Box className={classes.divider} />
                 </ListItem>
               </>
             )}
