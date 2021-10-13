@@ -10,12 +10,15 @@ import { FileStat } from "webdav";
 import { getAllAudios } from "@/store/idb/models/audios";
 import { EnvironmentEnum, JustifyContentEnum, ListTypeEnum } from "@/enums/index";
 import FlexBox from "@/components/ui/FlexBox";
-import { Box } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import ItemList from "@/components/pages/library/ItemList";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { useRouter } from "next/router";
 import Loading from "@/components/ui/Loading";
 import { getExtensionFilename } from "@/utils/utils";
+import Image from "next/image";
+import notFoundImage from "../../../public/images/404 Error.png";
+import { useTranslation } from "react-i18next";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -26,6 +29,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function MyLibrary() {
   const [currentDirectory, setCurrentDirectory] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [notFoundDir, setNotFoundDir] = useState(false);
   const [listType, setListType] = useState(ListTypeEnum.LIST);
   const router = useRouter();
   const { path } = router.query;
@@ -33,6 +37,7 @@ function MyLibrary() {
   const [items, setItems] = useState<Array<LibraryItemInterface>>(
     [] as Array<LibraryItemInterface>,
   );
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     if (typeof path === "object") {
@@ -98,7 +103,9 @@ function MyLibrary() {
 
           setItems(newItems);
         } catch (e) {
-          console.log(e);
+          if (e.response.status === 404) {
+            setNotFoundDir(true);
+          }
         }
 
         setIsLoading(false);
@@ -108,21 +115,27 @@ function MyLibrary() {
 
   return (
     <LayoutApp title="Library">
-      <HeaderBar path={path} listType={listType} setListType={setListType} />
-      {isLoading && (
-        <FlexBox justifyContent={JustifyContentEnum.CENTER}>
-          <Loading />
-        </FlexBox>
-      )}
-      {!isLoading && (
-        <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
+      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0 }}>
+        <HeaderBar path={path} listType={listType} setListType={setListType} />
+        {isLoading && (
+          <FlexBox justifyContent={JustifyContentEnum.CENTER}>
+            <Loading />
+          </FlexBox>
+        )}
+        {!isLoading && !notFoundDir && (
           <Box width="100%">
-            <Box width="100%">
-              <ItemList items={items} type={listType} />
-            </Box>
+            <ItemList items={items} type={listType} />
           </Box>
-        </FlexBox>
-      )}
+        )}
+        {notFoundDir && (
+          <>
+            <Image alt="404 not found" src={notFoundImage} width={500} height={500} />
+            <Button color="primary" variant="outlined" onClick={() => router.back()}>
+              {t("form.backButton")}
+            </Button>
+          </>
+        )}
+      </FlexBox>
     </LayoutApp>
   );
 }

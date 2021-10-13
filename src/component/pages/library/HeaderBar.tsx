@@ -10,6 +10,7 @@ import Breadcrumb from "@/components/ui/Breadcrumb";
 import theme from "@/styles/theme";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { AllIconProps } from "@/types/index";
 
 type Props = {
   path: string | string[] | undefined;
@@ -32,11 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const defineIconListType = (type) => (type === ListTypeEnum.LIST ? "grid" : "checklist");
+const defineIconListType = (type: string) => (type === ListTypeEnum.LIST ? "grid" : "checklist");
 
 function HeaderBar({ path, listType, setListType }: Props) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [iconListType, setIconListType] = useState(defineIconListType(listType));
+  const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
   const { t } = useTranslation("library");
   const classes = useStyles();
   const [breadcrumb, setBreadcrumb] = useState<Array<BreadcrumbItemInterface>>(
@@ -56,7 +57,7 @@ function HeaderBar({ path, listType, setListType }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
 
-  const openFilterMenu = (event) => {
+  const openFilterMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 

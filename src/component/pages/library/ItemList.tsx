@@ -6,8 +6,8 @@ import ListItem from "@material-ui/core/ListItem";
 import { v4 as uuid } from "uuid";
 import List from "@material-ui/core/List";
 import { ListTypeEnum } from "@/enums/*";
-import { Box, makeStyles } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import { makeStyles } from "@material-ui/core";
+import Image from "next/image";
 
 const useStyles = makeStyles((theme) => ({
   list: {
