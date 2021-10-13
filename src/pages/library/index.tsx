@@ -99,7 +99,7 @@ function MyLibrary() {
             if (
               a.createdAt !== undefined &&
               b.createdAt !== undefined &&
-              a.createdAt > b.createdAt
+              a.createdAt < b.createdAt
             ) {
               return 1;
             }
