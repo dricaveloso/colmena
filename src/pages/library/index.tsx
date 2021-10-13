@@ -15,10 +15,11 @@ import ItemList from "@/components/pages/library/ItemList";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { useRouter } from "next/router";
 import Loading from "@/components/ui/Loading";
-import { getExtensionFilename } from "@/utils/utils";
+import { getExtensionFilename, dateDescription } from "@/utils/utils";
 import Image from "next/image";
 import notFoundImage from "../../../public/images/404 Error.png";
 import { useTranslation } from "react-i18next";
+import { parseISO } from "date-fns";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -57,6 +58,7 @@ function MyLibrary() {
           if (nxDirectories?.data.length > 0) {
             nxDirectories.data.forEach((directory: FileStat) => {
               const filename = directory.filename.replace(/^.+?(\/|$)/, "");
+              const date = new Date(directory.lastmod);
               if (filename !== "" && filename !== currentDirectory) {
                 const item: LibraryItemInterface = {
                   basename: directory.basename,
@@ -65,6 +67,8 @@ function MyLibrary() {
                   type: directory.type,
                   environment: EnvironmentEnum.REMOTE,
                   extension: getExtensionFilename(filename),
+                  createdAt: date,
+                  createdAtDescription: dateDescription(date),
                 };
 
                 newItems.push(item);
@@ -82,6 +86,8 @@ function MyLibrary() {
                   type: "audio",
                   environment: EnvironmentEnum.LOCAL,
                   extension: "ogg",
+                  createdAt: file.createdAt,
+                  createdAtDescription: dateDescription(file.createdAt),
                 };
 
                 newItems.push(item);

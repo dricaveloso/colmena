@@ -42,6 +42,7 @@ const VerticalItemList = ({
   filename,
   environment,
   createdAt,
+  createdAtDescription,
   tags,
   type,
   arrayBufferBlob,
@@ -84,7 +85,7 @@ const VerticalItemList = ({
         data-testid="title"
         className={classes.description}
         primary={basename}
-        secondary={type}
+        secondary={createdAtDescription}
         onClick={() => handleClick()}
       />
       <Box className={classes.options}>

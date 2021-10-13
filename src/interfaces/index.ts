@@ -93,6 +93,7 @@ export interface LibraryItemInterface {
   arrayBufferBlob?: ArrayBuffer;
   updatedAt?: Date;
   createdAt?: Date;
+  createdAtDescription?: string | undefined;
   environment: Environment;
   image?: string;
 }

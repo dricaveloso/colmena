@@ -1,6 +1,5 @@
-import TermsOfUse from "@/components/statefull/TermsOfUse";
 import { UserInvitationInterface, BreadcrumbItemInterface } from "@/interfaces/index";
-import React from "react";
+import { differenceInMinutes } from "date-fns";
 
 export const isValidUrl = (url: string) => {
   try {
@@ -127,4 +126,34 @@ export function moveScrollToRight(element: any) {
     const width = element.current.scrollWidth;
     element.current.scrollTo(width, 0);
   }
+}
+
+export function dateDescription(date: Date | undefined) {
+  if (date === undefined) {
+    return "";
+  }
+
+  const today = new Date();
+  const minutes = differenceInMinutes(today, date);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const years = Math.floor(days / 360);
+
+  if (years > 1) {
+    return `${years} ano(s)`;
+  }
+
+  if (days > 1) {
+    return `${days} dia(s)`;
+  }
+
+  if (hours > 1) {
+    return `${hours} hora(s)`;
+  }
+
+  if (minutes > 1) {
+    return `${minutes} minuto(s)`;
+  }
+
+  return "Agora";
 }
