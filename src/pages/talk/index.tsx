@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { PropsUserSelector } from "../../types";
-import listTalks from "@/services/talk/listAll";
+import { listAllTalk, listEspecificChat } from "@/services/talk/listAll";
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
 import LayoutApp from "@/components/statefull/LayoutApp";
@@ -18,12 +18,16 @@ export default function OCS() {
 
   async function ListAllT() {
     try {
-      const listT = await listTalks();
+      const listT = await listAllTalk();
 
       console.log(listT);
     } catch (e) {
       console.log("error", e);
     }
+  }
+  async function listOneChat() {
+    const listEspecif = await listEspecificChat("ou52b3hc");
+    console.log(listEspecif);
   }
 
   return (
@@ -34,6 +38,13 @@ export default function OCS() {
             <div>
               <button type="button" onClick={ListAllT}>
                 List All
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={listOneChat}>
+                List One
               </button>
             </div>
           </FlexBox>
