@@ -24,7 +24,6 @@ import FlexBox from "@/components/ui/FlexBox";
 
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  console.log(userRdx.user.id);
 
   const [data, setData] = useState([]);
   const directory = "";
