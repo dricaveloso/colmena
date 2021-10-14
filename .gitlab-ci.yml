@@ -5,8 +5,8 @@ variables:
 
 stages:
   #  - prepare
-- build
- # - deploy
+  - build
+  #- deploy
   #- livetest
   # - cleanup
 cache:
@@ -25,13 +25,13 @@ build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
-configure cluster:
- tags: 
-  - k8
- stage: deploy
- script: echo $KUBE_NAMESPACE
- environment:
-    name: production
+#configure cluster:
+ # tags: 
+  #  - k8
+  #stage: deploy
+  #script: echo $KUBE_NAMESPACE
+  #environment:
+   # name: production
 
 #deploy_dev:
 #  stage: deploy
