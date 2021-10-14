@@ -9,88 +9,36 @@ export function listAllUsers() {
   }
 }
 export function listOneUser(userId: string | number) {
-  try {
-    return ocs().get(`/users/${userId}`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
-  return true;
+  return ocs().get(`/users/${userId}`);
 }
 
 export function enableUser(userId: string | number) {
-  try {
-    ocs().put(`/users/${userId}/enable`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
-  return true;
+  ocs().put(`/users/${userId}/enable`);
 }
 
 export function disableUser(userId: string | number) {
-  try {
-    ocs().put(`/users/${userId}/disable`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
-  return true;
+  ocs().put(`/users/${userId}/disable`);
 }
 
 export function welcomeUser(userId: string | number) {
-  try {
-    ocs().post(`/users/${userId}/welcome`);
-    return true;
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
+  ocs().post(`/users/${userId}/welcome`);
 }
 
 export function createUser(userId: string | number, email: string) {
-  try {
-    ocs().post(`/users`, {
-      userid: `${userId}`,
-      email: `${email}`,
-    });
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
+  ocs().post(`/users`, {
+    userid: `${userId}`,
+    email: `${email}`,
+  });
 }
 export function deleteUser(userId: string | number) {
-  try {
-    ocs().delete(`/users/${userId}`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
+  ocs().delete(`/users/${userId}`);
 }
 
 export function resetPass(userId: string | number, password: string | number) {
-  try {
-    return ocs().put(`/users/${userId}`, {
-      password: `${password}`,
-    });
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
+  return ocs().put(`/users/${userId}`, {
+    password: `${password}`,
+  });
 }
 export function listGroupsUser(userId: string | number) {
-  try {
-    return ocs().get(`/users/${userId}/groups`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
+  return ocs().get(`/users/${userId}/groups`);
 }
