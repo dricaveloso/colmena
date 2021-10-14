@@ -10,9 +10,9 @@ stages:
   #- livetest
   # - cleanup
 cache:
-  paths:
-    - node_modules/
-    - out/
+ paths:
+  - node_modules/
+  - out/
 #prepare_all:
 #  stage: prepare
 #  script:
