@@ -14,7 +14,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: 60,
+    zIndex: 1200,
+    "& a.MuiButtonBase-root": {
+      width: "100%",
+    },
   },
   btnMore: {
     background: "linear-gradient(118.66deg, #534BAE 5.24%, #D53E7E 103.53%)!important",
@@ -51,7 +54,7 @@ function AppTab({ page }: Props) {
 
   return (
     <>
-      <Grid container spacing={3} className={classes.gridContainer}>
+      <Grid container className={classes.gridContainer}>
         <Grid item xs={2}>
           <IconButton
             icon="home"
