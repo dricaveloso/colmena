@@ -139,15 +139,15 @@ export function dateDescription(date: Date | undefined) {
   const days = Math.floor(hours / 24);
   const years = Math.floor(days / 360);
 
-  if (years > 1) {
+  if (years > 0) {
     return `${years} ano(s)`;
   }
 
-  if (days > 1) {
+  if (days > 0) {
     return `${days} dia(s)`;
   }
 
-  if (hours > 1) {
+  if (hours > 0) {
     return `${hours} hora(s)`;
   }
 

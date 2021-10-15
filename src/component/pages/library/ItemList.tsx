@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { LibraryItemInterface } from "@/interfaces/index";
 import VerticalItemList from "@/components/ui/VerticalItemList";
 import GridItemList from "@/components/ui/GridItemList";
@@ -31,23 +31,19 @@ type Props = {
 function ItemList({ items = [], type = ListTypeEnum.LIST }: Props) {
   const classes = useStyles();
 
+  const isVerticalList = useMemo(() => type === ListTypeEnum.LIST, [type]);
+
   return (
     <List className={classes.list}>
       {items.length > 0 &&
         items.map((item: LibraryItemInterface) => (
-          <>
-            {type === ListTypeEnum.LIST ? (
-              <ListItem key={uuid()} disableGutters className={classes.verticalList}>
-                <VerticalItemList {...item} />
-              </ListItem>
-            ) : (
-              <>
-                <ListItem key={uuid()} disableGutters className={classes.gridList}>
-                  <GridItemList {...item} />
-                </ListItem>
-              </>
-            )}
-          </>
+          <ListItem
+            key={uuid()}
+            disableGutters
+            className={isVerticalList ? classes.verticalList : classes.gridList}
+          >
+            {isVerticalList ? <VerticalItemList {...item} /> : <GridItemList {...item} />}
+          </ListItem>
         ))}
     </List>
   );

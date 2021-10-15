@@ -3,20 +3,12 @@ import { useTranslation } from "next-i18next";
 import { Box, makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@/components/ui/SvgIcon";
-import { JustifyContentEnum, ListTypeEnum } from "@/enums/index";
+import { FilterEnum, JustifyContentEnum, ListTypeEnum, OrderEnum } from "@/enums/index";
 import { generateBreadcrumb } from "@/utils/utils";
 import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
-import theme from "@/styles/theme";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import { AllIconProps } from "@/types/index";
-
-type Props = {
-  path: string | string[] | undefined;
-  listType: string;
-  setListType: React.Dispatch<React.SetStateAction<ListTypeEnum>>;
-};
+import TemporaryFiltersDrawer from "./FiltersDrawer";
 
 const useStyles = makeStyles((theme) => ({
   breadcrumb: {
@@ -33,10 +25,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+type Props = {
+  path: string | string[] | undefined;
+  listType: string;
+  setListType: React.Dispatch<React.SetStateAction<ListTypeEnum>>;
+  setFilter: React.Dispatch<React.SetStateAction<string | FilterEnum>>;
+  setOrder: React.Dispatch<React.SetStateAction<OrderEnum>>;
+  order: OrderEnum;
+  filter: string | FilterEnum;
+};
+
 const defineIconListType = (type: string) => (type === ListTypeEnum.LIST ? "grid" : "checklist");
 
-function HeaderBar({ path, listType, setListType }: Props) {
-  const [anchorEl, setAnchorEl] = useState(null);
+function HeaderBar({ path, listType, setListType, setFilter, setOrder, order, filter }: Props) {
+  const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
   const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
   const { t } = useTranslation("library");
   const classes = useStyles();
@@ -57,17 +59,27 @@ function HeaderBar({ path, listType, setListType }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
 
-  const openFilterMenu = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const closeFilterMenu = () => {
-    setAnchorEl(null);
-  };
-
   const changeListType = () => {
     setIconListType(defineIconListType(listType));
     setListType(listType === ListTypeEnum.LIST ? ListTypeEnum.GRID : ListTypeEnum.LIST);
+  };
+
+  const filterItems = (filter: FilterEnum) => {
+    setFilter(filter);
+    handleCloseFilterDrawer();
+  };
+
+  const orderItems = (order: OrderEnum) => {
+    setOrder(order);
+    handleCloseFilterDrawer();
+  };
+
+  const handleCloseFilterDrawer = () => {
+    setOpenFilterDrawer(false);
+  };
+
+  const handleOpenFilterDrawer = () => {
+    setOpenFilterDrawer(true);
   };
 
   return (
@@ -86,7 +98,7 @@ function HeaderBar({ path, listType, setListType }: Props) {
         <IconButton
           color="primary"
           component="span"
-          onClick={openFilterMenu}
+          onClick={handleOpenFilterDrawer}
           aria-controls="filter-menu"
           aria-haspopup="true"
         >
@@ -95,21 +107,15 @@ function HeaderBar({ path, listType, setListType }: Props) {
         <IconButton color="primary" component="span" onClick={changeListType}>
           <SvgIcon icon={iconListType} htmlColor="#292929" fontSize="small" />
         </IconButton>
-        <Menu
-          id="filter-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={closeFilterMenu}
-        >
-          <MenuItem onClick={closeFilterMenu}>Disponible Offline</MenuItem>
-          <MenuItem onClick={closeFilterMenu}>Sincronizados</MenuItem>
-          <MenuItem onClick={closeFilterMenu}>Publicados</MenuItem>
-          <MenuItem onClick={closeFilterMenu}>Audios</MenuItem>
-          <MenuItem onClick={closeFilterMenu}>Imagenes</MenuItem>
-          <MenuItem onClick={closeFilterMenu}>Texto</MenuItem>
-        </Menu>
       </Box>
+      <TemporaryFiltersDrawer
+        filterItems={filterItems}
+        orderItems={orderItems}
+        open={openFilterDrawer}
+        handleClose={handleCloseFilterDrawer}
+        filter={filter}
+        order={order}
+      />
     </Box>
   );
 }
