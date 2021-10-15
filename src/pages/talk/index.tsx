@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { PropsUserSelector } from "../../types";
-import { listAllTalk, listEspecificChat } from "@/services/talk/listAll";
+import {
+  listAllTalk,
+  listEspecificChat,
+  listOpenChat,
+  SetROChat,
+  participants,
+} from "@/services/talk/listAll";
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
 import LayoutApp from "@/components/statefull/LayoutApp";
@@ -26,8 +32,20 @@ export default function OCS() {
     }
   }
   async function listOneChat() {
-    const listEspecif = await listEspecificChat("ou52b3hc");
+    const listEspecif = await listEspecificChat("6vku6s5z");
     console.log(listEspecif);
+  }
+  async function listOpen() {
+    const listOpen = await listOpenChat();
+    console.log(listOpen);
+  }
+  async function setRO() {
+    const RO = await SetROChat("p3gevuzt");
+    console.log(RO);
+  }
+  async function getParticipants() {
+    const Pa = await participants("8zhd8x4p");
+    console.log(Pa);
   }
 
   return (
@@ -45,6 +63,27 @@ export default function OCS() {
             <div>
               <button type="button" onClick={listOneChat}>
                 List One
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={listOpen}>
+                List open conversations
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={setRO}>
+                set Read-only
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={getParticipants}>
+                list Participants
               </button>
             </div>
           </FlexBox>
