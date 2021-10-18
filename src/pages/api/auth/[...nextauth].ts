@@ -80,8 +80,6 @@ export default NextAuth({
           } = dataUser;
           const { name: mediaName, url, slogan, logo } = dataMedia;
 
-          console.log(dataUser, dataMedia);
-
           let userLang = constants.DEFAULT_LANGUAGE;
           if (Object.values(constants.LOCALES).includes(language)) userLang = language;
 
@@ -89,6 +87,7 @@ export default NextAuth({
             id,
             name,
             website,
+            lastLogin: dataUser.lastLogin,
             email: emailUser,
             language: userLang,
             groups,

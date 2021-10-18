@@ -25,6 +25,7 @@
     "invalidEmailTitle": "Invalid email",
     "placeholderEmail": "Email",
     "placeholderPassword": "Password",
+    "placeholderPasswordConfirmation": "Password confirmation",
     "submitLoginTitle": "Enter",
     "submitSaveTitle": "Save",
     "invalidURLTitle": "Invalid URL",

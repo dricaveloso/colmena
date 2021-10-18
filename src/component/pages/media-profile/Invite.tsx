@@ -14,9 +14,10 @@ import NotificationContext from "@/store/context/notification-context";
 import { NotificationStatusEnum, SelectVariantEnum } from "@/enums/index";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
+import { SelectOptionItem } from "@/types/index";
 import * as Yup from "yup";
 import { createUser } from "@/services/ocs/users";
-import { listAllGroups } from "@/services/ocs/groups";
+// import { listAllGroups } from "@/services/ocs/groups";
 import Backdrop from "@/components/ui/Backdrop";
 
 type Props = {
@@ -35,14 +36,16 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
   const { t: c } = useTranslation("common");
   const notificationCtx = useContext(NotificationContext);
   const [showBackdrop, setShowBackdrop] = useState(false);
+  // const { data } = listAllGroups();
 
-  const { data: options } = listAllGroups();
-
-  const optionsAux = options.ocs.data.groups.filter((item: string) => item !== "admin").sort();
-  const optionsGroup = optionsAux.map((item) => ({
-    id: item,
-    value: item,
-  }));
+  const optionsGroup: SelectOptionItem[] = [];
+  // if (data) {
+  //   const optionsAux = data.ocs.data.groups.filter((item: string) => item !== "admin").sort();
+  //   optionsGroup = optionsAux.map((item) => ({
+  //     id: item,
+  //     value: item,
+  //   }));
+  // }
   optionsGroup.unshift({
     id: "admin",
     value: "Administrador",
@@ -79,10 +82,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
 
             (async () => {
               try {
-                const groups = [];
-                groups.push(group);
-
-                await createUser(name, email, groups);
+                await createUser(name, email, [group]);
 
                 setShowBackdrop(false);
                 handleCloseInviteForm();

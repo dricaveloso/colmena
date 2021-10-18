@@ -11,8 +11,8 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
-import Form from "@/components/pages/reset/Form";
-// import { useRouter } from "next/router";
+import Form from "@/components/pages/update-password/Form";
+import { useRouter } from "next/router";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -25,10 +25,15 @@ export const getStaticPaths: GetStaticPaths = async () => ({
   fallback: "blocking",
 });
 
-export default function Reset() {
+export default function UpdatePassword() {
   const { t } = useTranslation("reset");
-  // const router = useRouter();
-  // const { token } = router.query;
+  const router = useRouter();
+  const { userId } = router.query;
+
+  if (!userId) {
+    router.replace("/login");
+    return null;
+  }
 
   return (
     <Container>
@@ -37,7 +42,7 @@ export default function Reset() {
         <Box className="width-based-device" flexDirection="column" display="flex">
           <Text variant={TextVariantEnum.BODY2}>{t("title")}</Text>
           <Divider />
-          <Form />
+          <Form userId={Array.isArray(userId) ? userId[0] : userId} />
         </Box>
         <FooterApp about={false} terms={false} />
       </FlexBox>

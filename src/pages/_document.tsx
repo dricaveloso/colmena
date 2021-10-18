@@ -8,7 +8,7 @@ const prod = process.env.NODE_ENV === "production";
 
 export default class MyDocument extends Document {
   render() {
-    const url = prod ? "/js/prod_hotjar.js" : "/js/prod_hotjar.js";
+    const url = prod ? "/js/prod_hotjar.js" : false;
     return (
       <Html lang="en">
         <Head>
@@ -51,10 +51,10 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
             rel="stylesheet"
           />
-          <script src={url}></script>
+          {url && <script src={url}></script>}
         </Head>
         <body>
           <Main />

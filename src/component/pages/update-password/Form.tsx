@@ -1,8 +1,8 @@
+/* eslint-disable camelcase */
 import React, { useState, useContext } from "react";
 import Button from "@/components/ui/Button";
 import { LinearProgress } from "@material-ui/core";
 import PasswordField from "@/components/statefull/PasswordField";
-// import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import TermsOfUse from "@/components/statefull/TermsOfUse";
 import NotificationContext from "@/store/context/notification-context";
@@ -10,29 +10,39 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
 import { NotificationStatusEnum } from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
+import { updatePassword } from "@/services/ocs/users";
+import { useRouter } from "next/router";
 import * as Yup from "yup";
 
 type MyFormValues = {
-  email: string;
   password: string;
+  password_confirmation: string;
 };
 
-export default function WrapperForm() {
+type Props = {
+  userId: string;
+};
+
+export default function WrapperForm({ userId }: Props) {
   const [openTerms, setOpenTerms] = useState(false);
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("reset");
+  const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
-  // const router = useRouter();
 
   const ValidationSchema = Yup.object().shape({
     password: Yup.string()
       .min(6, c("form.passwordMinLengthTitle", { size: 6 }))
       .max(30, c("form.passwordMaxLengthTitle", { size: 30 }))
       .required(c("form.requiredTitle")),
+    password_confirmation: Yup.string()
+      .min(6, c("form.passwordMinLengthTitle", { size: 6 }))
+      .max(30, c("form.passwordMaxLengthTitle", { size: 30 }))
+      .required(c("form.requiredTitle")),
   });
 
   const initialValues: MyFormValues = {
-    email: "",
+    password_confirmation: "",
     password: "",
   };
 
@@ -42,13 +52,39 @@ export default function WrapperForm() {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          // const { password } = values;
+          const { password, password_confirmation } = values;
+          if (password !== password_confirmation) {
+            notificationCtx.showNotification({
+              message: t("errorMessagePassword"),
+              status: NotificationStatusEnum.ERROR,
+            });
+            return;
+          }
+
           setSubmitting(true);
           (async () => {
-            notificationCtx.showNotification({
-              message: t("successMessage"),
-              status: NotificationStatusEnum.SUCCESS,
-            });
+            try {
+              const result = await updatePassword(atob(userId), password);
+              if (result.data.ocs.meta.statuscode !== 200) {
+                notificationCtx.showNotification({
+                  message: t("errorUpdatingPassword"),
+                  status: NotificationStatusEnum.ERROR,
+                });
+                return;
+              }
+
+              notificationCtx.showNotification({
+                message: t("successUpdatingPassword"),
+                status: NotificationStatusEnum.SUCCESS,
+              });
+              router.replace("/login");
+            } catch (e) {
+              console.log(e);
+              notificationCtx.showNotification({
+                message: t("errorUpdatingPassword"),
+                status: NotificationStatusEnum.ERROR,
+              });
+            }
           })();
         }}
       >
@@ -60,7 +96,6 @@ export default function WrapperForm() {
               }
             }}
           >
-            <Divider marginTop={20} />
             <Field name="password" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <PasswordField
@@ -78,10 +113,27 @@ export default function WrapperForm() {
               <ErrorMessageForm message={errors.password} />
             ) : null}
             <Divider marginTop={20} />
+            <Field name="password_confirmation" InputProps={{ notched: true }}>
+              {({ field }: FieldProps) => (
+                <PasswordField
+                  label={c("form.placeholderPasswordConfirmation")}
+                  placeholder={c("form.placeholderPasswordConfirmation")}
+                  handleChangePassword={(value: string) => {
+                    setFieldValue("password_confirmation", value);
+                  }}
+                  required
+                  {...field}
+                />
+              )}
+            </Field>
+            {errors.password_confirmation && touched.password_confirmation ? (
+              <ErrorMessageForm message={errors.password_confirmation} />
+            ) : null}
+            <Divider marginTop={20} />
             {isSubmitting && <LinearProgress />}
             <Divider marginTop={20} />
             <Button
-              title={c("form.submitSaveTitle")}
+              title={c("form.submitLoginTitle")}
               disabled={isSubmitting}
               handleClick={submitForm}
             />

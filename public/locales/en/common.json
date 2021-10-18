@@ -24,6 +24,7 @@
       "backButton": "Back",
       "placeholderEmail": "Email",
       "placeholderPassword": "Password",
+      "placeholderPasswordConfirmation": "Password confirmation",
       "submitLoginTitle": "Enter",
       "submitSaveTitle": "Save",
       "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",

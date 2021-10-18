@@ -61,6 +61,26 @@ export interface GroupsInfoInterface {
   mutate: (data?: any, shouldRevalidate?: boolean | undefined) => Promise<any>;
 }
 
+export interface SetPasswordInterface {
+  data: {
+    password: string;
+    user: string;
+  };
+}
+
+export interface UpdatePasswordInterface {
+  data: {
+    ocs: {
+      meta: {
+        status: string;
+        statuscode: 200;
+        message: string;
+      };
+      data: string[];
+    };
+  };
+}
+
 export interface UserInfoInterface {
   data: {
     ocs: {

@@ -74,6 +74,7 @@ export default function WrapperForm() {
                 maxAge: 30 * 24 * 60 * 60,
                 path: "/",
               });
+
               router.push("/home", "", {
                 locale,
               });
