@@ -1,5 +1,5 @@
-import ocs from "@/services/ocs";
 import axios from "axios";
+import ocs from "@/services/ocs";
 import {
   CreateUserInterface,
   WelcomeUserInterface,
@@ -9,44 +9,18 @@ import {
 import constants from "@/constants/index";
 
 export function listAllUsers() {
-  try {
-    return ocs().get(`/users`);
-  } catch (err) {
-    console.log(err.response);
-    return false;
-  }
+  return ocs().get(`/users`);
 }
 export function listOneUser(userId: string | number) {
-  try {
-    return ocs().get(`/users/${userId}`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
-  return true;
+  return ocs().get(`/users/${userId}`);
 }
 
 export function enableUser(userId: string | number) {
-  try {
-    ocs().put(`/users/${userId}/enable`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
-  return true;
+  return ocs().put(`/users/${userId}/enable`);
 }
 
 export function disableUser(userId: string | number) {
-  try {
-    ocs().put(`/users/${userId}/disable`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
-  return true;
+  return ocs().put(`/users/${userId}/disable`);
 }
 
 export function welcomeUser(userId: string | number): Promise<WelcomeUserInterface> {
@@ -68,14 +42,7 @@ export function createUser(
   });
 }
 export function deleteUser(userId: string | number) {
-  try {
-    ocs().delete(`/users/${userId}`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
-  return true;
+  return ocs().delete(`/users/${userId}`);
 }
 
 export function updatePassword(
@@ -123,12 +90,5 @@ export function setPassword(
 }
 
 export function listGroupsUser(userId: string | number) {
-  try {
-    return ocs().get(`/users/${userId}/groups`);
-  } catch (error) {
-    if (error) {
-      return false;
-    }
-  }
-  return true;
+  return ocs().get(`/users/${userId}/groups`);
 }

@@ -39,9 +39,11 @@ export interface UserInfoInterface {
   password: string;
   language: string;
   website?: string;
+  locale: string;
   twitter?: string;
   groups: string[];
   media: MediaInfoInterface;
+  quota: string[];
 }
 export interface FileInterface {
   id: number;
@@ -60,14 +62,14 @@ export interface GenericHorizontalItemInterface {
   url: string;
 }
 
-export interface LibraryItemWebDavInterface {
-  basename: string;
-  filename: string;
-  type?: string;
-  size?: number;
-  lastmod?: string;
-  mime?: string;
-}
+// export interface LibraryItemWebDavInterface {
+//   basename: string;
+//   filename: string;
+//   type?: string;
+//   size?: number;
+//   lastmod?: string;
+//   mime?: string;
+// }
 export interface LibraryItemInterface {
   id: number;
   title: string;
@@ -76,6 +78,23 @@ export interface LibraryItemInterface {
   url?: string;
 }
 
+export interface LibraryItemWebDavInterface {
+  filename: string;
+  basename: string;
+  type: string;
+  size: number;
+  lastmod: string;
+}
+
+export interface LibraryItemOCSUserInterface {
+  id: string;
+  address: string;
+  displayname: string;
+  email: string;
+  enable: boolean;
+  lastmod: string;
+  language: string;
+}
 export interface UserInvitationInterface {
   username: string;
   name?: string;
