@@ -52,20 +52,13 @@ export default function WrapperForm({ userId }: Props) {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          setSubmitting(true);
-
           const { password, password_confirmation } = values;
-          if (password !== password_confirmation) {
-            notificationCtx.showNotification({
-              message: t("errorMessagePassword"),
-              status: NotificationStatusEnum.ERROR,
-            });
-            setSubmitting(false);
-            return;
-          }
 
           (async () => {
             try {
+              setSubmitting(true);
+              if (password !== password_confirmation) throw new Error(t("errorMessagePassword"));
+
               const result = await updatePassword(atob(userId), password);
               if (result.data.ocs.meta.statuscode !== 200)
                 throw new Error(t("errorUpdatingPassword"));
