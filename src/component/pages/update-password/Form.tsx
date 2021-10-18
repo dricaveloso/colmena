@@ -52,26 +52,23 @@ export default function WrapperForm({ userId }: Props) {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
+          setSubmitting(true);
+
           const { password, password_confirmation } = values;
           if (password !== password_confirmation) {
             notificationCtx.showNotification({
               message: t("errorMessagePassword"),
               status: NotificationStatusEnum.ERROR,
             });
+            setSubmitting(false);
             return;
           }
 
-          setSubmitting(true);
           (async () => {
             try {
               const result = await updatePassword(atob(userId), password);
-              if (result.data.ocs.meta.statuscode !== 200) {
-                notificationCtx.showNotification({
-                  message: t("errorUpdatingPassword"),
-                  status: NotificationStatusEnum.ERROR,
-                });
-                return;
-              }
+              if (result.data.ocs.meta.statuscode !== 200)
+                throw new Error(t("errorUpdatingPassword"));
 
               notificationCtx.showNotification({
                 message: t("successUpdatingPassword"),
@@ -81,9 +78,11 @@ export default function WrapperForm({ userId }: Props) {
             } catch (e) {
               console.log(e);
               notificationCtx.showNotification({
-                message: t("errorUpdatingPassword"),
+                message: e.message,
                 status: NotificationStatusEnum.ERROR,
               });
+            } finally {
+              setSubmitting(false);
             }
           })();
         }}
