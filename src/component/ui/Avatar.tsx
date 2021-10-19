@@ -18,8 +18,9 @@ function AvatarAux({ size, name = "", image = "" }: Props) {
   }));
   const classes = useStyles();
 
-  if (!image || !isValidUrl(image) || !navigator.onLine)
+  if (!image || !isValidUrl(image) || !navigator.onLine) {
     return <Avatar className={classes.size}>{getFirstLettersOfTwoFirstNames(name)}</Avatar>;
+  }
 
   return (
     <Avatar alt={`Avatar ${name}`} src={image} className={classes.size}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { PropsUserSelector } from "../../types";
@@ -14,13 +14,14 @@ export default function OCS() {
   console.log(userRdx.user.id);
 
   const [data, setData] = useState([]);
-  const directory = "";
+  // const directory = "";
 
   async function ListAllT() {
     try {
       const listT = await listTalks();
 
       console.log(listT);
+      setData([]);
     } catch (e) {
       console.log("error", e);
     }
