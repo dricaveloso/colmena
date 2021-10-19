@@ -2,7 +2,7 @@ import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Roboto Condensed, sans-serif",
+    fontFamily: "Open Sans, sans-serif",
   },
   palette: {
     primary: {

@@ -22,7 +22,7 @@ module.exports = withImages(
     async redirects() {
       return [
         {
-          source: '/invitation',
+          source: '/reset',
           destination: '/',
           permanent: true,
         },

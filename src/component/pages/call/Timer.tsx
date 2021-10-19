@@ -1,14 +1,12 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useStopwatch } from "react-timer-hook";
 import AudioControls from "../recording/AudioControls";
 import TimerDisplay from "../recording/TimerDisplay";
 import Box from "@material-ui/core/Box";
-// import { useDispatch } from "react-redux";
-// import { updateRecordingState } from "@/store/actions/recordings/index";
 
 export default function Timer() {
-  // const dispatch = useDispatch();
   const { seconds, minutes, hours, isRunning, start, pause, reset } = useStopwatch({
     autoStart: false,
   });

@@ -13,6 +13,7 @@ export function existDirectory(userId: string | number, remotePath: string) {
   } catch (err) {
     console.log(err.response);
   }
+  return true;
 }
 
 export function createDirectory(userId: string | number, dirPath: string) {
@@ -33,4 +34,5 @@ export function deleteDirectory(userId: string | number, filename: string) {
     console.log(err);
     console.log("aqui mais um ", err);
   }
+  return true;
 }

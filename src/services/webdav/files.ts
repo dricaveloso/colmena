@@ -37,7 +37,8 @@ export function putFile(userId: string | number, filePath: string, data: string)
 }
 
 export function listImages(userId: string | number, filename: string) {
-  const images = webdav().getDirectoryContents(`${userId}/`, {
+  console.log(filename);
+  return webdav().getDirectoryContents(`${userId}/`, {
     deep: true,
     glob: "/**/*.{png,jpg,gif,jpeg}",
   });
