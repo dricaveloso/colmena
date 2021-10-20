@@ -13,24 +13,41 @@ import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles(() => ({
   card: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     flexWrap: "nowrap",
     width: "100%",
-    background: "#fff",
-    padding: 8,
+    backgroundColor: "#fff",
+    padding: "16px 8px",
+    position: "relative",
+    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.18)",
+    borderRadius: 4,
   },
   description: {
     flexDirection: "column",
     flexGrow: 1,
-    alignSelf: "stretch",
+    alignSelf: "center",
     overflow: "hidden",
     marginLeft: 5,
+    textAlign: "center",
+    overflowWrap: "anywhere",
   },
   options: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "nowrap",
+    alignSelf: "flex-end",
+    padding: 4,
+  },
+  topOptions: {
+    position: "absolute",
+    right: 4,
+    top: 8,
+  },
+  bottomOptions: {
+    position: "absolute",
+    right: 4,
+    bottom: 8,
   },
 }));
 
@@ -40,7 +57,6 @@ const VerticalItemList = ({
   filename,
   environment,
   createdAt,
-  createdAtDescription,
   tags,
   type,
   arrayBufferBlob,
@@ -59,6 +75,14 @@ const VerticalItemList = ({
 
   return (
     <Box className={classes.card}>
+      <Box className={[classes.options, classes.topOptions].join(" ")}>
+        <IconButton
+          icon="more_vertical"
+          color="#9A9A9A"
+          style={{ padding: 0, margin: 0, minWidth: 30 }}
+          fontSizeIcon="small"
+        />
+      </Box>
       <ListItemAvatar>
         {image !== undefined ? (
           <Image
@@ -84,18 +108,12 @@ const VerticalItemList = ({
         data-testid="title"
         className={classes.description}
         primary={basename}
-        secondary={createdAtDescription}
+        secondary={type}
         onClick={() => handleClick()}
       />
-      <Box className={classes.options}>
+      <Box className={[classes.options, classes.bottomOptions].join(" ")}>
         <IconButton
           icon="share"
-          color="#9A9A9A"
-          style={{ padding: 0, margin: 0, minWidth: 30 }}
-          fontSizeIcon="small"
-        />
-        <IconButton
-          icon="more_vertical"
           color="#9A9A9A"
           style={{ padding: 0, margin: 0, minWidth: 30 }}
           fontSizeIcon="small"

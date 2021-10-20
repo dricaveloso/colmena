@@ -10,9 +10,9 @@ stages:
   #- livetest
   # - cleanup
 cache:
- paths:
-  - node_modules/
-  - out/
+  paths:
+    - node_modules/
+    - out/
 #prepare_all:
 #  stage: prepare
 #  script:
@@ -26,12 +26,12 @@ build:
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
 #configure cluster:
- # tags: 
-  #  - k8
-  #stage: deploy
-  #script: echo $KUBE_NAMESPACE
-  #environment:
-   # name: production
+# tags:
+#  - k8
+#stage: deploy
+#script: echo $KUBE_NAMESPACE
+#environment:
+# name: production
 
 #deploy_dev:
 #  stage: deploy

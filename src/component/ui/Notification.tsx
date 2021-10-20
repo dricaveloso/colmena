@@ -19,7 +19,13 @@ function Notification({ message, status = NotificationStatusEnum.INFO }: Props) 
   };
 
   return (
-    <Snackbar key={uuid()} onClose={handleClose} open autoHideDuration={5000}>
+    <Snackbar
+      key={uuid()}
+      onClose={handleClose}
+      open
+      autoHideDuration={5000}
+      style={{ zIndex: 1301 }}
+    >
       <MuiAlert elevation={6} onClose={handleClose} variant="filled" severity={status}>
         {message}
       </MuiAlert>

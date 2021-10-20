@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import IconButton from "@/components/ui/IconButton";
 import FullScreenSearch from "@/components/ui/FooterApp/FullScreenSearch";
-import DrawerBottomRecording from "@/components/ui/FooterApp/DrawerBottomRecording";
+import DrawerBottomRecording from "@/components/ui/FooterApp/DrawerMoreOptionsBottom";
 import Grid from "@material-ui/core/Grid";
 import { useTheme, makeStyles } from "@material-ui/core/styles";
+import { PropsLibrarySelector } from "@/types/index";
+import { useSelector } from "react-redux";
 
 type Props = {
   page: string;
@@ -14,7 +16,10 @@ const useStyles = makeStyles(() => ({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: 60,
+    zIndex: 1200,
+    "& a.MuiButtonBase-root": {
+      width: "100%",
+    },
   },
   btnMore: {
     background: "linear-gradient(118.66deg, #534BAE 5.24%, #D53E7E 103.53%)!important",
@@ -28,6 +33,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 function AppTab({ page }: Props) {
+  const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+  const libraryPath = library.currentPath;
   const classes = useStyles();
   const theme = useTheme();
   const [openSearch, setOpenSearch] = useState(false);
@@ -51,7 +58,7 @@ function AppTab({ page }: Props) {
 
   return (
     <>
-      <Grid container spacing={3} className={classes.gridContainer}>
+      <Grid container className={classes.gridContainer}>
         <Grid item xs={2}>
           <IconButton
             icon="home"
@@ -63,9 +70,13 @@ function AppTab({ page }: Props) {
         <Grid item xs={2}>
           <IconButton
             icon="library"
-            url="/library"
+            url={`/library/${libraryPath}`}
             fontSizeIcon="medium"
-            color={page === "/library" ? theme.palette.primary.main : theme.palette.primary.main}
+            color={
+              page === `/library/${libraryPath}`
+                ? theme.palette.primary.main
+                : theme.palette.primary.main
+            }
           />
         </Grid>
         <Grid item xs={2}>
@@ -79,7 +90,7 @@ function AppTab({ page }: Props) {
         </Grid>
         <Grid item xs={2}>
           <IconButton
-            icon="gradient-panal"
+            icon="gradient_panal"
             fontSizeIcon="medium"
             url="/home"
             color={theme.palette.primary.main}
