@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
-import { PropsUserSelector } from "../../types";
+import { PropsUserSelector } from "@/types/index";
 import capabilities from "@/services/ocs/capabilities";
 
 import {
@@ -10,14 +10,12 @@ import {
   enableUser,
   disableUser,
   welcomeUser,
-  createUser,
   deleteUser,
-  resetPass,
   listGroupsUser,
-} from "../../services/ocs/users";
+} from "@/services/ocs/users";
 
 import CONSTANTS from "@/constants/index";
-import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
+// import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { JustifyContentEnum } from "@/enums/*";
 import FlexBox from "@/components/ui/FlexBox";
@@ -25,8 +23,8 @@ import FlexBox from "@/components/ui/FlexBox";
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
-  const [data, setData] = useState([]);
-  const directory = "";
+  // const [data, setData] = useState([]);
+  // const directory = "";
 
   async function ListAllU() {
     try {
@@ -77,26 +75,10 @@ export default function OCS() {
     }
   }
 
-  async function CreateUser() {
-    try {
-      const createU = await createUser("maria", "maria123@gmail.com");
-      console.log(createU);
-    } catch (e) {
-      console.log("error", e);
-    }
-  }
   async function DeleteUser() {
     try {
       const deleteU = await deleteUser("maria2321");
       console.log(deleteU);
-    } catch (e) {
-      console.log("error", e);
-    }
-  }
-  async function ResetPass() {
-    try {
-      const resetPassU = await resetPass("nil", "rocha123");
-      console.log(resetPassU);
     } catch (e) {
       console.log("error", e);
     }
@@ -147,14 +129,6 @@ export default function OCS() {
           </FlexBox>
           <FlexBox>
             <div>
-              <button type="button" onClick={CreateUser}>
-                create User
-              </button>
-            </div>
-          </FlexBox>
-
-          <FlexBox>
-            <div>
               <button type="button" onClick={EnableUser}>
                 Enable User
               </button>
@@ -176,13 +150,6 @@ export default function OCS() {
           </FlexBox>
           <FlexBox>
             <div>
-              <button type="button" onClick={ResetPass}>
-                Reset Password
-              </button>
-            </div>
-          </FlexBox>
-          <FlexBox>
-            <div>
               <button type="button" onClick={DeleteUser}>
                 Delete User
               </button>
@@ -195,7 +162,7 @@ export default function OCS() {
               </button>
             </div>
           </FlexBox>
-          <VerticalListWebDav data={data} />
+          {/* <VerticalListWebDav data={data} /> */}
         </div>
       </FlexBox>
     </LayoutApp>

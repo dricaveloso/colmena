@@ -1,11 +1,11 @@
 import React from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+// import List from "@material-ui/core/List";
+// import ListItem from "@material-ui/core/ListItem";
 import Text from "@/components/ui/Text";
 import { LibraryItemWebDavInterface } from "@/interfaces/index";
 import { TextAlignEnum, TextVariantEnum } from "@/enums/index";
-import VerticalItemListWebDav from "@/components/ui/VerticalItemListWebDav";
-import { v4 as uuid } from "uuid";
+// import VerticalItemListWebDav from "@/components/ui/VerticalItemListWebDav";
+// import { v4 as uuid } from "uuid";
 
 type Props = {
   title?: string;
@@ -13,6 +13,7 @@ type Props = {
 };
 
 export default function VerticalList({ title = "", data }: Props) {
+  console.log(data);
   return (
     <div>
       {title !== "" && (

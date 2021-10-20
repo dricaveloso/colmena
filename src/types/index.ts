@@ -43,6 +43,11 @@ export type NXTagsProps = {
   title: string;
 };
 
+export type SelectOptionItem = {
+  id: number | string;
+  value: string;
+};
+
 export type PropsRecordingSelector = {
   recordings: RecordingInterface[];
   activeRecordingState: string;
