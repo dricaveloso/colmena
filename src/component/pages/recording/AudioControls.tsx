@@ -1,7 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState } from "react";
-import Lottie from "react-lottie";
-import Recording from "@/components/ui/lottie/recording-blink.json";
+import React from "react";
 import { useSelector } from "react-redux";
 import { PropsRecordingSelector } from "@/types/*";
 import IconButton from "@/components/ui/IconButton";
@@ -26,43 +24,37 @@ export default function AudioControls({
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
-  const [play, setPlay] = useState(false);
-  const recordingOptions = {
-    loop: true,
-    autoplay: false,
-    animationData: Recording,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
   const _handleStart = async () => {
     if (recordingRdx.activeRecordingState !== "START") {
       handleStart();
-      setPlay(true);
     }
   };
 
   const _handleStop = () => {
     if (recordingRdx.activeRecordingState === "START") {
       handleStop();
-      setPlay(false);
     }
   };
 
   const _handlePause = () => {
     if (recordingRdx.activeRecordingState === "START") {
       handlePause();
-      setPlay(false);
     }
   };
 
   return (
     <Box display="flex" flexDirection="row">
       {showPause && <IconButton icon="pause" handleClick={_handlePause} />}
-      <button type="button" onClick={_handleStart} style={{ background: "none", border: "none" }}>
-        <Lottie isStopped={!play} options={recordingOptions} height={95} width={95} />
-      </button>
+      <div
+        onClick={_handleStart}
+        style={{
+          cursor: "pointer",
+          width: 70,
+          backgroundColor: "tomato",
+          height: 70,
+          borderRadius: "50%",
+        }}
+      />
       {showStop && <IconButton icon="stop" handleClick={_handleStop} />}
     </Box>
   );

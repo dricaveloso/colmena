@@ -1,5 +1,5 @@
 import webdav from "@/services/webdav";
-import { FileStat, ResponseDataDetailed } from "webdav";
+// import { FileStat, ResponseDataDetailed } from "webdav";
 
 // ver se não tem 404
 export function listDirectories(userId: string | number, path?: string): any {
@@ -12,6 +12,7 @@ export function existDirectory(userId: string | number, remotePath: string) {
   } catch (err) {
     console.log(err.response);
   }
+  return true;
 }
 
 export function createDirectory(userId: string | number, dirPath: string) {
@@ -32,4 +33,5 @@ export function deleteDirectory(userId: string | number, filename: string) {
     console.log(err);
     console.log("aqui mais um ", err);
   }
+  return true;
 }

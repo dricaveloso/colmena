@@ -10,7 +10,7 @@ import { FileIcon } from "react-file-icon";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
     display: "flex",
     flexDirection: "column",
@@ -63,6 +63,7 @@ const VerticalItemList = ({
   image,
   extension,
 }: LibraryItemInterface) => {
+  console.log(environment, createdAt, tags, arrayBufferBlob);
   const classes = useStyles();
   const router = useRouter();
 

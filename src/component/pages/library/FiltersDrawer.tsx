@@ -5,9 +5,6 @@ import { v4 as uuid } from "uuid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import { useTranslation } from "next-i18next";
-import SvgIcon from "@/components/ui/SvgIcon";
 import { FilterEnum, OrderEnum } from "@/enums/index";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -49,7 +46,6 @@ export default function TemporaryFiltersDrawer({
 }: Props) {
   const [expanded, setExpanded] = React.useState<string | boolean>("order");
   const classes = useStyles();
-  const { t } = useTranslation("common");
 
   const handleChange = (panel: string) => (event: any, newExpanded: string | boolean) => {
     setExpanded(newExpanded ? panel : false);

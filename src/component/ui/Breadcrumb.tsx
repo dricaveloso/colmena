@@ -12,7 +12,7 @@ type Props = {
   breadcrumbs: Array<BreadcrumbItemInterface>;
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   breadcrumb: {
     overflowY: "hidden",
     "& .MuiBreadcrumbs-ol": {

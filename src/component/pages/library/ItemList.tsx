@@ -8,7 +8,7 @@ import List from "@material-ui/core/List";
 import { ListTypeEnum } from "@/enums/*";
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   list: {
     textAlign: "left",
     alignItems: "stretch",

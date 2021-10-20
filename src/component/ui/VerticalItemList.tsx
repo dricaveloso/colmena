@@ -2,7 +2,6 @@ import React from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Image from "next/image";
 import { LibraryItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
@@ -10,9 +9,8 @@ import { useRouter } from "next/router";
 import { FileIcon } from "react-file-icon";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
-import { ListTypeEnum } from "@/enums/*";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
     display: "flex",
     flexDirection: "row",
@@ -49,6 +47,7 @@ const VerticalItemList = ({
   image,
   extension,
 }: LibraryItemInterface) => {
+  console.log(environment, createdAt, tags, arrayBufferBlob);
   const classes = useStyles();
   const router = useRouter();
 

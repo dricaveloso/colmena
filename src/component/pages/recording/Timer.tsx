@@ -23,7 +23,6 @@ export default function Timer() {
   }
 
   function handleStop() {
-    console.log("aqui segundo");
     dispatch(updateRecordingState({ activeRecordingState: "STOP" }));
     reset(0, false);
   }
@@ -31,6 +30,7 @@ export default function Timer() {
   return (
     <div>
       <TimerDisplay seconds={seconds} minutes={minutes} hours={hours} isRunning={isRunning} />
+      {/* eslint-disable-next-line react/jsx-no-bind */}
       <AudioControls handleStart={handleStart} handleStop={handleStop} handlePause={handlePause} />
     </div>
   );

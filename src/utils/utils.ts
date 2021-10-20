@@ -1,6 +1,10 @@
 import { UserInvitationInterface, BreadcrumbItemInterface } from "@/interfaces/index";
 import { differenceInMinutes, differenceInCalendarMonths } from "date-fns";
 
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const isValidUrl = (url: string) => {
   try {
     // eslint-disable-next-line no-new
@@ -60,9 +64,22 @@ export function getFirstLettersOfTwoFirstNames(word: string | undefined): string
   const arr = word.split(" ");
   let result = arr[0][0];
 
-  if (arr.length > 1) result += arr[1][0];
+  if (arr.length > 2) {
+    if (arr[1].length < 4) result += arr[2][0];
+    else result += arr[1][0];
+  }
 
   return result.toUpperCase();
+}
+
+export function getFirstname(word: string | undefined): string {
+  if (!word) return "";
+
+  const arr = word.split(" ");
+
+  if (arr.length > 1) return capitalizeFirstLetter(arr[0]);
+
+  return capitalizeFirstLetter(word);
 }
 
 export function searchByTerm(str: string, word: string): boolean {

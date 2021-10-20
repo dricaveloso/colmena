@@ -5,10 +5,11 @@ import MediaAvatar from "@/components/ui/Avatar";
 import GreetingMessage from "@/components/pages/home/GreetingMessage";
 import TabPrimaryCategoryHomeList from "@/components/pages/home/TabPrimaryCategoryHomeList";
 import Divider from "@/components/ui/Divider";
-import { TextVariantEnum, JustifyContentEnum } from "@/enums/index";
+import { TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
+import { getFirstname } from "@/utils/utils";
 
 type Props = {
   showContent: boolean;
@@ -24,7 +25,7 @@ function DashboardActions({ showContent, isFirstAccess }: Props) {
       <Box padding={0} margin={0} style={{ width: "100%" }}>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold", marginBottom: 10 }}>
-            {c("welcomeUserMessage", { userName: userRdx?.user?.name })}
+            {c("welcomeUserMessage", { userName: getFirstname(userRdx?.user?.name) })}
           </Text>
           <MediaAvatar name={userRdx?.user.media.name} image={userRdx?.user.media.logo} size={8} />
           <GreetingMessage />

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -134,7 +133,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
               validationSchema={NewFolderSchema}
               onSubmit={(values) => handleSubmit(values)}
             >
-              {({ setFieldValue, errors, touched }: any) => (
+              {({ setFieldValue }: any) => (
                 <Form className={classes.form}>
                   <Field name="name" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
@@ -142,6 +141,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                         id="outlined-search"
                         label="Name"
                         variant="outlined"
+                        {...field}
                         onChange={(
                           event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
                         ) => setFieldValue("name", event.target.value)}

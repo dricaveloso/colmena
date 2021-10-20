@@ -11,7 +11,7 @@ type Props = {
   page: string;
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   gridContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
@@ -44,9 +44,9 @@ function AppTab({ page }: Props) {
     setOpenSearch(false);
   };
 
-  const handleOpen = () => {
-    setOpenSearch(true);
-  };
+  // const handleOpen = () => {
+  //   setOpenSearch(true);
+  // };
 
   const handleCloseDrawer = () => {
     setOpenDrawer(false);

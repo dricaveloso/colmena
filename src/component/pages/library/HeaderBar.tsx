@@ -10,7 +10,7 @@ import Breadcrumb from "@/components/ui/Breadcrumb";
 import { AllIconProps } from "@/types/index";
 import TemporaryFiltersDrawer from "./FiltersDrawer";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   breadcrumb: {
     flex: 1,
     textAlign: "left",
