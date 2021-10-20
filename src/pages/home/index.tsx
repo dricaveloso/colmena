@@ -37,7 +37,7 @@ function Home() {
   }, []);
 
   return (
-    <LayoutApp title={CONSTANTS.APP_NAME}>
+    <LayoutApp title={CONSTANTS.APP_NAME} templateHeader="variation2">
       {showGreeting && !showContent ? (
         <FlexBox justifyContent={JustifyContentEnum.CENTER}>
           <Greeting showGreeting={showGreeting} />
