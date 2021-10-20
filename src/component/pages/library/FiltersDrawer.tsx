@@ -21,7 +21,7 @@ type Props = {
   filterItems: (filter: string | FilterEnum) => void;
   orderItems: (order: OrderEnum) => void;
   order: OrderEnum;
-  filter: FilterEnum;
+  filter: string | FilterEnum;
 };
 
 const useStyles = makeStyles((theme) => ({

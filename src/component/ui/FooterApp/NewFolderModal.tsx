@@ -17,7 +17,6 @@ import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Notification from "@/components/ui/Notification";
 
 const useStyles = makeStyles((theme) => ({
@@ -74,7 +73,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           throw new Error("Já existe um diretório com esse nome.");
         }
 
-        const create = true; // await createDirectory(userId, finalPath);
+        const create = await createDirectory(userId, finalPath);
         if (create) {
           const date = new Date();
           const item: LibraryItemInterface = {
@@ -143,8 +142,10 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                         id="outlined-search"
                         label="Name"
                         variant="outlined"
-                        onChange={(event) => setFieldValue("name", event.target.value)}
-                        onKeyUp={(event) => handleName(event.target.value)}
+                        onChange={(
+                          event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+                        ) => setFieldValue("name", event.target.value)}
+                        onKeyUp={(event: any) => handleName(event.target.value)}
                       />
                     )}
                   </Field>
