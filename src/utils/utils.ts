@@ -155,7 +155,7 @@ export function dateDescription(date: Date | undefined) {
   const minutes = differenceInMinutes(today, date);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
-  const years = Math.floor(days / 360);
+  const years = Math.floor(days / 365);
 
   if (years > 0) {
     const yearDescription = years > 1 ? pluralYearDescription : singularYearDescription;
