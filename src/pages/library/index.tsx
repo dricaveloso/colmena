@@ -4,8 +4,8 @@ import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
 import { I18nInterface, LibraryItemInterface, RecordingInterface } from "@/interfaces/index";
 import { listDirectories } from "@/services/webdav/directories";
-import { PropsUserSelector } from "@/types/index";
-import { useSelector } from "react-redux";
+import { PropsUserSelector, PropsLibrarySelector } from "@/types/index";
+import { useSelector, useDispatch } from "react-redux";
 import { FileStat } from "webdav";
 import { getAllAudios } from "@/store/idb/models/audios";
 import FlexBox from "@/components/ui/FlexBox";
@@ -25,6 +25,7 @@ import {
   OrderEnum,
   FilterEnum,
 } from "@/enums/index";
+import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -33,22 +34,22 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 function MyLibrary() {
-  const [currentDirectory, setCurrentDirectory] = useState<string | undefined>(undefined);
+  const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+  const currentDirectory = library.currentPath;
+  const rawItems: Array<LibraryItemInterface> = library.libraryFiles;
+  const notFoundDir = !library.currentPathExists;
   const [isLoading, setIsLoading] = useState(false);
-  const [notFoundDir, setNotFoundDir] = useState(false);
   const [listType, setListType] = useState(ListTypeEnum.LIST);
   const router = useRouter();
-  const { path } = router.query;
+  const { libraryPath: path } = router.query;
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [items, setItems] = useState<Array<LibraryItemInterface>>(
-    [] as Array<LibraryItemInterface>,
-  );
-  const [rawItems, setRawItems] = useState<Array<LibraryItemInterface>>(
     [] as Array<LibraryItemInterface>,
   );
   const [order, setOrder] = useState(OrderEnum.LATEST_FIRST);
   const [filter, setFilter] = useState("");
   const { t } = useTranslation("common");
+  const dispatch = useDispatch();
 
   const getWebDavDirectories = useCallback(async (userId: string, currentDirectory: string) => {
     const items: LibraryItemInterface[] = [];
@@ -118,9 +119,17 @@ function MyLibrary() {
             ? 1
             : -1;
         case OrderEnum.ASC_ALPHABETICAL:
-          return a.basename.toLowerCase() > b.basename.toLowerCase() ? 1 : -1;
+          return a.basename !== undefined &&
+            b.basename !== undefined &&
+            a.basename.toLowerCase() > b.basename.toLowerCase()
+            ? 1
+            : -1;
         case OrderEnum.DESC_ALPHABETICAL:
-          return a.basename.toLowerCase() < b.basename.toLowerCase() ? 1 : -1;
+          return a.basename !== undefined &&
+            b.basename !== undefined &&
+            a.basename.toLowerCase() < b.basename.toLowerCase()
+            ? 1
+            : -1;
         default:
           return 0;
       }
@@ -161,35 +170,41 @@ function MyLibrary() {
   }, []);
 
   useEffect(() => {
+    let currentPath = "/";
     if (typeof path === "object") {
-      setCurrentDirectory(path.join("/"));
-    } else {
-      setCurrentDirectory("/");
+      currentPath = path.join("/");
     }
-  }, [path]);
 
-  useEffect(() => {
     (async () => {
-      if (currentDirectory !== undefined) {
-        try {
+      try {
+        if (currentPath !== currentDirectory) {
           setIsLoading(true);
-          const nxDirectories = await getWebDavDirectories(userRdx.user.id, currentDirectory);
-          const localFiles = await getLocalFiles(userRdx.user.id, currentDirectory);
-          const items = nxDirectories.concat(localFiles);
-          setRawItems(items);
-          setItems(orderItems(order, filterItems(filter, items)));
-        } catch (e) {
-          if (e.response.status === 404) {
-            setNotFoundDir(true);
-          }
         }
 
-        setIsLoading(false);
+        console.log(currentPath, currentDirectory);
+
+        const nxDirectories = await getWebDavDirectories(userRdx.user.id, currentPath);
+        const localFiles = await getLocalFiles(userRdx.user.id, currentPath);
+        const items = nxDirectories.concat(localFiles);
+        dispatch(setLibraryPathExists(true));
+        dispatch(setLibraryFiles(items));
+        dispatch(setLibraryPath(currentPath));
+      } catch (e) {
+        if (e.response.status === 404) {
+          dispatch(setLibraryPathExists(false));
+        }
       }
+
+      setIsLoading(false);
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentDirectory, getLocalFiles, getWebDavDirectories, userRdx.user.id]);
+  }, [path]);
+
+  useEffect(() => {
+    setItems(orderItems(order, filterItems(filter, rawItems)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawItems]);
 
   const handleOrder = (order: OrderEnum) => {
     setOrder(order);

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import IconButton from "@/components/ui/IconButton";
 import FullScreenSearch from "@/components/ui/FooterApp/FullScreenSearch";
-import DrawerBottomRecording from "@/components/ui/FooterApp/DrawerBottomRecording";
+import DrawerBottomRecording from "@/components/ui/FooterApp/DrawerMoreOptionsBottom";
 import Grid from "@material-ui/core/Grid";
 import { useTheme, makeStyles } from "@material-ui/core/styles";
+import { PropsLibrarySelector } from "@/types/index";
+import { useSelector } from "react-redux";
 
 type Props = {
   page: string;
@@ -31,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AppTab({ page }: Props) {
+  const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+  const libraryPath = library.currentPath;
   const classes = useStyles();
   const theme = useTheme();
   const [openSearch, setOpenSearch] = useState(false);
@@ -66,9 +70,13 @@ function AppTab({ page }: Props) {
         <Grid item xs={2}>
           <IconButton
             icon="library"
-            url="/library"
+            url={`/library/${libraryPath}`}
             fontSizeIcon="medium"
-            color={page === "/library" ? theme.palette.primary.main : theme.palette.primary.main}
+            color={
+              page === `/library/${libraryPath}`
+                ? theme.palette.primary.main
+                : theme.palette.primary.main
+            }
           />
         </Grid>
         <Grid item xs={2}>
