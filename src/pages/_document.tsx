@@ -54,6 +54,10 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
             rel="stylesheet"
           />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap"
+            rel="stylesheet"
+          />
           {url && <script src={url}></script>}
         </Head>
         <body>
