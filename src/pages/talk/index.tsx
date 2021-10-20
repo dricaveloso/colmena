@@ -8,6 +8,7 @@ import {
   listOpenChat,
   SetROChat,
   participants,
+  SetDescription,
 } from "@/services/talk/listAll";
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
@@ -47,7 +48,10 @@ export default function OCS() {
     const Pa = await participants("8zhd8x4p");
     console.log(Pa);
   }
-
+  async function setDescription() {
+    const Pa = await SetDescription("8zhd8x4p", "test description");
+    console.log(Pa);
+  }
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
@@ -84,6 +88,13 @@ export default function OCS() {
             <div>
               <button type="button" onClick={getParticipants}>
                 list Participants
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={setDescription}>
+                set Description
               </button>
             </div>
           </FlexBox>

@@ -61,3 +61,14 @@ export function participants(token: string) {
       console.log(error);
     });
 }
+
+export function SetDescription(token: string, description: string) {
+  return talk()
+    .put(`/room/${token}/description`, { description })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
