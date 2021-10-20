@@ -7,6 +7,8 @@ import Box from "@material-ui/core/Box";
 import VerticalList from "@/components/ui/VerticalList";
 import { useTranslation } from "next-i18next";
 import ActionsToListItems from "@/components/ui/ActionsToListItems";
+import { EnvironmentEnum } from "@/enums/*";
+import { LibraryItemInterface } from "@/interfaces/index";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -47,27 +49,36 @@ export default function TabCategoryList() {
     setValue(index);
   };
 
-  const data = [
+  const data: LibraryItemInterface[] = [
     {
-      id: 1,
-      title: "Title show",
-      subtitle: "00:00 - by Author",
-      img: "/images/radio_image.jpg",
-      url: "/library",
+      id: "1",
+      basename: "Title Show",
+      type: "document",
+      environment: EnvironmentEnum.REMOTE,
     },
     {
-      id: 2,
-      title: "Title show",
-      subtitle: "00:00 - by Author",
-      img: "/images/radio_image.jpg",
-      url: "/library",
+      id: "2",
+      basename: "Title Show",
+      type: "document",
+      environment: EnvironmentEnum.REMOTE,
     },
     {
-      id: 3,
-      title: "Title show",
-      subtitle: "00:00 - by Author",
-      img: "/images/radio_image.jpg",
-      url: "/library",
+      id: "3",
+      basename: "Title Show",
+      type: "document",
+      environment: EnvironmentEnum.REMOTE,
+    },
+    {
+      id: "4",
+      basename: "Title Show",
+      type: "document",
+      environment: EnvironmentEnum.REMOTE,
+    },
+    {
+      id: "5",
+      basename: "Title Show",
+      type: "document",
+      environment: EnvironmentEnum.REMOTE,
     },
   ];
 

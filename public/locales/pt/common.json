@@ -16,5 +16,6 @@
   "welcomeRadioMessage": "Radio {{mediaName}}",
   "notFoundPageText": "Página não encontrada",
   "internErrorPageText": "Erro interno",
-  "constructionPageText": "Página em construção"
+  "constructionPageText": "Página em construção",
+  "addFolderDrawerBottomTitle": "Pasta"
 }

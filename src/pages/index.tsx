@@ -32,7 +32,11 @@ function Index() {
       <Text variant={TextVariantEnum.H4} gutterBottom>
         {CONSTANTS.APP_NAME}
       </Text>
-      <Text variant={TextVariantEnum.BODY1} gutterBottom style={{ marginBottom: 20 }}>
+      <Text
+        variant={TextVariantEnum.BODY1}
+        gutterBottom
+        style={{ marginBottom: 20, textAlign: "center" }}
+      >
         {CONSTANTS.APP_DESCRIPTION}
       </Text>
       <Link href="/login">

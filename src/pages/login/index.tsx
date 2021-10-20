@@ -48,7 +48,7 @@ export default function Login() {
         display="flex"
       >
         <ExternalVerticalLogo />
-        <Divider />
+        <Divider marginTop={24} />
         <Form />
       </Box>
       <FooterDW />

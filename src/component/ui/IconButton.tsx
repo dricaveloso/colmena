@@ -21,6 +21,7 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   style?: object;
   className?: string;
+  variant?: "text" | "outlined" | "contained" | undefined;
 };
 
 function IconButtonCtr({
@@ -34,6 +35,7 @@ function IconButtonCtr({
   iconStyle = {},
   style = {},
   className = "",
+  variant = undefined,
   handleClick,
 }: Props) {
   const [colorActive, setColorActive] = useState(color);
@@ -51,6 +53,7 @@ function IconButtonCtr({
             onMouseOver={() => changeColorHandler(true)}
             onMouseOut={() => changeColorHandler(false)}
             className={className}
+            variant={variant}
           >
             <SvgIcon
               icon={icon}
@@ -72,6 +75,7 @@ function IconButtonCtr({
           onMouseOver={() => changeColorHandler(true)}
           onMouseOut={() => changeColorHandler(false)}
           className={className}
+          variant={variant}
         >
           <SvgIcon
             icon={icon}
@@ -89,6 +93,7 @@ function IconButtonCtr({
         onMouseOut={() => changeColorHandler(false)}
         onClick={handleClick}
         className={className}
+        variant={variant}
       >
         <SvgIcon
           icon={icon}

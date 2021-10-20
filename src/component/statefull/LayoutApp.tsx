@@ -49,7 +49,7 @@ function LayoutApp({
   }, []);
 
   return (
-    <Container extraStyle={{ padding: 0 }}>
+    <Container extraStyle={{ padding: 0, backgroundColor: "#F9F9F9" }}>
       <FlexBox extraStyle={{ margin: 0 }}>
         <AppBar
           title={title}

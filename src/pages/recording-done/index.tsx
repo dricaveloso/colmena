@@ -38,11 +38,8 @@ function RecordingDone() {
         const resultObj = result[0];
         const blob = arrayBufferToBlob(resultObj.arrayBufferBlob);
         const audioUrl = createObjectURL(blob);
-        const resultNew = {
-          audioUrl,
-          ...resultObj,
-        };
-        setAudio(resultNew);
+        resultObj.audioUrl = audioUrl;
+        setAudio(resultObj);
       } catch (e) {
         console.log(e);
       } finally {

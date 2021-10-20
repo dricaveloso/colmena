@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { UserInfoInterface, RecordingInterface } from "@/interfaces/index";
+import { UserInfoInterface, RecordingInterface, LibraryItemInterface } from "@/interfaces/index";
 import {
   NotificationStatusEnum,
   ButtonColorEnum,
@@ -16,6 +16,7 @@ import {
   JustifyContentEnum,
   FlexDirectionEnum,
   TextfieldVariantEnum,
+  EnvironmentEnum,
 } from "@/enums/index";
 
 export type PropsUserSelector = {
@@ -36,6 +37,12 @@ export type PropsAudioData = {
 export type PropsAudioSave = {
   name: string;
   tags: NXTagsProps[];
+};
+
+export type PropsLibrarySelector = {
+  libraryFiles: LibraryItemInterface[];
+  currentPath: string;
+  currentPathExists: boolean;
 };
 
 export type NXTagsProps = {
@@ -212,5 +219,11 @@ export type AllIconProps =
   | "contract"
   | "info"
   | "panal"
-  | "gradient-panal"
-  | "logout";
+  | "gradient_panal"
+  | "logout"
+  | "grid"
+  | "settings_adjust"
+  | "checklist"
+  | "add_folder";
+
+export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;
