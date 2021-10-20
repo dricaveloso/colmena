@@ -176,7 +176,7 @@ export function dateDescription(date: Date | undefined) {
   }
 
   if (minutes > 1) {
-    const minuteDescription = hours > 1 ? pluralMinuteDescription : singularMinuteDescription;
+    const minuteDescription = minutes > 1 ? pluralMinuteDescription : singularMinuteDescription;
 
     return `${minutes} ${minuteDescription}`;
   }
