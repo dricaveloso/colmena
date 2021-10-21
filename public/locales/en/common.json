@@ -27,6 +27,7 @@
       "placeholderPassword": "Password",
       "placeholderPasswordConfirmation": "Password confirmation",
       "submitLoginTitle": "Enter",
+      "forgetPasswordTitle": "Forget my password",
       "submitSaveTitle": "Save",
       "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
       "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",

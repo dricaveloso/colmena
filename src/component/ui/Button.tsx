@@ -32,11 +32,11 @@ export default function Btn({
   return url !== "no-navigation" ? (
     <Link href={url}>
       <Button
-        style={{ textTransform: "capitalize", ...style }}
         variant={variant}
         color={color}
         size={size}
-        className="width-based-device"
+        // className="width-based-device"
+        style={{ textTransform: "capitalize", ...style }}
         endIcon={endIcon}
         disabled={disabled}
         component="a"
@@ -46,12 +46,12 @@ export default function Btn({
     </Link>
   ) : (
     <Button
+      // className="width-based-device"
       style={{ textTransform: "capitalize", ...style }}
       variant={variant}
       color={color}
       size={size}
       onClick={handleClick}
-      className="width-based-device"
       endIcon={endIcon}
       disabled={disabled}
       component={component}

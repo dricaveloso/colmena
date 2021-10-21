@@ -16,7 +16,6 @@ import { useRouter } from "next/router";
 import Loading from "@/components/ui/Loading";
 import { getExtensionFilename, dateDescription } from "@/utils/utils";
 import Image from "next/image";
-import notFoundImage from "../../../public/images/404 Error.png";
 import { useTranslation } from "react-i18next";
 import {
   EnvironmentEnum,
@@ -240,7 +239,7 @@ function MyLibrary() {
         )}
         {notFoundDir && (
           <>
-            <Image alt="404 not found" src={notFoundImage} width={500} height={500} />
+            <Image alt="404 not found" src="images/404 Error.png" width={500} height={500} />
             <Button color="primary" variant="outlined" onClick={() => router.back()}>
               {t("form.backButton")}
             </Button>

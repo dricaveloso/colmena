@@ -14,6 +14,7 @@ import NotificationContext from "@/store/context/notification-context";
 import SocialMediaIconButton from "@/components/statefull/SocialMediaIconButtons";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
+import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 import {
   JustifyContentEnum,
   NotificationStatusEnum,
@@ -105,6 +106,7 @@ function Profile() {
             />
           </div>
         </div>
+        <WhiteSpaceFooter />
       </FlexBox>
     </LayoutApp>
   );
