@@ -72,3 +72,24 @@ export function SetDescription(token: string, description: string) {
       console.log(error);
     });
 }
+export function postCreateConversation(roomType: number, roomName: string) {
+  return talk()
+    .post(`/room`, { roomType, roomName })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export function postNewParticipant(token: string, newParticipant: string, source: string) {
+  return talk()
+    .post(`/room/${token}/participants`, { newParticipant, source })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

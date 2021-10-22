@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
 import { useSelector } from "react-redux";
 
 import { PropsUserSelector } from "../../types";
@@ -10,12 +9,9 @@ import {
   SetROChat,
   participants,
   SetDescription,
+  postCreateConversation,
+  postNewParticipant,
 } from "@/services/talk/listAll";
-=======
-// import { useSelector } from "react-redux";
-// import { PropsUserSelector } from "@/types/index";
-import listTalks from "@/services/talk/listAll";
->>>>>>> e9697cc5dca389df92420ef7c97be90c321d4ca5
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
 import LayoutApp from "@/components/statefull/LayoutApp";
@@ -39,7 +35,7 @@ export default function OCS() {
     }
   }
   async function listOneChat() {
-    const listEspecif = await listEspecificChat("6vku6s5z");
+    const listEspecif = await listEspecificChat("6rd8qc4j");
     console.log(listEspecif);
   }
   async function listOpen() {
@@ -47,16 +43,24 @@ export default function OCS() {
     console.log(listOpen);
   }
   async function setRO() {
-    const RO = await SetROChat("p3gevuzt");
+    const RO = await SetROChat("6rd8qc4j");
     console.log(RO);
   }
   async function getParticipants() {
-    const Pa = await participants("8zhd8x4p");
+    const Pa = await participants("6rd8qc4j");
     console.log(Pa);
   }
   async function setDescription() {
-    const Pa = await SetDescription("8zhd8x4p", "test description");
+    const Pa = await SetDescription("6rd8qc4j", "test description");
     console.log(Pa);
+  }
+  async function createConversation() {
+    const create = await postCreateConversation(2, "testeAPI");
+    console.log(create);
+  }
+  async function newParticipant() {
+    const create = await postNewParticipant("6rd8qc4j", "makena", "users");
+    console.log(create);
   }
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
@@ -71,11 +75,33 @@ export default function OCS() {
           </FlexBox>
           <FlexBox>
             <div>
+              <button type="button" onClick={createConversation}>
+                Create Conversation
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
               <button type="button" onClick={listOneChat}>
                 List One
               </button>
             </div>
           </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={getParticipants}>
+                list Participants
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={newParticipant}>
+                add Participant
+              </button>
+            </div>
+          </FlexBox>
+
           <FlexBox>
             <div>
               <button type="button" onClick={listOpen}>
