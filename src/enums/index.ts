@@ -124,3 +124,28 @@ export enum TextfieldVariantEnum {
   OUTLINED = "outlined",
   TEXT = "text",
 }
+
+export enum EnvironmentEnum {
+  LOCAL = "local",
+  REMOTE = "remote",
+}
+
+export enum ListTypeEnum {
+  LIST = "list",
+  GRID = "grid",
+}
+
+export enum OrderEnum {
+  ASC_ALPHABETICAL = "ascending_alphabetical_order",
+  DESC_ALPHABETICAL = "descending_alphabetical_order",
+  LATEST_FIRST = "latest_first",
+  OLDEST_FIST = "oldest_first",
+}
+
+export enum FilterEnum {
+  OFFLINE = "offline",
+  SYNC = "sync",
+  AUDIO = "audio",
+  IMAGE = "image",
+  TEXT = "text",
+}

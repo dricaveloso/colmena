@@ -8,4 +8,3 @@ services:
     command: npm run dev
     volumes:
       - .:/usr/src/app
-    

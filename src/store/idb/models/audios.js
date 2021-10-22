@@ -7,3 +7,7 @@ export function createAudio(file) {
 export function getLastAudioRecordedByUser(userId) {
   return db.audios.where({ userId }).reverse().sortBy("createdAt");
 }
+
+export function getAllAudios(userId) {
+  return db.audios.where({ userId }).sortBy("createdAt");
+}

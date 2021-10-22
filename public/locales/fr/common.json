@@ -16,6 +16,7 @@
   "chooseAnOption": "Elija una opción",
   "callDrawerBottomTitle": "Call",
   "recordingDrawerBottomTitle": "Recording",
+  "addFolderDrawerBottomTitle": "Folder",
   "enterTitleIndexPage": "Entrer",
   "switchLanguage": "Language",
   "form": {
@@ -27,6 +28,7 @@
     "placeholderPassword": "Password",
     "placeholderPasswordConfirmation": "Password confirmation",
     "submitLoginTitle": "Enter",
+    "forgetPasswordTitle": "Forget my password",
     "submitSaveTitle": "Save",
     "invalidURLTitle": "Invalid URL",
     "successMessageFormSave": "Saved successfully",

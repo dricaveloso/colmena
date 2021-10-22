@@ -17,6 +17,7 @@ type Props = {
   back?: boolean;
   headerPosition?: PositionProps | undefined;
   children: React.ReactNode;
+  templateHeader?: "variation1" | "variation2";
 };
 
 function LayoutApp({
@@ -24,6 +25,7 @@ function LayoutApp({
   drawer = true,
   back = false,
   headerPosition = PositionEnum.FIXED,
+  templateHeader = "variation1",
   children,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -47,9 +49,15 @@ function LayoutApp({
   }, []);
 
   return (
-    <Container extraStyle={{ padding: 0 }}>
+    <Container extraStyle={{ padding: 0, backgroundColor: "#F9F9F9" }}>
       <FlexBox extraStyle={{ margin: 0 }}>
-        <AppBar title={title} headerPosition={headerPosition} drawer={drawer} back={back} />
+        <AppBar
+          title={title}
+          headerPosition={headerPosition}
+          drawer={drawer}
+          templateHeader={templateHeader}
+          back={back}
+        />
         <>{children}</>
         <FooterApp />
       </FlexBox>

@@ -23,17 +23,20 @@ function FooterApp() {
   }
 
   return (
-    <div className="footer" style={{ backgroundColor: "#fff", margin: 0, padding: 2 }}>
-      <Box
-        display="flex"
-        style={{ margin: 0, ...style }}
-        flexDirection="row"
-        flexWrap="nowrap"
-        justifyContent="space-around"
-      >
-        <AppTab page={router.route} />
-      </Box>
-    </div>
+    <>
+      <Box width="100%" pb={3} />
+      <div className="footer" style={{ backgroundColor: "#fff", margin: 0, padding: 2 }}>
+        <Box
+          display="flex"
+          style={{ margin: 0, ...style }}
+          flexDirection="row"
+          flexWrap="nowrap"
+          justifyContent="space-around"
+        >
+          <AppTab page={router.route} />
+        </Box>
+      </div>
+    </>
   );
 }
 

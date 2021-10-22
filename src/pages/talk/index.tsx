@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+<<<<<<< HEAD
 import { useSelector } from "react-redux";
 
 import { PropsUserSelector } from "../../types";
@@ -10,15 +11,19 @@ import {
   participants,
   SetDescription,
 } from "@/services/talk/listAll";
+=======
+// import { useSelector } from "react-redux";
+// import { PropsUserSelector } from "@/types/index";
+import listTalks from "@/services/talk/listAll";
+>>>>>>> e9697cc5dca389df92420ef7c97be90c321d4ca5
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { JustifyContentEnum } from "@/enums/*";
+import { JustifyContentEnum } from "@/enums/index";
 import FlexBox from "@/components/ui/FlexBox";
 
 export default function OCS() {
-  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  console.log(userRdx.user.id);
+  // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const [data, setData] = useState([]);
   // const directory = "";

@@ -12,6 +12,7 @@ import { NotificationStatusEnum } from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { updatePassword } from "@/services/ocs/users";
 import { useRouter } from "next/router";
+import Box from "@material-ui/core/Box";
 import * as Yup from "yup";
 
 type MyFormValues = {
@@ -82,6 +83,7 @@ export default function WrapperForm({ userId }: Props) {
       >
         {({ submitForm, isSubmitting, setFieldValue, errors, touched }: any) => (
           <Form
+            style={{ width: "100%" }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 submitForm();
@@ -124,11 +126,14 @@ export default function WrapperForm({ userId }: Props) {
             <Divider marginTop={20} />
             {isSubmitting && <LinearProgress />}
             <Divider marginTop={20} />
-            <Button
-              title={c("form.submitLoginTitle")}
-              disabled={isSubmitting}
-              handleClick={submitForm}
-            />
+            <Box display="flex" justifyContent="flex-end" flex="1">
+              <Button
+                title={c("form.submitLoginTitle")}
+                disabled={isSubmitting}
+                handleClick={submitForm}
+                style={{ width: "50%" }}
+              />
+            </Box>
             <TermsOfUse open={openTerms} handleSetOpen={(flag) => setOpenTerms(flag)} />
           </Form>
         )}
