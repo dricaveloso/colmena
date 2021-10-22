@@ -47,7 +47,7 @@ const VerticalItemList = ({
   image,
   extension,
 }: LibraryItemInterface) => {
-  console.log(environment, createdAt, tags, arrayBufferBlob);
+  // console.log(environment, createdAt, tags, arrayBufferBlob);
   const classes = useStyles();
   const router = useRouter();
 
