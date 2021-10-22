@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
-import { I18nInterface, LibraryItemInterface, RecordingInterface } from "@/interfaces/index";
+import {
+  I18nInterface,
+  LibraryItemInterface,
+  RecordingInterface,
+  TimeDescriptionInterface,
+} from "@/interfaces/index";
 import { listDirectories } from "@/services/webdav/directories";
 import { PropsUserSelector, PropsLibrarySelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
@@ -28,7 +33,7 @@ import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/a
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["drawer", "common", "library"])),
+    ...(await serverSideTranslations(locale, ["library"])),
   },
 });
 
@@ -49,6 +54,7 @@ function MyLibrary() {
   const [filter, setFilter] = useState("");
   const { t } = useTranslation("common");
   const dispatch = useDispatch();
+  const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
 
   const getWebDavDirectories = useCallback(async (userId: string, currentDirectory: string) => {
     const items: LibraryItemInterface[] = [];
@@ -67,7 +73,7 @@ function MyLibrary() {
             environment: EnvironmentEnum.REMOTE,
             extension: getExtensionFilename(filename),
             createdAt: date,
-            createdAtDescription: dateDescription(date),
+            createdAtDescription: dateDescription(date, timeDescription),
           };
 
           items.push(item);
@@ -91,7 +97,7 @@ function MyLibrary() {
             environment: EnvironmentEnum.LOCAL,
             extension: "ogg",
             createdAt: file.createdAt,
-            createdAtDescription: dateDescription(file.createdAt),
+            createdAtDescription: dateDescription(file.createdAt, timeDescription),
           };
 
           items.push(item);
@@ -180,8 +186,6 @@ function MyLibrary() {
           setIsLoading(true);
         }
 
-        console.log(currentPath, currentDirectory);
-
         const nxDirectories = await getWebDavDirectories(userRdx.user.id, currentPath);
         const localFiles = await getLocalFiles(userRdx.user.id, currentPath);
         const items = nxDirectories.concat(localFiles);
@@ -189,9 +193,9 @@ function MyLibrary() {
         dispatch(setLibraryFiles(items));
         dispatch(setLibraryPath(currentPath));
       } catch (e) {
-        if (e.response.status === 404) {
-          dispatch(setLibraryPathExists(false));
-        }
+        console.log(e);
+        dispatch(setLibraryFiles([]));
+        dispatch(setLibraryPathExists(false));
       }
 
       setIsLoading(false);
@@ -226,6 +230,7 @@ function MyLibrary() {
           setFilter={handleFilter}
           order={order}
           filter={filter}
+          pathExists={!notFoundDir}
         />
         {isLoading && (
           <FlexBox justifyContent={JustifyContentEnum.CENTER}>

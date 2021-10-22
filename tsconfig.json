@@ -14,8 +14,9 @@
       "@/utils/*": ["src/utils/*"],
       "@/constants/*": ["src/constants/*"],
       "@/libs/*": ["src/libs/*"],
+      "@/extensions/*": ["src/extensions/*"],
       "@/tests/*": ["test/*"],
-      "@/assets/*": ["assets/*"]
+      "@/assets/*": ["assets/*"],
     },
     "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],

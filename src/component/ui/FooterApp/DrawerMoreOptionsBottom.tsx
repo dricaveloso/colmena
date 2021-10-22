@@ -26,11 +26,11 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
 
   const handleOpenNewFolderModal = () => {
     setOpenNewFolderModal(true);
+    handleClose();
   };
 
   const handleCloseNewFolderModal = () => {
     setOpenNewFolderModal(false);
-    handleClose();
   };
 
   return (
