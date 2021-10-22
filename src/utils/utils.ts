@@ -208,3 +208,11 @@ export function dateDescription(date: Date | undefined, timeDescription: TimeDes
 export function trailingSlash(path: string) {
   return `${path.replace(/\/$/, "")}/`;
 }
+
+export function removeFirstSlash(path: string | null | undefined) {
+  if (!path) {
+    return path;
+  }
+
+  return `${path.replace(/^\//, "")}`;
+}

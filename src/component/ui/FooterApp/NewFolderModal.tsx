@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
+    padding: theme.spacing(4),
   },
   form: {
     "& .MuiTextField-root": {
@@ -73,7 +74,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           throw new Error(t("messages.directoryAlreadyExists"));
         }
 
-        const create = await createDirectory(userId, finalPath);
+        const create = true; // await createDirectory(userId, finalPath);
         if (create) {
           const date = new Date();
           const item: LibraryItemInterface = {
@@ -111,6 +112,12 @@ export default function NewFolderModal({ open, handleClose }: Props) {
     const paths = !pathExists ? "/" : path;
     setHandledPath(paths);
     setFinalPath(paths);
+
+    return () => {
+      setHandledPath("");
+      setFinalPath("");
+      setIsLoading(false);
+    };
   }, [path, pathExists]);
 
   return (
