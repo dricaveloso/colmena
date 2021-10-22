@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -16,7 +16,8 @@ import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Notification from "@/components/ui/Notification";
+import NotificationContext from "@/store/context/notification-context";
+import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,11 +30,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(4),
   },
   form: {
     "& .MuiTextField-root": {
-      marginBottom: theme.spacing(2),
       width: "100%",
     },
   },
@@ -54,10 +53,10 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const path = library.currentPath;
   const pathExists = library.currentPathExists;
   const classes = useStyles();
+  const notificationCtx = useContext(NotificationContext);
   const [finalPath, setFinalPath] = useState(path);
   const [handledPath, setHandledPath] = useState("/");
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState<string>("");
   const { t } = useTranslation("common");
   const dispatch = useDispatch();
   const initialValues = {
@@ -91,7 +90,10 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           handleClose();
         }
       } catch (e) {
-        setMessage(e.message);
+        notificationCtx.showNotification({
+          message: e.message,
+          status: NotificationStatusEnum.ERROR,
+        });
         setIsLoading(false);
       }
     })();
@@ -151,7 +153,10 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                       />
                     )}
                   </Field>
-                  <ErrorMessage name="name" />
+                  <ErrorMessage name="name">
+                    {(msg) => <ErrorMessageForm message={msg} />}
+                  </ErrorMessage>
+                  <Divider marginTop={20} />
                   <TextField
                     id="outlined-search"
                     label={t("form.local")}
@@ -182,7 +187,6 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           </div>
         </Fade>
       </Modal>
-      {message !== "" && <Notification status={NotificationStatusEnum.ERROR} message={message} />}
     </>
   );
 }
