@@ -74,7 +74,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           throw new Error(t("messages.directoryAlreadyExists"));
         }
 
-        const create = true; // await createDirectory(userId, finalPath);
+        const create = await createDirectory(userId, finalPath);
         if (create) {
           const date = new Date();
           const item: LibraryItemInterface = {
