@@ -1,4 +1,8 @@
-import { UserInvitationInterface, BreadcrumbItemInterface } from "@/interfaces/index";
+import {
+  UserInvitationInterface,
+  BreadcrumbItemInterface,
+  TimeDescriptionInterface,
+} from "@/interfaces/index";
 import { differenceInMinutes, differenceInCalendarMonths } from "date-fns";
 
 export function capitalizeFirstLetter(string: string) {
@@ -145,21 +149,21 @@ export function moveScrollToRight(element: any) {
   }
 }
 
-export function dateDescription(date: Date | undefined) {
+export function dateDescription(date: Date | undefined, timeDescription: TimeDescriptionInterface) {
   if (date === undefined) {
     return "";
   }
 
-  const singularYearDescription = "ano";
-  const pluralYearDescription = "anos";
-  const singularMonthDescription = "mês";
-  const pluralMonthDescription = "meses";
-  const singularDayDescription = "mês";
-  const pluralDayDescription = "meses";
-  const singularHourDescription = "hora";
-  const pluralHourDescription = "horas";
-  const singularMinuteDescription = "minuto";
-  const pluralMinuteDescription = "minutos";
+  const singularYearDescription = timeDescription.singularYear;
+  const pluralYearDescription = timeDescription.pluralYear;
+  const singularMonthDescription = timeDescription.singularMonth;
+  const pluralMonthDescription = timeDescription.pluralMonth;
+  const singularDayDescription = timeDescription.singularDay;
+  const pluralDayDescription = timeDescription.pluralDay;
+  const singularHourDescription = timeDescription.singularHour;
+  const pluralHourDescription = timeDescription.pluralHour;
+  const singularMinuteDescription = timeDescription.singularMinute;
+  const pluralMinuteDescription = timeDescription.pluralMinute;
 
   const today = new Date();
   const months = differenceInCalendarMonths(today, date);
@@ -198,7 +202,7 @@ export function dateDescription(date: Date | undefined) {
     return `${minutes} ${minuteDescription}`;
   }
 
-  return "Agora";
+  return timeDescription.now;
 }
 
 export function trailingSlash(path: string) {

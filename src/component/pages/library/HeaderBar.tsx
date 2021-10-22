@@ -33,11 +33,21 @@ type Props = {
   setOrder: React.Dispatch<React.SetStateAction<OrderEnum>>;
   order: OrderEnum;
   filter: string | FilterEnum;
+  pathExists: boolean;
 };
 
 const defineIconListType = (type: string) => (type === ListTypeEnum.LIST ? "grid" : "checklist");
 
-function HeaderBar({ path, listType, setListType, setFilter, setOrder, order, filter }: Props) {
+function HeaderBar({
+  path,
+  listType,
+  setListType,
+  setFilter,
+  setOrder,
+  order,
+  filter,
+  pathExists,
+}: Props) {
   const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
   const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
   const { t } = useTranslation("library");
@@ -94,20 +104,23 @@ function HeaderBar({ path, listType, setListType, setFilter, setOrder, order, fi
       <Box className={classes.breadcrumb}>
         <Breadcrumb breadcrumbs={breadcrumb} />
       </Box>
-      <Box className={classes.options}>
-        <IconButton
-          color="primary"
-          component="span"
-          onClick={handleOpenFilterDrawer}
-          aria-controls="filter-menu"
-          aria-haspopup="true"
-        >
-          <SvgIcon icon="settings_adjust" htmlColor="#292929" fontSize="small" />
-        </IconButton>
-        <IconButton color="primary" component="span" onClick={changeListType}>
-          <SvgIcon icon={iconListType} htmlColor="#292929" fontSize="small" />
-        </IconButton>
-      </Box>
+      {pathExists && (
+        <Box className={classes.options}>
+          <IconButton
+            color="primary"
+            component="span"
+            onClick={handleOpenFilterDrawer}
+            aria-controls="filter-menu"
+            aria-haspopup="true"
+          >
+            <SvgIcon icon="settings_adjust" htmlColor="#292929" fontSize="small" />
+          </IconButton>
+          <IconButton color="primary" component="span" onClick={changeListType}>
+            <SvgIcon icon={iconListType} htmlColor="#292929" fontSize="small" />
+          </IconButton>
+        </Box>
+      )}
+
       <TemporaryFiltersDrawer
         filterItems={filterItems}
         orderItems={orderItems}

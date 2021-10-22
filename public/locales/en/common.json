@@ -19,7 +19,9 @@
   "addFolderDrawerBottomTitle": "Folder",
   "enterTitleIndexPage": "Login",
   "titleSwitchLanguage": "Switch Language",
-  "form": {    
+  "newFolderTitle": "New Folder",
+  "loading": "Loading",
+  "form": {
       "skipButton": "Skip",
       "nextIntro": "Next",
       "backButton": "Back",
@@ -34,9 +36,27 @@
       "invalidURLTitle": "Invalid URL",
       "successMessageFormSave": "Saved successfully",
       "differentPasswordsTitle": "Passwords do not match",
-      "requiredTitle": "Required"
+      "requiredTitle": "Required",
+      "name": "Name",
+      "local": "Local",
+      "create": "Create"
   },
   "messages": {
-    "loginFailedTitle": "Incorrect username or password."
+    "loginFailedTitle": "Incorrect username or password.",
+    "directoryAlreadyExists": "There is already a directory with that name.",
+    "enterFolderName": "Enter the folder name"
+  },
+  "timeDescription": {
+    "singularYear": "year",
+    "pluralYear": "years",
+    "singularMonth": "month",
+    "pluralMonth": "years",
+    "singularDay": "day",
+    "pluralDay": "days",
+    "singularHour": "hour",
+    "pluralHour": "hours",
+    "singularMinute": "minute",
+    "pluralMinute": "minutes",
+    "now": "now"
   }
 }

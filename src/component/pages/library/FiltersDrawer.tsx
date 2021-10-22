@@ -11,6 +11,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   open: boolean;
@@ -46,6 +47,7 @@ export default function TemporaryFiltersDrawer({
 }: Props) {
   const [expanded, setExpanded] = React.useState<string | boolean>("order");
   const classes = useStyles();
+  const { t } = useTranslation("library");
 
   const handleChange = (panel: string) => (event: any, newExpanded: string | boolean) => {
     setExpanded(newExpanded ? panel : false);
@@ -68,28 +70,31 @@ export default function TemporaryFiltersDrawer({
           aria-controls="order-content"
           id="order-header"
         >
-          <Typography className={classes.heading}>Sorting</Typography>
+          <Typography className={classes.heading}>{t("sort.title")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <List>
             <ListItem button key={uuid()} onClick={() => orderItems(OrderEnum.LATEST_FIRST)}>
               <ListItemText
-                primary="Mais Recentes"
+                primary={t("sort.newest")}
                 className={orderActive(OrderEnum.LATEST_FIRST)}
               />
             </ListItem>
             <ListItem button key={uuid()} onClick={() => orderItems(OrderEnum.OLDEST_FIST)}>
-              <ListItemText primary="Mais Antigos" className={orderActive(OrderEnum.OLDEST_FIST)} />
+              <ListItemText
+                primary={t("sort.oldest")}
+                className={orderActive(OrderEnum.OLDEST_FIST)}
+              />
             </ListItem>
             <ListItem button key={uuid()} onClick={() => orderItems(OrderEnum.ASC_ALPHABETICAL)}>
               <ListItemText
-                primary="Ordem Alfabética"
+                primary={t("sort.alphabeticalOrder")}
                 className={orderActive(OrderEnum.ASC_ALPHABETICAL)}
               />
             </ListItem>
             <ListItem button key={uuid()} onClick={() => orderItems(OrderEnum.DESC_ALPHABETICAL)}>
               <ListItemText
-                primary="Ordem Alfabética Decrescente"
+                primary={t("sort.descendingAlphabeticalOrder")}
                 className={orderActive(OrderEnum.DESC_ALPHABETICAL)}
               />
             </ListItem>
@@ -102,30 +107,39 @@ export default function TemporaryFiltersDrawer({
           aria-controls="filters-content"
           id="filters-header"
         >
-          <Typography className={classes.heading}>Filters</Typography>
+          <Typography className={classes.heading}>{t("filter.title")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <List>
             <ListItem button key={uuid()} onClick={() => filterItems("")}>
-              <ListItemText primary="Todos" className={filterActive("")} />
+              <ListItemText primary={t("filter.all")} className={filterActive("")} />
             </ListItem>
             <ListItem button key={uuid()} onClick={() => filterItems(FilterEnum.OFFLINE)}>
               <ListItemText
-                primary="Disponible Offline"
+                primary={t("filter.availableOffline")}
                 className={filterActive(FilterEnum.OFFLINE)}
               />
             </ListItem>
             <ListItem button key={uuid()} onClick={() => filterItems(FilterEnum.SYNC)}>
-              <ListItemText primary="Sincronizados" className={filterActive(FilterEnum.SYNC)} />
+              <ListItemText
+                primary={t("filter.synchronized")}
+                className={filterActive(FilterEnum.SYNC)}
+              />
             </ListItem>
             <ListItem button key={uuid()} onClick={() => filterItems(FilterEnum.AUDIO)}>
-              <ListItemText primary="Audios" className={filterActive(FilterEnum.AUDIO)} />
+              <ListItemText
+                primary={t("filter.audios")}
+                className={filterActive(FilterEnum.AUDIO)}
+              />
             </ListItem>
             <ListItem button key={uuid()} onClick={() => filterItems(FilterEnum.IMAGE)}>
-              <ListItemText primary="Imagenes" className={filterActive(FilterEnum.IMAGE)} />
+              <ListItemText
+                primary={t("filter.images")}
+                className={filterActive(FilterEnum.IMAGE)}
+              />
             </ListItem>
             <ListItem button key={uuid()} onClick={() => filterItems(FilterEnum.TEXT)}>
-              <ListItemText primary="Textos" className={filterActive(FilterEnum.TEXT)} />
+              <ListItemText primary={t("filter.texts")} className={filterActive(FilterEnum.TEXT)} />
             </ListItem>
           </List>
         </AccordionDetails>

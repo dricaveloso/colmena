@@ -17,6 +17,7 @@ import { LibraryItemInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Notification from "@/components/ui/Notification";
+import { useTranslation } from "next-i18next";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -57,6 +58,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const [handledPath, setHandledPath] = useState("/");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<string>("");
+  const { t } = useTranslation("common");
   const dispatch = useDispatch();
   const initialValues = {
     name: "",
@@ -69,7 +71,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
       try {
         const directoryExists = await existDirectory(userId, finalPath);
         if (directoryExists) {
-          throw new Error("Já existe um diretório com esse nome.");
+          throw new Error(t("messages.directoryAlreadyExists"));
         }
 
         const create = await createDirectory(userId, finalPath);
@@ -82,7 +84,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
             type: "directory",
             environment: EnvironmentEnum.REMOTE,
             createdAt: date,
-            createdAtDescription: dateDescription(date),
+            createdAtDescription: dateDescription(date, t("timeDescription")),
           };
           setIsLoading(false);
           dispatch(addLibraryFile(item));
@@ -96,7 +98,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   };
 
   const NewFolderSchema = Yup.object().shape({
-    name: Yup.string().required("Informe o nome da pasta"),
+    name: Yup.string().required(t("messages.enterFolderName")),
   });
 
   const handleName = (name: any) => {
@@ -126,7 +128,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
         <Fade in={open}>
           <div className={classes.paper}>
             <h4 id="transition-modal-title" className={classes.title}>
-              New Folder
+              {t("newFolderTitle")}
             </h4>
             <Formik
               initialValues={initialValues}
@@ -139,7 +141,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     {({ field }: FieldProps) => (
                       <TextField
                         id="outlined-search"
-                        label="Name"
+                        label={t("form.name")}
                         variant="outlined"
                         {...field}
                         onChange={(
@@ -152,7 +154,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                   <ErrorMessage name="name" />
                   <TextField
                     id="outlined-search"
-                    label="Local"
+                    label={t("form.local")}
                     variant="outlined"
                     value={finalPath}
                     disabled
@@ -168,10 +170,10 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     {isLoading ? (
                       <>
                         <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} />{" "}
-                        Aguarde..
+                        {t("loading")}..
                       </>
                     ) : (
-                      "Create"
+                      t("form.create")
                     )}
                   </Button>
                 </Form>

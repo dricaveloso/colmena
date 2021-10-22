@@ -34,9 +34,27 @@
     "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
     "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",
     "differentPasswordsTitle": "Passwords do not match",
-    "requiredTitle": "Required"  
+    "requiredTitle": "Required",
+    "name": "Name",
+    "local": "Local",
+    "create": "Create"
   },
   "messages": {
-    "loginFailedTitle": "Incorrect username or password."
+    "loginFailedTitle": "Incorrect username or password.",
+    "directoryAlreadyExists": "There is already a directory with that name.",
+    "enterFolderName": "Enter the folder name"
+  },
+  "timeDescription": {
+    "singularYear": "year",
+    "pluralYear": "years",
+    "singularMonth": "month",
+    "pluralMonth": "years",
+    "singularDay": "day",
+    "pluralDay": "days",
+    "singularHour": "hour",
+    "pluralHour": "hours",
+    "singularMinute": "minute",
+    "pluralMinute": "minutes",
+    "now": "now"
   }
 }

@@ -19,7 +19,7 @@
   "addFolderDrawerBottomTitle": "Carpeta",
   "enterTitleIndexPage": "Acceso",
   "titleSwitchLanguage": "Switch Language",
-  "form": {    
+  "form": {
     "skipButton": "Saltar",
     "nextIntro": "Continuar",
     "backButton": "Volver",
@@ -34,9 +34,27 @@
     "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
     "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",
     "differentPasswordsTitle": "Passwords do not match",
-    "requiredTitle": "Required"    
+    "requiredTitle": "Required",
+    "name": "Nombre",
+    "local": "Local",
+    "create": "Crear"
   },
   "messages": {
-    "loginFailedTitle": "Incorrect username or password."
+    "loginFailedTitle": "Incorrect username or password.",
+    "directoryAlreadyExists": "There is already a directory with that name.",
+    "enterFolderName": "Enter the folder name"
+  },
+  "timeDescription": {
+    "singularYear": "año",
+    "pluralYear": "años",
+    "singularMonth": "mes",
+    "pluralMonth": "meses",
+    "singularDay": "día",
+    "pluralDay": "dias",
+    "singularHour": "hora",
+    "pluralHour": "horas",
+    "singularMinute": "minuto",
+    "pluralMinute": "minutos",
+    "now": "ahora"
   }
 }
