@@ -62,7 +62,6 @@ function MyLibrary() {
 
     const nxDirectories = await listDirectories(userId, currentDirectory);
     if (nxDirectories?.data.length > 0) {
-      console.log();
       nxDirectories.data.forEach((directory: FileStat) => {
         const filename = directory.filename.replace(/^.+?(\/|$)/, "");
         const date = new Date(directory.lastmod);
