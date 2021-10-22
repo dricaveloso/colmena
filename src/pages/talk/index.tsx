@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import { useSelector } from "react-redux";
 // import { PropsUserSelector } from "@/types/index";
-import listTalks from "@/services/talk/listAll";
+import listTalks from "@/services/talk/room";
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
 import LayoutApp from "@/components/statefull/LayoutApp";

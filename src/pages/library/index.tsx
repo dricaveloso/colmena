@@ -189,7 +189,8 @@ function MyLibrary() {
         dispatch(setLibraryFiles(items));
         dispatch(setLibraryPath(currentPath));
       } catch (e) {
-        if (e.response.status === 404) {
+        console.log(e);
+        if (e.response && e.response.status && e.response.status === 404) {
           dispatch(setLibraryPathExists(false));
         }
       }
@@ -239,7 +240,7 @@ function MyLibrary() {
         )}
         {notFoundDir && (
           <>
-            <Image alt="404 not found" src="images/404 Error.png" width={500} height={500} />
+            <Image alt="404 not found" src="/images/404 Error.png" width={500} height={500} />
             <Button color="primary" variant="outlined" onClick={() => router.back()}>
               {t("form.backButton")}
             </Button>

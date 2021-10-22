@@ -2,6 +2,7 @@ import { AuthType, createClient } from "webdav";
 import { initializeStore } from "@/store/index";
 
 export default function webdav() {
+  // const { password, email: username } = initializeStore({}).getState().user.user;
   const { userToken } = initializeStore({}).getState().user.user;
 
   const client = createClient(
@@ -9,6 +10,8 @@ export default function webdav() {
 
     {
       authType: AuthType.Token,
+      // username,
+      // password,
       token: {
         access_token: userToken,
         token_type: "Bearer",
