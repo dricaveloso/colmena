@@ -93,3 +93,13 @@ export function postNewParticipant(token: string, newParticipant: string, source
       console.log(error);
     });
 }
+export function postPublicConvertion(token: string, state: number) {
+  return talk()
+    .post(`/room/${token}/public`, { state })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

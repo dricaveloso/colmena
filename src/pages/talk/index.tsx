@@ -11,6 +11,7 @@ import {
   SetDescription,
   postCreateConversation,
   postNewParticipant,
+  postPublicConvertion,
 } from "@/services/talk/listAll";
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
@@ -62,6 +63,10 @@ export default function OCS() {
     const create = await postNewParticipant("6rd8qc4j", "makena", "users");
     console.log(create);
   }
+  async function publicConversation() {
+    const pConvesation = await postPublicConvertion("6rd8qc4j", 1);
+    console.log(pConversation);
+  }
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
@@ -101,7 +106,13 @@ export default function OCS() {
               </button>
             </div>
           </FlexBox>
-
+          <FlexBox>
+            <div>
+              <button type="button" onClick={publicConversation}>
+                Public Conversation
+              </button>
+            </div>
+          </FlexBox>
           <FlexBox>
             <div>
               <button type="button" onClick={listOpen}>
