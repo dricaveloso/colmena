@@ -109,3 +109,25 @@ export interface ReadOnlyRoomInterface extends SWRDefaultOptionsInterface {
     };
   };
 }
+export interface CreateNewConversationInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        roomType: number;
+        roomName: string;
+      };
+    };
+  };
+}
+export interface AddParticipantConversationInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        newParticipant: string;
+        source: string;
+      };
+    };
+  };
+}

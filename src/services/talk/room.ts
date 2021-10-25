@@ -4,6 +4,8 @@ import {
   RoomInterface,
   RoomParticipantsInterface,
   ReadOnlyRoomInterface,
+  CreateNewConversationInterface,
+  AddParticipantConversationInterface,
 } from "@/interfaces/talk";
 import talkInstance from "@/services/talk";
 
@@ -32,4 +34,17 @@ export function setReadOnlyConversation(
   return talkInstance("v3").put(`room/${token}/read-only${responseFormat}`, {
     status,
   });
+}
+
+export function postCreateConversation(
+  roomType: number,
+  roomName: string,
+): Promise<CreateNewConversationInterface> {
+  return talkInstance("v3").post(`/room${responseFormat}`);
+}
+export function postAddParticipantConversation(
+  newParticipant: string,
+  source: string,
+): Promise<AddParticipantConversationInterface> {
+  return talkInstance("v3").post(`/room${responseFormat}`);
 }
