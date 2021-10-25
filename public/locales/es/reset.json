@@ -1,7 +1,7 @@
 {
-  "title": "Hi! This is your first access. Please update your password to continue.",
-  "errorMessagePassword": "Passwords do not match",
-  "errorUpdatingPassword": "Unable to update your password.",
-  "successUpdatingPassword": "Password updated successfully."  
+  "title": "Hola! Ese es su primeiro acceso. Actualice su contraseña para continuar.",
+  "errorMessagePassword": "Contraseñas diferentes",
+  "errorUpdatingPassword": "No es posible actualizar la contraseña.",
+  "successUpdatingPassword": "Contraseña actualizada."  
 }
 
