@@ -224,6 +224,7 @@ export type AllIconProps =
   | "grid"
   | "settings_adjust"
   | "checklist"
-  | "add_folder";
+  | "add_folder"
+  | "clould_upload";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;
