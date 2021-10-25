@@ -131,3 +131,14 @@ export interface AddParticipantConversationInterface extends SWRDefaultOptionsIn
     };
   };
 }
+
+export interface AllowedGuestsConversationInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        state: number;
+      };
+    };
+  };
+}

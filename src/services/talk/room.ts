@@ -6,6 +6,7 @@ import {
   ReadOnlyRoomInterface,
   CreateNewConversationInterface,
   AddParticipantConversationInterface,
+  AllowedGuestsConversationInterface,
 } from "@/interfaces/talk";
 import talkInstance from "@/services/talk";
 
@@ -42,9 +43,17 @@ export function postCreateConversation(
 ): Promise<CreateNewConversationInterface> {
   return talkInstance("v3").post(`/room${responseFormat}`);
 }
+export function postAllowedGuestsConversation(
+  token: string,
+  newParticipant: string,
+  source: string,
+): Promise<AllowedGuestsConversationInterface> {
+  return talkInstance("v3").post(`/room/${token}/participants${responseFormat}`);
+}
 export function postAddParticipantConversation(
+  token: string,
   newParticipant: string,
   source: string,
 ): Promise<AddParticipantConversationInterface> {
-  return talkInstance("v3").post(`/room${responseFormat}`);
+  return talkInstance("v3").post(`/room/${token}/participants${responseFormat}`);
 }
