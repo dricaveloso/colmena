@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { UserInfoInterface, RecordingInterface, LibraryItemInterface } from "@/interfaces/index";
+import { ChatMessageItemInterface, RoomItemInterface } from "@/interfaces/talk";
 import {
   NotificationStatusEnum,
   ButtonColorEnum,
@@ -22,6 +23,11 @@ import {
 export type PropsUserSelector = {
   user: UserInfoInterface;
   invitationToken?: string | undefined;
+};
+
+export type PropsHoneycombSelector = {
+  honeycombs: RoomItemInterface[];
+  chatMessages: ChatMessageItemInterface[];
 };
 
 export type PropsConfigSelector = {
@@ -224,6 +230,11 @@ export type AllIconProps =
   | "grid"
   | "settings_adjust"
   | "checklist"
-  | "add_folder";
+  | "add_folder"
+  | "info_circle"
+  | "panal_flat"
+  | "tick"
+  | "chat"
+  | "send";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;

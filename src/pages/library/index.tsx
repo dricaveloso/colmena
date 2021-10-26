@@ -180,7 +180,7 @@ function MyLibrary() {
           setIsLoading(true);
         }
 
-        console.log(currentPath, currentDirectory);
+        // console.log(currentPath, currentDirectory);
 
         const nxDirectories = await getWebDavDirectories(userRdx.user.id, currentPath);
         const localFiles = await getLocalFiles(userRdx.user.id, currentPath);

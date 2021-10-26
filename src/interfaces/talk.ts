@@ -1,6 +1,6 @@
 import { OCSMetaDefaultInterface, SWRDefaultOptionsInterface } from "./ocs";
 
-interface RoomItemInterface {
+export interface RoomItemInterface {
   id: number;
   token: string;
   type: number;
@@ -35,18 +35,7 @@ interface RoomItemInterface {
     actorDisplayName: string;
     timestamp: number;
     message: string;
-    messageParameters: {
-      actor: {
-        type: string;
-        id: string;
-        name: string;
-      };
-      user: {
-        type: string;
-        id: string;
-        name: string;
-      };
-    };
+    messageParameters: ChatMessageItemMessageParameterInterface;
     systemMessage: string;
     messageType: string;
     isReplyable: boolean;
@@ -73,6 +62,23 @@ export interface RoomListInterface extends SWRDefaultOptionsInterface {
   };
 }
 
+export interface RoomCreateInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: RoomItemInterface;
+    };
+  };
+}
+export interface ParticipantCreateInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: [];
+    };
+  };
+}
+
 export interface RoomInterface extends SWRDefaultOptionsInterface {
   data: {
     ocs: {
@@ -82,21 +88,23 @@ export interface RoomInterface extends SWRDefaultOptionsInterface {
   };
 }
 
+export interface RoomParticipant {
+  inCall: number;
+  lastPing: number;
+  sessionId: number;
+  participantType: number;
+  attendeeId: number;
+  actorId: string;
+  actorType: string;
+  attendeePin: string;
+  displayName: string;
+}
+
 export interface RoomParticipantsInterface extends SWRDefaultOptionsInterface {
   data: {
     ocs: {
       meta: OCSMetaDefaultInterface;
-      data: {
-        inCall: number;
-        lastPing: number;
-        sessionId: number;
-        participantType: number;
-        attendeeId: number;
-        actorId: string;
-        actorType: string;
-        attendeePin: string;
-        displayName: string;
-      }[];
+      data: RoomParticipant[];
     };
   };
 }
@@ -106,6 +114,51 @@ export interface ReadOnlyRoomInterface extends SWRDefaultOptionsInterface {
     ocs: {
       meta: OCSMetaDefaultInterface;
       data: string[];
+    };
+  };
+}
+
+export interface ChatMessageItemMessageParameterInterface {
+  actor: {
+    type: string;
+    id: string;
+    name: string;
+  };
+  user?: {
+    type: string;
+    id: string;
+    name: string;
+  };
+}
+
+export interface ChatMessageItemInterface {
+  id?: number;
+  token?: string;
+  actorType: string;
+  actorId: string;
+  actorDisplayName: string;
+  timestamp: number;
+  message: string;
+  messageParameters?: ChatMessageItemMessageParameterInterface;
+  systemMessage: string;
+  messageType: string;
+  isReplyable?: boolean;
+  referenceId?: string;
+}
+export interface ChatMessagesListInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: ChatMessageItemInterface[];
+    };
+  };
+}
+
+export interface ChatMessagesCreateInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: ChatMessageItemInterface;
     };
   };
 }

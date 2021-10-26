@@ -17,9 +17,16 @@
   "callDrawerBottomTitle": "Call",
   "recordingDrawerBottomTitle": "Recording",
   "addFolderDrawerBottomTitle": "Carpeta",
+  "addFolderTitle": "Nueva Carpeta",
+  "addHoneycombDrawerBottomTitle": "Honeycomb",
+  "addHoneycombTitle": "New Honeycomb",
   "enterTitleIndexPage": "Acceso",
   "titleSwitchLanguage": "Switch Language",
-  "form": {    
+  "noItemsFound": "No items found",
+  "form": {
+    "fields": {
+      "name": "Name"
+    },
     "skipButton": "Saltar",
     "nextIntro": "Continuar",
     "backButton": "Volver",
@@ -30,12 +37,14 @@
     "submitLoginTitle": "Enter",
     "forgetPasswordTitle": "Forget my password",
     "submitSaveTitle": "Save",
+    "submitCreateTitle": "Create",
+    "loadingTitle": "Wait...",
     "invalidURLTitle": "Invalid URL",
     "successMessageFormSave": "Saved successfully",
     "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
     "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",
     "differentPasswordsTitle": "Passwords do not match",
-    "requiredTitle": "Required"    
+    "requiredTitle": "Required"
   },
   "messages": {
     "loginFailedTitle": "Incorrect username or password."

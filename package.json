@@ -69,6 +69,7 @@
     "react-share": "^4.4.0",
     "react-swipeable-views": "^0.14.0",
     "react-timer-hook": "^3.0.3",
+    "react-window": "^1.8.6",
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",

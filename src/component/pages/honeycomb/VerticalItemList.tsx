@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import Image from "next/image";
-import { LibraryItemInterface } from "@/interfaces/index";
+import { RoomInterface, RoomItemInterface } from "@/interfaces/talk";
 import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
 import { FileIcon } from "react-file-icon";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import { getFirstLettersOfTwoFirstNames } from "@/utils/utils";
+import Participants from "./Participants";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -19,8 +22,10 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     flexWrap: "nowrap",
     width: "100%",
-    background: "#fff",
-    padding: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
   },
   description: {
     flexDirection: "column",
@@ -36,65 +41,40 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const VerticalItemList = ({
-  id,
-  basename,
-  filename,
-  environment,
-  createdAt,
-  createdAtDescription,
-  tags,
-  type,
-  arrayBufferBlob,
-  image,
-  extension,
-}: LibraryItemInterface) => {
+type Props = {
+  data: RoomItemInterface;
+  backgroundColor: string;
+};
+
+const VerticalItemList = ({ data, backgroundColor }: Props) => {
   const classes = useStyles();
   const router = useRouter();
-
-  const handleClick = () => {
-    if (type === "directory" && router.query.path !== filename) {
-      router.push(`/library/${filename}`);
-    }
-  };
+  const [amountParticipants, setAmountParticipants] = useState(0);
+  const { id, displayName, token, description } = data;
 
   return (
-    <Box className={classes.card}>
+    <Box className={classes.card} style={{ backgroundColor }}>
       <ListItemAvatar>
-        {image !== undefined ? (
-          <Image
-            alt={`image-${basename}-${id}`}
-            width={60}
-            height={60}
-            src={image}
-            onClick={() => handleClick()}
-          />
-        ) : (
-          <Box width={60} px={1} onClick={() => handleClick()}>
-            <FileIcon
-              extension={extension}
-              foldColor={theme.palette.primary.dark}
-              glyphColor="#fff"
-              color={theme.palette.primary.main}
-              labelColor={theme.palette.primary.dark}
-            />
-          </Box>
-        )}
+        <Avatar>{getFirstLettersOfTwoFirstNames(displayName)}</Avatar>
       </ListItemAvatar>
       <ListItemText
         data-testid="title"
         className={classes.description}
-        primary={basename}
-        secondary={createdAtDescription}
-        onClick={() => handleClick()}
+        primary={displayName}
+        onClick={() => router.push(`/honeycomb/${token}/${displayName}/${amountParticipants}`)}
+        primaryTypographyProps={{ style: { color: theme.palette.primary.dark } }}
+        secondary={
+          <>
+            <Participants
+              token={token}
+              updateAmountParticipants={(amount: number) => setAmountParticipants(amount)}
+            />
+            <span style={{ marginLeft: 3 }}>{description}</span>
+          </>
+        }
+        // onClick={() => handleClick()}
       />
       <Box className={classes.options}>
-        <IconButton
-          icon="share"
-          color="#9A9A9A"
-          style={{ padding: 0, margin: 0, minWidth: 30 }}
-          fontSizeIcon="small"
-        />
         <IconButton
           icon="more_vertical"
           color="#9A9A9A"

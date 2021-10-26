@@ -9,6 +9,16 @@ export interface SWRDefaultOptionsInterface {
   mutate: (data?: any, shouldRevalidate?: boolean | undefined) => Promise<any>;
 }
 
+export interface UsersListInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        users: string[];
+      };
+    };
+  };
+}
 export interface CreateUserInterface {
   data: {
     ocs: {

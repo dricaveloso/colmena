@@ -16,10 +16,23 @@
   "chooseAnOption": "Choose an option",
   "callDrawerBottomTitle": "Call",
   "recordingDrawerBottomTitle": "Recording",
-  "addFolderDrawerBottomTitle": "Folder",
+  "addFolderDrawerBottomTitle": "New Folder",
+  "addFolderTitle": "New Folder",
+  "addHoneycombDrawerBottomTitle": "New Honeycomb",
+  "addHoneycombTitle": "New Honeycomb",
   "enterTitleIndexPage": "Login",
   "titleSwitchLanguage": "Switch Language",
-  "form": {    
+  "noItemsFound": "No items found",
+  "honeycombModal": {
+    "chatRoomSuccess": "Chat room created successfully",
+    "chatRoomFailed": "Unable to create chat room",
+    "addParticipantsTitle": "Add participants"
+  },
+  "form": {
+      "fields": {
+        "name": "Name",
+        "description": "Description"
+      },
       "skipButton": "Skip",
       "nextIntro": "Next",
       "backButton": "Back",
@@ -29,6 +42,8 @@
       "submitLoginTitle": "Enter",
       "forgetPasswordTitle": "Forget my password",
       "submitSaveTitle": "Save",
+      "submitCreateTitle": "Create",
+      "loadingTitle": "Wait...",
       "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
       "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",
       "invalidEmailTitle": "Invalid email",
@@ -36,6 +51,7 @@
       "successMessageFormSave": "Saved successfully",
       "differentPasswordsTitle": "Passwords do not match",
       "requiredTitle": "Required"
+
   },
   "messages": {
     "loginFailedTitle": "Incorrect username or password."

@@ -92,7 +92,7 @@ function AppTab({ page }: Props) {
           <IconButton
             icon="gradient_panal"
             fontSizeIcon="medium"
-            url="/home"
+            url="/honeycomb"
             color={theme.palette.primary.main}
           />
         </Grid>

@@ -17,6 +17,7 @@ import { LibraryItemInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Notification from "@/components/ui/Notification";
+import { useTranslation } from "next-i18next";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -47,6 +48,7 @@ type Props = {
 };
 
 export default function NewFolderModal({ open, handleClose }: Props) {
+  const { t } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const userId = userRdx.user.id;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -96,7 +98,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   };
 
   const NewFolderSchema = Yup.object().shape({
-    name: Yup.string().required("Informe o nome da pasta"),
+    name: Yup.string().required(t("form.requiredTitle")),
   });
 
   const handleName = (name: any) => {
@@ -126,7 +128,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
         <Fade in={open}>
           <div className={classes.paper}>
             <h4 id="transition-modal-title" className={classes.title}>
-              New Folder
+              {t("addFolderTitle")}
             </h4>
             <Formik
               initialValues={initialValues}
@@ -139,7 +141,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     {({ field }: FieldProps) => (
                       <TextField
                         id="outlined-search"
-                        label="Name"
+                        label={t("form.fields.name")}
                         variant="outlined"
                         {...field}
                         onChange={(
