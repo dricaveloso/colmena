@@ -63,10 +63,9 @@ export default function OCS() {
     const create = await postNewParticipant("6rd8qc4j", "makena", "users");
     console.log(create);
   }
-  async function publicConversation() {
-    const pConvesation = await postPublicConvertion("6rd8qc4j", 1);
-    console.log(pConversation);
-  }
+  // async function publicConversation() {
+  //   const pConvesation = await postPublicConvertion("6rd8qc4j", 1);
+  // }
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
@@ -106,13 +105,13 @@ export default function OCS() {
               </button>
             </div>
           </FlexBox>
-          <FlexBox>
+          {/* <FlexBox>
             <div>
               <button type="button" onClick={publicConversation}>
                 Public Conversation
               </button>
             </div>
-          </FlexBox>
+          </FlexBox> */}
           <FlexBox>
             <div>
               <button type="button" onClick={listOpen}>
