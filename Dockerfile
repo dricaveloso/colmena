@@ -21,8 +21,8 @@ FROM node:alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV NEXT_PUBLIC_API_BASE_URL "https://cloud.colmena.network/"
-ENV NEXTAUTH_URL "https://cloud.colmena.media"
+ENV NEXT_PUBLIC_API_BASE_URL "https://cloud.colmena.media/"
+ENV NEXTAUTH_URL "https://colmena.media"
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
