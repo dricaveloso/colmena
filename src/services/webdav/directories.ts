@@ -3,6 +3,9 @@ import { removeFirstSlash } from "@/utils/utils";
 // import { FileStat, ResponseDataDetailed } from "webdav";
 
 // ver se não tem 404
+export function listDirectories1(userId: string | number, path?: string): any {
+  return webdav().getDirectoryContents(`${userId}`, { details: true });
+}
 export function listDirectories(userId: string | number, path?: string): any {
   return webdav().getDirectoryContents(`${userId}/${removeFirstSlash(path)}`, { details: true });
 }

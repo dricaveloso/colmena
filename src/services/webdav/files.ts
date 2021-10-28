@@ -20,14 +20,10 @@ export function moveFile(userId: string | number, filename: string, destination:
 }
 export function copyFile(userId: string | number, filename: string, destination: string) {
   webdav().copyFile(`${userId}/${filename}`, `${userId}/${destination}`);
-  // TODO try cath em todas as funções
-  // TODO 404
-  // TODO 409 conflict
 }
-
-export function putFile(userId: string | number, filePath: string, data: string) {
+export function putFile(userId: string | number, filePath: string) {
   try {
-    webdav().putFileContents(`${userId}/${filePath}`, `${data}`);
+    webdav().getFileUploadLink(`${userId}/${filePath}`);
   } catch (error) {
     if (error) {
       return false;

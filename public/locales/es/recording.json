@@ -1,12 +1,12 @@
 {
-  "title": "Recording",
+  "title": "Grabación",
   "pressToStartTitle": "Presione para comenzar a grabar",
-  "pressToStopTitle": "Press to stop recording",
-  "recordingFinishLabelForm": "Title",
-  "recordingFinishTitle": "Recording finished",
-  "recordingFinishDescription": "Finally, type a title for this recording.",
-  "submitButton": "Finish",
-  "cancelButton": "Cancel",
-  "errorStorageMessage": "Could not save this recording.",
-  "errorGetAudioStreamMessage": "You need to enable audio capture to start recording."
+  "pressToStopTitle": "Presione para terminar de grabar",
+  "recordingFinishLabelForm": "Titulo",
+  "recordingFinishTitle": "Grabación finalizada",
+  "recordingFinishDescription": "Titulo de la grabación.",
+  "submitButton": "Finalizar",
+  "cancelButton": "Cancelar",
+  "errorStorageMessage": "CNo fue posible guardar esta grabación.",
+  "errorGetAudioStreamMessage": "Necesita habilitar la captura de audio para comenzar a grabar."
 }
