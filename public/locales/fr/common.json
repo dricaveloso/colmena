@@ -22,6 +22,7 @@
   "switchLanguage": "Language",
   "newFolderTitle": "New folder",
   "uploadTitle": "Upload",
+  "loading": "Loading",
   "form": {
     "skipButton": "Sauter",
     "nextIntro": "Suivant",
@@ -41,12 +42,17 @@
     "requiredTitle": "Required",
     "name": "Name",
     "local": "Local",
-    "create": "Create"
+    "create": "Create",
+    "upload": "Upload"
   },
   "messages": {
     "loginFailedTitle": "Incorrect username or password.",
     "directoryAlreadyExists": "There is already a directory with that name.",
-    "enterFolderName": "Enter the folder name"
+    "enterFolderName": "Enter the folder name",
+    "fileAlreadyExists": "There is already a file with that name.",
+    "fileTooLarge": "The {{fileName}} file is too large to upload.",
+    "fileTooLarg": "The {{fileName}} file is too large to upload.",
+    "unableToProcessFile": "Unable to process file {{fileName}}."
   },
   "timeDescription": {
     "singularYear": "year",

@@ -49,7 +49,10 @@
     "loginFailedTitle": "Incorrect username or password.",
     "directoryAlreadyExists": "There is already a directory with that name.",
     "enterFolderName": "Enter the folder name",
-    "fileAlreadyExists": "There is already a file with that name."
+    "fileAlreadyExists": "There is already a file with that name.",
+    "fileTooLarge": "The {{fileName}} file is too large to upload.",
+    "fileTooLarg": "The {{fileName}} file is too large to upload.",
+    "unableToProcessFile": "Unable to process file {{fileName}}."
   },
   "timeDescription": {
     "singularYear": "year",

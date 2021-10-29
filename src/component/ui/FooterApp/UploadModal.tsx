@@ -9,13 +9,7 @@ import { putFile, getUniqueName } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import Divider from "@/components/ui/Divider";
-import {
-  dateDescription,
-  trailingSlash,
-  getExtensionFilename,
-  getRandomInt,
-  uploadErrorsTranslate,
-} from "@/utils/utils";
+import { dateDescription, trailingSlash, getExtensionFilename, getRandomInt } from "@/utils/utils";
 import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
@@ -81,8 +75,18 @@ export default function Upload({ open, handleClose }: Props) {
         // eslint-disable-next-line no-await-in-loop
         await uploadFile(file.name, content);
       } catch (e) {
+        let message = "";
+        const fileName: string = file.name;
+        switch (e?.response?.status) {
+          case 413:
+            message = t("messages.fileTooLarge", { fileName });
+            break;
+          default:
+            message = t("messages.unableToProcessFile", { fileName });
+        }
+
         notificationCtx.showNotification({
-          message: uploadErrorsTranslate(e?.response?.status, file.name),
+          message,
           status: NotificationStatusEnum.ERROR,
         });
       }

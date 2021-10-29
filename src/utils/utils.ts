@@ -227,12 +227,3 @@ export function getRandomInt(min: number, max: number) {
 
   return Math.floor(Math.random() * (intMax - intMin)) + min;
 }
-
-export function uploadErrorsTranslate(status = 0, fileName: string) {
-  switch (status) {
-    case 413:
-      return `O arquivo ${fileName} é muito grande para ser enviado.`;
-    default:
-      return `Não foi possível processar o arquivo ${fileName} enviados.`;
-  }
-}
