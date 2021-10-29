@@ -1,24 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { createDirectory, existDirectory } from "@/services/webdav/directories";
+import { putFile, getUniqueName } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
-import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
-import * as Yup from "yup";
-import { dateDescription, trailingSlash } from "@/utils/utils";
+import {
+  dateDescription,
+  trailingSlash,
+  getExtensionFilename,
+  getRandomInt,
+  uploadErrorsTranslate,
+} from "@/utils/utils";
 import { addLibraryFile } from "@/store/actions/library";
-import { LibraryItemInterface } from "@/interfaces/index";
+import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import NotificationContext from "@/store/context/notification-context";
-import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
+import { blobToArrayBuffer } from "blob-util";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -48,6 +52,7 @@ type Props = {
 };
 
 export default function Upload({ open, handleClose }: Props) {
+  const formRef = useRef<HTMLFormElement>(null);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const userId = userRdx.user.id;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -55,69 +60,83 @@ export default function Upload({ open, handleClose }: Props) {
   const pathExists = library.currentPathExists;
   const classes = useStyles();
   const notificationCtx = useContext(NotificationContext);
-  const [finalPath, setFinalPath] = useState(path);
-  const [handledPath, setHandledPath] = useState("/");
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation("common");
+  const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
   const dispatch = useDispatch();
-  const initialValues = {
-    name: "",
-    path,
+
+  const handleUpload = (event: any) => {
+    processUploadFiles(event.target.files);
   };
 
-  const handleSubmit = (values: any) => {
+  const processUploadFiles = async (files: FileList) => {
     setIsLoading(true);
-    (async () => {
-      try {
-        const directoryExists = await existDirectory(userId, finalPath);
-        if (directoryExists) {
-          throw new Error(t("messages.directoryAlreadyExists"));
-        }
 
-        const create = await createDirectory(userId, finalPath);
-        if (create) {
-          const date = new Date();
-          const item: LibraryItemInterface = {
-            basename: values.name,
-            id: finalPath,
-            filename: finalPath,
-            type: "directory",
-            environment: EnvironmentEnum.REMOTE,
-            createdAt: date,
-            createdAtDescription: dateDescription(date, t("timeDescription")),
-          };
-          setIsLoading(false);
-          dispatch(addLibraryFile(item));
-          handleClose();
-        }
+    // eslint-disable-next-line no-plusplus
+    for (let index = 0; index < files.length; index++) {
+      const file: File = files[index];
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const content = await blobToArrayBuffer(file);
+        // eslint-disable-next-line no-await-in-loop
+        await uploadFile(file.name, content);
       } catch (e) {
         notificationCtx.showNotification({
-          message: e.message,
+          message: uploadErrorsTranslate(e?.response?.status, file.name),
           status: NotificationStatusEnum.ERROR,
         });
-        setIsLoading(false);
       }
-    })();
+    }
+
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+
+    setIsLoading(false);
+    handleClose();
   };
 
-  const NewFolderSchema = Yup.object().shape({
-    name: Yup.string().required(t("messages.enterFolderName")),
-  });
+  const uploadFile = async (name: string, data: ArrayBuffer) => {
+    const fileName = await handleFileName(name);
+    const finalPath = `${trailingSlash(handledPath())}${fileName}`;
 
-  const handleName = (name: any) => {
-    setFinalPath(`${trailingSlash(handledPath)}${name}`);
+    const create = await putFile(userId, finalPath, data);
+    if (create) {
+      addFileIntoLibrary(fileName, finalPath);
+    }
   };
 
-  useEffect(() => {
-    const paths = !pathExists ? "/" : path;
-    setHandledPath(paths);
-    setFinalPath(paths);
+  const handleFileName = (name: string) => {
+    let handledName = name;
+    if (name[0] === ".") {
+      handledName = getRandomInt(1, 9999) + name;
+    }
 
-    return () => {
-      setHandledPath("");
-      setFinalPath("");
-      setIsLoading(false);
+    return getUniqueName(userId, handledPath(), handledName);
+  };
+
+  const addFileIntoLibrary = (name: string, finalPath: string) => {
+    const date = new Date();
+    const item: LibraryItemInterface = {
+      basename: name,
+      id: finalPath,
+      filename: finalPath,
+      type: "file",
+      environment: EnvironmentEnum.REMOTE,
+      createdAt: date,
+      createdAtDescription: dateDescription(date, timeDescription),
+      extension: getExtensionFilename(name),
     };
+    dispatch(addLibraryFile(item));
+  };
+
+  const handledPath = useCallback(() => {
+    let finalPath = !pathExists ? "" : path;
+    if (finalPath === "/") {
+      finalPath = "";
+    }
+
+    return finalPath;
   }, [path, pathExists]);
 
   return (
@@ -139,58 +158,41 @@ export default function Upload({ open, handleClose }: Props) {
             <h4 id="transition-modal-title" className={classes.title}>
               {t("newFolderTitle")}
             </h4>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={NewFolderSchema}
-              onSubmit={(values) => handleSubmit(values)}
-            >
-              {({ setFieldValue }: any) => (
-                <Form className={classes.form}>
-                  <Field name="name" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <TextField
-                        id="outlined-search"
-                        label={t("form.name")}
-                        variant="outlined"
-                        {...field}
-                        onChange={(
-                          event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-                        ) => setFieldValue("name", event.target.value)}
-                        onKeyUp={(event: any) => handleName(event.target.value)}
-                      />
-                    )}
-                  </Field>
-                  <ErrorMessage name="name">
-                    {(msg) => <ErrorMessageForm message={msg} />}
-                  </ErrorMessage>
-                  <Divider marginTop={20} />
-                  <TextField
-                    id="outlined-search"
-                    label={t("form.local")}
-                    variant="outlined"
-                    value={finalPath}
-                    disabled
-                  />
-                  <Divider marginTop={20} />
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} />{" "}
-                        {t("loading")}..
-                      </>
-                    ) : (
-                      t("form.create")
-                    )}
-                  </Button>
-                </Form>
-              )}
-            </Formik>
+            <form ref={formRef}>
+              <input
+                type="file"
+                style={{ display: "none" }}
+                id="upload-file"
+                multiple
+                onChange={handleUpload}
+              />
+              <TextField
+                id="outlined-search"
+                label={t("form.local")}
+                variant="outlined"
+                value={path}
+                disabled
+              />
+              <Divider marginTop={20} />
+              <label htmlFor="upload-file">
+                <Button
+                  component="span"
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} />
+                      {t("loading")}..
+                    </>
+                  ) : (
+                    t("form.upload")
+                  )}
+                </Button>
+              </label>
+            </form>
           </div>
         </Fade>
       </Modal>

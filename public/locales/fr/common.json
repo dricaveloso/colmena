@@ -17,8 +17,11 @@
   "callDrawerBottomTitle": "Call",
   "recordingDrawerBottomTitle": "Recording",
   "addFolderDrawerBottomTitle": "Folder",
+  "uploadFileDrawerBottomTitle": "Upload",
   "enterTitleIndexPage": "Entrer",
   "switchLanguage": "Language",
+  "newFolderTitle": "New folder",
+  "uploadTitle": "Upload",
   "form": {
     "skipButton": "Sauter",
     "nextIntro": "Suivant",

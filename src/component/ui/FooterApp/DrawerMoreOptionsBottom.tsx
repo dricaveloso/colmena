@@ -75,7 +75,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
           </ListItem>
           <ListItem button key={uuid()} onClick={handleOpenUploadModal}>
             <ListItemAvatar>
-              <SvgIcon icon="clould_upload" fontSize="small" />
+              <SvgIcon icon="clould_upload" fontSize="medium" />
             </ListItemAvatar>
             <ListItemText primary={t("uploadFileDrawerBottomTitle")} />
           </ListItem>

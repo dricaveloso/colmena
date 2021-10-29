@@ -17,9 +17,11 @@
   "callDrawerBottomTitle": "Call",
   "recordingDrawerBottomTitle": "Recording",
   "addFolderDrawerBottomTitle": "Folder",
+  "uploadFileDrawerBottomTitle": "Upload",
   "enterTitleIndexPage": "Login",
   "titleSwitchLanguage": "Switch language",
   "newFolderTitle": "New folder",
+  "uploadTitle": "Upload",
   "loading": "Loading",
   "form": {
       "skipButton": "Skip",
@@ -40,12 +42,14 @@
       "requiredTitle": "Required",
       "name": "Name",
       "local": "Local",
-      "create": "Create"
+      "create": "Create",
+      "upload": "Upload"
   },
   "messages": {
     "loginFailedTitle": "Incorrect username or password.",
     "directoryAlreadyExists": "There is already a directory with that name.",
-    "enterFolderName": "Enter the folder name"
+    "enterFolderName": "Enter the folder name",
+    "fileAlreadyExists": "There is already a file with that name."
   },
   "timeDescription": {
     "singularYear": "year",

@@ -19,6 +19,9 @@
   "addFolderDrawerBottomTitle": "Carpeta",
   "enterTitleIndexPage": "Aceder",
   "titleSwitchLanguage": "Cambiar idioma",
+  "uploadFileDrawerBottomTitle": "Upload",
+  "newFolderTitle": "Nueva carpeta",
+  "uploadTitle": "Upload",
   "form": {
     "skipButton": "Saltar",
     "nextIntro": "Continuar",

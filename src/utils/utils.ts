@@ -216,3 +216,23 @@ export function removeFirstSlash(path: string | null | undefined) {
 
   return `${path.replace(/^\//, "")}`;
 }
+
+export function awaiting(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function getRandomInt(min: number, max: number) {
+  const intMin = Math.ceil(min);
+  const intMax = Math.floor(max);
+
+  return Math.floor(Math.random() * (intMax - intMin)) + min;
+}
+
+export function uploadErrorsTranslate(status = 0, fileName: string) {
+  switch (status) {
+    case 413:
+      return `O arquivo ${fileName} é muito grande para ser enviado.`;
+    default:
+      return `Não foi possível processar o arquivo ${fileName} enviados.`;
+  }
+}
