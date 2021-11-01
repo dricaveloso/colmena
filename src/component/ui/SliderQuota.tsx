@@ -1,25 +1,27 @@
 import React from "react";
-import Slider from "@material-ui/core/Slider";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
+import { withStyles } from "@material-ui/core/styles";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
+const BorderLinearProgress = withStyles((theme) => ({
+  root: {
+    height: 4,
+    borderRadius: 5,
+    marginTop: 8,
+  },
+  bar: {
+    borderRadius: 5,
+  },
+}))(LinearProgress);
 
 export default function DiscreteSlider() {
   return (
     <div>
-      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#51b495" }}>
+      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#666" }}>
         Usado 16GB (60%)
       </Text>
-      <Slider
-        style={{ color: "#51b495" }}
-        defaultValue={60}
-        aria-labelledby="discrete-slider-restrict"
-        step={null}
-        min={0}
-        max={100}
-        disabled
-        valueLabelDisplay="off"
-        marks={false}
-      />
+      <BorderLinearProgress variant="determinate" color="secondary" value={60} />
     </div>
   );
 }
