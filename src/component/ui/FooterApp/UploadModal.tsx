@@ -160,7 +160,7 @@ export default function Upload({ open, handleClose }: Props) {
         <Fade in={open}>
           <div className={classes.paper}>
             <h4 id="transition-modal-title" className={classes.title}>
-              {t("newFolderTitle")}
+              {t("uploadTitle")}
             </h4>
             <form ref={formRef}>
               <input
