@@ -65,15 +65,9 @@ export default NextAuth({
           const responseMedia = await getCapabilitiesInfo(headers);
           const dataMedia = responseMedia.data.ocs.data.capabilities.theming;
 
-<<<<<<< .merge_file_nEbZX9
           // if (!responseUser.data.ocs.data.groups.includes("admin")) {
           //   throw new Error("permissionDenied");
           // }
-=======
-         // if (!responseUser.data.ocs.data.groups.includes("admin")) {
-           // throw new Error("permissionDenied");
-         // }
->>>>>>> .merge_file_KTeGdi
           // eslint-disable-next-line camelcase
           const {
             id,

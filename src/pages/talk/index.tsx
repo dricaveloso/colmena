@@ -1,9 +1,11 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { PropsUserSelector } from "../../types";
 import {
   listAllTalk,
+  listListedRoom,
   listEspecificChat,
   listOpenChat,
   SetROChat,
@@ -30,6 +32,17 @@ export default function OCS() {
       const listT = await listAllTalk();
 
       console.log(listT);
+      setData([]);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+
+  async function ListListedR() {
+    try {
+      const listL = await listListedRoom();
+
+      console.log(listL);
       setData([]);
     } catch (e) {
       console.log("error", e);
@@ -72,7 +85,7 @@ export default function OCS() {
         <div style={{ width: "100vw", margin: 5 }}>
           <FlexBox>
             <div>
-              <button type="button" onClick={ListAllT}>
+              <button type="button" onClick={(ListAllT, ListListedR)}>
                 List All
               </button>
             </div>
