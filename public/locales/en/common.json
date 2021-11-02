@@ -52,15 +52,10 @@
       "invalidURLTitle": "Invalid URL",
       "successMessageFormSave": "Saved successfully",
       "differentPasswordsTitle": "Passwords do not match",
-<<<<<<< HEAD
-      "requiredTitle": "Required"
-
-=======
       "requiredTitle": "Required",
       "name": "Name",
       "local": "Local",
       "create": "Create"
->>>>>>> f1c7056e54ecfea7856822c5c986ed498d5c8b43
   },
   "messages": {
     "loginFailedTitle": "Incorrect username or password.",

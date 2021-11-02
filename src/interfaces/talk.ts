@@ -153,12 +153,45 @@ export interface ChatMessagesListInterface extends SWRDefaultOptionsInterface {
     };
   };
 }
+export interface CreateNewConversationInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        roomType: number;
+        roomName: string;
+      };
+    };
+  };
+}
+export interface AddParticipantConversationInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        newParticipant: string;
+        source: string;
+      };
+    };
+  };
+}
 
 export interface ChatMessagesCreateInterface {
   data: {
     ocs: {
       meta: OCSMetaDefaultInterface;
       data: ChatMessageItemInterface;
+    };
+  };
+}
+
+export interface AllowedGuestsConversationInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        state: number;
+      };
     };
   };
 }
