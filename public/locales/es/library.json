@@ -1,0 +1,19 @@
+{
+  "title": "Mi librería",
+  "sort": {
+    "title": "Ordenar",
+    "newest": "Más reciente",
+    "oldest": "Más antiguas",
+    "alphabeticalOrder": "Orden alfabetica",
+    "descendingAlphabeticalOrder": "Orden alfabetica descendente"
+  },
+  "filter": {
+    "title": "Filtros",
+    "all": "Todos",
+    "availableOffline": "Disponible fuera de linea",
+    "synchronized": "Sincronizado",
+    "audios": "Audios",
+    "images": "Imagenes",
+    "texts": "Textos"
+  }
+}

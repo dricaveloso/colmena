@@ -1,7 +1,11 @@
 /* eslint-disable import/no-duplicates */
-import { UserInvitationInterface, BreadcrumbItemInterface } from "@/interfaces/index";
 import { differenceInMinutes, differenceInCalendarMonths, formatDistanceToNow } from "date-fns";
 import { enUS, es, fr } from "date-fns/locale";
+import {
+  UserInvitationInterface,
+  BreadcrumbItemInterface,
+  TimeDescriptionInterface,
+} from "@/interfaces/index";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -147,21 +151,21 @@ export function moveScrollToRight(element: any) {
   }
 }
 
-export function dateDescription(date: Date | undefined) {
+export function dateDescription(date: Date | undefined, timeDescription: TimeDescriptionInterface) {
   if (date === undefined) {
     return "";
   }
 
-  const singularYearDescription = "ano";
-  const pluralYearDescription = "anos";
-  const singularMonthDescription = "mês";
-  const pluralMonthDescription = "meses";
-  const singularDayDescription = "mês";
-  const pluralDayDescription = "meses";
-  const singularHourDescription = "hora";
-  const pluralHourDescription = "horas";
-  const singularMinuteDescription = "minuto";
-  const pluralMinuteDescription = "minutos";
+  const singularYearDescription = timeDescription.singularYear;
+  const pluralYearDescription = timeDescription.pluralYear;
+  const singularMonthDescription = timeDescription.singularMonth;
+  const pluralMonthDescription = timeDescription.pluralMonth;
+  const singularDayDescription = timeDescription.singularDay;
+  const pluralDayDescription = timeDescription.pluralDay;
+  const singularHourDescription = timeDescription.singularHour;
+  const pluralHourDescription = timeDescription.pluralHour;
+  const singularMinuteDescription = timeDescription.singularMinute;
+  const pluralMinuteDescription = timeDescription.pluralMinute;
 
   const today = new Date();
   const months = differenceInCalendarMonths(today, date);
@@ -200,7 +204,7 @@ export function dateDescription(date: Date | undefined) {
     return `${minutes} ${minuteDescription}`;
   }
 
-  return "Agora";
+  return timeDescription.now;
 }
 
 export function trailingSlash(path: string) {
@@ -226,4 +230,12 @@ export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en"
   return formatDistanceToNow(new Date(timestamp * 1000), {
     locale: lce,
   });
+}
+
+export function removeFirstSlash(path: string | null | undefined) {
+  if (!path) {
+    return path;
+  }
+
+  return `${path.replace(/^\//, "")}`;
 }

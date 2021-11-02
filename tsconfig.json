@@ -14,6 +14,7 @@
       "@/utils/*": ["src/utils/*"],
       "@/constants/*": ["src/constants/*"],
       "@/libs/*": ["src/libs/*"],
+      "@/extensions/*": ["src/extensions/*"],
       "@/tests/*": ["test/*"],
       "@/assets/*": ["src/assets/*"]
     },

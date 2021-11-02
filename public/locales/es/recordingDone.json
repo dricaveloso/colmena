@@ -1,7 +1,7 @@
 { 
-  "title": "Recording complete", 
-  "description": "Program name and metadata", 
-  "tagsTitle": "Tags",
-  "textEditButton": "Edit", 
-  "textShareButton": "Share" 
+  "title": "Grabación finalizada", 
+  "description": "Titulo y metadata", 
+  "tagsTitle": "Categorias",
+  "textEditButton": "Editar", 
+  "textShareButton": "Compartir" 
 } 

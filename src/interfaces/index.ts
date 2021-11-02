@@ -129,3 +129,17 @@ export interface BreadcrumbItemInterface {
   isCurrent: boolean;
   icon?: AllIconProps | undefined;
 }
+
+export interface TimeDescriptionInterface {
+  singularYear: string;
+  pluralYear: string;
+  singularMonth: string;
+  pluralMonth: string;
+  singularHour: string;
+  pluralHour: string;
+  singularDay: string;
+  pluralDay: string;
+  singularMinute: string;
+  pluralMinute: string;
+  now: string;
+}

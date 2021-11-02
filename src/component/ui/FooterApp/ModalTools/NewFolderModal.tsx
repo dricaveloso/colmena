@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -16,7 +16,8 @@ import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Notification from "@/components/ui/Notification";
+import NotificationContext from "@/store/context/notification-context";
+import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     "& .MuiTextField-root": {
-      marginBottom: theme.spacing(2),
       width: "100%",
     },
   },
@@ -55,10 +55,10 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const path = library.currentPath;
   const pathExists = library.currentPathExists;
   const classes = useStyles();
+  const notificationCtx = useContext(NotificationContext);
   const [finalPath, setFinalPath] = useState(path);
   const [handledPath, setHandledPath] = useState("/");
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState<string>("");
   const dispatch = useDispatch();
   const initialValues = {
     name: "",
@@ -71,7 +71,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
       try {
         const directoryExists = await existDirectory(userId, finalPath);
         if (directoryExists) {
-          throw new Error("Já existe um diretório com esse nome.");
+          throw new Error(t("messages.directoryAlreadyExists"));
         }
 
         const create = await createDirectory(userId, finalPath);
@@ -84,14 +84,17 @@ export default function NewFolderModal({ open, handleClose }: Props) {
             type: "directory",
             environment: EnvironmentEnum.REMOTE,
             createdAt: date,
-            createdAtDescription: dateDescription(date),
+            createdAtDescription: dateDescription(date, t("timeDescription")),
           };
           setIsLoading(false);
           dispatch(addLibraryFile(item));
           handleClose();
         }
       } catch (e) {
-        setMessage(e.message);
+        notificationCtx.showNotification({
+          message: e.message,
+          status: NotificationStatusEnum.ERROR,
+        });
         setIsLoading(false);
       }
     })();
@@ -109,6 +112,12 @@ export default function NewFolderModal({ open, handleClose }: Props) {
     const paths = !pathExists ? "/" : path;
     setHandledPath(paths);
     setFinalPath(paths);
+
+    return () => {
+      setHandledPath("");
+      setFinalPath("");
+      setIsLoading(false);
+    };
   }, [path, pathExists]);
 
   return (
@@ -151,10 +160,13 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                       />
                     )}
                   </Field>
-                  <ErrorMessage name="name" />
+                  <ErrorMessage name="name">
+                    {(msg) => <ErrorMessageForm message={msg} />}
+                  </ErrorMessage>
+                  <Divider marginTop={20} />
                   <TextField
                     id="outlined-search"
-                    label="Local"
+                    label={t("form.local")}
                     variant="outlined"
                     value={finalPath}
                     disabled
@@ -170,10 +182,10 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     {isLoading ? (
                       <>
                         <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} />{" "}
-                        Aguarde..
+                        {t("loading")}..
                       </>
                     ) : (
-                      "Create"
+                      t("form.create")
                     )}
                   </Button>
                 </Form>
@@ -182,7 +194,6 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           </div>
         </Fade>
       </Modal>
-      {message !== "" && <Notification status={NotificationStatusEnum.ERROR} message={message} />}
     </>
   );
 }
