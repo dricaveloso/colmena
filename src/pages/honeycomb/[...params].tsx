@@ -17,6 +17,7 @@ import AppBar from "@material-ui/core/AppBar";
 import InputSendMessage from "@/components/pages/honeycomb/Chat/InputSendMessage";
 import ChatMessage from "@/components/pages/honeycomb/Chat";
 import { sendChatMessage } from "@/services/talk/chat";
+import { getRoomParticipants } from "@/services/talk/room";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -106,7 +107,12 @@ function Honeycomb() {
 
   const token = params[0];
   const displayName = params[1];
-  const amountParticipants = Number(params[2]);
+
+  const { data } = getRoomParticipants(token, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
 
   function prepareParticipantsString(qty: number) {
     if (qty === 0) return t("noMemberTitle");
@@ -124,7 +130,7 @@ function Honeycomb() {
     <LayoutApp
       back
       title={displayName}
-      subtitle={prepareParticipantsString(amountParticipants)}
+      subtitle={!data ? "..." : prepareParticipantsString(data.ocs.data.length)}
       templateHeader="variation2"
       showFooter={false}
     >

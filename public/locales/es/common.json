@@ -20,9 +20,17 @@
   "addFolderTitle": "Nueva Carpeta",
   "addHoneycombDrawerBottomTitle": "Honeycomb",
   "addHoneycombTitle": "New Honeycomb",
-  "noItemsFound": "No items found",
   "enterTitleIndexPage": "Aceder",
   "titleSwitchLanguage": "Cambiar idioma",
+  "noItemsFound": "No items found",
+  "honeycombModal": {
+    "chatRoomSuccess": "Chat room created successfully",
+    "chatRoomFailed": "Unable to create chat room",
+    "buttonStep1": "Create",
+    "buttonStep2": "Add"
+  },
+  "newFolderTitle": "New folder",
+  "loading": "Loading",
   "form": {
     "fields": {
       "name": "Name"
@@ -37,17 +45,17 @@
     "submitLoginTitle": "Enter",
     "forgetPasswordTitle": "Olvidé mi contraseña",
     "submitSaveTitle": "Salvar",
-    "invalidURLTitle": "URL invalida",
+    "submitCreateTitle": "Create",
     "successMessageFormSave": "Salvo",
+    "loadingTitle": "Wait...",
     "passwordMinLengthTitle": "Muy corto! Minimo de {{size}} caracteres.",
     "passwordMaxLengthTitle": "Muy largo! Maximo de {{size}} caracteres.",
     "differentPasswordsTitle": "Contraseñas están diferentes",
     "requiredTitle": "Requerido",
+    "invalidURLTitle": "Invalid URL",
     "name": "Nombre",
     "local": "Local",
-    "create": "Crear",
-    "submitCreateTitle": "Create",
-    "loadingTitle": "Wait..."
+    "create": "Crear"
   },
   "messages": {
     "loginFailedTitle": "Nombre o contraseña incorecto.",

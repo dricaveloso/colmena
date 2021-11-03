@@ -4,11 +4,9 @@ import React, { useState } from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
-import Image from "next/image";
-import { RoomInterface, RoomItemInterface } from "@/interfaces/talk";
+import { RoomItemInterface } from "@/interfaces/talk";
 import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
-import { FileIcon } from "react-file-icon";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
@@ -49,7 +47,6 @@ type Props = {
 const VerticalItemList = ({ data, backgroundColor }: Props) => {
   const classes = useStyles();
   const router = useRouter();
-  const [amountParticipants, setAmountParticipants] = useState(0);
   const { id, displayName, token, description } = data;
 
   return (
@@ -61,18 +58,14 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
         data-testid="title"
         className={classes.description}
         primary={displayName}
-        onClick={() => router.push(`/honeycomb/${token}/${displayName}/${amountParticipants}`)}
+        onClick={() => router.push(`/honeycomb/${token}/${displayName}`)}
         primaryTypographyProps={{ style: { color: theme.palette.primary.dark } }}
         secondary={
           <>
-            <Participants
-              token={token}
-              updateAmountParticipants={(amount: number) => setAmountParticipants(amount)}
-            />
+            <Participants token={token} />
             <span style={{ marginLeft: 3 }}>{description}</span>
           </>
         }
-        // onClick={() => handleClick()}
       />
       <Box className={classes.options}>
         <IconButton

@@ -81,8 +81,15 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
           </ListItem>
         </List>
       </SwipeableDrawer>
-      <NewFolderModal open={openNewFolderModal} handleClose={handleCloseNewFolderModal} />
-      <NewHoneycombModal open={openNewHoneycombModal} handleClose={handleCloseNewHoneycombModal} />
+      {openNewFolderModal && (
+        <NewFolderModal open={openNewFolderModal} handleClose={handleCloseNewFolderModal} />
+      )}
+      {openNewHoneycombModal && (
+        <NewHoneycombModal
+          open={openNewHoneycombModal}
+          handleClose={handleCloseNewHoneycombModal}
+        />
+      )}
     </>
   );
 }

@@ -112,7 +112,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       message: c("honeycombModal.chatRoomSuccess"),
                       status: NotificationStatusEnum.SUCCESS,
                     });
-                    router.push(`/honeycomb/${token}/${roomName}/${participants.length}`);
+                    router.push(`/honeycomb/${token}/${roomName}`);
                   } catch (e) {
                     console.log(e);
                     notificationCtx.showNotification({
@@ -143,10 +143,9 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                         <ErrorMessageForm message={errors.roomName} />
                       ) : null}
                       <Divider marginTop={20} />
-                      <Divider marginTop={20} />
                       <Button
                         handleClick={() => setStep(2)}
-                        title={c("honeycombModal.addParticipantsTitle")}
+                        title={c("honeycombModal.buttonStep1")}
                         disabled={!(values.roomName !== "")}
                         color={ButtonColorEnum.PRIMARY}
                         variant={ButtonVariantEnum.CONTAINED}
@@ -181,7 +180,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                           handleClick={submitForm}
                           color={ButtonColorEnum.PRIMARY}
                           variant={ButtonVariantEnum.CONTAINED}
-                          disabled={isSubmitting || participants.length === 0}
+                          disabled={isSubmitting}
                           title={
                             isSubmitting ? (
                               <>
@@ -193,7 +192,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                                 {c("form.loadingTitle")}
                               </>
                             ) : (
-                              c("form.submitCreateTitle")
+                              c("honeycombModal.buttonStep2")
                             )
                           }
                         />

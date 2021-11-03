@@ -26,14 +26,14 @@
   "honeycombModal": {
     "chatRoomSuccess": "Chat room created successfully",
     "chatRoomFailed": "Unable to create chat room",
-    "addParticipantsTitle": "Add participants"
+    "buttonStep1": "Create",
+    "buttonStep2": "Add"
   },
   "newFolderTitle": "New folder",
   "loading": "Loading",
   "form": {
       "fields": {
-        "name": "Name",
-        "description": "Description"
+        "name": "Name"
       },
       "skipButton": "Skip",
       "nextIntro": "Next",
