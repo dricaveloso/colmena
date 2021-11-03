@@ -235,6 +235,11 @@ export type AllIconProps =
   | "panal_flat"
   | "tick"
   | "chat"
-  | "send";
+  | "send"
+  | "upload"
+  | "edit_text"
+  | "headphone"
+  | "stream"
+  | "audio_editor";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;

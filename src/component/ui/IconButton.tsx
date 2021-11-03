@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
+import React from "react";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import { TextVariantProps, FontSizeIconProps, AllIconProps } from "@/types/index";
@@ -14,6 +15,7 @@ type Props = {
   fontSizeIcon?: FontSizeIconProps;
   variantTitle?: TextVariantProps;
   color?: string;
+  iconColor?: string;
   handleClick?: () => void | undefined;
   url?: string;
   download?: string;
@@ -35,6 +37,7 @@ function IconButtonCtr({
   fontSizeIcon = "large",
   variantTitle = TextVariantEnum.H5,
   color = "black",
+  iconColor = theme.palette.icon.main,
   url = "no-navigation",
   download = "",
   iconStyle = {},
@@ -46,10 +49,10 @@ function IconButtonCtr({
   disabled = false,
   handleClick,
 }: Props) {
-  const [colorActive, setColorActive] = useState(color);
-  const changeColorHandler = (status: boolean) => {
-    setColorActive(status ? theme.palette.primary.light : color);
-  };
+  // const [colorActive, setColorActive] = useState(color);
+  // const changeColorHandler = (status: boolean) => {
+  //   setColorActive(status ? theme.palette.primary.light : color);
+  // };
 
   function showButtonWithConditions() {
     if (url !== "no-navigation" && !download)
@@ -58,15 +61,15 @@ function IconButtonCtr({
           <Button
             component="a"
             style={{ background: "none", ...style }}
-            onMouseOver={() => changeColorHandler(true)}
-            onMouseOut={() => changeColorHandler(false)}
+            // onMouseOver={() => changeColorHandler(true)}
+            // onMouseOut={() => changeColorHandler(false)}
             className={className}
             variant={variant}
             disabled={disabled}
           >
             <SvgIcon
               icon={icon}
-              htmlColor={colorActive}
+              htmlColor={iconColor}
               fontSize={fontSizeIcon}
               style={{ ...iconStyle }}
             />
@@ -81,15 +84,15 @@ function IconButtonCtr({
           download={download}
           href={url}
           style={{ background: "none", ...style }}
-          onMouseOver={() => changeColorHandler(true)}
-          onMouseOut={() => changeColorHandler(false)}
+          // onMouseOver={() => changeColorHandler(true)}
+          // onMouseOut={() => changeColorHandler(false)}
           className={className}
           variant={variant}
           disabled={disabled}
         >
           <SvgIcon
             icon={icon}
-            htmlColor={colorActive}
+            htmlColor={iconColor}
             fontSize={fontSizeIcon}
             style={{ ...iconStyle }}
           />
@@ -99,8 +102,8 @@ function IconButtonCtr({
     return (
       <Button
         style={{ background: "none", ...style }}
-        onMouseOver={() => changeColorHandler(true)}
-        onMouseOut={() => changeColorHandler(false)}
+        // onMouseOver={() => changeColorHandler(true)}
+        // onMouseOut={() => changeColorHandler(false)}
         onClick={handleClick}
         className={className}
         variant={variant}
@@ -108,7 +111,7 @@ function IconButtonCtr({
       >
         <SvgIcon
           icon={icon}
-          htmlColor={colorActive}
+          htmlColor={iconColor}
           fontSize={fontSizeIcon}
           style={{ ...iconStyle }}
         />
@@ -126,7 +129,7 @@ function IconButtonCtr({
       {showButtonWithConditions()}
       {!!title && (
         <Text
-          style={{ ...textStyle }}
+          style={{ color, ...textStyle }}
           variant={variantTitle}
           align={TextAlignEnum.CENTER}
           gutterBottom
