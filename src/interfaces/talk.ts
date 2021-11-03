@@ -78,6 +78,14 @@ export interface ParticipantCreateInterface extends SWRDefaultOptionsInterface {
     };
   };
 }
+export interface DeleteConversationInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: [];
+    };
+  };
+}
 
 export interface RoomInterface extends SWRDefaultOptionsInterface {
   data: {
