@@ -7,6 +7,7 @@ import {
   ReadOnlyRoomInterface,
   RoomCreateInterface,
   ParticipantCreateInterface,
+  DeleteConversationInterface,
   // CreateNewConversationInterface,
   // AddParticipantConversationInterface,
   // AllowedGuestsConversationInterface,
@@ -45,6 +46,10 @@ export function createNewConversation(roomName: string): Promise<RoomCreateInter
     roomType: 2,
     roomName,
   });
+}
+
+export function deleteConversation(token: string): Promise<DeleteConversationInterface> {
+  return talkInstance("v3").delete(`room/${token}/participants/self${responseFormat}`);
 }
 
 export function addDescriptionConversation(
