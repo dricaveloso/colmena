@@ -35,7 +35,7 @@ export default function FileList() {
   const classes = useStyles();
   return (
     <Box marginTop={2}>
-      {[1, 2, 3, 4, 5, 6].map(() => (
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => (
         <Box className={classes.card} key={uuid()}>
           <ListItemAvatar style={{ paddingLeft: 10 }}>
             <Skeleton variant="circle" width={40} height={40} />

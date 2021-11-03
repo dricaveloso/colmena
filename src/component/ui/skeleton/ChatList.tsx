@@ -53,7 +53,7 @@ export default function ChatList() {
           />
         </Box>
       ))}
-      {[1, 2, 3, 4, 5, 6].map(() => (
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => (
         <Box className={classes.card} key={uuid()}>
           <ListItemAvatar style={{ paddingLeft: 10 }}>
             <Skeleton variant="circle" width={40} height={40} />

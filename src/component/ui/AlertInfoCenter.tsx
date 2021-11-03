@@ -4,12 +4,14 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
 import { useTranslation } from "next-i18next";
+import { AllIconProps } from "@/types/*";
 
 type Props = {
-  description: React.ReactNode;
+  description?: React.ReactNode;
+  icon?: AllIconProps;
 };
 
-export default function EmptyInfo({ description }: Props) {
+export default function AlertInfoCenter({ icon = "info_circle", description = "" }: Props) {
   const { t } = useTranslation("common");
   return (
     <Box
@@ -20,14 +22,15 @@ export default function EmptyInfo({ description }: Props) {
       flexDirection="column"
       style={{ height: "80vh" }}
     >
-      <SvgIcon icon="info_circle" htmlColor="#9A9A9A" />
+      <SvgIcon icon={icon} htmlColor="#9A9A9A" />
       <Text variant={TextVariantEnum.BODY1} style={{ color: "#9A9A9A", textAlign: "center" }}>
         {t("noItemsFound")}
       </Text>
-      <Text variant={TextVariantEnum.BODY2} style={{ color: "#9A9A9A", textAlign: "center" }}>
-        {/* Click on the <b>plus</b> icon below to create a <b>call</b> */}
-        {description}
-      </Text>
+      {description !== "" && (
+        <Text variant={TextVariantEnum.BODY2} style={{ color: "#9A9A9A", textAlign: "center" }}>
+          {description}
+        </Text>
+      )}
     </Box>
   );
 }
