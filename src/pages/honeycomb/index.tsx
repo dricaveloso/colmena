@@ -12,6 +12,7 @@ import { useTranslation } from "next-i18next";
 import FileListSkeleton from "@/components/ui/skeleton/FileList";
 import { setHoneycombs } from "@/store/actions/honeycomb/index";
 import { useDispatch } from "react-redux";
+import AlertInfoCenter from "@/components/ui/AlertInfoCenter";
 // import Tabs from "@material-ui/core/Tabs";
 // import Tab from "@material-ui/core/Tab";
 // import SwipeableViews from "react-swipeable-views";
@@ -26,7 +27,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 export default function Honeycomb() {
   const { t } = useTranslation("honeycomb");
   const dispatch = useDispatch();
-  const { data } = getUsersConversations({
+  const { data, error } = getUsersConversations({
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -36,6 +37,13 @@ export default function Honeycomb() {
     return (
       <LayoutWrapper title={t("title")}>
         <FileListSkeleton />
+      </LayoutWrapper>
+    );
+
+  if (error)
+    return (
+      <LayoutWrapper title={t("title")}>
+        <AlertInfoCenter />
       </LayoutWrapper>
     );
 

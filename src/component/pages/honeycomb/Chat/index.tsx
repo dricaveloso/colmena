@@ -5,6 +5,7 @@ import ChatListSkeleton from "@/components/ui/skeleton/ChatList";
 import MessagesList from "./ItemList";
 import { useDispatch } from "react-redux";
 import { setChatList } from "@/store/actions/honeycomb";
+import AlertInfoCenter from "@/components/ui/AlertInfoCenter";
 
 type Props = {
   token: string;
@@ -12,12 +13,20 @@ type Props = {
 
 function ItemList({ token }: Props) {
   const dispatch = useDispatch();
-  const { data } = receiveChatMessages(token);
+  const { data, error } = receiveChatMessages(token);
 
   if (!data) {
     return (
       <WrappedList>
         <ChatListSkeleton />
+      </WrappedList>
+    );
+  }
+
+  if (error) {
+    return (
+      <WrappedList>
+        <AlertInfoCenter />
       </WrappedList>
     );
   }

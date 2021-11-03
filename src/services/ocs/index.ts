@@ -4,6 +4,7 @@ import { initializeStore } from "@/store/index";
 
 const ocsInstance = () => {
   const { password, email: username } = initializeStore({}).getState().user.user;
+  console.log(password);
   const api = axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud`,
     auth: {
