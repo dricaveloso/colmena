@@ -15,7 +15,7 @@ import {
   copyFile,
   deleteFile,
   putFile,
-  uploadLink,
+  // uploadLink,
 } from "@/services/webdav/files";
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
@@ -40,12 +40,12 @@ export default function WebDav() {
       const listD: Array<FileStat> | ResponseDataDetailed<Array<FileStat>> = await listDirectories1(
         userRdx.user.id,
       );
-      const result = listD.data.shift();
+      // const result = listD.data.shift();
 
-      console.log(result);
-      console.log(listD);
-      setData([]);
-      setData(listD.data);
+      // console.log(result);
+      // console.log(listD);
+      // setData([]);
+      // setData(listD.data);
     } catch (e) {
       console.log("error", e);
     }
