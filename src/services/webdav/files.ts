@@ -55,7 +55,6 @@ export function moveFile(userId: string | number, filename: ArrayBuffer, destina
 export function copyFile(userId: string | number, filename: string, destination: string) {
   webdav().copyFile(`${userId}/${filename}`, `${userId}/${destination}`);
 }
-<<<<<<< HEAD
 export function putFile(userId: string | number, filePath: string) {
   try {
     webdav().getFileUploadLink(`${userId}/${filePath}`);
@@ -65,18 +64,6 @@ export function putFile(userId: string | number, filePath: string) {
     }
   }
   return true;
-=======
-
-export async function putFile(
-  userId: string | number,
-  filePath: string,
-  data: string | ArrayBuffer,
-): Promise<boolean> {
-  return webdav().putFileContents(`${userId}/${filePath}`, data, {
-    overwrite: true,
-    contentLength: false,
-  });
->>>>>>> 4386c950619279e0d1e8eb078ba4a2928f881e27
 }
 
 export function listImages(userId: string | number, filename: string) {
