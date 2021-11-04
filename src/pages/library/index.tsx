@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from "react";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import LayoutApp from "@/components/statefull/LayoutApp";

@@ -13,19 +13,23 @@ import { setCurrentPage } from "@/store/actions/config/index";
 
 type Props = {
   title: string;
+  subtitle?: string;
   drawer?: boolean;
   back?: boolean;
   headerPosition?: PositionProps | undefined;
   children: React.ReactNode;
+  showFooter?: boolean;
   templateHeader?: "variation1" | "variation2";
 };
 
 function LayoutApp({
   title,
+  subtitle = "",
   drawer = true,
   back = false,
   headerPosition = PositionEnum.FIXED,
   templateHeader = "variation1",
+  showFooter = true,
   children,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -50,16 +54,17 @@ function LayoutApp({
 
   return (
     <Container extraStyle={{ padding: 0, backgroundColor: "#F9F9F9" }}>
-      <FlexBox extraStyle={{ margin: 0 }}>
+      <FlexBox extraStyle={{ margin: 0, padding: 0 }}>
         <AppBar
           title={title}
+          subtitle={subtitle}
           headerPosition={headerPosition}
           drawer={drawer}
           templateHeader={templateHeader}
           back={back}
         />
         <>{children}</>
-        <FooterApp />
+        {showFooter && <FooterApp />}
       </FlexBox>
     </Container>
   );

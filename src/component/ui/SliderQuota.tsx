@@ -4,7 +4,7 @@ import { TextVariantEnum } from "@/enums/*";
 import { withStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-const BorderLinearProgress = withStyles((theme) => ({
+const BorderLinearProgress = withStyles(() => ({
   root: {
     height: 4,
     borderRadius: 5,

@@ -8,8 +8,9 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import { useRouter } from "next/router";
 import { v4 as uuid } from "uuid";
 import { useTranslation } from "next-i18next";
-import NewFolderModal from "./NewFolderModal";
-import UploadModal from "./UploadModal";
+import NewFolderModal from "./ModalTools/NewFolderModal";
+import NewHoneycombModal from "./ModalTools/NewHoneycombModal";
+import UploadModal from "./ModalTools/UploadModal";
 
 type Props = {
   open: boolean;
@@ -20,6 +21,7 @@ type Props = {
 export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose }: Props) {
   const [openNewFolderModal, setOpenNewFolderModal] = useState(false);
   const [openUploadModal, setOpenUploadModal] = useState(false);
+  const [openNewHoneycombModal, setOpenNewHoneycombModal] = useState(false);
   const { t } = useTranslation("common");
   const router = useRouter();
   const navigate = (page: string) => {
@@ -42,6 +44,15 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
 
   const handleCloseUploadModal = () => {
     setOpenUploadModal(false);
+  };
+
+  const handleOpenNewHoneycombModal = () => {
+    setOpenNewHoneycombModal(true);
+  };
+
+  const handleCloseNewHoneycombModal = () => {
+    setOpenNewHoneycombModal(false);
+    handleClose();
   };
 
   return (
@@ -79,10 +90,28 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
             </ListItemAvatar>
             <ListItemText primary={t("uploadFileDrawerBottomTitle")} />
           </ListItem>
+          <ListItem button key={uuid()} onClick={handleOpenNewHoneycombModal}>
+            <ListItemAvatar>
+              <SvgIcon icon="panal_flat" fontSize="small" />
+            </ListItemAvatar>
+            <ListItemText primary={t("addHoneycombDrawerBottomTitle")} />
+          </ListItem>
         </List>
       </SwipeableDrawer>
-      <NewFolderModal open={openNewFolderModal} handleClose={handleCloseNewFolderModal} />
-      <UploadModal open={openUploadModal} handleClose={handleCloseUploadModal} />
+
+      {openUploadModal && (
+        <UploadModal open={openUploadModal} handleClose={handleCloseUploadModal} />
+      )}
+
+      {openNewFolderModal && (
+        <NewFolderModal open={openNewFolderModal} handleClose={handleCloseNewFolderModal} />
+      )}
+      {openNewHoneycombModal && (
+        <NewHoneycombModal
+          open={openNewHoneycombModal}
+          handleClose={handleCloseNewHoneycombModal}
+        />
+      )}
     </>
   );
 }

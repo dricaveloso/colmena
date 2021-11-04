@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Link from "next/link";
 import SvgIcon from "@/components/ui/SvgIcon";
 import theme from "@/styles/theme";
+import Box from "@material-ui/core/Box";
 
 type Props = {
   icon: AllIconProps;
@@ -21,6 +22,10 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   style?: object;
   className?: string;
+  direction?: string;
+  disabled?: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  textStyle?: object;
   variant?: "text" | "outlined" | "contained" | undefined;
 };
 
@@ -34,8 +39,11 @@ function IconButtonCtr({
   download = "",
   iconStyle = {},
   style = {},
+  textStyle = {},
   className = "",
   variant = undefined,
+  direction = "vertical",
+  disabled = false,
   handleClick,
 }: Props) {
   const [colorActive, setColorActive] = useState(color);
@@ -54,6 +62,7 @@ function IconButtonCtr({
             onMouseOut={() => changeColorHandler(false)}
             className={className}
             variant={variant}
+            disabled={disabled}
           >
             <SvgIcon
               icon={icon}
@@ -76,6 +85,7 @@ function IconButtonCtr({
           onMouseOut={() => changeColorHandler(false)}
           className={className}
           variant={variant}
+          disabled={disabled}
         >
           <SvgIcon
             icon={icon}
@@ -94,6 +104,7 @@ function IconButtonCtr({
         onClick={handleClick}
         className={className}
         variant={variant}
+        disabled={disabled}
       >
         <SvgIcon
           icon={icon}
@@ -106,21 +117,24 @@ function IconButtonCtr({
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+    <Box
+      display="flex"
+      flexDirection={direction === "vertical" ? "column" : "row"}
+      justifyContent="center"
+      alignItems="center"
     >
       {showButtonWithConditions()}
       {!!title && (
-        <Text variant={variantTitle} align={TextAlignEnum.CENTER} gutterBottom>
+        <Text
+          style={{ ...textStyle }}
+          variant={variantTitle}
+          align={TextAlignEnum.CENTER}
+          gutterBottom
+        >
           {title}
         </Text>
       )}
-    </div>
+    </Box>
   );
 }
 

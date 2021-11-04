@@ -5,11 +5,13 @@ import {
   WelcomeUserInterface,
   SetPasswordInterface,
   UpdatePasswordInterface,
+  UsersListInterface,
 } from "@/interfaces/ocs";
 import constants from "@/constants/index";
+import useOcsFetch from "@/hooks/useOcsFetch";
 
-export function listAllUsers() {
-  return ocs().get(`/users`);
+export function listAllUsers(): UsersListInterface {
+  return useOcsFetch("/users?format=json");
 }
 export function listOneUser(userId: string | number) {
   return ocs().get(`/users/${userId}`);
