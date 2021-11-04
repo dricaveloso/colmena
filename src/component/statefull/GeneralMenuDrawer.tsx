@@ -1,22 +1,21 @@
 import React, { useContext, useState } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { ListItemIcon, List, ListItem, ListItemText } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import NotificationContext from "@/store/context/notification-context";
-import { NotificationStatusEnum, TextVariantEnum } from "@/enums/index";
+import { NotificationStatusEnum } from "@/enums/index";
 import Divider from "@material-ui/core/Divider";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/client";
 import Backdrop from "@/components/ui/Backdrop";
-import Image from "next/image";
-import Text from "@/components/ui/Text";
 import SvgIcon from "@/components/ui/SvgIcon";
 import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal";
 import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
+import LogoSvg from "../../../public/images/svg/colmena_logo.svg";
 
 type ListItemProps = {
   id: string;
@@ -28,12 +27,14 @@ type ListItemProps = {
 };
 
 const useStyles = makeStyles((theme) => ({
+  icon: {
+    minWidth: 40,
+  },
   margin: {
     margin: theme.spacing(1),
   },
   list: {
-    color: "white",
-    backgroundColor: theme.palette.secondary.main,
+    color: "#666",
     [theme.breakpoints.down("sm")]: {
       width: "80vw",
     },
@@ -50,7 +51,6 @@ type Props = {
 };
 
 function DrawerAux({ open, onClose }: Props) {
-  const theme = useTheme();
   const classes = useStyles();
   const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
@@ -81,10 +81,13 @@ function DrawerAux({ open, onClose }: Props) {
     }
   };
 
+  const iconColor = "#666";
+  const iconSize = "medium";
+
   const menuArray = [
     {
       id: uuid(),
-      icon: <SvgIcon icon="download_circle" fontSize="large" htmlColor="white" />,
+      icon: <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("downloadTitle"),
       handleClick: () =>
         notificationCtx.showNotification({
@@ -94,13 +97,13 @@ function DrawerAux({ open, onClose }: Props) {
     },
     {
       id: uuid(),
-      icon: <SvgIcon icon="language" fontSize="large" htmlColor="white" />,
+      icon: <SvgIcon icon="global" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("languageTitle"),
       handleClick: switchLanguageHandle,
     },
     {
       id: uuid(),
-      icon: <SvgIcon icon="settings" fontSize="large" htmlColor="white" />,
+      icon: <SvgIcon icon="settings" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("settingsTitle"),
       handleClick: () =>
         notificationCtx.showNotification({
@@ -110,37 +113,37 @@ function DrawerAux({ open, onClose }: Props) {
     },
     {
       id: uuid(),
-      icon: <SvgIcon icon="user" fontSize="large" htmlColor="white" />,
-      title: t("userProfileTitle"),
-      url: "/profile",
-    },
-    {
-      id: uuid(),
-      icon: <SvgIcon icon="user_group" fontSize="large" htmlColor="white" />,
+      icon: <SvgIcon icon="user_group" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("editMediaTitle"),
       url: "/media-profile",
     },
     {
       id: uuid(),
-      icon: <SvgIcon icon="help" fontSize="large" htmlColor="white" />,
+      icon: <SvgIcon icon="user" fontSize={iconSize} htmlColor={iconColor} />,
+      title: t("userProfileTitle"),
+      url: "/profile",
+    },
+    {
+      id: uuid(),
+      icon: <SvgIcon icon="help" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("supportTitle"),
       url: "/talk-to-us",
     },
     {
       id: uuid(),
-      icon: <SvgIcon icon="contract" fontSize="large" htmlColor="white" />,
-      title: t("termsOfUse"),
-      url: "/terms-of-use",
-    },
-    {
-      id: uuid(),
-      icon: <SvgIcon icon="info" fontSize="large" htmlColor="white" />,
+      icon: <SvgIcon icon="info" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("aboutMaia"),
       url: "/about",
     },
     {
       id: uuid(),
-      icon: <SvgIcon icon="logout" fontSize="large" htmlColor="white" />,
+      icon: <SvgIcon icon="contract" fontSize={iconSize} htmlColor={iconColor} />,
+      title: t("termsOfUse"),
+      url: "/terms-of-use",
+    },
+    {
+      id: uuid(),
+      icon: <SvgIcon icon="logout" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("logoutTitle"),
       handleClick: logoutHandler,
     },
@@ -153,8 +156,8 @@ function DrawerAux({ open, onClose }: Props) {
     title?: string,
   ): React.ReactNode => (
     <ListItem key={id}>
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={title} primaryTypographyProps={{ style: { fontSize: 16 } }} />
+      <ListItemIcon className={classes.icon}>{icon}</ListItemIcon>
+      <ListItemText primary={title} primaryTypographyProps={{ style: { fontSize: 14 } }} />
     </ListItem>
   );
 
@@ -169,15 +172,7 @@ function DrawerAux({ open, onClose }: Props) {
           alignItems: "center",
         }}
       >
-        <Image src="/images/logo.png" width={90} height={90} alt="Colmena logo" />
-        <Text
-          style={{ color: "white", fontWeight: "bold", marginLeft: 5, marginRight: 5 }}
-          variant={TextVariantEnum.H3}
-        >
-          COLMENA.
-          <br />
-          MEDIA
-        </Text>
+        <LogoSvg />
       </div>
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
       <List component="nav">
@@ -213,7 +208,7 @@ function DrawerAux({ open, onClose }: Props) {
       />
       <Backdrop open={showBackdrop} />
       <Drawer anchor="left" open={open} onClose={onClose}>
-        <div style={{ flex: 1, backgroundColor: theme.palette.secondary.main }}>{drawerMenu()}</div>
+        <div style={{ flex: 1, backgroundColor: "white" }}>{drawerMenu()}</div>
       </Drawer>
     </div>
   );

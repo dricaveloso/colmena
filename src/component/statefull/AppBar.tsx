@@ -10,7 +10,7 @@ import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 // import UserAvatar from "@/components/ui/Avatar";
 import { useSelector } from "react-redux";
-import Drawer from "./Drawer";
+import Drawer from "./GeneralMenuDrawer";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 
