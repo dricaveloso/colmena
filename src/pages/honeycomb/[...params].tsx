@@ -144,7 +144,7 @@ function Honeycomb() {
               value={value}
               onChange={handleChange}
               indicatorColor="primary"
-              style={{ backgroundColor: "#fff", width: "100vw", color: "#737373" }}
+              style={{ backgroundColor: "#fff", width: "100vw", color: theme.palette.icon.main }}
               variant="fullWidth"
             >
               <Tab
@@ -153,7 +153,7 @@ function Honeycomb() {
                     icon="chat"
                     iconStyle={{ fontSize: 20 }}
                     direction="horizontal"
-                    color="#737373"
+                    color={theme.palette.icon.main}
                     textStyle={{ fontSize: 14 }}
                     title="Chat"
                   />
@@ -166,7 +166,7 @@ function Honeycomb() {
                     icon="library"
                     iconStyle={{ fontSize: 20 }}
                     direction="horizontal"
-                    color="#737373"
+                    color={theme.palette.icon.main}
                     textStyle={{ fontSize: 14 }}
                     title="Library"
                   />
