@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { dateDescription, trailingSlash } from "@/utils/utils";
+import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
 import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
@@ -80,8 +80,8 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           const date = new Date();
           const item: LibraryItemInterface = {
             basename: values.name,
-            id: finalPath,
-            filename: finalPath,
+            id: removeFirstSlash(finalPath),
+            filename: removeFirstSlash(finalPath),
             type: "directory",
             environment: EnvironmentEnum.REMOTE,
             createdAt: date,

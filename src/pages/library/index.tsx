@@ -171,8 +171,6 @@ function MyLibrary() {
         case FilterEnum.IMAGE:
           return imageExtensions.includes(extension);
         case FilterEnum.TEXT:
-          console.log(extension, textExtensions.includes(extension), textExtensions);
-
           return textExtensions.includes(extension);
         default:
           return item;
@@ -199,7 +197,6 @@ function MyLibrary() {
         dispatch(setLibraryFiles(items));
         dispatch(setLibraryPath(currentPath));
       } catch (e) {
-        console.log(e);
         dispatch(setLibraryFiles([]));
         dispatch(setLibraryPathExists(false));
       }
@@ -250,7 +247,7 @@ function MyLibrary() {
         )}
         {notFoundDir && (
           <>
-            <Image alt="404 not found" src="images/404 Error.png" width={500} height={500} />
+            <Image alt="404 not found" src="/images/404 Error.png" width={500} height={500} />
             <Button color="primary" variant="outlined" onClick={() => router.back()}>
               {t("form.backButton")}
             </Button>
