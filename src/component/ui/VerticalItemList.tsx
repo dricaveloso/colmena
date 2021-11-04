@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import React from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -47,7 +49,6 @@ const VerticalItemList = ({
   image,
   extension,
 }: LibraryItemInterface) => {
-  // console.log(environment, createdAt, tags, arrayBufferBlob);
   const classes = useStyles();
   const router = useRouter();
 

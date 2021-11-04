@@ -48,6 +48,7 @@ type Props = {
 };
 
 export default function NewFolderModal({ open, handleClose }: Props) {
+  const { t } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const userId = userRdx.user.id;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -58,7 +59,6 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const [finalPath, setFinalPath] = useState(path);
   const [handledPath, setHandledPath] = useState("/");
   const [isLoading, setIsLoading] = useState(false);
-  const { t } = useTranslation("common");
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
   const dispatch = useDispatch();
   const initialValues = {
@@ -102,7 +102,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   };
 
   const NewFolderSchema = Yup.object().shape({
-    name: Yup.string().required(t("messages.enterFolderName")),
+    name: Yup.string().required(t("form.requiredTitle")),
   });
 
   const handleName = (name: any) => {
@@ -138,7 +138,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
         <Fade in={open}>
           <div className={classes.paper}>
             <h4 id="transition-modal-title" className={classes.title}>
-              {t("newFolderTitle")}
+              {t("addFolderTitle")}
             </h4>
             <Formik
               initialValues={initialValues}
@@ -151,7 +151,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     {({ field }: FieldProps) => (
                       <TextField
                         id="outlined-search"
-                        label={t("form.name")}
+                        label={t("form.fields.name")}
                         variant="outlined"
                         {...field}
                         onChange={(

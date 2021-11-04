@@ -25,7 +25,7 @@ export default function Ctnr({
         flex: 1,
         justifyContent,
         height: "100vh",
-        backgroundColor: "#FCFCFC",
+        backgroundColor: "#F9F9F9",
         ...extraStyle,
       }}
     >

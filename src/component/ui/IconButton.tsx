@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
+import React from "react";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import { TextVariantProps, FontSizeIconProps, AllIconProps } from "@/types/index";
@@ -6,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Link from "next/link";
 import SvgIcon from "@/components/ui/SvgIcon";
 import theme from "@/styles/theme";
+import Box from "@material-ui/core/Box";
 
 type Props = {
   icon: AllIconProps;
@@ -13,6 +15,7 @@ type Props = {
   fontSizeIcon?: FontSizeIconProps;
   variantTitle?: TextVariantProps;
   color?: string;
+  iconColor?: string;
   handleClick?: () => void | undefined;
   url?: string;
   download?: string;
@@ -21,6 +24,10 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   style?: object;
   className?: string;
+  direction?: string;
+  disabled?: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  textStyle?: object;
   variant?: "text" | "outlined" | "contained" | undefined;
 };
 
@@ -30,18 +37,22 @@ function IconButtonCtr({
   fontSizeIcon = "large",
   variantTitle = TextVariantEnum.H5,
   color = "black",
+  iconColor = theme.palette.icon.main,
   url = "no-navigation",
   download = "",
   iconStyle = {},
   style = {},
+  textStyle = {},
   className = "",
   variant = undefined,
+  direction = "vertical",
+  disabled = false,
   handleClick,
 }: Props) {
-  const [colorActive, setColorActive] = useState(color);
-  const changeColorHandler = (status: boolean) => {
-    setColorActive(status ? theme.palette.primary.light : color);
-  };
+  // const [colorActive, setColorActive] = useState(color);
+  // const changeColorHandler = (status: boolean) => {
+  //   setColorActive(status ? theme.palette.primary.light : color);
+  // };
 
   function showButtonWithConditions() {
     if (url !== "no-navigation" && !download)
@@ -50,14 +61,15 @@ function IconButtonCtr({
           <Button
             component="a"
             style={{ background: "none", ...style }}
-            onMouseOver={() => changeColorHandler(true)}
-            onMouseOut={() => changeColorHandler(false)}
+            // onMouseOver={() => changeColorHandler(true)}
+            // onMouseOut={() => changeColorHandler(false)}
             className={className}
             variant={variant}
+            disabled={disabled}
           >
             <SvgIcon
               icon={icon}
-              htmlColor={colorActive}
+              htmlColor={iconColor}
               fontSize={fontSizeIcon}
               style={{ ...iconStyle }}
             />
@@ -72,14 +84,15 @@ function IconButtonCtr({
           download={download}
           href={url}
           style={{ background: "none", ...style }}
-          onMouseOver={() => changeColorHandler(true)}
-          onMouseOut={() => changeColorHandler(false)}
+          // onMouseOver={() => changeColorHandler(true)}
+          // onMouseOut={() => changeColorHandler(false)}
           className={className}
           variant={variant}
+          disabled={disabled}
         >
           <SvgIcon
             icon={icon}
-            htmlColor={colorActive}
+            htmlColor={iconColor}
             fontSize={fontSizeIcon}
             style={{ ...iconStyle }}
           />
@@ -89,15 +102,16 @@ function IconButtonCtr({
     return (
       <Button
         style={{ background: "none", ...style }}
-        onMouseOver={() => changeColorHandler(true)}
-        onMouseOut={() => changeColorHandler(false)}
+        // onMouseOver={() => changeColorHandler(true)}
+        // onMouseOut={() => changeColorHandler(false)}
         onClick={handleClick}
         className={className}
         variant={variant}
+        disabled={disabled}
       >
         <SvgIcon
           icon={icon}
-          htmlColor={colorActive}
+          htmlColor={iconColor}
           fontSize={fontSizeIcon}
           style={{ ...iconStyle }}
         />
@@ -106,21 +120,24 @@ function IconButtonCtr({
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+    <Box
+      display="flex"
+      flexDirection={direction === "vertical" ? "column" : "row"}
+      justifyContent="center"
+      alignItems="center"
     >
       {showButtonWithConditions()}
       {!!title && (
-        <Text variant={variantTitle} align={TextAlignEnum.CENTER} gutterBottom>
+        <Text
+          style={{ color, ...textStyle }}
+          variant={variantTitle}
+          align={TextAlignEnum.CENTER}
+          gutterBottom
+        >
           {title}
         </Text>
       )}
-    </div>
+    </Box>
   );
 }
 

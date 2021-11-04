@@ -1,5 +1,14 @@
 import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
+declare module "@material-ui/core/styles/createPalette" {
+  interface Palette {
+    icon: Palette["primary"];
+  }
+  interface PaletteOptions {
+    icon: PaletteOptions["primary"];
+  }
+}
+
 const theme = createTheme({
   typography: {
     fontFamily: "Open Sans, sans-serif",
@@ -16,6 +25,11 @@ const theme = createTheme({
       main: "#d53e7e",
       dark: "#9f0052",
       contrastText: "#fff",
+    },
+    icon: {
+      light: "#a4a4a4",
+      main: "#757575",
+      dark: "#494949",
     },
   },
 });
