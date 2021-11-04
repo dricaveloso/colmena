@@ -209,10 +209,21 @@ export function trailingSlash(path: string) {
   return `${path.replace(/\/$/, "")}/`;
 }
 
-export function removeFirstSlash(path: string | null | undefined) {
+export function removeFirstSlash(path: string | null | undefined): string {
   if (!path) {
-    return path;
+    return "";
   }
 
   return `${path.replace(/^\//, "")}`;
+}
+
+export function awaiting(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function getRandomInt(min: number, max: number) {
+  const intMin = Math.ceil(min);
+  const intMax = Math.floor(max);
+
+  return Math.floor(Math.random() * (intMax - intMin)) + min;
 }

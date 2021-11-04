@@ -19,6 +19,10 @@
   "addFolderDrawerBottomTitle": "Carpeta",
   "enterTitleIndexPage": "Aceder",
   "titleSwitchLanguage": "Cambiar idioma",
+  "uploadFileDrawerBottomTitle": "Upload",
+  "newFolderTitle": "Nueva carpeta",
+  "uploadTitle": "Upload",
+  "loading": "Cargando",
   "form": {
     "skipButton": "Saltar",
     "nextIntro": "Continuar",
@@ -38,12 +42,16 @@
     "requiredTitle": "Requerido",
     "name": "Nombre",
     "local": "Local",
-    "create": "Crear"
+    "create": "Crear",
+    "upload": "Upload"
   },
   "messages": {
     "loginFailedTitle": "Nombre o contraseña incorecto.",
     "directoryAlreadyExists": "Ya hay una carpeta con este nombre.",
-    "enterFolderName": "Nombre de la carpeta"
+    "enterFolderName": "Nombre de la carpeta",
+    "fileAlreadyExists": "Ya existe un archivo con ese nombre.",
+    "fileTooLarge": "El archivo {{fileName}} es demasiado grande para cargarlo.",
+    "unableToProcessFile": "No se puede procesar el archivo {{fileName}}."
   },
   "timeDescription": {
     "singularYear": "año",

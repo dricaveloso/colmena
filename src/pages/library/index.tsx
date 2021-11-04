@@ -56,57 +56,63 @@ function MyLibrary() {
   const dispatch = useDispatch();
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
 
-  const getWebDavDirectories = useCallback(async (userId: string, currentDirectory: string) => {
-    const items: LibraryItemInterface[] = [];
+  const getWebDavDirectories = useCallback(
+    async (userId: string, currentDirectory: string) => {
+      const items: LibraryItemInterface[] = [];
 
-    const nxDirectories = await listDirectories(userId, currentDirectory);
-    if (nxDirectories?.data.length > 0) {
-      nxDirectories.data.forEach((directory: FileStat) => {
-        const filename = directory.filename.replace(/^.+?(\/|$)/, "");
-        const date = new Date(directory.lastmod);
-        if (filename !== "" && filename !== currentDirectory) {
-          const item: LibraryItemInterface = {
-            basename: directory.basename,
-            id: directory.filename,
-            filename,
-            type: directory.type,
-            environment: EnvironmentEnum.REMOTE,
-            extension: getExtensionFilename(filename),
-            createdAt: date,
-            createdAtDescription: dateDescription(date, timeDescription),
-          };
+      const nxDirectories = await listDirectories(userId, currentDirectory);
+      if (nxDirectories?.data.length > 0) {
+        nxDirectories.data.forEach((directory: FileStat) => {
+          const filename = directory.filename.replace(/^.+?(\/|$)/, "");
+          const date = new Date(directory.lastmod);
+          if (filename !== "" && filename !== currentDirectory) {
+            const item: LibraryItemInterface = {
+              basename: directory.basename,
+              id: directory.filename,
+              filename,
+              type: directory.type,
+              environment: EnvironmentEnum.REMOTE,
+              extension: getExtensionFilename(filename),
+              createdAt: date,
+              createdAtDescription: dateDescription(date, timeDescription),
+            };
 
-          items.push(item);
-        }
-      });
-    }
-
-    return items;
-  }, []);
-
-  const getLocalFiles = useCallback(async (userId: string, currentDirectory: string) => {
-    const items: LibraryItemInterface[] = [];
-    if (currentDirectory === "/") {
-      const localFiles = await getAllAudios(userId);
-      if (localFiles.length > 0) {
-        localFiles.forEach((file: RecordingInterface) => {
-          const item: LibraryItemInterface = {
-            basename: file.title,
-            id: file.id,
-            type: "audio",
-            environment: EnvironmentEnum.LOCAL,
-            extension: "ogg",
-            createdAt: file.createdAt,
-            createdAtDescription: dateDescription(file.createdAt, timeDescription),
-          };
-
-          items.push(item);
+            items.push(item);
+          }
         });
       }
-    }
 
-    return items;
-  }, []);
+      return items;
+    },
+    [timeDescription],
+  );
+
+  const getLocalFiles = useCallback(
+    async (userId: string, currentDirectory: string) => {
+      const items: LibraryItemInterface[] = [];
+      if (currentDirectory === "/") {
+        const localFiles = await getAllAudios(userId);
+        if (localFiles.length > 0) {
+          localFiles.forEach((file: RecordingInterface) => {
+            const item: LibraryItemInterface = {
+              basename: file.title,
+              id: file.id,
+              type: "audio",
+              environment: EnvironmentEnum.LOCAL,
+              extension: "ogg",
+              createdAt: file.createdAt,
+              createdAtDescription: dateDescription(file.createdAt, timeDescription),
+            };
+
+            items.push(item);
+          });
+        }
+      }
+
+      return items;
+    },
+    [timeDescription],
+  );
 
   const orderItems = useCallback((order: string, items: Array<LibraryItemInterface>) => {
     if (items.length === 0 || order === "") {
@@ -165,8 +171,6 @@ function MyLibrary() {
         case FilterEnum.IMAGE:
           return imageExtensions.includes(extension);
         case FilterEnum.TEXT:
-          console.log(extension, textExtensions.includes(extension), textExtensions);
-
           return textExtensions.includes(extension);
         default:
           return item;
@@ -193,7 +197,6 @@ function MyLibrary() {
         dispatch(setLibraryFiles(items));
         dispatch(setLibraryPath(currentPath));
       } catch (e) {
-        console.log(e);
         dispatch(setLibraryFiles([]));
         dispatch(setLibraryPathExists(false));
       }
@@ -244,7 +247,7 @@ function MyLibrary() {
         )}
         {notFoundDir && (
           <>
-            <Image alt="404 not found" src="images/404 Error.png" width={500} height={500} />
+            <Image alt="404 not found" src="/images/404 Error.png" width={500} height={500} />
             <Button color="primary" variant="outlined" onClick={() => router.back()}>
               {t("form.backButton")}
             </Button>

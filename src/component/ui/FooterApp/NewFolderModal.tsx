@@ -11,9 +11,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { dateDescription, trailingSlash } from "@/utils/utils";
+import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
 import { addLibraryFile } from "@/store/actions/library";
-import { LibraryItemInterface } from "@/interfaces/index";
+import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import NotificationContext from "@/store/context/notification-context";
@@ -59,6 +59,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const [handledPath, setHandledPath] = useState("/");
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation("common");
+  const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
   const dispatch = useDispatch();
   const initialValues = {
     name: "",
@@ -79,12 +80,12 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           const date = new Date();
           const item: LibraryItemInterface = {
             basename: values.name,
-            id: finalPath,
-            filename: finalPath,
+            id: removeFirstSlash(finalPath),
+            filename: removeFirstSlash(finalPath),
             type: "directory",
             environment: EnvironmentEnum.REMOTE,
             createdAt: date,
-            createdAtDescription: dateDescription(date, t("timeDescription")),
+            createdAtDescription: dateDescription(date, timeDescription),
           };
           setIsLoading(false);
           dispatch(addLibraryFile(item));

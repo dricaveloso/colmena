@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { v4 as uuid } from "uuid";
 import { useTranslation } from "next-i18next";
 import NewFolderModal from "./NewFolderModal";
+import UploadModal from "./UploadModal";
 
 type Props = {
   open: boolean;
@@ -18,6 +19,7 @@ type Props = {
 
 export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose }: Props) {
   const [openNewFolderModal, setOpenNewFolderModal] = useState(false);
+  const [openUploadModal, setOpenUploadModal] = useState(false);
   const { t } = useTranslation("common");
   const router = useRouter();
   const navigate = (page: string) => {
@@ -31,6 +33,15 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
 
   const handleCloseNewFolderModal = () => {
     setOpenNewFolderModal(false);
+  };
+
+  const handleOpenUploadModal = () => {
+    setOpenUploadModal(true);
+    handleClose();
+  };
+
+  const handleCloseUploadModal = () => {
+    setOpenUploadModal(false);
   };
 
   return (
@@ -62,9 +73,16 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
             </ListItemAvatar>
             <ListItemText primary={t("addFolderDrawerBottomTitle")} />
           </ListItem>
+          <ListItem button key={uuid()} onClick={handleOpenUploadModal}>
+            <ListItemAvatar>
+              <SvgIcon icon="clould_upload" fontSize="medium" />
+            </ListItemAvatar>
+            <ListItemText primary={t("uploadFileDrawerBottomTitle")} />
+          </ListItem>
         </List>
       </SwipeableDrawer>
       <NewFolderModal open={openNewFolderModal} handleClose={handleCloseNewFolderModal} />
+      <UploadModal open={openUploadModal} handleClose={handleCloseUploadModal} />
     </>
   );
 }
