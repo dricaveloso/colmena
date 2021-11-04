@@ -85,7 +85,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
             <Grid item xs={3} key={uuid()}>
               <IconButton
                 icon="upload"
-                iconColor={defaultConfigButton.color.light}
+                iconColor={defaultConfigButton.color.main}
                 fontSizeIcon={defaultConfigButton.fontSizeIcon}
                 textStyle={{
                   fontSize: defaultConfigButton.fontSize,
