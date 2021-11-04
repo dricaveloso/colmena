@@ -1,13 +1,45 @@
 import webdav from "@/services/webdav";
 import { BufferLike, ResponseDataDetailed } from "webdav";
+import { removeFirstSlash, getRandomInt, trailingSlash } from "@/utils/utils";
 // ver se não tem 404
 export function listFile(
   userId: string | number,
-  filePath: string,
+  filePath: string | null | undefined,
 ): Promise<BufferLike | string | ResponseDataDetailed<BufferLike | string>> {
-  return webdav().getFileContents(`${userId}/${filePath}`);
+  return webdav().getFileContents(`${userId}/${removeFirstSlash(filePath)}`);
 }
-export function moveFile(userId: string | number, filename: string, destination: string) {
+
+export async function existfile(userId: string | number, remotePath: string): Promise<boolean> {
+  try {
+    await listFile(userId, removeFirstSlash(remotePath));
+  } catch (err) {
+    return false;
+  }
+
+  return true;
+}
+
+export async function getUniqueName(
+  userId: string | number,
+  path: string,
+  name: string,
+  count = 0,
+): Promise<string> {
+  let uniqueName: string = name;
+  if (count > 0) {
+    uniqueName = getRandomInt(1, 9999) + name;
+  }
+
+  const remotePath = `${trailingSlash(path)}${uniqueName}`;
+  const exists = await existfile(userId, remotePath);
+  if (exists) {
+    return getUniqueName(userId, path, name, count + 1);
+  }
+
+  return uniqueName;
+}
+
+export function moveFile(userId: string | number, filename: ArrayBuffer, destination: string) {
   try {
     webdav().moveFile(`${userId}/${filename}`, `${userId}/${destination}`);
   } catch (error) {
@@ -15,12 +47,15 @@ export function moveFile(userId: string | number, filename: string, destination:
       return false;
     }
   }
+
   return true;
   // TODO tratar 403
 }
+
 export function copyFile(userId: string | number, filename: string, destination: string) {
   webdav().copyFile(`${userId}/${filename}`, `${userId}/${destination}`);
 }
+<<<<<<< HEAD
 export function putFile(userId: string | number, filePath: string) {
   try {
     webdav().getFileUploadLink(`${userId}/${filePath}`);
@@ -30,6 +65,18 @@ export function putFile(userId: string | number, filePath: string) {
     }
   }
   return true;
+=======
+
+export async function putFile(
+  userId: string | number,
+  filePath: string,
+  data: string | ArrayBuffer,
+): Promise<boolean> {
+  return webdav().putFileContents(`${userId}/${filePath}`, data, {
+    overwrite: true,
+    contentLength: false,
+  });
+>>>>>>> 4386c950619279e0d1e8eb078ba4a2928f881e27
 }
 
 export function listImages(userId: string | number, filename: string) {
@@ -39,6 +86,7 @@ export function listImages(userId: string | number, filename: string) {
     glob: "/**/*.{png,jpg,gif,jpeg}",
   });
 }
+
 export function deleteFile(userId: string | number, filename: string): boolean {
   try {
     webdav().deleteFile(`${userId}/${filename}`);
@@ -47,5 +95,6 @@ export function deleteFile(userId: string | number, filename: string): boolean {
       return false;
     }
   }
+
   return true;
 }

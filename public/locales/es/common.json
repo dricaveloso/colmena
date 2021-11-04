@@ -17,9 +17,26 @@
   "callDrawerBottomTitle": "Llamar",
   "recordingDrawerBottomTitle": "Grabando",
   "addFolderDrawerBottomTitle": "Carpeta",
+  "addFolderTitle": "Nueva Carpeta",
+  "addHoneycombDrawerBottomTitle": "Honeycomb",
+  "addHoneycombTitle": "New Honeycomb",
   "enterTitleIndexPage": "Aceder",
   "titleSwitchLanguage": "Cambiar idioma",
+  "uploadFileDrawerBottomTitle": "Upload",
+  "newFolderTitle": "Nueva carpeta",
+  "uploadTitle": "Upload",
+  "loading": "Cargando",
+  "noItemsFound": "No items found",
+  "honeycombModal": {
+    "chatRoomSuccess": "Chat room created successfully",
+    "chatRoomFailed": "Unable to create chat room",
+    "buttonStep1": "Create",
+    "buttonStep2": "Add"
+  },
   "form": {
+    "fields": {
+      "name": "Name"
+    },
     "skipButton": "Saltar",
     "nextIntro": "Continuar",
     "backButton": "Volver",
@@ -30,20 +47,26 @@
     "submitLoginTitle": "Enter",
     "forgetPasswordTitle": "Olvidé mi contraseña",
     "submitSaveTitle": "Salvar",
-    "invalidURLTitle": "URL invalida",
+    "submitCreateTitle": "Create",
     "successMessageFormSave": "Salvo",
+    "loadingTitle": "Wait...",
     "passwordMinLengthTitle": "Muy corto! Minimo de {{size}} caracteres.",
     "passwordMaxLengthTitle": "Muy largo! Maximo de {{size}} caracteres.",
     "differentPasswordsTitle": "Contraseñas están diferentes",
     "requiredTitle": "Requerido",
+    "invalidURLTitle": "Invalid URL",
     "name": "Nombre",
     "local": "Local",
-    "create": "Crear"
+    "create": "Crear",
+    "upload": "Upload"
   },
   "messages": {
     "loginFailedTitle": "Nombre o contraseña incorecto.",
     "directoryAlreadyExists": "Ya hay una carpeta con este nombre.",
-    "enterFolderName": "Nombre de la carpeta"
+    "enterFolderName": "Nombre de la carpeta",
+    "fileAlreadyExists": "Ya existe un archivo con ese nombre.",
+    "fileTooLarge": "El archivo {{fileName}} es demasiado grande para cargarlo.",
+    "unableToProcessFile": "No se puede procesar el archivo {{fileName}}."
   },
   "timeDescription": {
     "singularYear": "año",

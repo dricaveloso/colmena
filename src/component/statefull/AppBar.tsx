@@ -10,12 +10,13 @@ import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 // import UserAvatar from "@/components/ui/Avatar";
 import { useSelector } from "react-redux";
-import Drawer from "./Drawer";
+import Drawer from "./GeneralMenuDrawer";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 
 type Props = {
   title: string;
+  subtitle?: string;
   headerPosition?: PositionProps | undefined;
   drawer?: boolean;
   back?: boolean;
@@ -24,6 +25,7 @@ type Props = {
 
 function AppBarSys({
   title,
+  subtitle,
   headerPosition = PositionEnum.FIXED,
   drawer = true,
   back = false,
@@ -76,18 +78,34 @@ function AppBarSys({
                 <SvgIcon icon="back" htmlColor={tplHeader.get(templateHeader).textColor} />
               </IconButton>
             )}
-            <Text
-              variant={TextVariantEnum.H3}
-              align={TextAlignEnum.CENTER}
-              style={{
-                fontSize: 20,
-                color: tplHeader.get(templateHeader).textColor,
-                fontWeight: 900,
-                fontFamily: "Nunito sans, sans-serif",
-              }}
-            >
-              {title}
-            </Text>
+            <Box display="flex" flexDirection="column" justifyContent="flex-start">
+              <Text
+                variant={TextVariantEnum.H3}
+                align={TextAlignEnum.LEFT}
+                style={{
+                  fontSize: 20,
+                  color: tplHeader.get(templateHeader).textColor,
+                  fontWeight: 900,
+                  fontFamily: "Nunito sans, sans-serif",
+                }}
+              >
+                {title}
+              </Text>
+              {subtitle !== "" && (
+                <Text
+                  variant={TextVariantEnum.H3}
+                  align={TextAlignEnum.LEFT}
+                  style={{
+                    fontSize: 15,
+                    color: "#B4AEF5",
+                    fontFamily: "Nunito sans, sans-serif",
+                    paddingTop: 2,
+                  }}
+                >
+                  {subtitle}
+                </Text>
+              )}
+            </Box>
           </Box>
           <Box display="flex" flexDirection="row" alignItems="center">
             {drawer && (

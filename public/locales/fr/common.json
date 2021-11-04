@@ -17,9 +17,20 @@
   "callDrawerBottomTitle": "Call",
   "recordingDrawerBottomTitle": "Recording",
   "addFolderDrawerBottomTitle": "Folder",
+  "uploadFileDrawerBottomTitle": "Upload",
   "enterTitleIndexPage": "Entrer",
   "switchLanguage": "Language",
+  "newFolderTitle": "New folder",
+  "uploadTitle": "Upload",
+  "loading": "Loading",
+  "addFolderTitle": "New Folder",
+  "addHoneycombDrawerBottomTitle": "Honeycomb",
+  "addHoneycombTitle": "New Honeycomb",
+  "noItemsFound": "No items found",
   "form": {
+    "fields": {
+      "name": "Name"
+    },
     "skipButton": "Sauter",
     "nextIntro": "Suivant",
     "backButton": "Retourner",
@@ -30,6 +41,8 @@
     "submitLoginTitle": "Enter",
     "forgetPasswordTitle": "Forget my password",
     "submitSaveTitle": "Save",
+    "submitCreateTitle": "Create",
+    "loadingTitle": "Wait...",
     "invalidURLTitle": "Invalid URL",
     "successMessageFormSave": "Saved successfully",
     "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
@@ -38,12 +51,17 @@
     "requiredTitle": "Required",
     "name": "Name",
     "local": "Local",
-    "create": "Create"
+    "create": "Create",
+    "upload": "Upload"
   },
   "messages": {
     "loginFailedTitle": "Incorrect username or password.",
     "directoryAlreadyExists": "There is already a directory with that name.",
-    "enterFolderName": "Enter the folder name"
+    "enterFolderName": "Enter the folder name",
+    "fileAlreadyExists": "There is already a file with that name.",
+    "fileTooLarge": "The {{fileName}} file is too large to upload.",
+    "fileTooLarg": "The {{fileName}} file is too large to upload.",
+    "unableToProcessFile": "Unable to process file {{fileName}}."
   },
   "timeDescription": {
     "singularYear": "year",

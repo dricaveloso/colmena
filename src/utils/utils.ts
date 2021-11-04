@@ -1,9 +1,11 @@
+/* eslint-disable import/no-duplicates */
+import { differenceInMinutes, differenceInCalendarMonths, formatDistanceToNow } from "date-fns";
+import { enUS, es, fr } from "date-fns/locale";
 import {
   UserInvitationInterface,
   BreadcrumbItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { differenceInMinutes, differenceInCalendarMonths } from "date-fns";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -209,10 +211,42 @@ export function trailingSlash(path: string) {
   return `${path.replace(/\/$/, "")}/`;
 }
 
-export function removeFirstSlash(path: string | null | undefined) {
+export function removeFirstSlash(path: string | null | undefined): string {
   if (!path) {
-    return path;
+    return "";
   }
 
   return `${path.replace(/^\//, "")}`;
+}
+
+export function awaiting(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function getRandomInt(min: number, max: number) {
+  const intMin = Math.ceil(min);
+  const intMax = Math.floor(max);
+
+  return Math.floor(Math.random() * (intMax - intMin)) + min;
+}
+
+export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en") {
+  let lce;
+  switch (locale) {
+    case "en":
+      lce = enUS;
+      break;
+    case "es":
+      lce = es;
+      break;
+    case "fr":
+      lce = fr;
+      break;
+    default:
+      lce = enUS;
+      break;
+  }
+  return formatDistanceToNow(new Date(timestamp * 1000), {
+    locale: lce,
+  });
 }

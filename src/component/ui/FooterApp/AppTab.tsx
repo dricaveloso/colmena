@@ -64,7 +64,7 @@ function AppTab({ page }: Props) {
             icon="home"
             url="/home"
             fontSizeIcon="medium"
-            color={page === "/home" ? theme.palette.primary.main : theme.palette.primary.main}
+            iconColor={page === "/home" ? theme.palette.primary.main : theme.palette.primary.main}
           />
         </Grid>
         <Grid item xs={2}>
@@ -72,7 +72,7 @@ function AppTab({ page }: Props) {
             icon="library"
             url={`/library/${libraryPath}`}
             fontSizeIcon="medium"
-            color={
+            iconColor={
               page === `/library/${libraryPath}`
                 ? theme.palette.primary.main
                 : theme.palette.primary.main
@@ -84,7 +84,7 @@ function AppTab({ page }: Props) {
             icon="plus"
             fontSizeIcon="medium"
             handleClick={handleOpenDrawer}
-            color="#fff"
+            iconColor="#fff"
             className={classes.btnMore}
           />
         </Grid>
@@ -92,8 +92,8 @@ function AppTab({ page }: Props) {
           <IconButton
             icon="gradient_panal"
             fontSizeIcon="medium"
-            url="/home"
-            color={theme.palette.primary.main}
+            url="/honeycomb"
+            iconColor={theme.palette.primary.main}
           />
         </Grid>
         <Grid item xs={2}>
@@ -101,7 +101,7 @@ function AppTab({ page }: Props) {
             icon="global"
             fontSizeIcon="medium"
             url="/tools"
-            color={page === "/tools" ? theme.palette.primary.main : theme.palette.primary.main}
+            iconColor={page === "/tools" ? theme.palette.primary.main : theme.palette.primary.main}
           />
         </Grid>
       </Grid>

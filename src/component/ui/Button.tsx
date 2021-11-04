@@ -1,10 +1,11 @@
+import React from "react";
 import Button from "@material-ui/core/Button";
 import { ButtonColorProps, ButtonVariantProps, ButtonSizeProps } from "@/types/index";
 import { ButtonColorEnum, ButtonVariantEnum, ButtonSizeEnum } from "@/enums/index";
 import Link from "next/link";
 
 type Props = {
-  title: string;
+  title: string | React.ReactNode;
   color?: ButtonColorProps | undefined;
   variant?: ButtonVariantProps | undefined;
   handleClick?: () => void | undefined;

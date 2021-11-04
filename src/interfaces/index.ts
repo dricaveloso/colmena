@@ -5,6 +5,11 @@ export interface I18nInterface {
   locale: string;
 }
 
+export interface ConfigReduxInterface {
+  currentPage: string;
+  mutate: any;
+}
+
 export interface RecordingInterface {
   id: string;
   title?: string;

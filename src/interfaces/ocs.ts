@@ -1,11 +1,28 @@
+export interface OCSMetaDefaultInterface {
+  status: string;
+  statuscode: number;
+  message: string;
+}
+
+export interface SWRDefaultOptionsInterface {
+  error: any;
+  mutate: (data?: any, shouldRevalidate?: boolean | undefined) => Promise<any>;
+}
+
+export interface UsersListInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        users: string[];
+      };
+    };
+  };
+}
 export interface CreateUserInterface {
   data: {
     ocs: {
-      meta: {
-        status: string;
-        statuscode: number;
-        message: string;
-      };
+      meta: OCSMetaDefaultInterface;
       data: {
         id: string;
       };
@@ -16,11 +33,7 @@ export interface CreateUserInterface {
 export interface WelcomeUserInterface {
   data: {
     ocs: {
-      meta: {
-        status: string;
-        statuscode: number;
-        message: string;
-      };
+      meta: OCSMetaDefaultInterface;
       data: [];
     };
   };
@@ -32,11 +45,7 @@ export interface AppPasswordInterface {
   };
   data: {
     ocs: {
-      meta: {
-        status: string;
-        statuscode: number;
-        message: string;
-      };
+      meta: OCSMetaDefaultInterface;
       data: {
         apppassword: string;
       };
@@ -44,21 +53,15 @@ export interface AppPasswordInterface {
   };
 }
 
-export interface GroupsInfoInterface {
+export interface GroupsInfoInterface extends SWRDefaultOptionsInterface {
   data: {
     ocs: {
-      meta: {
-        status: string;
-        statuscode: number;
-        message: string;
-      };
+      meta: OCSMetaDefaultInterface;
       data: {
         groups: string[];
       };
     };
   };
-  error: any;
-  mutate: (data?: any, shouldRevalidate?: boolean | undefined) => Promise<any>;
 }
 
 export interface SetPasswordInterface {
@@ -71,11 +74,7 @@ export interface SetPasswordInterface {
 export interface UpdatePasswordInterface {
   data: {
     ocs: {
-      meta: {
-        status: string;
-        statuscode: 200;
-        message: string;
-      };
+      meta: OCSMetaDefaultInterface;
       data: string[];
     };
   };
@@ -84,11 +83,7 @@ export interface UpdatePasswordInterface {
 export interface UserInfoInterface {
   data: {
     ocs: {
-      meta: {
-        status: string;
-        statuscode: number;
-        message: string;
-      };
+      meta: OCSMetaDefaultInterface;
       data: {
         enabled: boolean;
         storageLocation: string;
@@ -131,11 +126,7 @@ export interface UserInfoInterface {
 export interface CapabilitiesInfoInterface {
   data: {
     ocs: {
-      meta: {
-        status: string;
-        statuscode: number;
-        message: string;
-      };
+      meta: OCSMetaDefaultInterface;
       data: {
         capabilities: {
           theming: {
