@@ -1,17 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { createDirectory, existDirectory } from "@/services/webdav/directories";
+import { createDirectory, existDirectory, getRootPath } from "@/services/webdav/directories";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
+import {
+  dateDescription,
+  handleDirectoryName,
+  removeFirstSlash,
+  trailingSlash,
+} from "@/utils/utils";
 import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
@@ -19,6 +24,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import NotificationContext from "@/store/context/notification-context";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -55,9 +61,9 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const path = library.currentPath;
   const pathExists = library.currentPathExists;
   const classes = useStyles();
+  const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
   const [finalPath, setFinalPath] = useState(path);
-  const [handledPath, setHandledPath] = useState("/");
   const [isLoading, setIsLoading] = useState(false);
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
   const dispatch = useDispatch();
@@ -77,19 +83,20 @@ export default function NewFolderModal({ open, handleClose }: Props) {
 
         const create = await createDirectory(userId, finalPath);
         if (create) {
+          const handledPath: string = removeFirstSlash(finalPath) ?? "";
           const date = new Date();
           const item: LibraryItemInterface = {
             basename: values.name,
-            id: removeFirstSlash(finalPath),
-            filename: removeFirstSlash(finalPath),
+            id: handledPath,
+            filename: handledPath,
             type: "directory",
             environment: EnvironmentEnum.REMOTE,
             createdAt: date,
             createdAtDescription: dateDescription(date, timeDescription),
           };
-          setIsLoading(false);
-          dispatch(addLibraryFile(item));
-          handleClose();
+          // dispatch(addLibraryFile(item));
+          // handleClose();
+          router.push(`library/${removeFirstSlash(finalPath)}`);
         }
       } catch (e) {
         notificationCtx.showNotification({
@@ -105,21 +112,28 @@ export default function NewFolderModal({ open, handleClose }: Props) {
     name: Yup.string().required(t("form.requiredTitle")),
   });
 
-  const handleName = (name: any) => {
-    setFinalPath(`${trailingSlash(handledPath)}${name}`);
+  const defineFinalPath = (name: any) => {
+    setFinalPath(`${trailingSlash(definePath(path))}${treatName(name)}`);
   };
 
+  const treatName = (name: string) => handleDirectoryName(name);
+
+  const definePath = useCallback(
+    (path) => {
+      const rootPath = getRootPath();
+      return !pathExists || !path || path === "/" ? rootPath : path;
+    },
+    [pathExists],
+  );
+
   useEffect(() => {
-    const paths = !pathExists ? "/" : path;
-    setHandledPath(paths);
-    setFinalPath(paths);
+    setFinalPath(definePath(path));
 
     return () => {
-      setHandledPath("");
       setFinalPath("");
       setIsLoading(false);
     };
-  }, [path, pathExists]);
+  }, [path, definePath]);
 
   return (
     <>
@@ -156,8 +170,8 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                         {...field}
                         onChange={(
                           event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-                        ) => setFieldValue("name", event.target.value)}
-                        onKeyUp={(event: any) => handleName(event.target.value)}
+                        ) => setFieldValue("name", treatName(event.target.value))}
+                        onKeyUp={(event: any) => defineFinalPath(event.target.value)}
                       />
                     )}
                   </Field>
