@@ -114,6 +114,20 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                 (async () => {
                   try {
                     setSubmitting(true);
+
+                    if (roomName.indexOf("/") !== -1) {
+                      throw new Error(
+                        c("form.slashNotAllowed", {
+                          field: c("form.fields.name"),
+                        }),
+                      );
+                    }
+
+                    const directoryExists = await existDirectory(userId, roomName);
+                    if (directoryExists) {
+                      throw new Error(c("honeycombModal.errorCreatePanal"));
+                    }
+
                     const conversation = await createNewConversation(roomName);
                     const { token } = conversation.data.ocs.data;
 
@@ -124,24 +138,19 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
 
                     const folderName = conversation.data.ocs.data.displayName;
 
-                    const directoryExists = await existDirectory(userId, folderName);
-                    if (!directoryExists) {
-                      const create = await createDirectory(userId, folderName);
-                      if (create) {
-                        const date = new Date();
-                        const item: LibraryItemInterface = {
-                          basename: folderName,
-                          id: "",
-                          filename: "",
-                          type: "directory",
-                          environment: EnvironmentEnum.REMOTE,
-                          createdAt: date,
-                          createdAtDescription: dateDescription(date, timeDescription),
-                        };
-                        dispatch(addLibraryFile(item));
-                        await createNewShare(folderName, token);
-                      }
-                    } else {
+                    const create = await createDirectory(userId, folderName);
+                    if (create) {
+                      const date = new Date();
+                      const item: LibraryItemInterface = {
+                        basename: folderName,
+                        id: "",
+                        filename: "",
+                        type: "directory",
+                        environment: EnvironmentEnum.REMOTE,
+                        createdAt: date,
+                        createdAtDescription: dateDescription(date, timeDescription),
+                      };
+                      dispatch(addLibraryFile(item));
                       await createNewShare(folderName, token);
                     }
 
@@ -153,8 +162,9 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                     router.push(`/honeycomb/${token}/${roomName}`);
                   } catch (e) {
                     console.log(e);
+                    const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
                     notificationCtx.showNotification({
-                      message: c("honeycombModal.chatRoomFailed"),
+                      message: msg,
                       status: NotificationStatusEnum.ERROR,
                     });
                   } finally {

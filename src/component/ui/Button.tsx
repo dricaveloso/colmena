@@ -16,6 +16,7 @@ type Props = {
   disabled?: boolean;
   component?: any;
   url?: string;
+  fullWidth?: boolean;
 };
 
 export default function Btn({
@@ -29,6 +30,7 @@ export default function Btn({
   disabled = false,
   component = "button",
   url = "no-navigation",
+  fullWidth = false,
 }: Props) {
   return url !== "no-navigation" ? (
     <Link href={url}>
@@ -41,6 +43,7 @@ export default function Btn({
         endIcon={endIcon}
         disabled={disabled}
         component="a"
+        fullWidth={fullWidth}
       >
         {title}
       </Button>
@@ -56,6 +59,7 @@ export default function Btn({
       endIcon={endIcon}
       disabled={disabled}
       component={component}
+      fullWidth={fullWidth}
     >
       {title}
     </Button>

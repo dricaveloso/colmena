@@ -27,6 +27,13 @@
   "addHoneycombDrawerBottomTitle": "Honeycomb",
   "addHoneycombTitle": "New Honeycomb",
   "noItemsFound": "No items found",
+  "honeycombModal": {
+    "chatRoomSuccess": "Chat room created successfully",
+    "chatRoomFailed": "Unable to create chat room",
+    "buttonStep1": "Create",
+    "buttonStep2": "Add",
+    "errorCreatePanal": "There is already a honeycomb with this name"
+  },
   "form": {
     "fields": {
       "name": "Name"
@@ -34,6 +41,7 @@
     "skipButton": "Sauter",
     "nextIntro": "Suivant",
     "backButton": "Retourner",
+    "cancelButton": "Cancel",
     "invalidEmailTitle": "Invalid email",
     "placeholderEmail": "Email",
     "placeholderPassword": "Password",
