@@ -9,7 +9,7 @@ import {
   RecordingInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { listDirectories } from "@/services/webdav/directories";
+import { listDirectories, listLibraryDirectories } from "@/services/webdav/directories";
 import { PropsUserSelector, PropsLibrarySelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import { FileStat } from "webdav";
@@ -61,7 +61,7 @@ function MyLibrary() {
     async (userId: string, currentDirectory: string) => {
       const items: LibraryItemInterface[] = [];
 
-      const nxDirectories = await listDirectories(userId, currentDirectory);
+      const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
       if (nxDirectories?.data.length > 0) {
         nxDirectories.data.forEach((directory: FileStat) => {
           const filename = directory.filename.replace(/^.+?(\/|$)/, "");

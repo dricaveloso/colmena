@@ -1,10 +1,30 @@
 import webdav from "@/services/webdav";
 import { removeFirstSlash } from "@/utils/utils";
-// import { FileStat, ResponseDataDetailed } from "webdav";
+import { FileStat } from "webdav";
 
 // ver se não tem 404
 export function listDirectories(userId: string | number, path?: string): any {
   return webdav().getDirectoryContents(`${userId}/${removeFirstSlash(path)}`, { details: true });
+}
+
+export async function listLibraryDirectories(userId: string | number, path?: string): Promise<any> {
+  const directories = await listDirectories(userId, path);
+  if (directories && (path === "/" || path === "")) {
+    directories.data = directories.data.filter((item: FileStat) => {
+      const blacklistNames = ["talk"];
+      if (item.type !== "directory") {
+        return false;
+      }
+
+      if (blacklistNames.includes(item.basename.toLowerCase())) {
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  return directories;
 }
 
 export function existDirectory(userId: string | number, remotePath: string) {
