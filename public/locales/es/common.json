@@ -80,5 +80,6 @@
     "singularMinute": "minuto",
     "pluralMinute": "minutos",
     "now": "ahora"
-  }
+  },
+  "typeYourMessage": "Type your message"
 }

@@ -9,9 +9,10 @@ import AlertInfoCenter from "@/components/ui/AlertInfoCenter";
 
 type Props = {
   token: string;
+  conversationName: string;
 };
 
-function ItemList({ token }: Props) {
+function ItemList({ token, conversationName }: Props) {
   const dispatch = useDispatch();
   const { data, error } = receiveChatMessages(token);
 
@@ -31,7 +32,11 @@ function ItemList({ token }: Props) {
     );
   }
 
-  dispatch(setChatList(data.ocs.data));
+  const result = data.ocs.data.filter(
+    (item) => item.messageParameters?.file?.name !== conversationName,
+  );
+
+  dispatch(setChatList(result));
 
   return (
     <WrappedList>

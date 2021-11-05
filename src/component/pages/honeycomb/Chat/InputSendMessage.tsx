@@ -89,7 +89,7 @@ export default function InputSendMessage({ handleSendMessage }: Props) {
                     margin="dense"
                     id="message"
                     variant="outlined"
-                    placeholder="Digite sua mensagem"
+                    placeholder={c("typeYourMessage")}
                     type="text"
                     style={{ fontSize: 12 }}
                     fullWidth
@@ -99,7 +99,7 @@ export default function InputSendMessage({ handleSendMessage }: Props) {
               </Field>
               <IconButton
                 icon="send"
-                color={!isSubmitting ? theme.palette.primary.main : "#737373"}
+                iconColor={!isSubmitting ? theme.palette.primary.main : theme.palette.icon.main}
                 handleClick={submitForm}
                 disabled={isSubmitting}
               />

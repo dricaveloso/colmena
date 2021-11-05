@@ -182,7 +182,7 @@ function Honeycomb() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0}>
-              <ChatMessage token={token} />
+              <ChatMessage conversationName={displayName} token={token} />
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>
           </SwipeableViews>

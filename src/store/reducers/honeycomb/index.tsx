@@ -20,8 +20,13 @@ const initialState: initialStateProps = {
 
 const reducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case SET_HONEYCOMBS:
-      return { ...state, honeycombs: action.honeycombs };
+    case SET_HONEYCOMBS: {
+      let result = action.honeycombs;
+      result = result.sort(
+        (a: RoomItemInterface, b: RoomItemInterface) => b.lastActivity - a.lastActivity,
+      );
+      return { ...state, honeycombs: result };
+    }
     case SET_CHAT_LIST:
       return { ...state, chatMessages: action.chatMessages };
     case ADD_HONEYCOMB:
