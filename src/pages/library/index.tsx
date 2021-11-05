@@ -9,7 +9,7 @@ import {
   RecordingInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { listDirectories, listLibraryDirectories } from "@/services/webdav/directories";
+import { listLibraryDirectories } from "@/services/webdav/directories";
 import { PropsUserSelector, PropsLibrarySelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import { FileStat } from "webdav";
