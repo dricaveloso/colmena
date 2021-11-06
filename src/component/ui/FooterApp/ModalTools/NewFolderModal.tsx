@@ -5,18 +5,13 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { createDirectory, existDirectory, getRootPath } from "@/services/webdav/directories";
+import { createDirectory, existDirectory } from "@/services/webdav/directories";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import {
-  dateDescription,
-  handleDirectoryName,
-  removeFirstSlash,
-  trailingSlash,
-} from "@/utils/utils";
+import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
 import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
@@ -25,6 +20,7 @@ import NotificationContext from "@/store/context/notification-context";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import { hasExclusiveLocalPath, getRootPath, handleDirectoryName } from "@/utils/directory";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -81,9 +77,13 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           throw new Error(t("messages.directoryAlreadyExists"));
         }
 
+        const handledPath: string = removeFirstSlash(finalPath) ?? "";
+        if (hasExclusiveLocalPath(handledPath)) {
+          throw new Error(t("messages.directoryAlreadyExists"));
+        }
+
         const create = await createDirectory(userId, finalPath);
         if (create) {
-          const handledPath: string = removeFirstSlash(finalPath) ?? "";
           const date = new Date();
           const item: LibraryItemInterface = {
             basename: values.name,

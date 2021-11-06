@@ -23,8 +23,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
 import { blobToArrayBuffer } from "blob-util";
-import { getRootPath } from "@/services/webdav/directories";
 import { useRouter } from "next/router";
+import { getRootPath } from "@/utils/directory";
 
 const useStyles = makeStyles((theme) => ({
   modal: {

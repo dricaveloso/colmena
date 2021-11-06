@@ -7,23 +7,14 @@ export function listDirectories(userId: string | number, path?: string): any {
   return webdav().getDirectoryContents(`${userId}/${removeFirstSlash(path)}`, { details: true });
 }
 
-export function getRootPath(): string {
-  return "private";
-}
-
-export function exclusiveLocalPaths(): Array<string> {
-  return ["private/downloads"];
-}
-
 export async function listLibraryDirectories(userId: string | number, path?: string): Promise<any> {
   const directories = await listDirectories(userId, path);
   if (directories && (path === "/" || path === "")) {
     directories.data = directories.data.filter((item: FileStat) => {
-      const blacklistNames = ["talk"];
-      if (item.type !== "directory") {
-        return false;
-      }
+      if (item.basename[0] === ".") return false;
+      if (item.type !== "directory") return false;
 
+      const blacklistNames = ["talk"];
       if (blacklistNames.includes(item.basename.toLowerCase())) {
         return false;
       }

@@ -70,12 +70,10 @@ function AppTab({ page }: Props) {
         <Grid item xs={2}>
           <IconButton
             icon="library"
-            url={`/library/${libraryPath}`}
+            url="/library"
             fontSizeIcon="medium"
             iconColor={
-              page === `/library/${libraryPath}`
-                ? theme.palette.primary.main
-                : theme.palette.primary.main
+              page === `/library` ? theme.palette.primary.main : theme.palette.primary.main
             }
           />
         </Grid>

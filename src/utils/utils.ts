@@ -250,7 +250,3 @@ export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en"
     locale: lce,
   });
 }
-
-export function handleDirectoryName(name: string) {
-  return name.replace(/[^\w-]*/g, "");
-}

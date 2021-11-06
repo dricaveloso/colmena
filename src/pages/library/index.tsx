@@ -31,6 +31,7 @@ import {
   FilterEnum,
 } from "@/enums/index";
 import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
+import { getOfflinePath, getPathName, getPrivatePath } from "@/utils/directory";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -179,6 +180,30 @@ function MyLibrary() {
     });
   }, []);
 
+  const getItems = async (path: string) => {
+    const offlinePath = getOfflinePath();
+    if (path === offlinePath) {
+      return getLocalFiles(userRdx.user.id, path);
+    }
+
+    const items = await getWebDavDirectories(userRdx.user.id, path);
+    const privatePath = getPrivatePath();
+    console.log(items, path, privatePath);
+    if (path === privatePath) {
+      const item: LibraryItemInterface = {
+        basename: getPathName(offlinePath),
+        id: offlinePath,
+        filename: offlinePath,
+        type: "directory",
+        environment: EnvironmentEnum.LOCAL,
+      };
+
+      items.push(item);
+    }
+
+    return items;
+  };
+
   useEffect(() => {
     let currentPath = "/";
     if (typeof path === "object") {
@@ -191,9 +216,9 @@ function MyLibrary() {
           setIsLoading(true);
         }
 
-        const nxDirectories = await getWebDavDirectories(userRdx.user.id, currentPath);
-        const localFiles = await getLocalFiles(userRdx.user.id, currentPath);
-        const items = nxDirectories.concat(localFiles);
+        const items = await getItems(currentPath);
+        console.log(items);
+
         dispatch(setLibraryPathExists(true));
         dispatch(setLibraryFiles(items));
         dispatch(setLibraryPath(currentPath));
