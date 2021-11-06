@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
     alignSelf: "center",
     padding: 1,
     overflow: "hidden",
+    alignItems: "center",
   },
   options: {
     display: "flex",

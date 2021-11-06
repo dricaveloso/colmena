@@ -19,7 +19,6 @@ import { Box, Button } from "@material-ui/core";
 import ItemList from "@/components/pages/library/ItemList";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { useRouter } from "next/router";
-import Loading from "@/components/ui/Loading";
 import { getExtensionFilename, dateDescription } from "@/utils/utils";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
@@ -32,6 +31,7 @@ import {
 } from "@/enums/index";
 import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
 import { getOfflinePath, getPathName, getPrivatePath } from "@/utils/directory";
+import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -90,25 +90,23 @@ function MyLibrary() {
   );
 
   const getLocalFiles = useCallback(
-    async (userId: string, currentDirectory: string) => {
+    async (userId: string) => {
       const items: LibraryItemInterface[] = [];
-      if (currentDirectory === "/") {
-        const localFiles = await getAllAudios(userId);
-        if (localFiles.length > 0) {
-          localFiles.forEach((file: RecordingInterface) => {
-            const item: LibraryItemInterface = {
-              basename: file.title,
-              id: file.id,
-              type: "audio",
-              environment: EnvironmentEnum.LOCAL,
-              extension: "ogg",
-              createdAt: file.createdAt,
-              createdAtDescription: dateDescription(file.createdAt, timeDescription),
-            };
+      const localFiles = await getAllAudios(userId);
+      if (localFiles.length > 0) {
+        localFiles.forEach((file: RecordingInterface) => {
+          const item: LibraryItemInterface = {
+            basename: file.title,
+            id: file.id,
+            type: "audio",
+            environment: EnvironmentEnum.LOCAL,
+            extension: "ogg",
+            createdAt: file.createdAt,
+            createdAtDescription: dateDescription(file.createdAt, timeDescription),
+          };
 
-            items.push(item);
-          });
-        }
+          items.push(item);
+        });
       }
 
       return items;
@@ -183,12 +181,11 @@ function MyLibrary() {
   const getItems = async (path: string) => {
     const offlinePath = getOfflinePath();
     if (path === offlinePath) {
-      return getLocalFiles(userRdx.user.id, path);
+      return getLocalFiles(userRdx.user.id);
     }
 
     const items = await getWebDavDirectories(userRdx.user.id, path);
     const privatePath = getPrivatePath();
-    console.log(items, path, privatePath);
     if (path === privatePath) {
       const item: LibraryItemInterface = {
         basename: getPathName(offlinePath),
@@ -217,7 +214,6 @@ function MyLibrary() {
         }
 
         const items = await getItems(currentPath);
-        console.log(items);
 
         dispatch(setLibraryPathExists(true));
         dispatch(setLibraryFiles(items));
@@ -261,11 +257,7 @@ function MyLibrary() {
           filter={filter}
           pathExists={!notFoundDir}
         />
-        {isLoading && (
-          <FlexBox justifyContent={JustifyContentEnum.CENTER}>
-            <Loading />
-          </FlexBox>
-        )}
+        {isLoading && <DirectoryList />}
         {!isLoading && !notFoundDir && (
           <Box width="100%">
             <ItemList items={items} type={listType} />
