@@ -56,7 +56,7 @@ const VerticalItemList = ({
 
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleOpenContextMenu = (event) => {
+  const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
