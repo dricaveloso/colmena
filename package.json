@@ -6,9 +6,9 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "cross-env NODE_ENV=development next dev -p 3008",
-    "build": "next build",
+    "build": "next --openssl-legacy-provider build",
     "export": "next export",
-    "start": "cross-env NODE_ENV=production next start",
+    "start": "cross-env NODE_ENV=production next --openssl-legacy-provider start",
     "format": "prettier --write \"**/*.{js,ts,tsx}\"",
     "type-check": "tsc --pretty --noEmit",
     "lint": "eslint . --ext ts --ext tsx --ext js",
