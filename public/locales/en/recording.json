@@ -1,10 +1,10 @@
 {
-  "title": "Recording",
+  "title": "Record",
   "pressToStartTitle": "Press to start recording",
   "pressToStopTitle": "Press to stop recording",
   "recordingFinishLabelForm": "Title",
   "recordingFinishTitle": "Recording finished",
-  "recordingFinishDescription": "Finally, type a title for this recording.",
+  "recordingFinishDescription": "Title of this recording.",
   "submitButton": "Finish",
   "cancelButton": "Cancel",
   "errorStorageMessage": "Could not save this recording.",
