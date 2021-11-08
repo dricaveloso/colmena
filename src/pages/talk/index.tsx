@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 
 import { PropsUserSelector } from "../../types";
 import listTalks from "@/services/talk/listAll";
+import  listGroups, createGroup  from "@/services/group/group";
+
 import CONSTANTS from "@/constants/index";
 import VerticalListWebDav from "@/components/ui/VerticalListWebDav";
 import LayoutApp from "@/components/statefull/LayoutApp";
@@ -25,6 +27,15 @@ export default function OCS() {
       console.log("error", e);
     }
   }
+  async function ListAllG() {
+    try {
+      const listT = await listGroups();
+
+      console.log(listT);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
 
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
@@ -33,7 +44,14 @@ export default function OCS() {
           <FlexBox>
             <div>
               <button type="button" onClick={ListAllT}>
-                List All
+                List All Talks
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={ListAllG}>
+                List All Groups
               </button>
             </div>
           </FlexBox>
