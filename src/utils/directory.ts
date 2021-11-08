@@ -31,6 +31,6 @@ export function handleDirectoryName(name: string) {
   return name.replace(/[^\w-]*/g, "");
 }
 
-export function getPathName(path): string {
+export function getPathName(path: string): string {
   return path.replace(/.+?\/(.*)$/, "$1");
 }

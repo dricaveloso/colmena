@@ -15,5 +15,11 @@
     "audios": "Audios",
     "images": "Images",
     "texts": "Textes"
+  },
+  "language": {
+    "title": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "french": "French"
   }
 }
