@@ -21,10 +21,10 @@ export function exclusiveLocalPaths(): Array<string> {
 
 export function hasExclusiveLocalPath(path: string): boolean {
   if (exclusiveLocalPaths().includes(removeFirstSlash(path))) {
-    return false;
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 export function handleDirectoryName(name: string) {
