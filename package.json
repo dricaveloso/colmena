@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "cross-env NODE_ENV=development next dev -p 3008",
-    "build": "next --openssl-legacy-provider build",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider; gatsby build",
     "export": "next export",
     "start": "cross-env NODE_ENV=production next --openssl-legacy-provider start",
     "format": "prettier --write \"**/*.{js,ts,tsx}\"",
