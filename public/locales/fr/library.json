@@ -1,19 +1,19 @@
 {
-  "title": "My library",
+  "title": "Ma bibliothèque",
   "sort": {
-    "title": "Sorting",
-    "newest": "Newest",
-    "oldest": "Oldest",
-    "alphabeticalOrder": "Alphabetical order",
-    "descendingAlphabeticalOrder": "Descending alphabetical order"
+    "title": "Tri",
+    "newest": "Le plus récent",
+    "oldest": "Le plus vieux",
+    "alphabeticalOrder": "Ordre alphabétique",
+    "descendingAlphabeticalOrder": "Ordre alphabétique décroissant"
   },
   "filter": {
-    "title": "Filters",
-    "all": "All",
-    "availableOffline": "Available offline",
-    "synchronized": "Synchronized",
+    "title": "Filtres",
+    "all": "Toutes",
+    "availableOffline": "Disponible hors ligne",
+    "synchronized": "Synchronisée",
     "audios": "Audios",
     "images": "Images",
-    "texts": "Texts"
+    "texts": "Textes"
   }
 }

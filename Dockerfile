@@ -22,7 +22,11 @@ WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_PUBLIC_API_BASE_URL "https://cloud.colmena.network/"
+<<<<<<< HEAD
 ENV NEXTAUTH_URL "https://lusitana.colmena.network"
+=======
+ENV NEXTAUTH_URL "https://staging.colmena.network"
+>>>>>>> acd2d46f643ea453ab4f5bd49342202c035dd605
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
