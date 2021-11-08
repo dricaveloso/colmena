@@ -39,7 +39,7 @@ export default function Btn({
         color={color}
         size={size}
         // className="width-based-device"
-        style={{ textTransform: "capitalize", ...style }}
+        style={{ textTransform: "lowercase", ...style }}
         endIcon={endIcon}
         disabled={disabled}
         component="a"
@@ -51,7 +51,7 @@ export default function Btn({
   ) : (
     <Button
       // className="width-based-device"
-      style={{ textTransform: "capitalize", ...style }}
+      style={{ textTransform: "lowercase", ...style }}
       variant={variant}
       color={color}
       size={size}

@@ -1,3 +1,4 @@
+// import React, { useContext } from "react";
 import React from "react";
 import Box from "@material-ui/core/Box";
 import { Formik, Form, Field, FieldProps } from "formik";
@@ -10,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addChatMessage } from "@/store/actions/honeycomb";
 import { ChatMessageItemInterface } from "@/interfaces/talk";
 import { PropsUserSelector } from "@/types/index";
+// import NotificationContext from "@/store/context/notification-context";
+// import { NotificationStatusEnum } from "@/enums/*";
 
 type MyFormValues = {
   message: string;
@@ -20,6 +23,7 @@ type Props = {
 };
 
 export default function InputSendMessage({ handleSendMessage }: Props) {
+  // const notificationCtx = useContext(NotificationContext);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
@@ -83,6 +87,20 @@ export default function InputSendMessage({ handleSendMessage }: Props) {
             style={{ width: "100%" }}
           >
             <Box display="flex" flexDirection="row" flex={1}>
+              {/* <IconButton
+                icon="clip"
+                iconColor={theme.palette.icon.main}
+                component="a"
+                size="small"
+                fontSizeIcon="small"
+                // style={{ margin: 0, padding: 0, backgroundColor: "tomato", width: 25 }}
+                handleClick={() => {
+                  notificationCtx.showNotification({
+                    message: c("featureUnavailable"),
+                    status: NotificationStatusEnum.WARNING,
+                  });
+                }}
+              /> */}
               <Field name="message" InputProps={{ notched: true }}>
                 {({ field }: FieldProps) => (
                   <TextField

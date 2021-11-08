@@ -1,13 +1,14 @@
 {
-  "greeting": "Hello",
-  "question": "What would you like to do now?",
-  "inviteText": "Invite your team",
-  "mediaName": "Media name",
-  "recentPublicationsTitle": "Recent Publications",
-  "tabTitle1": "Recent",
-  "tabTitle2": "All files",
-  "tabTitle3": "Published",
-  "recentPublicationsDescription": "Example description",
-  "mediaCloudName": "My library",
-  "recordText": "Record"
+  "welcomeTitle": "Welcome",
+  "myFilesLabel": "My files",
+  "sharedLabel": "Shared",
+  "publicLabel": "Public",
+  "section2Title": "Latest posts",
+  "section3Title": "Favorite honeycombs",
+  "section4Title": "Recent",
+  "seeAllTitle": "see all",
+  "exampleHoneycombTitle": "Honeycomb {{num}}",
+  "exampleFileTitle": "File {{num}}",
+  "examplePostTitle": "Show {{num}} Radio ADa",
+  "examplePostSubtitle": "5 days | 12mb"
 }

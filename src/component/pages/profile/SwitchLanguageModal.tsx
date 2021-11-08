@@ -5,7 +5,6 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
-// import NotificationContext from "@/store/notification-context";
 import { v4 as uuid } from "uuid";
 import { setCookie } from "nookies";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
@@ -42,7 +41,6 @@ type Props = {
 export default function SwitchLanguageModal({ open, onClose, defaultLang, backUrl }: Props) {
   const router = useRouter();
   const { t } = useTranslation("common");
-  // const notificationCtx = useContext(NotificationContext);
 
   const changeLanguageHandler = (locale: string) => {
     if (defaultLang !== locale) {
@@ -53,10 +51,6 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
       router.push(backUrl, "", {
         locale,
       });
-      // notificationCtx.showNotification({
-      //   message: t("successMessage"),
-      //   status: NotificationStatusEnum.SUCCESS,
-      // });
     }
   };
 

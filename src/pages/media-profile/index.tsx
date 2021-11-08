@@ -83,7 +83,13 @@ function Profile() {
               title={t("textInviteCollaborators")}
               icon="add_user"
               variantTitle={TextVariantEnum.BODY2}
-              handleClick={() => setOpenInviteForm(true)}
+              // handleClick={() => setOpenInviteForm(true)}
+              handleClick={() =>
+                notificationCtx.showNotification({
+                  message: c("featureUnavailable"),
+                  status: NotificationStatusEnum.WARNING,
+                })
+              }
             />
             <InviteForm
               openInviteForm={openInviteForm}

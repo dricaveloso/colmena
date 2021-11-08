@@ -46,6 +46,7 @@ export default function Login() {
         alignItems="center"
         flexDirection="column"
         display="flex"
+        style={{ backgroundColor: "#fff" }}
       >
         <ExternalVerticalLogo />
         <Divider marginTop={24} />

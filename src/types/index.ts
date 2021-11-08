@@ -241,6 +241,7 @@ export type AllIconProps =
   | "edit_text"
   | "headphone"
   | "stream"
-  | "audio_editor";
+  | "audio_editor"
+  | "clip";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;
