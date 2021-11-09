@@ -1,5 +1,5 @@
 {
-  "welcomeTitle": "Bienvenido",
+  "welcomeTitle": "Bienvenida/o",
   "myFilesLabel": "Mis archivos",
   "sharedLabel": "Compartidos",
   "publicLabel": "Publicos",
@@ -9,6 +9,6 @@
   "seeAllTitle": "ver todos",
   "exampleHoneycombTitle": "Panal {{num}}",
   "exampleFileTitle": "Archivo {{num}}",
-  "examplePostTitle": "Mostrar {{num}} Radio ADa",
+  "examplePostTitle": "Mostrar {{num}} Radio Boca de Pólen",
   "examplePostSubtitle": "5 dias | 12mb"
 }
