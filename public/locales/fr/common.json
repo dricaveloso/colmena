@@ -84,5 +84,12 @@
     "pluralMinute": "minutes",
     "now": "now"
   },
-  "typeYourMessage": "Type your message"
+  "typeYourMessage": "Type your message",
+  "latestPostTitle": "Latest posts",
+  "seeAllTitle": "see all",
+  "examplePostTitle": "Show {{num}} Radio ADa",
+  "examplePostSubtitle": "5 days | 12mb",
+  "membersTitle": "Members",
+  "manageTitle": "Manage",
+  "socialMediaTitle": "Social Media"
 }

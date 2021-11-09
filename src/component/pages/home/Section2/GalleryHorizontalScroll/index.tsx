@@ -6,7 +6,7 @@ import theme from "@/styles/theme";
 import { useTranslation } from "react-i18next";
 
 export default function GalleryHorizontalScroll() {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation("common");
   const match = useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <Box width="100%">

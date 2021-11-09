@@ -1,121 +1,63 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import TextField from "@/components/ui/TextField";
-import { makeStyles } from "@material-ui/styles";
-import MaterialIcon from "@/components/ui/MaterialIcon";
-import Text from "@/components/ui/Text";
-import Button from "@/components/ui/Button";
-import IconButton from "@/components/ui/IconButton";
-import InviteForm from "@/components/pages/media-profile/Invite";
-import NotificationContext from "@/store/context/notification-context";
-import SocialMediaIconButton from "@/components/statefull/SocialMediaIconButtons";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
+import { JustifyContentEnum, NotificationStatusEnum } from "@/enums/index";
 import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
-import {
-  JustifyContentEnum,
-  NotificationStatusEnum,
-  SelectVariantEnum,
-  TextVariantEnum,
-} from "@/enums/index";
+import HeaderMediaProfile from "@/components/pages/media-profile/Header";
+import IconButton from "@/components/ui/IconButton";
+import LatestPosts from "@/components/pages/home/Section2";
+import Members from "@/components/pages/media-profile/Members";
+import SocialMedia from "@/components/pages/media-profile/SocialMedia";
+import Divider from "@/components/ui/Divider";
+import NotificationContext from "@/store/context/notification-context";
+import { useTranslation } from "next-i18next";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["mediaProfile", "drawer", "common"])),
+    ...(await serverSideTranslations(locale, ["profile", "drawer", "common"])),
   },
 });
 
-const useStyles = makeStyles({
-  marginInputDivs: {
-    "& > *": {
-      marginBottom: 25,
-    },
-  },
-});
-
-function Profile() {
-  const { t } = useTranslation("mediaProfile");
-  const { t: c } = useTranslation("common");
+function MediaProfile() {
   const notificationCtx = useContext(NotificationContext);
-  const [openInviteForm, setOpenInviteForm] = useState(false);
-  const classes = useStyles();
+  const { t: c } = useTranslation("common");
   return (
-    <LayoutApp title={t("title")} back>
-      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
-        <div className={classes.marginInputDivs}>
-          <div className="boxColumnCenter">
-            <MaterialIcon
-              onClick={() =>
-                notificationCtx.showNotification({
-                  message: c("featureUnavailable"),
-                  status: NotificationStatusEnum.SUCCESS,
-                })
-              }
-              icon="add_a_photo"
-              style={{ fontSize: 120 }}
-            />
-            <Text>{t("name")}</Text>
+    <LayoutApp
+      title="Radio ADA"
+      drawer={false}
+      back
+      templateHeader="variation2"
+      extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
+    >
+      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
+        <HeaderMediaProfile />
+        <FlexBox
+          justifyContent={JustifyContentEnum.FLEXSTART}
+          extraStyle={{ paddingTop: 8, marginTop: 0 }}
+        >
+          <div
+            style={{ width: "100%" }}
+            onClick={() =>
+              notificationCtx.showNotification({
+                message: c("featureUnavailable"),
+                status: NotificationStatusEnum.WARNING,
+              })
+            }
+          >
+            <LatestPosts />
+            <Divider marginTop={8} />
+            <Members />
+            <Divider marginTop={8} />
+            <SocialMedia />
           </div>
-          <TextField
-            id="description"
-            label={t("descriptionTitle")}
-            multiline
-            variant={SelectVariantEnum.OUTLINED}
-          />
-          <div className="boxGridTwoColumns">
-            <IconButton
-              iconStyle={{ fontSize: "3.5em" }}
-              title={t("textEditCollaborators")}
-              icon="dropdown_checklist"
-              variantTitle={TextVariantEnum.BODY2}
-              handleClick={() =>
-                notificationCtx.showNotification({
-                  message: c("featureUnavailable"),
-                  status: NotificationStatusEnum.WARNING,
-                })
-              }
-            />
-            <IconButton
-              iconStyle={{ fontSize: "3.5em" }}
-              title={t("textInviteCollaborators")}
-              icon="add_user"
-              variantTitle={TextVariantEnum.BODY2}
-              // handleClick={() => setOpenInviteForm(true)}
-              handleClick={() =>
-                notificationCtx.showNotification({
-                  message: c("featureUnavailable"),
-                  status: NotificationStatusEnum.WARNING,
-                })
-              }
-            />
-            <InviteForm
-              openInviteForm={openInviteForm}
-              handleCloseInviteForm={() => setOpenInviteForm(false)}
-            />
-          </div>
-          <Text>{t("socialMediaTitle")}</Text>
-          <div className="boxRowCenter marginTop15">
-            <SocialMediaIconButton />
-          </div>
-          <div className="marginTop15">
-            <Button
-              title={t("textSaveButton")}
-              handleClick={() =>
-                notificationCtx.showNotification({
-                  message: t("messageSuccessInformation"),
-                  status: NotificationStatusEnum.SUCCESS,
-                })
-              }
-            />
-          </div>
-        </div>
-        <WhiteSpaceFooter />
+          <WhiteSpaceFooter />
+        </FlexBox>
       </FlexBox>
     </LayoutApp>
   );
 }
 
-export default Profile;
+export default MediaProfile;

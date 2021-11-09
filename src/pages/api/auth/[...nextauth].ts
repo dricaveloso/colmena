@@ -68,6 +68,9 @@ export default NextAuth({
           // if (!responseUser.data.ocs.data.groups.includes("admin")) {
           //   throw new Error("permissionDenied");
           // }
+
+          console.log("dataUser", dataUser);
+
           // eslint-disable-next-line camelcase
           const {
             id,
@@ -76,7 +79,9 @@ export default NextAuth({
             website,
             "display-name": name,
             email: emailUser,
+            subadmin,
             language,
+            quota,
           } = dataUser;
           const { name: mediaName, url, slogan, logo } = dataMedia;
 
@@ -91,6 +96,8 @@ export default NextAuth({
             email: emailUser,
             language: userLang,
             groups,
+            subadmin,
+            quota,
             twitter,
             userToken,
             password,

@@ -11,5 +11,6 @@
   "socialMediaTitle": "Redes sociales",
   "editButton": "Editar",
   "saveButton": "Guardar",
-  "resetPasswordButton": "Restablecer la contraseña"
+  "resetPasswordButton": "Restablecer la contraseña",
+  "manageTitle": "Manage"
 }

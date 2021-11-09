@@ -4,11 +4,9 @@ import Box from "@material-ui/core/Box";
 import Toolbar from "@material-ui/core/Toolbar";
 import SvgIcon from "@/components/ui/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
-// import { PositionProps, PropsUserSelector, PropsConfigSelector } from "@/types/index";
 import { PositionProps, PropsConfigSelector } from "@/types/index";
 import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
-// import UserAvatar from "@/components/ui/Avatar";
 import { useSelector } from "react-redux";
 import Drawer from "./GeneralMenuDrawer";
 import { useRouter } from "next/router";
@@ -21,6 +19,7 @@ type Props = {
   drawer?: boolean;
   back?: boolean;
   templateHeader?: "variation1" | "variation2";
+  extraElement?: React.ReactNode | undefined;
 };
 
 function AppBarSys({
@@ -30,6 +29,7 @@ function AppBarSys({
   drawer = true,
   back = false,
   templateHeader = "variation1",
+  extraElement = undefined,
 }: Props) {
   // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
@@ -51,10 +51,6 @@ function AppBarSys({
     if (router.pathname === "/profile") router.push(configRdx.currentPage);
     else router.back();
   };
-
-  // const handleProfilePage = () => {
-  //   router.push("/profile");
-  // };
 
   return (
     <header>
@@ -108,6 +104,7 @@ function AppBarSys({
             </Box>
           </Box>
           <Box display="flex" flexDirection="row" alignItems="center">
+            {extraElement && extraElement}
             {drawer && (
               <IconButton
                 edge="start"
@@ -123,10 +120,6 @@ function AppBarSys({
               </IconButton>
             )}
           </Box>
-
-          {/* <div onClick={handleProfilePage} style={{ cursor: "pointer" }}>
-            <UserAvatar size={5} name={userRdx?.user?.name} image={userRdx?.user?.avatar} />
-          </div> */}
         </Toolbar>
       </AppBar>
       <Toolbar />
