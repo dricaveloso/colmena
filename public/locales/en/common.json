@@ -32,7 +32,8 @@
     "chatRoomSuccess": "Chat room created successfully",
     "chatRoomFailed": "Unable to create chat room",
     "buttonStep1": "Create",
-    "buttonStep2": "Add"
+    "buttonStep2": "Add",
+    "errorCreatePanal": "There is already a honeycomb with this name"
   },
   "newFolderTitle": "New folder",
   "uploadTitle": "Upload",
@@ -44,6 +45,7 @@
       "skipButton": "Skip",
       "nextIntro": "Next",
       "backButton": "Back",
+      "cancelButton": "Cancel",
       "placeholderEmail": "Email",
       "placeholderPassword": "Password",
       "placeholderPasswordConfirmation": "Password confirmation",
@@ -59,6 +61,7 @@
       "successMessageFormSave": "Saved successfully",
       "differentPasswordsTitle": "Passwords do not match",
       "requiredTitle": "Required",
+      "slashNotAllowed": "Character '/' not allowed for field {{field}}",
       "name": "Name",
       "local": "Local",
       "create": "Create",
@@ -85,5 +88,6 @@
     "singularMinute": "minute",
     "pluralMinute": "minutes",
     "now": "now"
-  }
+  },
+  "typeYourMessage": "Type your message"
 }

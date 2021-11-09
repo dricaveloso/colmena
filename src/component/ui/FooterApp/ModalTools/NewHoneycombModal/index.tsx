@@ -9,7 +9,12 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { NotificationStatusEnum, ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
+import {
+  NotificationStatusEnum,
+  ButtonColorEnum,
+  ButtonVariantEnum,
+  EnvironmentEnum,
+} from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useTranslation } from "next-i18next";
 import { createNewConversation, addParticipantToConversation } from "@/services/talk/room";
@@ -19,8 +24,14 @@ import { listAllUsers } from "@/services/ocs/users";
 import UserListSkeleton from "@/components/ui/skeleton/UsersList";
 import { useRouter } from "next/router";
 import NotificationContext from "@/store/context/notification-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addHoneycomb } from "@/store/actions/honeycomb";
+import { PropsUserSelector } from "@/types/*";
+import { createDirectory, existDirectory } from "@/services/webdav/directories";
+import { addLibraryFile } from "@/store/actions/library";
+import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
+import { dateDescription } from "@/utils/utils";
+import { createNewShare } from "@/services/share/share";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -57,6 +68,8 @@ type MyFormValues = {
 
 export default function NewHoneycombModal({ open, handleClose }: Props) {
   const { t: c } = useTranslation("common");
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const userId = userRdx.user.id;
   const { data } = listAllUsers();
   const [step, setStep] = useState(1);
   const [participants, setParticipants] = useState<string[]>([]);
@@ -64,6 +77,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
   const dispatch = useDispatch();
   const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
+  const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
 
   const initialValues = {
     roomName: "",
@@ -100,6 +114,20 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                 (async () => {
                   try {
                     setSubmitting(true);
+
+                    if (roomName.indexOf("/") !== -1) {
+                      throw new Error(
+                        c("form.slashNotAllowed", {
+                          field: c("form.fields.name"),
+                        }),
+                      );
+                    }
+
+                    const directoryExists = await existDirectory(userId, roomName);
+                    if (directoryExists) {
+                      throw new Error(c("honeycombModal.errorCreatePanal"));
+                    }
+
                     const conversation = await createNewConversation(roomName);
                     const { token } = conversation.data.ocs.data;
 
@@ -107,6 +135,25 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       await addParticipantToConversation(token, item);
                     });
                     dispatch(addHoneycomb(conversation.data.ocs.data));
+
+                    const folderName = conversation.data.ocs.data.displayName;
+
+                    const create = await createDirectory(userId, folderName);
+                    if (create) {
+                      const date = new Date();
+                      const item: LibraryItemInterface = {
+                        basename: folderName,
+                        id: "",
+                        filename: "",
+                        type: "directory",
+                        environment: EnvironmentEnum.REMOTE,
+                        createdAt: date,
+                        createdAtDescription: dateDescription(date, timeDescription),
+                      };
+                      dispatch(addLibraryFile(item));
+                      await createNewShare(folderName, token);
+                    }
+
                     handleClose();
                     notificationCtx.showNotification({
                       message: c("honeycombModal.chatRoomSuccess"),
@@ -115,8 +162,9 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                     router.push(`/honeycomb/${token}/${roomName}`);
                   } catch (e) {
                     console.log(e);
+                    const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
                     notificationCtx.showNotification({
-                      message: c("honeycombModal.chatRoomFailed"),
+                      message: msg,
                       status: NotificationStatusEnum.ERROR,
                     });
                   } finally {

@@ -28,6 +28,7 @@
   "loading": "Cargando",
   "noItemsFound": "No fueron encontrados itenn",
   "honeycombModal": {
+    "errorCreatePanal": "There is already a honeycomb with this name",
     "chatRoomSuccess": "Llamada creada con éxito",
     "chatRoomFailed": "No fue posible crear la llamada",
     "buttonStep1": "Crear",
@@ -40,6 +41,7 @@
     "skipButton": "Saltar",
     "nextIntro": "Continuar",
     "backButton": "Volver",
+    "cancelButton": "Cancel",
     "invalidEmailTitle": "E-mail invalido",
     "placeholderEmail": "E-mail",
     "placeholderPassword": "Contraseña",
@@ -80,5 +82,6 @@
     "singularMinute": "minuto",
     "pluralMinute": "minutos",
     "now": "ahora"
-  }
+  },
+  "typeYourMessage": "Type your message"
 }

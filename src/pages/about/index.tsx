@@ -1,16 +1,11 @@
 import FlexBox from "@/components/ui/FlexBox";
-import IconButton from "@/components/ui/IconButton";
-import { useRouter } from "next/router";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import Divider from "@material-ui/core/Divider";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
-import { FlexDirectionEnum, JustifyContentEnum, TextVariantEnum } from "@/enums/index";
+import { JustifyContentEnum } from "@/enums/index";
 import MaterialIcon from "@/components/ui/MaterialIcon";
-import Text from "@/components/ui/Text";
-import { v4 as uuid } from "uuid";
 import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
@@ -27,15 +22,9 @@ interface ItemInterface {
 }
 
 function About() {
-  const router = useRouter();
   const fontSize = "4.0em";
   const color = "black";
   const { t } = useTranslation("intro");
-  const { t: d } = useTranslation("drawer");
-
-  const navigate = (url: string) => {
-    router.push(url);
-  };
 
   const items: ItemInterface[] = [
     {
@@ -91,39 +80,6 @@ function About() {
               </p>
             </FlexBox>
           ))}
-        </div>
-        <Divider />
-        <div
-          style={{
-            display: "inline-grid",
-            gridTemplateColumns: "auto auto",
-            gridColumnGap: "50px",
-          }}
-        >
-          <FlexBox
-            key={uuid()}
-            justifyContent={JustifyContentEnum.SPACEBETWEEN}
-            flexDirection={FlexDirectionEnum.ROW}
-          >
-            <div key={uuid()}>
-              <MaterialIcon icon="supervised_user_circle" style={{ color, fontSize: "2.8em" }} />
-              <Text variant={TextVariantEnum.BODY1}>{t("communityTitle")}</Text>
-            </div>
-          </FlexBox>
-          <FlexBox
-            key={uuid()}
-            justifyContent={JustifyContentEnum.SPACEBETWEEN}
-            flexDirection={FlexDirectionEnum.ROW}
-          >
-            <div key={uuid()}>
-              <IconButton
-                icon="library"
-                handleClick={() => navigate("/library")}
-                iconStyle={{ fontSize: "2.8em" }}
-              />
-              <Text variant={TextVariantEnum.BODY1}>{d("myFilesTitle")}</Text>
-            </div>
-          </FlexBox>
         </div>
       </FlexBox>
       <WhiteSpaceFooter />

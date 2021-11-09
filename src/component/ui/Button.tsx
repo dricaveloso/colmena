@@ -16,6 +16,7 @@ type Props = {
   disabled?: boolean;
   component?: any;
   url?: string;
+  fullWidth?: boolean;
 };
 
 export default function Btn({
@@ -29,6 +30,7 @@ export default function Btn({
   disabled = false,
   component = "button",
   url = "no-navigation",
+  fullWidth = false,
 }: Props) {
   return url !== "no-navigation" ? (
     <Link href={url}>
@@ -37,10 +39,11 @@ export default function Btn({
         color={color}
         size={size}
         // className="width-based-device"
-        style={{ textTransform: "capitalize", ...style }}
+        style={{ textTransform: "lowercase", ...style }}
         endIcon={endIcon}
         disabled={disabled}
         component="a"
+        fullWidth={fullWidth}
       >
         {title}
       </Button>
@@ -48,7 +51,7 @@ export default function Btn({
   ) : (
     <Button
       // className="width-based-device"
-      style={{ textTransform: "capitalize", ...style }}
+      style={{ textTransform: "lowercase", ...style }}
       variant={variant}
       color={color}
       size={size}
@@ -56,6 +59,7 @@ export default function Btn({
       endIcon={endIcon}
       disabled={disabled}
       component={component}
+      fullWidth={fullWidth}
     >
       {title}
     </Button>

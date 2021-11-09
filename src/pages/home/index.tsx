@@ -1,61 +1,51 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import DashboardActions from "@/components/pages/home/DashboardActions";
-import Greeting from "@/components/pages/home/Greeting";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
-import { JustifyContentEnum } from "@/enums/index";
-import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
-import CONSTANTS from "@/constants/index";
+import { JustifyContentEnum, NotificationStatusEnum } from "@/enums/index";
+import Section1 from "@/components/pages/home/Section1";
+import Section2 from "@/components/pages/home/Section2";
+import Section3 from "@/components/pages/home/Section3";
+import Section4 from "@/components/pages/home/Section4";
+import Divider from "@/components/ui/Divider";
+import NotificationContext from "@/store/context/notification-context";
+import { useTranslation } from "next-i18next";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["home", "drawer", "common"])),
+    ...(await serverSideTranslations(locale, ["home"])),
   },
 });
 
 function Home() {
-  const [showGreeting, setShowGreeting] = useState(false);
-  const [showContent, setShowContent] = useState(false);
-
-  useEffect(() => {
-    if (!localStorage.getItem("isFirstAccess") || localStorage.getItem("isFirstAccess") === "yes") {
-      setTimeout(() => {
-        setShowGreeting(true);
-      }, 200);
-      setTimeout(() => {
-        setShowGreeting(false);
-        setShowContent(true);
-        localStorage.setItem("isFirstAccess", "no");
-      }, 3000);
-    } else {
-      setShowGreeting(false);
-      setShowContent(true);
-    }
-  }, []);
-
+  const notificationCtx = useContext(NotificationContext);
+  const { t: c } = useTranslation("common");
   return (
-    <LayoutApp title={CONSTANTS.APP_NAME} templateHeader="variation2">
-      {showGreeting && !showContent ? (
-        <FlexBox justifyContent={JustifyContentEnum.CENTER}>
-          <Greeting showGreeting={showGreeting} />
+    <LayoutApp title="Welcome" templateHeader="variation2">
+      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
+        <Section1 />
+        <FlexBox
+          justifyContent={JustifyContentEnum.FLEXSTART}
+          extraStyle={{ paddingTop: 6, marginTop: 0 }}
+        >
+          <div
+            onClick={() => [
+              notificationCtx.showNotification({
+                message: c("featureUnavailable"),
+                status: NotificationStatusEnum.WARNING,
+              }),
+            ]}
+          >
+            <Section2 />
+            <Divider marginTop={10} />
+            <Section3 />
+            <Divider marginTop={10} />
+            <Section4 />
+          </div>
         </FlexBox>
-      ) : (
-        showContent && (
-          <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
-            <DashboardActions
-              showContent={showContent}
-              isFirstAccess={
-                !localStorage.getItem("isFirstAccess") ||
-                localStorage.getItem("isFirstAccess") === "yes"
-              }
-            />
-            <WhiteSpaceFooter />
-          </FlexBox>
-        )
-      )}
+      </FlexBox>
     </LayoutApp>
   );
 }

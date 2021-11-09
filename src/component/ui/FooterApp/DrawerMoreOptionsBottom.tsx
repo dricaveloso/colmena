@@ -12,7 +12,8 @@ import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import { FontSizeIconProps } from "@/types/index";
 import NotificationContext from "@/store/context/notification-context";
-import { NotificationStatusEnum } from "@/enums/index";
+import { ButtonColorEnum, ButtonVariantEnum, NotificationStatusEnum } from "@/enums/index";
+import Button from "@/components/ui/Button";
 
 type Props = {
   open: boolean;
@@ -85,7 +86,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
             <Grid item xs={3} key={uuid()}>
               <IconButton
                 icon="upload"
-                iconColor={defaultConfigButton.color.light}
+                iconColor={defaultConfigButton.color.main}
                 fontSizeIcon={defaultConfigButton.fontSizeIcon}
                 textStyle={{
                   fontSize: defaultConfigButton.fontSize,
@@ -202,6 +203,15 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
               />
             </Grid>
           </Grid>
+        </Box>
+        <Box margin={1}>
+          <Button
+            title={t("form.cancelButton")}
+            handleClick={handleClose}
+            variant={ButtonVariantEnum.TEXT}
+            color={ButtonColorEnum.DEFAULT}
+            fullWidth
+          />
         </Box>
       </SwipeableDrawer>
 

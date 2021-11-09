@@ -25,7 +25,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 export default function Honeycomb() {
-  const { t } = useTranslation("honeycomb");
   const dispatch = useDispatch();
   const { data, error } = getUsersConversations({
     revalidateIfStale: false,
@@ -35,29 +34,28 @@ export default function Honeycomb() {
 
   if (!data)
     return (
-      <LayoutWrapper title={t("title")}>
+      <LayoutWrapper>
         <FileListSkeleton />
       </LayoutWrapper>
     );
 
   if (error)
     return (
-      <LayoutWrapper title={t("title")}>
+      <LayoutWrapper>
         <AlertInfoCenter />
       </LayoutWrapper>
     );
 
-  dispatch(setHoneycombs(data.ocs.data.reverse()));
+  dispatch(setHoneycombs(data.ocs.data));
 
   return (
-    <LayoutWrapper title={t("title")}>
+    <LayoutWrapper>
       <HoneycombList />
     </LayoutWrapper>
   );
 }
 
 type LayoutWrapperProps = {
-  title: string;
   children: React.ReactNode;
 };
 
@@ -68,7 +66,8 @@ type LayoutWrapperProps = {
 //   value: any;
 // }
 
-function LayoutWrapper({ title, children }: LayoutWrapperProps) {
+function LayoutWrapper({ children }: LayoutWrapperProps) {
+  const { t } = useTranslation("honeycomb");
   // const [value, setValue] = useState(0);
 
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -104,7 +103,7 @@ function LayoutWrapper({ title, children }: LayoutWrapperProps) {
   // }
 
   return (
-    <LayoutApp title={title} templateHeader="variation2">
+    <LayoutApp title={t("title")} templateHeader="variation2">
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <Box width="100%">
           {/* <Tabs
