@@ -1,14 +1,14 @@
 {
-  "welcomeTitle": "Welcome",
-  "myFilesLabel": "My files",
-  "sharedLabel": "Shared",
-  "publicLabel": "Public",
-  "section2Title": "Latest posts",
-  "section3Title": "Favorite honeycombs",
-  "section4Title": "Recent",
-  "seeAllTitle": "see all",
-  "exampleHoneycombTitle": "Honeycomb {{num}}",
-  "exampleFileTitle": "File {{num}}",
-  "examplePostTitle": "Show {{num}} Radio ADa",
-  "examplePostSubtitle": "5 days | 12mb"
+  "welcomeTitle": "Bienvenido",
+  "myFilesLabel": "Mis archivos",
+  "sharedLabel": "Compartidos",
+  "publicLabel": "Publicos",
+  "section2Title": "Ultimas publicaciones",
+  "section3Title": "Panales favoritos",
+  "section4Title": "Recientes",
+  "seeAllTitle": "ver todos",
+  "exampleHoneycombTitle": "Panal {{num}}",
+  "exampleFileTitle": "Archivo {{num}}",
+  "examplePostTitle": "Mostrar {{num}} Radio ADa",
+  "examplePostSubtitle": "5 dias | 12mb"
 }
