@@ -41,9 +41,9 @@ export default function Section1() {
           alignContent="center"
           justifyContent="space-between"
         >
-          <Item title={t("myFilesLabel")} amount={20} />
-          <Item title={t("sharedLabel")} amount={8} />
-          <Item title={t("publicLabel")} amount={15} />
+          <Item title={t("myFilesLabel")} amount={0} />
+          <Item title={t("sharedLabel")} amount={0} />
+          <Item title={t("publicLabel")} amount={0} />
         </Box>
       </Box>
     </Box>

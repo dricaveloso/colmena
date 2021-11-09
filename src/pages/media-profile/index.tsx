@@ -26,7 +26,7 @@ function MediaProfile() {
   const { t: c } = useTranslation("common");
   return (
     <LayoutApp
-      title="Radio ADA"
+      title="Radio Colmena"
       drawer={false}
       back
       templateHeader="variation2"

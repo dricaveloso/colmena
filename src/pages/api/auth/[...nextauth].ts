@@ -69,8 +69,6 @@ export default NextAuth({
           //   throw new Error("permissionDenied");
           // }
 
-          console.log("dataUser", dataUser);
-
           // eslint-disable-next-line camelcase
           const {
             id,

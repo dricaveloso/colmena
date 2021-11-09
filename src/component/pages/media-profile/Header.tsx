@@ -24,7 +24,7 @@ export default function HeaderMediaProfile() {
       flexDirection="row"
       style={{ backgroundColor: theme.palette.primary.main, width: "100%" }}
     >
-      <UserAvatar size={10} name="Radio ADA" />
+      <UserAvatar size={10} name="Radio Colmena" />
       <Box
         display="flex"
         flexDirection="column"

@@ -37,8 +37,7 @@ export default function HeaderProfile() {
         justifyContent="flex-start"
       >
         <Text variant={TextVariantEnum.BODY1} style={{ color: colorBody1, textAlign }}>
-          {/* {userRdx.user.groups[0] ? userRdx.user.groups[0] : "Radio ADA"} */}
-          Radio ADA
+          Radio Colmena
         </Text>
         <Box display="flex" flexDirection="row" alignItems="center">
           <Text variant={TextVariantEnum.BODY2} style={{ color: colorBody2, textAlign }}>
@@ -58,9 +57,6 @@ export default function HeaderProfile() {
             iconColor="#fff"
           />
         </Box>
-        <Text variant={TextVariantEnum.BODY2} style={{ color: colorBody2, textAlign }}>
-          Since August 2017
-        </Text>
       </Box>
     </Box>
   );
