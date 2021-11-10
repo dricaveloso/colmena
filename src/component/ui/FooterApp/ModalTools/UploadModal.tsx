@@ -9,7 +9,13 @@ import { putFile, getUniqueName } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import Divider from "@/components/ui/Divider";
-import { dateDescription, trailingSlash, getExtensionFilename, getRandomInt } from "@/utils/utils";
+import {
+  dateDescription,
+  trailingSlash,
+  getExtensionFilename,
+  getRandomInt,
+  removeFirstSlash,
+} from "@/utils/utils";
 import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
@@ -17,6 +23,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
 import { blobToArrayBuffer } from "blob-util";
+import { useRouter } from "next/router";
+import { getOfflinePath, getRootPath } from "@/utils/directory";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -53,6 +61,7 @@ export default function Upload({ open, handleClose }: Props) {
   const path = library.currentPath;
   const pathExists = library.currentPathExists;
   const classes = useStyles();
+  const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation("common");
@@ -96,8 +105,9 @@ export default function Upload({ open, handleClose }: Props) {
       formRef.current.reset();
     }
 
-    setIsLoading(false);
-    handleClose();
+    // handleClose();
+
+    router.push(`/library/${removeFirstSlash(handledPath())}`);
   };
 
   const uploadFile = async (name: string, data: ArrayBuffer) => {
@@ -106,7 +116,7 @@ export default function Upload({ open, handleClose }: Props) {
 
     const create = await putFile(userId, finalPath, data);
     if (create) {
-      addFileIntoLibrary(fileName, finalPath);
+      // addFileIntoLibrary(fileName, finalPath);
     }
   };
 
@@ -131,16 +141,14 @@ export default function Upload({ open, handleClose }: Props) {
       createdAtDescription: dateDescription(date, timeDescription),
       extension: getExtensionFilename(name),
     };
+
     dispatch(addLibraryFile(item));
   };
 
   const handledPath = useCallback(() => {
-    let finalPath = !pathExists ? "" : path;
-    if (finalPath === "/") {
-      finalPath = "";
-    }
+    const rootPath = getRootPath();
 
-    return finalPath;
+    return !pathExists || !path || path === "/" || path === getOfflinePath() ? rootPath : path;
   }, [path, pathExists]);
 
   return (
@@ -174,7 +182,7 @@ export default function Upload({ open, handleClose }: Props) {
                 id="outlined-search"
                 label={t("form.local")}
                 variant="outlined"
-                value={path}
+                value={handledPath()}
                 disabled
               />
               <Divider marginTop={20} />

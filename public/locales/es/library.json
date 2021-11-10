@@ -2,6 +2,7 @@
   "title": "Mi librería",
   "sort": {
     "title": "Ordenar",
+    "highlights": "Destacadas",
     "newest": "Más reciente",
     "oldest": "Más antiguas",
     "alphabeticalOrder": "Orden alfabetica",
@@ -15,5 +16,26 @@
     "audios": "Audios",
     "images": "Imagenes",
     "texts": "Textos"
+  },
+  "language": {
+    "title": "Language",
+    "english": "Inglés",
+    "spanish": "Espanõl",
+    "french": "Francés"
+  },
+  "contextMenuOptions": {
+    "edit": "Edit",
+    "copy": "Copy",
+    "move": "Move",
+    "duplicate": "Duplicate",
+    "download": "Download",
+    "rename": "Rename",
+    "details": "Details",
+    "synchronize": "Synchronize",
+    "publish": "Publish",
+    "delete": "Delete"
+  },
+  "messages": {
+    "couldNotRemove": "Could not remove"
   }
 }
