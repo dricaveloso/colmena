@@ -67,7 +67,7 @@ const VerticalItemList = ({
   return (
     <Box className={classes.card}>
       <Box className={[classes.options, classes.topOptions].join(" ")}>{topOptions}</Box>
-      <ListItemAvatar>{avatar}</ListItemAvatar>
+      {avatar && <ListItemAvatar>{avatar}</ListItemAvatar>}
       <ListItemText
         data-testid="title"
         className={classes.description}

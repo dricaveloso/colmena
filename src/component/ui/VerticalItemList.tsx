@@ -3,6 +3,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
+import { VerticalItemListInterface } from "@/interfaces/index";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -27,13 +28,6 @@ const useStyles = makeStyles(() => ({
     flexWrap: "nowrap",
   },
 }));
-interface VerticalItemListInterface {
-  avatar?: React.ReactNode;
-  primary: string | React.ReactNode;
-  secondary?: string | React.ReactNode;
-  options?: React.ReactNode;
-  handleClick?: (event: any) => void | undefined;
-}
 
 const VerticalItemList = ({
   avatar,
@@ -46,7 +40,7 @@ const VerticalItemList = ({
 
   return (
     <Box className={classes.card}>
-      <ListItemAvatar>{avatar}</ListItemAvatar>
+      {avatar && <ListItemAvatar>{avatar}</ListItemAvatar>}
       <ListItemText
         data-testid="title"
         className={classes.description}

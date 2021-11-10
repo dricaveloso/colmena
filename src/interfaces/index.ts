@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
+import React from "react";
 
 export interface I18nInterface {
   locale: string;
@@ -151,4 +152,12 @@ export interface TimeDescriptionInterface {
   singularMinute: string;
   pluralMinute: string;
   now: string;
+}
+
+export interface VerticalItemListInterface {
+  avatar?: React.ReactElement;
+  primary: string | React.ReactNode;
+  secondary?: string | React.ReactNode;
+  options?: React.ReactNode;
+  handleClick?: (event: any) => void | undefined;
 }

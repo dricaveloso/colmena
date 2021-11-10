@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { LibraryItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
@@ -6,11 +6,14 @@ import Box from "@material-ui/core/Box";
 import Image from "next/image";
 import VerticalItemList from "@/components/ui/VerticalItemList";
 import GridItemList from "@/components/ui/GridItemList";
-import { hasExclusivePath, hasLocalPath, isRootPath } from "@/utils/directory";
+import { hasExclusivePath } from "@/utils/directory";
+import { NotificationStatusEnum } from "@/enums/*";
 import { removeCornerSlash } from "@/utils/utils";
 import theme from "@/styles/theme";
 import { FileIcon } from "react-file-icon";
 import ContextMenuOptions from "./ContextMenuOptions";
+import NotificationContext from "@/store/context/notification-context";
+import { useTranslation } from "react-i18next";
 
 interface CarItemInterface extends LibraryItemInterface {
   orientation: string | ["vertical", "horizontal"];
@@ -31,11 +34,20 @@ const CardItem = ({
   orientation,
 }: CarItemInterface) => {
   const router = useRouter();
+  const notificationCtx = useContext(NotificationContext);
+  const { t: c } = useTranslation("common");
 
   const handleClick = () => {
     if (type === "directory" && router.query.path !== filename) {
       router.push(`/library/${filename}`);
     }
+  };
+
+  const unavailable = () => {
+    notificationCtx.showNotification({
+      message: c("messages.eatureUnavailable"),
+      status: NotificationStatusEnum.WARNING,
+    });
   };
 
   const options = [];
@@ -47,6 +59,7 @@ const CardItem = ({
       color="#9A9A9A"
       style={{ padding: 0, margin: 0, minWidth: 30 }}
       fontSizeIcon="small"
+      handleClick={unavailable}
     />
   );
   const avatar = (
@@ -81,7 +94,12 @@ const CardItem = ({
     }
 
     options.push(
-      <ContextMenuOptions id={id} type={type} filename={filename} environment={environment} />,
+      <ContextMenuOptions
+        id={id}
+        type={type}
+        filename={filename ?? ""}
+        environment={environment}
+      />,
     );
   }
 
