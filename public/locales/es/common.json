@@ -44,6 +44,8 @@
     "cancelButton": "Cancel",
     "invalidEmailTitle": "E-mail invalido",
     "placeholderEmail": "E-mail",
+    "placeholderCurrentPassword": "Current password",
+    "placeholderNewPassword": "New password",
     "placeholderPassword": "Contraseña",
     "placeholderPasswordConfirmation": "Confirmar contraseña",
     "submitLoginTitle": "Entrar",
@@ -55,6 +57,7 @@
     "passwordMinLengthTitle": "Muy corto! Minimo de {{size}} caracteres.",
     "passwordMaxLengthTitle": "Muy largo! Maximo de {{size}} caracteres.",
     "differentPasswordsTitle": "Contraseñas están diferentes",
+    "currentPasswordInvalidTitle": "Current password invalid",
     "requiredTitle": "Requerido",
     "invalidURLTitle": "URL invalida",
     "name": "Nombre",
@@ -68,7 +71,9 @@
     "enterFolderName": "Nombre de la carpeta",
     "fileAlreadyExists": "Ya existe un archivo con ese nombre.",
     "fileTooLarge": "El archivo {{fileName}} es demasiado grande para cargarlo.",
-    "unableToProcessFile": "No se puede procesar el archivo {{fileName}}."
+    "unableToProcessFile": "No se puede procesar el archivo {{fileName}}.",
+    "unableToUpdatePassword": "Unable to update your password.",
+    "passwordUpdatedSuccessfully": "Password updated successfully."
   },
   "timeDescription": {
     "singularYear": "año",
@@ -90,5 +95,6 @@
   "examplePostSubtitle": "5 days | 12mb",
   "membersTitle": "Members",
   "manageTitle": "Manage",
-  "socialMediaTitle": "Social Media"
+  "socialMediaTitle": "Social Media",
+  "resetPasswordTitle": "Update password"
 }

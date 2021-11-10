@@ -24,9 +24,9 @@ function Profile() {
   return (
     <LayoutApp
       title={capitalizeFirstLetter(userRdx.user.name)}
-      drawer={false}
       back
       templateHeader="variation2"
+      drawer={false}
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>

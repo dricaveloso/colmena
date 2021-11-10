@@ -3,7 +3,7 @@ import ocs from "@/services/ocs";
 import {
   CreateUserInterface,
   WelcomeUserInterface,
-  SetPasswordInterface,
+  // SetPasswordInterface,
   UpdatePasswordInterface,
   UsersListInterface,
 } from "@/interfaces/ocs";
@@ -70,26 +70,26 @@ export function updatePassword(
   );
 }
 
-export function setPassword(
-  token: string,
-  userId: string,
-  password: string,
-  headers: {
-    Cookie: string;
-    requesttoken: string;
-  },
-): Promise<SetPasswordInterface> {
-  return axios.post(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/index.php/lostpassword/set/${token}/${userId}`,
-    {
-      password,
-      proceed: false,
-    },
-    {
-      headers,
-    },
-  );
-}
+// export function setPassword(
+//   token: string,
+//   userId: string,
+//   password: string,
+//   headers: {
+//     Cookie: string;
+//     requesttoken: string;
+//   },
+// ): Promise<SetPasswordInterface> {
+//   return axios.post(
+//     `${process.env.NEXT_PUBLIC_API_BASE_URL}/index.php/lostpassword/set/${token}/${userId}`,
+//     {
+//       password,
+//       proceed: false,
+//     },
+//     {
+//       headers,
+//     },
+//   );
+// }
 
 export function listGroupsUser(userId: string | number) {
   return ocs().get(`/users/${userId}/groups`);
