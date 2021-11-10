@@ -128,26 +128,11 @@ function MyLibrary() {
 
     items.sort((a, b) => {
       switch (order) {
-        case OrderEnum.HIGHLIGHT:
-          if (b.filename === getOfflinePath()) {
-            return 1004;
-          }
-
-          if (b.filename === getPrivatePath()) {
-            return 1002;
-          }
-
-          if (b.filename === getPublicPath()) {
-            return 1003;
-          }
-
-          return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt < b.createdAt
-            ? 1
-            : -1;
         case OrderEnum.OLDEST_FIST:
           return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt > b.createdAt
             ? 1
             : -1;
+        case OrderEnum.HIGHLIGHT:
         case OrderEnum.LATEST_FIRST:
           return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt < b.createdAt
             ? 1
@@ -168,6 +153,24 @@ function MyLibrary() {
           return 0;
       }
     });
+
+    if (order === OrderEnum.HIGHLIGHT) {
+      items.sort((a, b) => {
+        if (b.filename === getOfflinePath()) {
+          return 1;
+        }
+
+        if (b.filename === getPrivatePath()) {
+          return 1;
+        }
+
+        if (b.filename === getPublicPath()) {
+          return 1;
+        }
+
+        return -1;
+      });
+    }
 
     return items;
   }, []);
