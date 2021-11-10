@@ -45,7 +45,7 @@ export function hasExclusivePath(path: string | undefined | null): boolean {
 }
 
 export function handleDirectoryName(name: string) {
-  return name.replace(/[^\w-]*/g, "");
+  return name.replace(/[^\w\s-]*/g, "");
 }
 
 export function getPathName(path: string): string {

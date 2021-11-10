@@ -9,6 +9,7 @@ import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import { useSelector, useDispatch } from "react-redux";
 import { removeLibraryFile } from "@/store/actions/library";
 import NotificationContext from "@/store/context/notification-context";
+import { useTranslation } from "react-i18next";
 
 interface ContextMenuOptionsInterface {
   id: string;
@@ -20,6 +21,8 @@ interface ContextMenuOptionsInterface {
 const ContextMenuOptions = ({ id, type, filename, environment }: ContextMenuOptionsInterface) => {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
+  const { t } = useTranslation("library");
+  const { t: c } = useTranslation("common");
   const dispatch = useDispatch();
   const notificationCtx = useContext(NotificationContext);
   const isRemote = environment === EnvironmentEnum.REMOTE;
@@ -43,7 +46,7 @@ const ContextMenuOptions = ({ id, type, filename, environment }: ContextMenuOpti
         dispatch(removeLibraryFile(id));
       } else {
         notificationCtx.showNotification({
-          message: "Não foi possível remover",
+          message: t("couldNotRemove"),
           status: NotificationStatusEnum.ERROR,
         });
       }
@@ -60,6 +63,13 @@ const ContextMenuOptions = ({ id, type, filename, environment }: ContextMenuOpti
     }
 
     return deleteFile(userRdx.user.id, filename);
+  };
+
+  const unavailable = () => {
+    notificationCtx.showNotification({
+      message: c("messages.eatureUnavailable"),
+      status: NotificationStatusEnum.WARNING,
+    });
   };
 
   return (
@@ -79,16 +89,36 @@ const ContextMenuOptions = ({ id, type, filename, environment }: ContextMenuOpti
         open={Boolean(anchorEl)}
         onClose={handleCloseContextMenu}
       >
-        <MenuItem onClick={handleCloseContextMenu}>Edit</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Copy</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Move</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Duplicate</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Download</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Rename</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Details</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Synchronize</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Publish</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        <MenuItem key="delete" onClick={handleDelete}>
+          {t("contextMenuOptions.delete")}
+        </MenuItem>
+        <MenuItem key="edit" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.edit")}
+        </MenuItem>
+        <MenuItem key="copy" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.copy")}
+        </MenuItem>
+        <MenuItem key="move" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.move")}
+        </MenuItem>
+        <MenuItem key="duplicate" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.duplicate")}
+        </MenuItem>
+        <MenuItem key="download" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.download")}
+        </MenuItem>
+        <MenuItem key="rename" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.rename")}
+        </MenuItem>
+        <MenuItem key="details" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.details")}
+        </MenuItem>
+        <MenuItem key="sync" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.synchronize")}
+        </MenuItem>
+        <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.publish")}
+        </MenuItem>
       </Menu>
     </>
   );

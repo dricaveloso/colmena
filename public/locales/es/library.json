@@ -22,5 +22,20 @@
     "english": "Inglés",
     "spanish": "Espanõl",
     "french": "Francés"
+  },
+  "contextMenuOptions": {
+    "edit": "Edit",
+    "copy": "Copy",
+    "move": "Move",
+    "duplicate": "Duplicate",
+    "download": "Download",
+    "rename": "Rename",
+    "details": "Details",
+    "synchronize": "Synchronize",
+    "publish": "Publish",
+    "delete": "Delete"
+  },
+  "messages": {
+    "couldNotRemove": "Could not remove"
   }
 }
