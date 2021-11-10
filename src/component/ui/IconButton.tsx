@@ -16,7 +16,7 @@ type Props = {
   variantTitle?: TextVariantProps;
   color?: string;
   iconColor?: string;
-  handleClick?: () => void | undefined;
+  handleClick?: (event: any) => void | undefined;
   url?: string;
   download?: string;
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -29,6 +29,8 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   textStyle?: object;
   variant?: "text" | "outlined" | "contained" | undefined;
+  size?: "small" | "medium";
+  component?: "a" | "button";
 };
 
 function IconButtonCtr({
@@ -47,6 +49,8 @@ function IconButtonCtr({
   variant = undefined,
   direction = "vertical",
   disabled = false,
+  size = "medium",
+  component = "button",
   handleClick,
 }: Props) {
   // const [colorActive, setColorActive] = useState(color);
@@ -66,6 +70,7 @@ function IconButtonCtr({
             className={className}
             variant={variant}
             disabled={disabled}
+            size={size}
           >
             <SvgIcon
               icon={icon}
@@ -89,6 +94,7 @@ function IconButtonCtr({
           className={className}
           variant={variant}
           disabled={disabled}
+          size={size}
         >
           <SvgIcon
             icon={icon}
@@ -106,7 +112,9 @@ function IconButtonCtr({
         // onMouseOut={() => changeColorHandler(false)}
         onClick={handleClick}
         className={className}
+        component={component}
         variant={variant}
+        size={size}
         disabled={disabled}
       >
         <SvgIcon

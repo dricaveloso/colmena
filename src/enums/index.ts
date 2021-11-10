@@ -140,6 +140,7 @@ export enum OrderEnum {
   DESC_ALPHABETICAL = "descending_alphabetical_order",
   LATEST_FIRST = "latest_first",
   OLDEST_FIST = "oldest_first",
+  HIGHLIGHT = "highlights",
 }
 
 export enum FilterEnum {

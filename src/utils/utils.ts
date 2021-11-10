@@ -219,6 +219,22 @@ export function removeFirstSlash(path: string | null | undefined): string {
   return `${path.replace(/^\//, "")}`;
 }
 
+export function removeLastSlash(path: string | null | undefined): string {
+  if (!path) {
+    return "";
+  }
+
+  return `${path.replace(/\/$/, "")}`;
+}
+
+export function removeCornerSlash(path: string | null | undefined): string {
+  if (!path) {
+    return "";
+  }
+
+  return removeFirstSlash(removeLastSlash(path));
+}
+
 export function awaiting(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

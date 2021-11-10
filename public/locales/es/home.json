@@ -1,14 +1,14 @@
 {
-  "greeting": "Hola",
-  "question": "¿Qué quieres hacer ahora?",
-  "inviteText": "Invitar a tu equipo",
-  "mediaName": "Nombre del medio",
-  "recentPublicationsTitle": "Recomendado de otros medios",
-  "tabTitle1": "Archivos",
-  "tabTitle2": "Recientes",
-  "tabTitle3": "Publicados",
-  "recentPublicationsDescription": "Descripción de ejemplo",
-  "mediaCloudName": "Mi librería",
-  "recordText": "Grabar",
-  "profileText": "Editar perfil"
+  "welcomeTitle": "Bienvenida/o",
+  "myFilesLabel": "Mis archivos",
+  "sharedLabel": "Compartidos",
+  "publicLabel": "Publicos",
+  "section2Title": "Ultimas publicaciones",
+  "section3Title": "Panales favoritos",
+  "section4Title": "Recientes",
+  "seeAllTitle": "ver todos",
+  "exampleHoneycombTitle": "Panal {{num}}",
+  "exampleFileTitle": "Archivo {{num}}",
+  "examplePostTitle": "Mostrar {{num}} Radio Boca de Pólen",
+  "examplePostSubtitle": "5 dias | 12mb"
 }

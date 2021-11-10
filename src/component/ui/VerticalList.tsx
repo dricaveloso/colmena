@@ -2,14 +2,14 @@ import React from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Text from "@/components/ui/Text";
-import { LibraryItemInterface } from "@/interfaces/index";
 import { TextAlignEnum, TextVariantEnum } from "@/enums/index";
+import { VerticalItemListInterface } from "@/interfaces/index";
 import VerticalItemList from "@/components/ui/VerticalItemList";
 import { v4 as uuid } from "uuid";
 
 type Props = {
   title?: string;
-  data: LibraryItemInterface[];
+  data: VerticalItemListInterface[];
 };
 
 export default function VerticalList({ title = "", data }: Props) {

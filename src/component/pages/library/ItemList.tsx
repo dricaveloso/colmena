@@ -1,12 +1,11 @@
 import React, { useMemo } from "react";
 import { LibraryItemInterface } from "@/interfaces/index";
-import VerticalItemList from "@/components/ui/VerticalItemList";
-import GridItemList from "@/components/ui/GridItemList";
 import ListItem from "@material-ui/core/ListItem";
 import { v4 as uuid } from "uuid";
 import List from "@material-ui/core/List";
 import { ListTypeEnum } from "@/enums/*";
 import { makeStyles } from "@material-ui/core";
+import CardItem from "./CardItem";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -32,6 +31,7 @@ function ItemList({ items = [], type = ListTypeEnum.LIST }: Props) {
   const classes = useStyles();
 
   const isVerticalList = useMemo(() => type === ListTypeEnum.LIST, [type]);
+  const orientation = isVerticalList ? "vertical" : "horizontal";
 
   return (
     <List className={classes.list}>
@@ -42,7 +42,7 @@ function ItemList({ items = [], type = ListTypeEnum.LIST }: Props) {
             disableGutters
             className={isVerticalList ? classes.verticalList : classes.gridList}
           >
-            {isVerticalList ? <VerticalItemList {...item} /> : <GridItemList {...item} />}
+            <CardItem {...item} orientation={orientation} />
           </ListItem>
         ))}
     </List>

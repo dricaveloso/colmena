@@ -9,7 +9,7 @@ import {
   RecordingInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { listDirectories } from "@/services/webdav/directories";
+import { listLibraryDirectories } from "@/services/webdav/directories";
 import { PropsUserSelector, PropsLibrarySelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import { FileStat } from "webdav";
@@ -19,7 +19,6 @@ import { Box, Button } from "@material-ui/core";
 import ItemList from "@/components/pages/library/ItemList";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { useRouter } from "next/router";
-import Loading from "@/components/ui/Loading";
 import { getExtensionFilename, dateDescription } from "@/utils/utils";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
@@ -31,6 +30,14 @@ import {
   FilterEnum,
 } from "@/enums/index";
 import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
+import {
+  getOfflinePath,
+  getPathName,
+  getPrivatePath,
+  getPublicPath,
+  isRootPath,
+} from "@/utils/directory";
+import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -51,6 +58,7 @@ function MyLibrary() {
   const [items, setItems] = useState<Array<LibraryItemInterface>>(
     [] as Array<LibraryItemInterface>,
   );
+  const [currentPath, setCurrentPath] = useState("");
   const [order, setOrder] = useState(OrderEnum.LATEST_FIRST);
   const [filter, setFilter] = useState("");
   const { t } = useTranslation("common");
@@ -61,7 +69,7 @@ function MyLibrary() {
     async (userId: string, currentDirectory: string) => {
       const items: LibraryItemInterface[] = [];
 
-      const nxDirectories = await listDirectories(userId, currentDirectory);
+      const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
       if (nxDirectories?.data.length > 0) {
         nxDirectories.data.forEach((directory: FileStat) => {
           const filename = directory.filename.replace(/^.+?(\/|$)/, "");
@@ -89,25 +97,23 @@ function MyLibrary() {
   );
 
   const getLocalFiles = useCallback(
-    async (userId: string, currentDirectory: string) => {
+    async (userId: string) => {
       const items: LibraryItemInterface[] = [];
-      if (currentDirectory === "/") {
-        const localFiles = await getAllAudios(userId);
-        if (localFiles.length > 0) {
-          localFiles.forEach((file: RecordingInterface) => {
-            const item: LibraryItemInterface = {
-              basename: file.title,
-              id: file.id,
-              type: "audio",
-              environment: EnvironmentEnum.LOCAL,
-              extension: "ogg",
-              createdAt: file.createdAt,
-              createdAtDescription: dateDescription(file.createdAt, timeDescription),
-            };
+      const localFiles = await getAllAudios(userId);
+      if (localFiles.length > 0) {
+        localFiles.forEach((file: RecordingInterface) => {
+          const item: LibraryItemInterface = {
+            basename: file.title,
+            id: file.id,
+            type: "audio",
+            environment: EnvironmentEnum.LOCAL,
+            extension: "ogg",
+            createdAt: file.createdAt,
+            createdAtDescription: dateDescription(file.createdAt, timeDescription),
+          };
 
-            items.push(item);
-          });
-        }
+          items.push(item);
+        });
       }
 
       return items;
@@ -126,6 +132,7 @@ function MyLibrary() {
           return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt > b.createdAt
             ? 1
             : -1;
+        case OrderEnum.HIGHLIGHT:
         case OrderEnum.LATEST_FIRST:
           return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt < b.createdAt
             ? 1
@@ -146,6 +153,24 @@ function MyLibrary() {
           return 0;
       }
     });
+
+    if (order === OrderEnum.HIGHLIGHT) {
+      items.sort((a, b) => {
+        if (b.filename === getOfflinePath()) {
+          return 1;
+        }
+
+        if (b.filename === getPrivatePath()) {
+          return 1;
+        }
+
+        if (b.filename === getPublicPath()) {
+          return 1;
+        }
+
+        return -1;
+      });
+    }
 
     return items;
   }, []);
@@ -179,11 +204,35 @@ function MyLibrary() {
     });
   }, []);
 
+  const getItems = async (path: string) => {
+    const offlinePath = getOfflinePath();
+    if (path === offlinePath) {
+      return getLocalFiles(userRdx.user.id);
+    }
+
+    const items = await getWebDavDirectories(userRdx.user.id, path);
+    if (isRootPath(path)) {
+      const item: LibraryItemInterface = {
+        basename: getPathName(offlinePath),
+        id: offlinePath,
+        filename: offlinePath,
+        type: "directory",
+        environment: EnvironmentEnum.LOCAL,
+      };
+
+      items.push(item);
+    }
+
+    return items;
+  };
+
   useEffect(() => {
     let currentPath = "/";
     if (typeof path === "object") {
       currentPath = path.join("/");
     }
+
+    setCurrentPath(currentPath);
 
     (async () => {
       try {
@@ -191,9 +240,8 @@ function MyLibrary() {
           setIsLoading(true);
         }
 
-        const nxDirectories = await getWebDavDirectories(userRdx.user.id, currentPath);
-        const localFiles = await getLocalFiles(userRdx.user.id, currentPath);
-        const items = nxDirectories.concat(localFiles);
+        const items = await getItems(currentPath);
+
         dispatch(setLibraryPathExists(true));
         dispatch(setLibraryFiles(items));
         dispatch(setLibraryPath(currentPath));
@@ -209,7 +257,12 @@ function MyLibrary() {
   }, [path]);
 
   useEffect(() => {
-    setItems(orderItems(order, filterItems(filter, rawItems)));
+    let defaultOrder = order;
+    if (isRootPath(currentPath)) {
+      defaultOrder = OrderEnum.HIGHLIGHT;
+    }
+
+    setItems(orderItems(defaultOrder, filterItems(filter, rawItems)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawItems]);
 
@@ -228,6 +281,7 @@ function MyLibrary() {
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0 }}>
         <HeaderBar
           path={path}
+          currentPath={currentPath}
           listType={listType}
           setListType={setListType}
           setOrder={handleOrder}
@@ -236,11 +290,7 @@ function MyLibrary() {
           filter={filter}
           pathExists={!notFoundDir}
         />
-        {isLoading && (
-          <FlexBox justifyContent={JustifyContentEnum.CENTER}>
-            <Loading />
-          </FlexBox>
-        )}
+        {isLoading && <DirectoryList />}
         {!isLoading && !notFoundDir && (
           <Box width="100%">
             <ItemList items={items} type={listType} />

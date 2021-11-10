@@ -20,6 +20,7 @@ type Props = {
   children: React.ReactNode;
   showFooter?: boolean;
   templateHeader?: "variation1" | "variation2";
+  extraElement?: React.ReactNode | undefined;
 };
 
 function LayoutApp({
@@ -30,6 +31,7 @@ function LayoutApp({
   headerPosition = PositionEnum.FIXED,
   templateHeader = "variation1",
   showFooter = true,
+  extraElement = undefined,
   children,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -62,6 +64,7 @@ function LayoutApp({
           drawer={drawer}
           templateHeader={templateHeader}
           back={back}
+          extraElement={extraElement}
         />
         <>{children}</>
         {showFooter && <FooterApp />}

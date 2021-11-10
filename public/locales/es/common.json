@@ -18,47 +18,52 @@
   "recordingDrawerBottomTitle": "Grabando",
   "addFolderDrawerBottomTitle": "Carpeta",
   "addFolderTitle": "Nueva Carpeta",
-  "addHoneycombDrawerBottomTitle": "Honeycomb",
-  "addHoneycombTitle": "New Honeycomb",
+  "addHoneycombDrawerBottomTitle": "Panal",
+  "addHoneycombTitle": "Nuevo panal",
   "enterTitleIndexPage": "Aceder",
   "titleSwitchLanguage": "Cambiar idioma",
-  "uploadFileDrawerBottomTitle": "Upload",
+  "uploadFileDrawerBottomTitle": "Subir",
   "newFolderTitle": "Nueva carpeta",
-  "uploadTitle": "Upload",
+  "uploadTitle": "Subir",
   "loading": "Cargando",
-  "noItemsFound": "No items found",
+  "noItemsFound": "No fueron encontrados itens",
   "honeycombModal": {
-    "chatRoomSuccess": "Chat room created successfully",
-    "chatRoomFailed": "Unable to create chat room",
-    "buttonStep1": "Create",
-    "buttonStep2": "Add"
+    "errorCreatePanal": "Ya hay un panal con este nombre",
+    "chatRoomSuccess": "Llamada creada con éxito",
+    "chatRoomFailed": "No fue posible crear la llamada",
+    "buttonStep1": "Crear",
+    "buttonStep2": "Añadir"
   },
   "form": {
     "fields": {
-      "name": "Name"
+      "name": "Nombre"
     },
     "skipButton": "Saltar",
     "nextIntro": "Continuar",
     "backButton": "Volver",
+    "cancelButton": "Cancelar",
     "invalidEmailTitle": "E-mail invalido",
     "placeholderEmail": "E-mail",
+    "placeholderCurrentPassword": "Contraseña actual",
+    "placeholderNewPassword": "Nueva contraseña",
     "placeholderPassword": "Contraseña",
     "placeholderPasswordConfirmation": "Confirmar contraseña",
-    "submitLoginTitle": "Enter",
+    "submitLoginTitle": "Entrar",
     "forgetPasswordTitle": "Olvidé mi contraseña",
     "submitSaveTitle": "Salvar",
-    "submitCreateTitle": "Create",
+    "submitCreateTitle": "Crear",
     "successMessageFormSave": "Salvo",
-    "loadingTitle": "Wait...",
+    "loadingTitle": "Espera...",
     "passwordMinLengthTitle": "Muy corto! Minimo de {{size}} caracteres.",
     "passwordMaxLengthTitle": "Muy largo! Maximo de {{size}} caracteres.",
     "differentPasswordsTitle": "Contraseñas están diferentes",
+    "currentPasswordInvalidTitle": "Contraseña inválida",
     "requiredTitle": "Requerido",
-    "invalidURLTitle": "Invalid URL",
+    "invalidURLTitle": "URL inválida",
     "name": "Nombre",
     "local": "Local",
     "create": "Crear",
-    "upload": "Upload"
+    "upload": "Subir"
   },
   "messages": {
     "loginFailedTitle": "Nombre o contraseña incorecto.",
@@ -66,7 +71,9 @@
     "enterFolderName": "Nombre de la carpeta",
     "fileAlreadyExists": "Ya existe un archivo con ese nombre.",
     "fileTooLarge": "El archivo {{fileName}} es demasiado grande para cargarlo.",
-    "unableToProcessFile": "No se puede procesar el archivo {{fileName}}."
+    "unableToProcessFile": "No se puede procesar el archivo {{fileName}}.",
+    "unableToUpdatePassword": "No fue possible actualizar su contraseña.",
+    "passwordUpdatedSuccessfully": "Contraseña actualizada con éxito."
   },
   "timeDescription": {
     "singularYear": "año",
@@ -80,5 +87,14 @@
     "singularMinute": "minuto",
     "pluralMinute": "minutos",
     "now": "ahora"
-  }
+  },
+  "typeYourMessage": "Escribe tu mensaje",
+  "latestPostTitle": "Últimas publicaciones",
+  "seeAllTitle": "ver todos",
+  "examplePostTitle": "Ver {{num}} Radio Colmena",
+  "examplePostSubtitle": "5 días | 12mb",
+  "membersTitle": "Miembros",
+  "manageTitle": "Administrar",
+  "socialMediaTitle": "Redes sociales",
+  "resetPasswordTitle": "Actualizar contraseña"
 }

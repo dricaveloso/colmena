@@ -137,6 +137,16 @@ export interface ChatMessageItemMessageParameterInterface {
     id: string;
     name: string;
   };
+  file?: {
+    type: string;
+    id: string;
+    name: string;
+    size: number;
+    path: string;
+    link: string;
+    mimetype: string;
+    "preview-available": string;
+  };
 }
 
 export interface ChatMessageItemInterface {

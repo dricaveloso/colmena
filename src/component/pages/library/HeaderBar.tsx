@@ -9,6 +9,7 @@ import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import { AllIconProps } from "@/types/index";
 import TemporaryFiltersDrawer from "./FiltersDrawer";
+import { isRootPath } from "@/utils/directory";
 
 const useStyles = makeStyles(() => ({
   breadcrumb: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles(() => ({
     alignSelf: "center",
     padding: 1,
     overflow: "hidden",
+    alignItems: "center",
   },
   options: {
     display: "flex",
@@ -27,6 +29,7 @@ const useStyles = makeStyles(() => ({
 
 type Props = {
   path: string | string[] | undefined;
+  currentPath: string;
   listType: string;
   setListType: React.Dispatch<React.SetStateAction<ListTypeEnum>>;
   setFilter: React.Dispatch<React.SetStateAction<string | FilterEnum>>;
@@ -40,6 +43,7 @@ const defineIconListType = (type: string) => (type === ListTypeEnum.LIST ? "grid
 
 function HeaderBar({
   path,
+  currentPath,
   listType,
   setListType,
   setFilter,
@@ -66,6 +70,7 @@ function HeaderBar({
     };
 
     setBreadcrumb([firstMenu, ...generatedBreadcrumb]);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
 
@@ -106,15 +111,18 @@ function HeaderBar({
       </Box>
       {pathExists && (
         <Box className={classes.options}>
-          <IconButton
-            color="primary"
-            component="span"
-            onClick={handleOpenFilterDrawer}
-            aria-controls="filter-menu"
-            aria-haspopup="true"
-          >
-            <SvgIcon icon="settings_adjust" htmlColor="#292929" fontSize="small" />
-          </IconButton>
+          {!isRootPath(currentPath) && (
+            <IconButton
+              color="primary"
+              component="span"
+              onClick={handleOpenFilterDrawer}
+              aria-controls="filter-menu"
+              aria-haspopup="true"
+            >
+              <SvgIcon icon="settings_adjust" htmlColor="#292929" fontSize="small" />
+            </IconButton>
+          )}
+
           <IconButton color="primary" component="span" onClick={changeListType}>
             <SvgIcon icon={iconListType} htmlColor="#292929" fontSize="small" />
           </IconButton>

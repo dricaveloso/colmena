@@ -1,8 +1,8 @@
 {
-  "title": "Call",
+  "title": "Appel",
   "textInvite": "Ajouter à l'appel",
-  "pressToStartTitle": "Press to start recording",
-  "pressToStopTitle": "Press to stop recording",
+  "pressToStartTitle": "Appuyez pour commencer l'enregistrement",
+  "pressToStopTitle": "Appuyez pour arrêter l'enregistrement",
   "titleShareLink": "Partage via",
-  "goLiveTitle": "Stream (go live)"
+  "goLiveTitle": "Flux (live)"
 }

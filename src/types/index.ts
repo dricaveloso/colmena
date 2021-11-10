@@ -241,6 +241,10 @@ export type AllIconProps =
   | "edit_text"
   | "headphone"
   | "stream"
-  | "audio_editor";
+  | "audio_editor"
+  | "clip"
+  | "question"
+  | "speaker"
+  | "plus_circle";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;

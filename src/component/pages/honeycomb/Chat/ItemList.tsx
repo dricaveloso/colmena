@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { ChatMessageItemInterface } from "@/interfaces/talk";
 import VerticalItemList from "./VerticalItemList";
 import ListItem from "@material-ui/core/ListItem";
@@ -30,9 +30,13 @@ function ItemList() {
   const footerRef = useRef<HTMLDivElement | null>(null);
   const listRef = useRef<HTMLUListElement | null>(null);
 
-  useEffect(() => {
+  const scrollDownAutomatically = useCallback(() => {
     footerRef?.current?.scrollIntoView();
-  }, [items]);
+  }, []);
+
+  useEffect(() => {
+    scrollDownAutomatically();
+  }, [items, scrollDownAutomatically]);
 
   return (
     <Box>

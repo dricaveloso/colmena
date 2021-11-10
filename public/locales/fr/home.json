@@ -1,14 +1,14 @@
 {
-  "greeting": "Salut",
-  "question": "Que voulez-vous faire maintenant ?",
-  "inviteText": "Invitez votre équipe",
-  "mediaName": "Deuxième nom",
-  "recentPublicationsTitle": "Publications récentes",
-  "tabTitle1": "Files",
-  "tabTitle2": "Projects",
-  "tabTitle3": "Publications",
-  "recentPublicationsDescription": "Exemple description",
-  "mediaCloudName": "Mon nuage",
-  "recordText": "Enregistrer",
-  "profileText": "Editer le profil"
+  "welcomeTitle": "Welcome",
+  "myFilesLabel": "My files",
+  "sharedLabel": "Shared",
+  "publicLabel": "Public",
+  "section2Title": "Latest posts",
+  "section3Title": "Favorite honeycombs",
+  "section4Title": "Recent",
+  "seeAllTitle": "see all",
+  "exampleHoneycombTitle": "Honeycomb {{num}}",
+  "exampleFileTitle": "File {{num}}",
+  "examplePostTitle": "Show {{num}} Radio Colmena",
+  "examplePostSubtitle": "5 days | 12mb"
 }

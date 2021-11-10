@@ -16,6 +16,7 @@ import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum, TextColorEnum } from "@/enums/*";
 import { parseCookies, setCookie } from "nookies";
+import { v4 as uuid } from "uuid";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -57,13 +58,19 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
       prevItem?.systemMessage !== ""
     )
       return (
-        <ListItemAvatar style={{ width: 30, height: 30, display: "flex", justifyContent }}>
+        <ListItemAvatar
+          key={uuid()}
+          style={{ width: 30, height: 30, display: "flex", justifyContent }}
+        >
           <Avatar>{getFirstLettersOfTwoFirstNames(actorDisplayName)}</Avatar>
         </ListItemAvatar>
       );
 
     return (
-      <ListItemAvatar style={{ width: 30, height: 30, display: "flex", justifyContent }}>
+      <ListItemAvatar
+        key={uuid()}
+        style={{ width: 30, height: 30, display: "flex", justifyContent }}
+      >
         <span></span>
       </ListItemAvatar>
     );
@@ -79,7 +86,7 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
 
   if (systemMessage === "")
     return (
-      <Box className={classes.card}>
+      <Box className={classes.card} key={uuid()}>
         {getAvatarComponent(actorDisplayName, "flex-start")}
         <ListItemText
           data-testid="title"
@@ -117,6 +124,7 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
       if (item === "{user}" || item === "{actor}")
         messageArr.push(
           <Chip
+            key={uuid()}
             size="small"
             style={{ fontSize: 12 }}
             avatar={
@@ -133,7 +141,9 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
         );
       else
         messageArr.push(
-          <span style={{ marginLeft: 2, marginRight: 2, fontSize: 12 }}>{item}</span>,
+          <span key={uuid()} style={{ marginLeft: 2, marginRight: 2, fontSize: 12 }}>
+            {item}
+          </span>,
         );
     });
 

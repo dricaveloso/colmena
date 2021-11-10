@@ -133,6 +133,8 @@ function Honeycomb() {
       subtitle={!data ? "..." : prepareParticipantsString(data.ocs.data.length)}
       templateHeader="variation2"
       showFooter={false}
+      drawer={false}
+      extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >
       <FlexBox
         justifyContent={JustifyContentEnum.FLEXSTART}
@@ -182,7 +184,7 @@ function Honeycomb() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0}>
-              <ChatMessage token={token} />
+              <ChatMessage conversationName={displayName} token={token} />
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>
           </SwipeableViews>

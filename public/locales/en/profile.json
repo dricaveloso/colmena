@@ -11,5 +11,6 @@
   "socialMediaTitle": "Social media",
   "editButton": "Edit",
   "saveButton": "Save",
-  "resetPasswordButton": "Reset password"
+  "resetPasswordButton": "Reset password",
+  "manageTitle": "Manage"
 }
