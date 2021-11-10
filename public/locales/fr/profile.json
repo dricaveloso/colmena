@@ -11,5 +11,6 @@
   "successMessage": "Information saved successfully",
   "editButton": "Éditer",
   "saveButton": "Sauver",
-  "resetPasswordButton": "Réinitialiser le mot de passe"
+  "resetPasswordButton": "Réinitialiser le mot de passe",
+  "manageTitle": "Manage"
 }

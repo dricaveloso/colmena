@@ -1,17 +1,18 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import { v4 as uuid } from "uuid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { FilterEnum, OrderEnum } from "@/enums/index";
+import { FilterEnum, NotificationStatusEnum, OrderEnum } from "@/enums/index";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useTranslation } from "react-i18next";
+import NotificationContext from "@/store/context/notification-context";
 
 type Props = {
   open: boolean;
@@ -45,9 +46,11 @@ export default function TemporaryFiltersDrawer({
   order,
   filter,
 }: Props) {
+  const notificationCtx = useContext(NotificationContext);
   const [expanded, setExpanded] = React.useState<string | boolean>("order");
   const classes = useStyles();
   const { t } = useTranslation("library");
+  const { t: c } = useTranslation("common");
 
   const handleChange = (panel: string) => (event: any, newExpanded: string | boolean) => {
     setExpanded(newExpanded ? panel : false);
@@ -140,6 +143,55 @@ export default function TemporaryFiltersDrawer({
             </ListItem>
             <ListItem button key={uuid()} onClick={() => filterItems(FilterEnum.TEXT)}>
               <ListItemText primary={t("filter.texts")} className={filterActive(FilterEnum.TEXT)} />
+            </ListItem>
+          </List>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === "language"} onChange={handleChange("language")}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="languages-content"
+          id="languages-header"
+        >
+          <Typography className={classes.heading}>{t("language.title")}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <List>
+            <ListItem
+              button
+              key={uuid()}
+              onClick={() =>
+                notificationCtx.showNotification({
+                  message: t("featureUnavailable"),
+                  status: NotificationStatusEnum.WARNING,
+                })
+              }
+            >
+              <ListItemText primary={t("language.english")} />
+            </ListItem>
+            <ListItem
+              button
+              key={uuid()}
+              onClick={() =>
+                notificationCtx.showNotification({
+                  message: t("featureUnavailable"),
+                  status: NotificationStatusEnum.WARNING,
+                })
+              }
+            >
+              <ListItemText primary={t("language.spanish")} />
+            </ListItem>
+            <ListItem
+              button
+              key={uuid()}
+              onClick={() =>
+                notificationCtx.showNotification({
+                  message: c("featureUnavailable"),
+                  status: NotificationStatusEnum.WARNING,
+                })
+              }
+            >
+              <ListItemText primary={t("language.french")} />
             </ListItem>
           </List>
         </AccordionDetails>

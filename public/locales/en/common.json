@@ -48,6 +48,8 @@
       "cancelButton": "Cancel",
       "placeholderEmail": "Email",
       "placeholderPassword": "Password",
+      "placeholderCurrentPassword": "Current password",
+      "placeholderNewPassword": "New password",
       "placeholderPasswordConfirmation": "Password confirmation",
       "submitLoginTitle": "Enter",
       "forgetPasswordTitle": "Forgot my password",
@@ -60,6 +62,7 @@
       "invalidURLTitle": "Invalid URL",
       "successMessageFormSave": "Saved successfully",
       "differentPasswordsTitle": "Passwords do not match",
+      "currentPasswordInvalidTitle": "Current password invalid",
       "requiredTitle": "Required",
       "slashNotAllowed": "Character '/' not allowed for field {{field}}",
       "name": "Name",
@@ -74,7 +77,10 @@
     "fileAlreadyExists": "There is already a file with that name.",
     "fileTooLarge": "The {{fileName}} file is too large to upload.",
     "fileTooLarg": "The {{fileName}} file is too large to upload.",
-    "unableToProcessFile": "Unable to process file {{fileName}}."
+    "unableToProcessFile": "Unable to process file {{fileName}}.",
+    "unableToUpdatePassword": "Unable to update your password.",
+    "passwordUpdatedSuccessfully": "Password updated successfully."
+
   },
   "timeDescription": {
     "singularYear": "year",
@@ -89,5 +95,13 @@
     "pluralMinute": "minutes",
     "now": "now"
   },
-  "typeYourMessage": "Type your message"
+  "typeYourMessage": "Type your message",
+  "latestPostTitle": "Latest posts",
+  "seeAllTitle": "see all",
+  "examplePostTitle": "Show {{num}} Radio Colmena",
+  "examplePostSubtitle": "5 days | 12mb",
+  "membersTitle": "Members",
+  "manageTitle": "Manage",
+  "socialMediaTitle": "Social Media",
+  "resetPasswordTitle": "Update password"
 }

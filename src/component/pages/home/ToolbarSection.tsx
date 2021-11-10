@@ -9,17 +9,18 @@ import { useTranslation } from "react-i18next";
 type Props = {
   title: string;
   link?: string;
+  seeAllTitle?: string | undefined;
 };
 
-export default function ToolbarSection({ title, link }: Props) {
-  const { t } = useTranslation("home");
+export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
+  const { t } = useTranslation("common");
   return (
     <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
       <Text variant={TextVariantEnum.H6} style={{ color: "#292929", fontWeight: "bold" }}>
         {title}
       </Text>
       <Button
-        title={t("seeAllTitle")}
+        title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
         variant={ButtonVariantEnum.TEXT}
         style={{ color: "#292929" }}
       />

@@ -78,9 +78,9 @@ export function listImages(userId: string | number, filename: string) {
   });
 }
 
-export function deleteFile(userId: string | number, filename: string): boolean {
+export async function deleteFile(userId: string | number, filename: string): Promise<boolean> {
   try {
-    webdav().deleteFile(`${userId}/${filename}`);
+    await webdav().deleteFile(`${userId}/${filename}`);
   } catch (error) {
     if (error) {
       return false;

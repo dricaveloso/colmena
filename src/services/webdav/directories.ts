@@ -1,10 +1,29 @@
 import webdav from "@/services/webdav";
 import { removeFirstSlash } from "@/utils/utils";
-// import { FileStat, ResponseDataDetailed } from "webdav";
+import { FileStat } from "webdav";
 
 // ver se não tem 404
 export function listDirectories(userId: string | number, path?: string): any {
   return webdav().getDirectoryContents(`${userId}/${removeFirstSlash(path)}`, { details: true });
+}
+
+export async function listLibraryDirectories(userId: string | number, path?: string): Promise<any> {
+  const directories = await listDirectories(userId, path);
+  if (directories && (path === "/" || path === "")) {
+    directories.data = directories.data.filter((item: FileStat) => {
+      if (item.basename[0] === ".") return false;
+      if (item.type !== "directory") return false;
+
+      const blacklistNames = ["talk"];
+      if (blacklistNames.includes(item.basename.toLowerCase())) {
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  return directories;
 }
 
 export function existDirectory(userId: string | number, remotePath: string) {
@@ -27,12 +46,12 @@ export function createDirectory(userId: string | number, dirPath: string) {
   return true;
 }
 
-export function deleteDirectory(userId: string | number, filename: string) {
+export async function deleteDirectory(userId: string | number, filename: string): Promise<boolean> {
   try {
-    return webdav().deleteFile(`${userId}/${removeFirstSlash(filename)}`);
+    await webdav().deleteFile(`${userId}/${removeFirstSlash(filename)}`);
   } catch (err) {
-    console.log(err);
-    console.log("aqui mais um ", err);
+    return false;
   }
+
   return true;
 }

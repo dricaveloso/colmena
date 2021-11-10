@@ -6,10 +6,10 @@ import Divider from "@/components/ui/Divider";
 import { useTranslation } from "react-i18next";
 
 export default function Section2() {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation("common");
   return (
     <Box width="100%">
-      <ToolbarSection title={t("section2Title")} link="/algum-lugar" />
+      <ToolbarSection title={t("latestPostTitle")} link="/algum-lugar" />
       <Divider marginTop={10} />
       <GalleryHorizontalScroll />
     </Box>

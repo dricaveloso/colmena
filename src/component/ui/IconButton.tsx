@@ -16,7 +16,7 @@ type Props = {
   variantTitle?: TextVariantProps;
   color?: string;
   iconColor?: string;
-  handleClick?: () => void | undefined;
+  handleClick?: (event: any) => void | undefined;
   url?: string;
   download?: string;
   // eslint-disable-next-line @typescript-eslint/ban-types

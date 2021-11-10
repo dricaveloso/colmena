@@ -14,7 +14,7 @@ export default function Item({ title, amount }: Props) {
         {title}
       </Text>
       <Text variant={TextVariantEnum.H6} style={{ color: "#fff", fontWeight: "bold" }}>
-        {!amount ? "..." : amount}
+        {amount}
       </Text>
     </Box>
   );

@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
+import React from "react";
 
 export interface I18nInterface {
   locale: string;
@@ -34,6 +35,14 @@ export interface MediaInfoInterface {
   slogan: string;
 }
 
+export interface UserQuotaInterface {
+  free: number;
+  used: number;
+  total: number;
+  relative: number;
+  quota: number;
+}
+
 export interface UserInfoInterface {
   id: string;
   name: string;
@@ -47,8 +56,9 @@ export interface UserInfoInterface {
   locale: string;
   twitter?: string;
   groups: string[];
+  subadmin: string[];
+  quota: UserQuotaInterface;
   media: MediaInfoInterface;
-  quota: string[];
 }
 export interface FileInterface {
   id: number;
@@ -142,4 +152,12 @@ export interface TimeDescriptionInterface {
   singularMinute: string;
   pluralMinute: string;
   now: string;
+}
+
+export interface VerticalItemListInterface {
+  avatar?: React.ReactElement;
+  primary: string | React.ReactNode;
+  secondary?: string | React.ReactNode;
+  options?: React.ReactNode;
+  handleClick?: (event: any) => void | undefined;
 }
