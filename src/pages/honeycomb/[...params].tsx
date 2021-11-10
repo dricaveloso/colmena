@@ -133,6 +133,8 @@ function Honeycomb() {
       subtitle={!data ? "..." : prepareParticipantsString(data.ocs.data.length)}
       templateHeader="variation2"
       showFooter={false}
+      drawer={false}
+      extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >
       <FlexBox
         justifyContent={JustifyContentEnum.FLEXSTART}

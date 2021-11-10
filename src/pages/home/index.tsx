@@ -22,8 +22,9 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function Home() {
   const notificationCtx = useContext(NotificationContext);
   const { t: c } = useTranslation("common");
+  const { t } = useTranslation("home");
   return (
-    <LayoutApp title="Welcome" templateHeader="variation2">
+    <LayoutApp title={t("welcomeTitle")} templateHeader="variation2">
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <Section1 />
         <FlexBox
