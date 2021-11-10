@@ -1,15 +1,19 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import ToolbarSection from "../ToolbarSection";
+import ToolbarSection from "../../home/ToolbarSection";
 import GalleryHorizontalScroll from "./GalleryHorizontalScroll";
 import Divider from "@/components/ui/Divider";
 import { useTranslation } from "react-i18next";
 
-export default function Section2() {
+export default function SocialMedia() {
   const { t } = useTranslation("common");
   return (
     <Box width="100%">
-      <ToolbarSection title={t("latestPostTitle")} link="/algum-lugar" />
+      <ToolbarSection
+        seeAllTitle={t("manageTitle")}
+        title={t("socialMediaTitle")}
+        link="/algum-lugar"
+      />
       <Divider marginTop={10} />
       <GalleryHorizontalScroll />
     </Box>

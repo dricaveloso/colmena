@@ -25,6 +25,7 @@ ENV NEXT_PUBLIC_API_BASE_URL "https://cloud.colmena.network/"
 ENV NEXTAUTH_URL "https://staging.colmena.network"
 
 
+
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 

@@ -34,6 +34,14 @@ export interface MediaInfoInterface {
   slogan: string;
 }
 
+export interface UserQuotaInterface {
+  free: number;
+  used: number;
+  total: number;
+  relative: number;
+  quota: number;
+}
+
 export interface UserInfoInterface {
   id: string;
   name: string;
@@ -47,8 +55,9 @@ export interface UserInfoInterface {
   locale: string;
   twitter?: string;
   groups: string[];
+  subadmin: string[];
+  quota: UserQuotaInterface;
   media: MediaInfoInterface;
-  quota: string[];
 }
 export interface FileInterface {
   id: number;
