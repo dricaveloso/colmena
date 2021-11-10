@@ -30,7 +30,13 @@ import {
   FilterEnum,
 } from "@/enums/index";
 import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
-import { getOfflinePath, getPathName, getPrivatePath } from "@/utils/directory";
+import {
+  getOfflinePath,
+  getPathName,
+  getPrivatePath,
+  getPublicPath,
+  hasRootPath,
+} from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
@@ -52,6 +58,7 @@ function MyLibrary() {
   const [items, setItems] = useState<Array<LibraryItemInterface>>(
     [] as Array<LibraryItemInterface>,
   );
+  const [currentPath, setCurrentPath] = useState("");
   const [order, setOrder] = useState(OrderEnum.LATEST_FIRST);
   const [filter, setFilter] = useState("");
   const { t } = useTranslation("common");
@@ -121,6 +128,22 @@ function MyLibrary() {
 
     items.sort((a, b) => {
       switch (order) {
+        case OrderEnum.HIGHLIGHT:
+          if (b.filename === getOfflinePath()) {
+            return 1004;
+          }
+
+          if (b.filename === getPrivatePath()) {
+            return 1002;
+          }
+
+          if (b.filename === getPublicPath()) {
+            return 1003;
+          }
+
+          return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt < b.createdAt
+            ? 1
+            : -1;
         case OrderEnum.OLDEST_FIST:
           return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt > b.createdAt
             ? 1
@@ -185,8 +208,7 @@ function MyLibrary() {
     }
 
     const items = await getWebDavDirectories(userRdx.user.id, path);
-    const privatePath = getPrivatePath();
-    if (path === privatePath) {
+    if (hasRootPath(path)) {
       const item: LibraryItemInterface = {
         basename: getPathName(offlinePath),
         id: offlinePath,
@@ -206,6 +228,8 @@ function MyLibrary() {
     if (typeof path === "object") {
       currentPath = path.join("/");
     }
+
+    setCurrentPath(currentPath);
 
     (async () => {
       try {
@@ -230,7 +254,12 @@ function MyLibrary() {
   }, [path]);
 
   useEffect(() => {
-    setItems(orderItems(order, filterItems(filter, rawItems)));
+    let defaultOrder = order;
+    if (hasRootPath(currentPath)) {
+      defaultOrder = OrderEnum.HIGHLIGHT;
+    }
+
+    setItems(orderItems(defaultOrder, filterItems(filter, rawItems)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawItems]);
 
@@ -249,6 +278,7 @@ function MyLibrary() {
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0 }}>
         <HeaderBar
           path={path}
+          currentPath={currentPath}
           listType={listType}
           setListType={setListType}
           setOrder={handleOrder}

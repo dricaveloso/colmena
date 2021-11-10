@@ -2,6 +2,7 @@
   "title": "My library",
   "sort": {
     "title": "Sorting",
+    "highlights": "Highlights",
     "newest": "Newest",
     "oldest": "Oldest",
     "alphabeticalOrder": "Alphabetical order",

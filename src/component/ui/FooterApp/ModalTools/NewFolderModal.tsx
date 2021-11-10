@@ -12,6 +12,7 @@ import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
 import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
+import { getOfflinePath, hasLocalPath, getRootPath, handleDirectoryName } from "@/utils/directory";
 import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
@@ -20,7 +21,6 @@ import NotificationContext from "@/store/context/notification-context";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { hasExclusiveLocalPath, getRootPath, handleDirectoryName } from "@/utils/directory";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -78,7 +78,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
         }
 
         const handledPath: string = removeFirstSlash(finalPath) ?? "";
-        if (hasExclusiveLocalPath(handledPath)) {
+        if (hasLocalPath(handledPath)) {
           throw new Error(t("messages.directoryAlreadyExists"));
         }
 
@@ -121,7 +121,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const definePath = useCallback(
     (path) => {
       const rootPath = getRootPath();
-      return !pathExists || !path || path === "/" ? rootPath : path;
+      return !pathExists || !path || path === "/" || path === getOfflinePath() ? rootPath : path;
     },
     [pathExists],
   );

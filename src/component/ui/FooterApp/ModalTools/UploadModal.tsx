@@ -24,7 +24,7 @@ import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
 import { blobToArrayBuffer } from "blob-util";
 import { useRouter } from "next/router";
-import { getRootPath } from "@/utils/directory";
+import { getOfflinePath, getRootPath } from "@/utils/directory";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -148,7 +148,7 @@ export default function Upload({ open, handleClose }: Props) {
   const handledPath = useCallback(() => {
     const rootPath = getRootPath();
 
-    return !pathExists || !path || path === "/" ? rootPath : path;
+    return !pathExists || !path || path === "/" || path === getOfflinePath() ? rootPath : path;
   }, [path, pathExists]);
 
   return (

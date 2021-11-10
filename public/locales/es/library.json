@@ -2,6 +2,7 @@
   "title": "Mi librería",
   "sort": {
     "title": "Ordenar",
+    "highlights": "Destacadas",
     "newest": "Más reciente",
     "oldest": "Más antiguas",
     "alphabeticalOrder": "Orden alfabetica",

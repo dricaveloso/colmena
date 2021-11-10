@@ -2,6 +2,7 @@
   "title": "Ma bibliothèque",
   "sort": {
     "title": "Tri",
+    "highlights": "Highlights",
     "newest": "Le plus récent",
     "oldest": "Le plus vieux",
     "alphabeticalOrder": "Ordre alphabétique",

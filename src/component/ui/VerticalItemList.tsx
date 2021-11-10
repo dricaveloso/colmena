@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
@@ -13,6 +13,9 @@ import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { copyFile, deleteFile, moveFile } from "@/services/webdav/files";
+import { hasExclusivePath, hasLocalPath, hasRootPath } from "@/utils/directory";
+import { removeCornerSlash } from "@/utils/utils";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -70,9 +73,20 @@ const VerticalItemList = ({
     }
   };
 
-  // const handleDeleteItem = () => {
+  const handleDeleteItem = () => {
+    try {
+      const deleted = deleteFile(filename);
+    } catch (e) {}
+  };
 
-  // }
+  const options = useMemo(() => {
+    const opt = [];
+    if (type === "file") {
+      opt[0] = <MenuItem onClick={handleCloseContextMenu}>Edit</MenuItem>;
+    }
+
+    return opt;
+  }, [type]);
 
   return (
     <Box className={classes.card}>
@@ -105,38 +119,42 @@ const VerticalItemList = ({
         onClick={() => handleClick()}
       />
       <Box className={classes.options}>
-        <IconButton
-          icon="share"
-          color="#9A9A9A"
-          style={{ padding: 0, margin: 0, minWidth: 30 }}
-          fontSizeIcon="small"
-        />
-        <IconButton
-          icon="more_vertical"
-          color="#9A9A9A"
-          style={{ padding: 0, margin: 0, minWidth: 30 }}
-          fontSizeIcon="small"
-          handleClick={handleOpenContextMenu}
-        />
+        {!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1 && (
+          <>
+            <IconButton
+              icon="share"
+              color="#9A9A9A"
+              style={{ padding: 0, margin: 0, minWidth: 30 }}
+              fontSizeIcon="small"
+            />
+            <IconButton
+              icon="more_vertical"
+              color="#9A9A9A"
+              style={{ padding: 0, margin: 0, minWidth: 30 }}
+              fontSizeIcon="small"
+              handleClick={handleOpenContextMenu}
+            />
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleCloseContextMenu}
+            >
+              {type === "file" && <MenuItem onClick={handleCloseContextMenu}>Edit</MenuItem>}
+              <MenuItem onClick={handleCloseContextMenu}>Copy</MenuItem>
+              <MenuItem onClick={handleCloseContextMenu}>Move</MenuItem>
+              <MenuItem onClick={handleCloseContextMenu}>Duplicate</MenuItem>
+              <MenuItem onClick={handleCloseContextMenu}>Download</MenuItem>
+              <MenuItem onClick={handleCloseContextMenu}>Rename</MenuItem>
+              <MenuItem onClick={handleCloseContextMenu}>Details</MenuItem>
+              <MenuItem onClick={handleCloseContextMenu}>Synchronize</MenuItem>
+              <MenuItem onClick={handleCloseContextMenu}>Publish</MenuItem>
+              <MenuItem onClick={handleCloseContextMenu}>Delete</MenuItem>
+            </Menu>
+          </>
+        )}
       </Box>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleCloseContextMenu}
-      >
-        {type === "file" && <MenuItem onClick={handleCloseContextMenu}>Edit</MenuItem>}
-        <MenuItem onClick={handleCloseContextMenu}>Copy</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Move</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Duplicate</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Download</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Rename</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Details</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Synchronize</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Publish</MenuItem>
-        <MenuItem onClick={handleCloseContextMenu}>Delete</MenuItem>
-      </Menu>
     </Box>
   );
 };
