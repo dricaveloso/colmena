@@ -10,7 +10,7 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
 import { NotificationStatusEnum } from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
-import { updatePassword } from "@/services/ocs/users";
+import { resetPassword } from "@/services/ocs/users";
 import { useRouter } from "next/router";
 import Box from "@material-ui/core/Box";
 import * as Yup from "yup";
@@ -60,7 +60,7 @@ export default function WrapperForm({ userId }: Props) {
               setSubmitting(true);
               if (password !== password_confirmation) throw new Error(t("errorMessagePassword"));
 
-              const result = await updatePassword(atob(userId), password);
+              const result = await resetPassword(atob(userId), password);
               if (result.data.ocs.meta.statuscode !== 200)
                 throw new Error(t("errorUpdatingPassword"));
 

@@ -61,6 +61,7 @@
       "invalidEmailTitle": "Invalid email",
       "invalidURLTitle": "Invalid URL",
       "successMessageFormSave": "Saved successfully",
+      "dataAlreadyUpdated": "Data already updated",
       "differentPasswordsTitle": "Passwords do not match",
       "currentPasswordInvalidTitle": "Current password invalid",
       "requiredTitle": "Required",

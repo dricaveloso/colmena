@@ -62,7 +62,7 @@ type Props = {
 };
 
 type MyFormValues = {
-  roomName: string;
+  conversationName: string;
   description: string;
 };
 
@@ -80,11 +80,11 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
 
   const initialValues = {
-    roomName: "",
+    conversationName: "",
   };
 
   const schemaValidation = Yup.object().shape({
-    roomName: Yup.string().required(c("form.requiredTitle")),
+    conversationName: Yup.string().required(c("form.requiredTitle")),
   });
 
   return (
@@ -110,12 +110,12 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
               initialValues={initialValues}
               validationSchema={schemaValidation}
               onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-                const { roomName } = values;
+                const { conversationName } = values;
                 (async () => {
                   try {
                     setSubmitting(true);
 
-                    if (roomName.indexOf("/") !== -1) {
+                    if (conversationName.indexOf("/") !== -1) {
                       throw new Error(
                         c("form.slashNotAllowed", {
                           field: c("form.fields.name"),
@@ -123,12 +123,12 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       );
                     }
 
-                    const directoryExists = await existDirectory(userId, roomName);
+                    const directoryExists = await existDirectory(userId, conversationName);
                     if (directoryExists) {
                       throw new Error(c("honeycombModal.errorCreatePanal"));
                     }
 
-                    const conversation = await createNewConversation(roomName);
+                    const conversation = await createNewConversation(conversationName);
                     const { token } = conversation.data.ocs.data;
 
                     participants.forEach(async (item) => {
@@ -159,7 +159,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       message: c("honeycombModal.chatRoomSuccess"),
                       status: NotificationStatusEnum.SUCCESS,
                     });
-                    router.push(`/honeycomb/${token}/${roomName}`);
+                    router.push(`/honeycomb/${token}/${conversationName}`);
                   } catch (e) {
                     console.log(e);
                     const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
@@ -177,24 +177,25 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                 <Form className={classes.form}>
                   {step === 1 && (
                     <>
-                      <Field name="roomName" InputProps={{ notched: true }}>
+                      <Field name="conversationName" InputProps={{ notched: true }}>
                         {({ field }: FieldProps) => (
                           <TextField
-                            id="outlined-search"
+                            id="conversationName"
+                            autoComplete="new-conversationName"
                             label={c("form.fields.name")}
                             variant="outlined"
                             {...field}
                           />
                         )}
                       </Field>
-                      {errors.roomName && touched.roomName ? (
-                        <ErrorMessageForm message={errors.roomName} />
+                      {errors.conversationName && touched.conversationName ? (
+                        <ErrorMessageForm message={errors.conversationName} />
                       ) : null}
                       <Divider marginTop={20} />
                       <Button
                         handleClick={() => setStep(2)}
                         title={c("honeycombModal.buttonStep1")}
-                        disabled={!(values.roomName !== "")}
+                        disabled={!(values.conversationName !== "")}
                         color={ButtonColorEnum.PRIMARY}
                         variant={ButtonVariantEnum.CONTAINED}
                         style={{ float: "right" }}

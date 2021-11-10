@@ -55,6 +55,7 @@
     "loadingTitle": "Wait...",
     "invalidURLTitle": "Invalid URL",
     "successMessageFormSave": "Saved successfully",
+    "dataAlreadyUpdated": "Data already updated",
     "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
     "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",
     "differentPasswordsTitle": "Passwords do not match",

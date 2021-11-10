@@ -53,6 +53,7 @@
     "submitSaveTitle": "Salvar",
     "submitCreateTitle": "Crear",
     "successMessageFormSave": "Salvo",
+    "dataAlreadyUpdated": "Data already updated",
     "loadingTitle": "Espera...",
     "passwordMinLengthTitle": "Muy corto! Minimo de {{size}} caracteres.",
     "passwordMaxLengthTitle": "Muy largo! Maximo de {{size}} caracteres.",

@@ -7,18 +7,21 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { putFile, getUniqueName } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Divider from "@/components/ui/Divider";
 import {
-  dateDescription,
+  // dateDescription,
   trailingSlash,
-  getExtensionFilename,
+  // getExtensionFilename,
   getRandomInt,
   removeFirstSlash,
 } from "@/utils/utils";
-import { addLibraryFile } from "@/store/actions/library";
-import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
-import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
+// import { addLibraryFile } from "@/store/actions/library";
+// import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
+// import { TimeDescriptionInterface } from "@/interfaces/index";
+import { NotificationStatusEnum } from "@/enums/*";
+// import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
@@ -65,8 +68,9 @@ export default function Upload({ open, handleClose }: Props) {
   const notificationCtx = useContext(NotificationContext);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation("common");
-  const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
-  const dispatch = useDispatch();
+  // const timeDescription: TimeDescriptionInterface
+  // = t("timeDescription", { returnObjects: true });
+  // const dispatch = useDispatch();
 
   const handleUpload = (event: any) => {
     processUploadFiles(event.target.files);
@@ -129,21 +133,21 @@ export default function Upload({ open, handleClose }: Props) {
     return getUniqueName(userId, handledPath(), handledName);
   };
 
-  const addFileIntoLibrary = (name: string, finalPath: string) => {
-    const date = new Date();
-    const item: LibraryItemInterface = {
-      basename: name,
-      id: finalPath,
-      filename: finalPath,
-      type: "file",
-      environment: EnvironmentEnum.REMOTE,
-      createdAt: date,
-      createdAtDescription: dateDescription(date, timeDescription),
-      extension: getExtensionFilename(name),
-    };
+  // const addFileIntoLibrary = (name: string, finalPath: string) => {
+  //   const date = new Date();
+  //   const item: LibraryItemInterface = {
+  //     basename: name,
+  //     id: finalPath,
+  //     filename: finalPath,
+  //     type: "file",
+  //     environment: EnvironmentEnum.REMOTE,
+  //     createdAt: date,
+  //     createdAtDescription: dateDescription(date, timeDescription),
+  //     extension: getExtensionFilename(name),
+  //   };
 
-    dispatch(addLibraryFile(item));
-  };
+  //   dispatch(addLibraryFile(item));
+  // };
 
   const handledPath = useCallback(() => {
     const rootPath = getRootPath();
