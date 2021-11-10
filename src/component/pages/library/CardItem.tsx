@@ -45,7 +45,7 @@ const CardItem = ({
 
   const unavailable = () => {
     notificationCtx.showNotification({
-      message: c("messages.eatureUnavailable"),
+      message: c("featureUnavailable"),
       status: NotificationStatusEnum.WARNING,
     });
   };

@@ -46,7 +46,7 @@ const ContextMenuOptions = ({ id, type, filename, environment }: ContextMenuOpti
         dispatch(removeLibraryFile(id));
       } else {
         notificationCtx.showNotification({
-          message: t("couldNotRemove"),
+          message: t("messages.couldNotRemove"),
           status: NotificationStatusEnum.ERROR,
         });
       }
@@ -67,7 +67,7 @@ const ContextMenuOptions = ({ id, type, filename, environment }: ContextMenuOpti
 
   const unavailable = () => {
     notificationCtx.showNotification({
-      message: c("messages.eatureUnavailable"),
+      message: c("featureUnavailable"),
       status: NotificationStatusEnum.WARNING,
     });
   };
