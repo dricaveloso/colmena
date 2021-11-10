@@ -73,11 +73,11 @@ const VerticalItemList = ({
     }
   };
 
-  const handleDeleteItem = () => {
+  /* const handleDeleteItem = () => {
     try {
       const deleted = deleteFile(filename);
     } catch (e) {}
-  };
+  }; */
 
   const options = useMemo(() => {
     const opt = [];
