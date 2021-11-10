@@ -46,12 +46,12 @@ export function createDirectory(userId: string | number, dirPath: string) {
   return true;
 }
 
-export function deleteDirectory(userId: string | number, filename: string) {
+export async function deleteDirectory(userId: string | number, filename: string): Promise<boolean> {
   try {
-    return webdav().deleteFile(`${userId}/${removeFirstSlash(filename)}`);
+    await webdav().deleteFile(`${userId}/${removeFirstSlash(filename)}`);
   } catch (err) {
-    console.log(err);
-    console.log("aqui mais um ", err);
+    return false;
   }
+
   return true;
 }

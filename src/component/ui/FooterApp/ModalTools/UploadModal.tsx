@@ -107,7 +107,7 @@ export default function Upload({ open, handleClose }: Props) {
 
     // handleClose();
 
-    router.push(`library/${removeFirstSlash(handledPath())}`);
+    router.push(`/library/${removeFirstSlash(handledPath())}`);
   };
 
   const uploadFile = async (name: string, data: ArrayBuffer) => {

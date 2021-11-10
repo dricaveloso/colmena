@@ -96,7 +96,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           };
           // dispatch(addLibraryFile(item));
           // handleClose();
-          router.push(`library/${removeFirstSlash(finalPath)}`);
+          router.push(`/library/${removeFirstSlash(finalPath)}`);
         }
       } catch (e) {
         notificationCtx.showNotification({

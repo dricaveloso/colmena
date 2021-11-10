@@ -52,6 +52,6 @@ export function getPathName(path: string): string {
   return path.replace(/.+?\/(.*)$/, "$1");
 }
 
-export function hasRootPath(path: string | undefined | null): boolean {
+export function isRootPath(path: string | undefined | null): boolean {
   return path === "/" || path === "";
 }

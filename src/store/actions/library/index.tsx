@@ -23,9 +23,9 @@ export const editLibraryFile = (libraryFile: LibraryItemInterface) => ({
   libraryFile,
 });
 
-export const removeLibraryFile = (libraryFile: LibraryItemInterface) => ({
+export const removeLibraryFile = (id: string | number | null) => ({
   type: REMOVE_LIBRARY_FILE,
-  libraryFile,
+  id,
 });
 
 export const setLibraryPathExists = (pathExists: boolean) => ({

@@ -40,9 +40,10 @@ const reducer = (state = initialState, action: any) => {
     case REMOVE_LIBRARY_FILE:
       return {
         ...state,
-        libraryFiles: state.libraryFiles.filter(
-          (item: LibraryItemInterface) => item.id !== action.libraryFile.id,
-        ),
+        libraryFiles: state.libraryFiles.filter((item: LibraryItemInterface) => {
+          console.log(item.id, action.id);
+          return item.id !== action.id;
+        }),
       };
     case SET_LIBRARY_PATH_EXISTS:
       return { ...state, currentPathExists: action.pathExists };

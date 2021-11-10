@@ -9,7 +9,7 @@ import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import { AllIconProps } from "@/types/index";
 import TemporaryFiltersDrawer from "./FiltersDrawer";
-import { hasRootPath } from "@/utils/directory";
+import { isRootPath } from "@/utils/directory";
 
 const useStyles = makeStyles(() => ({
   breadcrumb: {
@@ -111,7 +111,7 @@ function HeaderBar({
       </Box>
       {pathExists && (
         <Box className={classes.options}>
-          {!hasRootPath(currentPath) && (
+          {!isRootPath(currentPath) && (
             <IconButton
               color="primary"
               component="span"

@@ -35,7 +35,7 @@ import {
   getPathName,
   getPrivatePath,
   getPublicPath,
-  hasRootPath,
+  isRootPath,
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 
@@ -208,7 +208,7 @@ function MyLibrary() {
     }
 
     const items = await getWebDavDirectories(userRdx.user.id, path);
-    if (hasRootPath(path)) {
+    if (isRootPath(path)) {
       const item: LibraryItemInterface = {
         basename: getPathName(offlinePath),
         id: offlinePath,
@@ -255,7 +255,7 @@ function MyLibrary() {
 
   useEffect(() => {
     let defaultOrder = order;
-    if (hasRootPath(currentPath)) {
+    if (isRootPath(currentPath)) {
       defaultOrder = OrderEnum.HIGHLIGHT;
     }
 
