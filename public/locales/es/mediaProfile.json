@@ -14,7 +14,7 @@
   "messageSuccessInvite": "Invitación enviada con éxito",
   "messageSuccessInformation": "Información guardada con éxito.",
   "titleModalDialogInvite": "Invitar colaborador/a",
-  "descriptionModalDialogInvite": "Ingrese el nombre, correo electrónico y perfil de acceso del colaborador/a al que desea invitar.",
+  "descriptionModalDialogInvite": "Ingrese el nombre, correo electrónico y perfil de acceso del colaborador al que desea invitar.",
   "buttonOkModalDialogInvite": "Enviar",
   "messageOkModalDialogInvite": "Ususario creado con éxito",
   "messageErrorModalDialogInvite": "Usuario ya existe",
