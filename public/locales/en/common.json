@@ -6,7 +6,7 @@
   "profileText": "My profile",
   "textUseApp": "Use the app",
   "featureUnavailable": "This feature is not available at the moment.",
-  "messageOffline": "Please access this page, at least once, with Internet enabld.",
+  "messageOffline": "Please access this page, at least once, with Internet enabled.",
   "welcomeUserMessage": "Welcome {{userName}}",
   "invitationGreeting": "Hello {{name}}",
   "welcomeRadioMessage": "{{mediaName}}",
