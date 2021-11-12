@@ -1,8 +1,8 @@
 {
   "title": "Ma bibliothèque",
   "sort": {
-    "title": "Tri",
-    "highlights": "Highlights",
+    "title": "Trier",
+    "highlights": "Points forts",
     "newest": "Le plus récent",
     "oldest": "Le plus vieux",
     "alphabeticalOrder": "Ordre alphabétique",
@@ -12,30 +12,30 @@
     "title": "Filtres",
     "all": "Toutes",
     "availableOffline": "Disponible hors ligne",
-    "synchronized": "Synchronisée",
+    "synchronized": "Synchronisé",
     "audios": "Audios",
     "images": "Images",
     "texts": "Textes"
   },
   "language": {
-    "title": "Language",
-    "english": "English",
-    "spanish": "Spanish",
-    "french": "French"
+    "title": "Langue",
+    "english": "Anglais",
+    "spanish": "Espagnol",
+    "french": "Français"
   },
   "contextMenuOptions": {
-    "edit": "Edit",
-    "copy": "Copy",
-    "move": "Move",
-    "duplicate": "Duplicate",
-    "download": "Download",
-    "rename": "Rename",
-    "details": "Details",
-    "synchronize": "Synchronize",
-    "publish": "Publish",
-    "delete": "Delete"
+    "edit": "Editer",
+    "copy": "Copier",
+    "move": "Déplacer",
+    "duplicate": "Dupliquer",
+    "download": "Télécharger",
+    "rename": "Renommer",
+    "details": "Détails",
+    "synchronize": "Synchroniser",
+    "publish": "Publier",
+    "delete": "Supprimer"
   },
   "messages": {
-    "couldNotRemove": "Could not remove"
+    "couldNotRemove": "Impossible de supprimer"
   }
 }

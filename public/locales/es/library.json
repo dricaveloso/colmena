@@ -5,8 +5,8 @@
     "highlights": "Destacadas",
     "newest": "Más reciente",
     "oldest": "Más antiguas",
-    "alphabeticalOrder": "Orden alfabetica",
-    "descendingAlphabeticalOrder": "Orden alfabetica descendente"
+    "alphabeticalOrder": "Orden alfabético",
+    "descendingAlphabeticalOrder": "Orden alfabético descendente"
   },
   "filter": {
     "title": "Filtros",
@@ -18,7 +18,7 @@
     "texts": "Textos"
   },
   "language": {
-    "title": "Language",
+    "title": "Idioma",
     "english": "Inglés",
     "spanish": "Espanõl",
     "french": "Francés"
@@ -36,6 +36,6 @@
     "delete": "Borrar"
   },
   "messages": {
-    "couldNotRemove": "No fue posible borrar"
+    "couldNotRemove": "No se ha podido eliminar"
   }
 }

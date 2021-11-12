@@ -1,10 +1,10 @@
 {
-  "description": "Et quel sera votre mot de passe.",
+  "description": "Choisir un mot de passe.",
   "messagePasswordCreated": "Mot de passe créé avec succès.",
   "invalidToken": "Jeton expiré ou utilisé.",
   "forms": {
-    "placeholderPassword": "Le mot de passe",
-    "placeholderPasswordConfirmation": "Confirmation mot de passe",
-    "submitButton": "Sauver"
+    "placeholderPassword": "Mot de passe",
+    "placeholderPasswordConfirmation": "Confirmer mot de passe",
+    "submitButton": "Sauvgarder"
   }
 }
