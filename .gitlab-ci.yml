@@ -24,6 +24,7 @@ build:
   stage: build
   script:
     - echo $CI_REGISTRY_USER $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo $DEPLOY_SERVER
     - echo $ENV_FILE
     - cp $ENV_FILE .env
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
