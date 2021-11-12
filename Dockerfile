@@ -9,8 +9,8 @@ RUN yarn install --force --frozen-lockfile
 
 FROM node:16-alpine AS builder
 WORKDIR /app
-COPY . .
 COPY .env .env
+COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 RUN yarn build && yarn install --force --production --ignore-scripts --prefer-offline
 
