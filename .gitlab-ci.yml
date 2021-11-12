@@ -19,6 +19,11 @@ tests:
   stage: prepare
   script:
     - echo "TODO TESTS"
+  only:
+    - branches
+  except:
+   - main
+   
 
 builder_feature:
   tags:
@@ -29,6 +34,7 @@ builder_feature:
     - docker build -t $IMAGE_TAG . --build-arg DEVELOP=true 
   environment:
     name: feature
+    #name: $CI_BUILD_REF_NAME
   only:
     - branches
   except:
