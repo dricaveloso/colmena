@@ -23,8 +23,12 @@ build:
     - docker
   stage: build
   script:
+<<<<<<< HEAD
     - echo $ENV_FILE_PRODUCTION
     - cp $ENV_FILE_PRODUCTION .env
+=======
+    - echo $ENV_FILE
+>>>>>>> 92fd86b0ad75e5a96238893ce1ce11d5db331754
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
