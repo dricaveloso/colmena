@@ -26,15 +26,23 @@ build:
     - cp $ENV_FILE .env
     - cat .env
     - docker build -t $IMAGE_TAG .
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker push $IMAGE_TAG
+    #- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    #- docker push $IMAGE_TAG
   environment:
     name: feature
+    #name: $CI_BUILD_REF_NAME
   only:
     - branches
   except:
    - main
    - develop
+deployer:
+  tags:
+    - docker
+  stage: deploy
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $IMAGE_TAG
 
 #configure cluster:
 # tags:
@@ -44,28 +52,6 @@ build:
 #environment:
 # name: production
 
-#deploy_dev:
-#  stage: deploy
-#  tags:
-#    - node
-#  script: #change this
-#    - cp -a out/* /pub/frontend/dev/
-#  only:
-#    - branches
-#  except:
-#    - main
-#deploy_prod:
-#  stage: deploy
-#  script:
-#    - cp -a out/* /pub/frontend/prod/
-#    - echo "deploying to prod and building artifact"
-#  only:
-#    - main
-#  artifacts:
-#    name: ${CI_PROJECT_NAME}-${CI_BUILD_REF}-${CI_BUILD_NAME}
-#    paths:
-#      - out
-#    expire_in: 10 days
 #test_all:
 #  stage: livetest
 #  tags:
