@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext } from "react";
 import { LibraryItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";

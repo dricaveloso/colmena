@@ -60,6 +60,12 @@ export interface UserInfoInterface {
   quota: UserQuotaInterface;
   media: MediaInfoInterface;
 }
+export interface UserInfoUpdateInterface {
+  name?: string;
+  avatar?: string;
+  email?: string;
+  password?: string;
+}
 export interface FileInterface {
   id: number;
   name: string;

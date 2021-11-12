@@ -31,7 +31,13 @@ export default function Section1() {
       >
         <Text
           variant={TextVariantEnum.H6}
-          style={{ color: "#ffffff", fontWeight: "bold", marginBottom: 7, textAlign: "left" }}
+          style={{
+            color: "#ffffff",
+            fontSize: 16,
+            fontWeight: "bold",
+            marginBottom: 7,
+            textAlign: "left",
+          }}
         >
           {capitalizeFirstLetter(userRdx?.user.name)}
         </Text>

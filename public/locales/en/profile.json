@@ -6,6 +6,7 @@
   "switchLanguage": "Language",
   "successMessage": "Information saved successfully",
   "nameField": "Name",
+  "lastnameField": "Last name",
   "emailField": "E-mail",
   "urlField": "URL / BLOG",
   "socialMediaTitle": "Social media",

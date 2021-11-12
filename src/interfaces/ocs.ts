@@ -71,7 +71,7 @@ export interface SetPasswordInterface {
   };
 }
 
-export interface UpdatePasswordInterface {
+export interface UserUpdateInterface {
   data: {
     ocs: {
       meta: OCSMetaDefaultInterface;

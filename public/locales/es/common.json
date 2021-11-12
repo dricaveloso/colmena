@@ -52,6 +52,7 @@
     "forgetPasswordTitle": "Olvidé mi contraseña",
     "submitSaveTitle": "Guardar",
     "submitCreateTitle": "Crear",
+    "dataAlreadyUpdated": "Data already updated",
     "successMessageFormSave": "Guardado",
     "loadingTitle": "Espera...",
     "passwordMinLengthTitle": "Demasiado corto! Minimo de {{size}} caracteres.",

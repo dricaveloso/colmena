@@ -4,8 +4,8 @@ import FullScreenSearch from "@/components/ui/FooterApp/FullScreenSearch";
 import DrawerBottomRecording from "@/components/ui/FooterApp/DrawerMoreOptionsBottom";
 import Grid from "@material-ui/core/Grid";
 import { useTheme, makeStyles } from "@material-ui/core/styles";
-import { PropsLibrarySelector } from "@/types/index";
-import { useSelector } from "react-redux";
+// import { PropsLibrarySelector } from "@/types/index";
+// import { useSelector } from "react-redux";
 
 type Props = {
   page: string;
@@ -33,8 +33,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 function AppTab({ page }: Props) {
-  const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  const libraryPath = library.currentPath;
+  // const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+  // const libraryPath = library.currentPath;
   const classes = useStyles();
   const theme = useTheme();
   const [openSearch, setOpenSearch] = useState(false);

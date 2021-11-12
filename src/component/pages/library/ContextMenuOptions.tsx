@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { copyFile, deleteFile, moveFile } from "@/services/webdav/files";
+import { deleteFile } from "@/services/webdav/files";
 import { deleteDirectory } from "@/services/webdav/directories";
 import IconButton from "@/components/ui/IconButton";
-import { Environment, PropsUserSelector, PropsLibrarySelector } from "@/types/index";
+import { Environment, PropsUserSelector } from "@/types/index";
 import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import { useSelector, useDispatch } from "react-redux";
 import { removeLibraryFile } from "@/store/actions/library";

@@ -1,13 +1,14 @@
-import { USER_UPDATE, USER_UPDATE_PASSWORD, SET_INVITATION_TOKEN } from "@/store/actions/index";
+import { USER_UPDATE, USER_INFO_UPDATE, SET_INVITATION_TOKEN } from "@/store/actions/index";
+import { UserInfoUpdateInterface } from "@/interfaces/index";
 
 export const userUpdate = (user: any) => ({
   type: USER_UPDATE,
   payload: user,
 });
 
-export const userUpdatePassword = (password: string) => ({
-  type: USER_UPDATE_PASSWORD,
-  password,
+export const userInfoUpdate = (userInfo: UserInfoUpdateInterface) => ({
+  type: USER_INFO_UPDATE,
+  payload: userInfo,
 });
 
 export const setInvitationToken = (invitationToken: { invitationToken: string | undefined }) => ({
