@@ -4,8 +4,8 @@ import { ServerStyleSheets } from "@material-ui/core/styles";
 import theme from "@/styles/theme";
 import CONSTANTS from "@/constants/index";
 
-const prod = process.env.NODE_ENV === "production";
-
+// const prod = process.env.NODE_ENV === "production";
+const prod = process.env.NODE_ENV;
 export default class MyDocument extends Document {
   render() {
     const url = prod ? "/js/prod_hotjar.js" : false;
