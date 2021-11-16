@@ -6,11 +6,6 @@ import CONSTANTS from "@/constants/index";
 
 export default class MyDocument extends Document {
   render() {
-    console.log("NODE_ENV: ",process.env.NODE_ENV);
-    console.log("NEXT_PUBLIC_API_BASE_URL: ",process.env.NEXT_PUBLIC_API_BASE_URL);
-    console.log("NEXTAUTH_URL: ",process.env.NEXTAUTH_URL);
-    console.log("NEXT_PUBLIC_NEXTCLOUD_TALK_VERSION: ",process.env.NEXT_PUBLIC_NEXTCLOUD_TALK_VERSION);
-    console.log("NEXT_PUBLIC_DEFAULT_USER_PASSWORD: ",process.env.NEXT_PUBLIC_DEFAULT_USER_PASSWORD);
     return (
       <Html lang="en">
         <Head>
@@ -60,7 +55,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap"
             rel="stylesheet"
           />
-          <script src={process.env.NODE_ENV === "production" ? "/js/prod_hotjar.js" : "/js/dev_hotjar.js"}></script>
+          <script src={process.env.NEXT_PUBLIC_HOTJAR_PROD ? "/js/prod_hotjar.js" : "/js/dev_hotjar.js"}></script>
         </Head>
         <body>
           <Main />

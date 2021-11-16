@@ -11,10 +11,10 @@ RUN yarn install --force --frozen-lockfile
 # ENV NODE_ENV=${NODE_ENV:-production}
 
 # ##linha que ch mandou
-ARG PRODUCTION
-ENV NODE_ENV=${PRODUCTION:+production}
-ENV NODE_ENV=${NODE_ENV:-development}
-RUN echo $NODE_ENV
+# ARG PRODUCTION
+# ENV NODE_ENV=${PRODUCTION:+production}
+# ENV NODE_ENV=${NODE_ENV:-development}
+# RUN echo $NODE_ENV
 
 FROM node:16-alpine AS builder
 WORKDIR /app
