@@ -31,6 +31,7 @@ builder_feature:
   stage: build
   script:
     - cp $ENV_FILE .env
+    - echo $ENV_FILE
     - docker build . -t $IMAGE_TAG --no-cache
   environment:
     name: feature
