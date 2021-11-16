@@ -13,7 +13,7 @@ import Divider from "@/components/ui/Divider";
 import {
   // dateDescription,
   trailingSlash,
-  // getExtensionFilename,
+  getExtensionFilename,
   getRandomInt,
   removeFirstSlash,
 } from "@/utils/utils";
@@ -130,7 +130,11 @@ export default function Upload({ open, handleClose }: Props) {
       handledName = getRandomInt(1, 9999) + name;
     }
 
-    return getUniqueName(userId, handledPath(), handledName);
+    const onlyName = handledName.replace(/\..*$/, "");
+    const extension = getExtensionFilename(handledName);
+    const finalName = `${onlyName.substr(0, 60)}.${extension}`;
+
+    return getUniqueName(userId, handledPath(), finalName);
   };
 
   // const addFileIntoLibrary = (name: string, finalPath: string) => {

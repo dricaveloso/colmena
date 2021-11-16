@@ -138,6 +138,12 @@ export interface LibraryItemInterface {
   createdAtDescription?: string | undefined;
   environment: Environment;
   image?: string;
+  mime?: string;
+  size?: number;
+}
+
+export interface LibraryCardItemInterface extends LibraryItemInterface {
+  orientation: string | ["vertical", "horizontal"];
 }
 export interface BreadcrumbItemInterface {
   description: string | undefined;

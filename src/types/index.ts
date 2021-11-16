@@ -245,6 +245,12 @@ export type AllIconProps =
   | "clip"
   | "question"
   | "speaker"
-  | "plus_circle";
+  | "plus_circle"
+  | "art_gallery"
+  | "music"
+  | "folder"
+  | "private"
+  | "offline"
+  | "file";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;
