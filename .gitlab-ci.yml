@@ -31,7 +31,6 @@ builder_feature:
   stage: build
   script:
     - cp $ENV_FILE .env
-    #- docker build -t $IMAGE_TAG . --build-arg DEVELOP=true 
     - docker build -t $IMAGE_TAG . 
   environment:
     name: feature
@@ -48,7 +47,6 @@ builder_develop:
   stage: build
   script:
     - cp $ENV_FILE .env
-    # - docker build -t $IMAGE_TAG . --build-arg DEVELOP=true 
     - docker build -t $IMAGE_TAG . 
   environment:
     name: develop
