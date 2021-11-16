@@ -31,7 +31,8 @@ builder_feature:
   stage: build
   script:
     - cp $ENV_FILE .env
-    - docker build -t $IMAGE_TAG . --build-arg DEVELOP=true 
+    #- docker build -t $IMAGE_TAG . --build-arg DEVELOP=true 
+    - docker build -t $IMAGE_TAG . 
   environment:
     name: feature
     #name: $CI_BUILD_REF_NAME
@@ -47,7 +48,8 @@ builder_develop:
   stage: build
   script:
     - cp $ENV_FILE .env
-    - docker build -t $IMAGE_TAG . --build-arg DEVELOP=true 
+    # - docker build -t $IMAGE_TAG . --build-arg DEVELOP=true 
+    - docker build -t $IMAGE_TAG . 
   environment:
     name: develop
   only:

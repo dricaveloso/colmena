@@ -6,10 +6,10 @@ COPY package.json package-lock.json yarn.lock ./
 
 RUN yarn install --force --frozen-lockfile
 
-##linha que ch mandou
-ARG DEVELOP
-ENV NODE_ENV=${DEVELOP:+development}
-ENV NODE_ENV=${NODE_ENV:-production}
+# ##linha que ch mandou
+# ARG DEVELOP
+# ENV NODE_ENV=${DEVELOP:+development}
+# ENV NODE_ENV=${NODE_ENV:-production}
 
 
 FROM node:16-alpine AS builder
