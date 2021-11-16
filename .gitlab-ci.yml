@@ -3,6 +3,7 @@ variables:
   CONTAINER_RELEASE_IMAGE: http://localhost:5000/maia/frontend:$CI_BUILD_REF_NAME
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
+
 stages:
   - prepare
   - build
@@ -13,6 +14,7 @@ cache:
   paths:
     - node_modules/
     - out/
+
 tests:
   stage: prepare
   script:
@@ -22,6 +24,7 @@ tests:
   except:
    - main
    
+
 builder_feature:
   tags:
     - docker
