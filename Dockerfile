@@ -1,29 +1,31 @@
-# Install dependencies only when needed
 FROM node:16-alpine AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-# COPY package.json package-lock.json yarn.lock ./
+
 COPY package.json package-lock.json yarn.lock ./
-RUN npm set-script prepare ""
-RUN npm ci --only-production
 RUN yarn install --force --frozen-lockfile
 
-# Rebuild the source code only when needed
+# # ##linha que ch mandou
+# ARG DEVELOP
+# ENV NODE_ENV=${DEVELOP:+development}
+# ENV NODE_ENV=${NODE_ENV:-production}
+
+# ##linha que ch mandou
+ARG PRODUCTION
+ENV NODE_ENV=${PRODUCTION:+production}
+ENV NODE_ENV=${NODE_ENV:-development}
+RUN echo $NODE_ENV
+
 FROM node:16-alpine AS builder
 WORKDIR /app
+COPY .env .env
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN yarn build && yarn install --force --production --ignore-scripts --prefer-offline
 
+RUN yarn build && yarn install --force --production --ignore-scripts --prefer-offline
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
 WORKDIR /app
-
-ENV NODE_ENV production
-ENV NEXT_PUBLIC_API_BASE_URL "https://cloud.colmena.network/"
-ENV NEXTAUTH_URL "https://staging.colmena.network"
-
 
 
 RUN addgroup -g 1001 -S nodejs
@@ -41,9 +43,4 @@ USER nextjs
 
 EXPOSE 3000
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry.
-# ENV NEXT_TELEMETRY_DISABLED 1
-
-CMD ["yarn", "start"]
+CMD ["node_modules/.bin/next", "start"]
