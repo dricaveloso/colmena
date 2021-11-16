@@ -3,7 +3,6 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json yarn.lock ./
-RUN echo $NODE_ENV
 RUN yarn install --force --frozen-lockfile
 
 # ##linha que ch mandou
@@ -17,10 +16,12 @@ WORKDIR /app
 COPY .env .env
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
+RUN  echo $NODE_ENV
 RUN yarn build && yarn install --force --production --ignore-scripts --prefer-offline
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
 WORKDIR /app
+
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
