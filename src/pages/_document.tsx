@@ -8,7 +8,6 @@ const prod = process.env.NODE_ENV === "production";
 
 export default class MyDocument extends Document {
   render() {
-    const url = prod ? "/js/prod_hotjar.js" : false;
     return (
       <Html lang="en">
         <Head>
@@ -58,7 +57,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap"
             rel="stylesheet"
           />
-          {url && <script src={url}></script>}
+          <script src={prod ? "/js/prod_hotjar.js" : "/js/dev_hotjar.js"}></script>
         </Head>
         <body>
           <Main />
