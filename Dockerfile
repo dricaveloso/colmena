@@ -3,7 +3,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json yarn.lock ./
-RUN echo NODE_ENV
+RUN echo $NODE_ENV
 RUN yarn install --force --frozen-lockfile
 
 # ##linha que ch mandou
