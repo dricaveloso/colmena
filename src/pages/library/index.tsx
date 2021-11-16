@@ -70,6 +70,7 @@ function MyLibrary() {
       const items: LibraryItemInterface[] = [];
 
       const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
+      console.log(nxDirectories);
       if (nxDirectories?.data.length > 0) {
         nxDirectories.data.forEach((directory: FileStat) => {
           const filename = directory.filename.replace(/^.+?(\/|$)/, "");
@@ -84,6 +85,8 @@ function MyLibrary() {
               extension: getExtensionFilename(filename),
               createdAt: date,
               createdAtDescription: dateDescription(date, timeDescription),
+              mime: directory.mime,
+              size: directory.size,
             };
 
             items.push(item);
@@ -110,6 +113,7 @@ function MyLibrary() {
             extension: "ogg",
             createdAt: file.createdAt,
             createdAtDescription: dateDescription(file.createdAt, timeDescription),
+            mime: "audio/ogg",
           };
 
           items.push(item);
