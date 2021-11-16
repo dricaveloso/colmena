@@ -36,6 +36,14 @@
     "delete": "Delete"
   },
   "messages": {
-    "couldNotRemove": "Could not remove"
-  }
+    "couldNotRemove": "Could not remove.",
+    "fileAlreadyExists": "There is already a directory with that name.",
+    "cannotDownloadFile": "Cannot download this file."
+  },
+  "renameTitle": "Rename",
+  "saveButton": "Save",
+  "downloadTitle": "Download",
+  "downloadButton": "Download",
+  "duplicateTitle": "Duplicate",
+  "duplicateButton": "Duplicate"
 }
