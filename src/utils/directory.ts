@@ -1,4 +1,4 @@
-import { removeCornerSlash, removeFirstSlash } from "./utils";
+import { removeFirstSlash } from "./utils";
 
 const PRIVATE_PATH = "private";
 const PUBLIC_PATH = "public";

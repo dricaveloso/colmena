@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useContext, useState } from "react";
 import { useTranslation } from "next-i18next";
 import Button from "@/components/ui/Button";
@@ -9,15 +10,17 @@ import Divider from "@/components/ui/Divider";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
 import TextField from "@material-ui/core/TextField";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import ResetPasswordModal from "./ResetPasswordModal";
+import { updateUser } from "@/services/ocs/users";
+import { userInfoUpdate } from "@/store/actions/users";
+import BackdropModal from "@/components/ui/Backdrop";
 
 type MyFormValues = {
-  name?: string;
+  user_name: string;
   email: string;
-  lastName?: string;
+  lastname: string;
 };
 
 const useStyles = makeStyles({
@@ -32,23 +35,28 @@ export default function FormProfile() {
   const { t } = useTranslation("profile");
   const { t: c } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const dispatch = useDispatch();
   const notificationCtx = useContext(NotificationContext);
   const classes = useStyles();
   const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false);
+  const [showBackdrop, setShowBackdrop] = useState(false);
 
   const ValidationSchema = Yup.object().shape({
-    name: Yup.string().required(c("form.requiredTitle")),
+    user_name: Yup.string().required(c("form.requiredTitle")),
     email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
-    lastName: Yup.string().required(c("form.requiredTitle")),
+    lastname: Yup.string().required(c("form.requiredTitle")),
   });
 
   const initialValues: MyFormValues = {
-    name: userRdx.user.name,
+    user_name: userRdx.user.name.split(" ")[0],
     email: userRdx.user.email,
-    lastName: "",
+    lastname: userRdx.user.name
+      .split(" ")
+      .filter((_, idx) => idx !== 0)
+      .join(" "),
   };
 
-  const handleOpenResetPasswordbModal = () => {
+  const handleOpenResetPasswordModal = () => {
     setOpenResetPasswordModal(true);
   };
 
@@ -58,24 +66,60 @@ export default function FormProfile() {
 
   return (
     <>
+      {showBackdrop && <BackdropModal open={showBackdrop} />}
       <Formik
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          setSubmitting(true);
-          notificationCtx.showNotification({
-            message: c("featureUnavailable"),
-            status: NotificationStatusEnum.WARNING,
-          });
-          setSubmitting(false);
+          const { user_name, lastname, email } = values;
+          const fullnameRdx = userRdx.user.name;
+          const emailRdx = userRdx.user.email;
+          const fullname = `${user_name} ${lastname}`;
+          setShowBackdrop(true);
+          (async () => {
+            try {
+              let updated = false;
+              if (fullname !== fullnameRdx) {
+                await updateUser<string>("displayname", fullname);
+                updated = true;
+              }
+              if (emailRdx !== email) {
+                await updateUser<string>("email", email);
+                updated = true;
+              }
+              if (updated) {
+                notificationCtx.showNotification({
+                  message: c("form.successMessageFormSave"),
+                  status: NotificationStatusEnum.SUCCESS,
+                });
+                dispatch(userInfoUpdate({ name: fullname, email }));
+              } else {
+                notificationCtx.showNotification({
+                  message: c("form.dataAlreadyUpdated"),
+                  status: NotificationStatusEnum.WARNING,
+                });
+              }
+            } catch (e) {
+              console.log(e);
+              const msg = e.message ? e.message : c("messages.unableToUpdatePassword");
+              notificationCtx.showNotification({
+                message: msg,
+                status: NotificationStatusEnum.ERROR,
+              });
+            } finally {
+              setShowBackdrop(false);
+              setSubmitting(false);
+            }
+          })();
         }}
       >
         {({ submitForm, isSubmitting, errors, touched }: any) => (
           <Form>
-            <Field name="name" InputProps={{ notched: true }}>
+            <Field name="user_name" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
-                  id="name"
+                  id="user_name"
+                  autoComplete="new-user_name"
                   label={t("nameField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
@@ -84,13 +128,16 @@ export default function FormProfile() {
                 />
               )}
             </Field>
-            {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
+            {errors.user_name && touched.user_name ? (
+              <ErrorMessageForm message={errors.user_name} />
+            ) : null}
             <Divider marginTop={20} />
-            <Field name="lastName" InputProps={{ notched: true }}>
+            <Field name="lastname" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="lastName"
-                  label="Sobrenome"
+                  autoComplete="new-lastname"
+                  label={t("lastnameField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
                   fullWidth
@@ -106,6 +153,7 @@ export default function FormProfile() {
               {({ field }: FieldProps) => (
                 <TextField
                   id="email"
+                  autoComplete="new-email"
                   label={t("emailField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
@@ -117,7 +165,6 @@ export default function FormProfile() {
             {errors.email && touched.email ? <ErrorMessageForm message={errors.email} /> : null}
             <Divider marginTop={20} />
             <div className={classes.marginInputDivs}>
-              {isSubmitting && <LinearProgress />}
               <div className="marginTop15">
                 <Button title={t("saveButton")} disabled={isSubmitting} handleClick={submitForm} />
               </div>
@@ -126,7 +173,7 @@ export default function FormProfile() {
                   title={t("resetPasswordButton")}
                   disabled={isSubmitting}
                   variant={ButtonVariantEnum.TEXT}
-                  handleClick={handleOpenResetPasswordbModal}
+                  handleClick={handleOpenResetPasswordModal}
                 />
               </div>
             </div>

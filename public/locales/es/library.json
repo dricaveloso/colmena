@@ -5,8 +5,8 @@
     "highlights": "Destacadas",
     "newest": "Más reciente",
     "oldest": "Más antiguas",
-    "alphabeticalOrder": "Orden alfabetica",
-    "descendingAlphabeticalOrder": "Orden alfabetica descendente"
+    "alphabeticalOrder": "Orden alfabético",
+    "descendingAlphabeticalOrder": "Orden alfabético descendente"
   },
   "filter": {
     "title": "Filtros",
@@ -18,24 +18,24 @@
     "texts": "Textos"
   },
   "language": {
-    "title": "Language",
+    "title": "Idioma",
     "english": "Inglés",
     "spanish": "Espanõl",
     "french": "Francés"
   },
   "contextMenuOptions": {
-    "edit": "Edit",
-    "copy": "Copy",
-    "move": "Move",
-    "duplicate": "Duplicate",
-    "download": "Download",
-    "rename": "Rename",
-    "details": "Details",
-    "synchronize": "Synchronize",
-    "publish": "Publish",
-    "delete": "Delete"
+    "edit": "Editar",
+    "copy": "Copiar",
+    "move": "Mover",
+    "duplicate": "Duplicar",
+    "download": "Descargar",
+    "rename": "Renombrar",
+    "details": "Detalles",
+    "synchronize": "Synchronizar",
+    "publish": "Publicar",
+    "delete": "Borrar"
   },
   "messages": {
-    "couldNotRemove": "Could not remove"
+    "couldNotRemove": "No se ha podido eliminar"
   }
 }

@@ -7,15 +7,18 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { createDirectory, existDirectory } from "@/services/webdav/directories";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
+// import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
+import { removeFirstSlash, trailingSlash } from "@/utils/utils";
 import { getOfflinePath, hasLocalPath, getRootPath, handleDirectoryName } from "@/utils/directory";
-import { addLibraryFile } from "@/store/actions/library";
-import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
-import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
+// import { addLibraryFile } from "@/store/actions/library";
+// import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
+// import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
+import { NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import NotificationContext from "@/store/context/notification-context";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
@@ -61,8 +64,9 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const notificationCtx = useContext(NotificationContext);
   const [finalPath, setFinalPath] = useState(path);
   const [isLoading, setIsLoading] = useState(false);
-  const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
-  const dispatch = useDispatch();
+  // const timeDescription: TimeDescriptionInterface =
+  // t("timeDescription", { returnObjects: true });
+  // const dispatch = useDispatch();
   const initialValues = {
     name: "",
     path,
@@ -84,16 +88,17 @@ export default function NewFolderModal({ open, handleClose }: Props) {
 
         const create = await createDirectory(userId, finalPath);
         if (create) {
-          const date = new Date();
-          const item: LibraryItemInterface = {
-            basename: values.name,
-            id: handledPath,
-            filename: handledPath,
-            type: "directory",
-            environment: EnvironmentEnum.REMOTE,
-            createdAt: date,
-            createdAtDescription: dateDescription(date, timeDescription),
-          };
+          console.log(values.folderName);
+          // const date = new Date();
+          // const item: LibraryItemInterface = {
+          //   basename: values.folderName,
+          //   id: handledPath,
+          //   filename: handledPath,
+          //   type: "directory",
+          //   environment: EnvironmentEnum.REMOTE,
+          //   createdAt: date,
+          //   createdAtDescription: dateDescription(date, timeDescription),
+          // };
           // dispatch(addLibraryFile(item));
           // handleClose();
           router.push(`/library/${removeFirstSlash(finalPath)}`);
@@ -109,7 +114,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   };
 
   const NewFolderSchema = Yup.object().shape({
-    name: Yup.string().required(t("form.requiredTitle")),
+    folderName: Yup.string().required(t("form.requiredTitle")),
   });
 
   const defineFinalPath = (name: any) => {
@@ -161,21 +166,22 @@ export default function NewFolderModal({ open, handleClose }: Props) {
             >
               {({ setFieldValue }: any) => (
                 <Form className={classes.form}>
-                  <Field name="name" InputProps={{ notched: true }}>
+                  <Field name="folderName" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
                         id="outlined-search"
+                        autoComplete="new-folderName"
                         label={t("form.fields.name")}
                         variant="outlined"
                         {...field}
                         onChange={(
                           event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-                        ) => setFieldValue("name", treatName(event.target.value))}
+                        ) => setFieldValue("folderName", treatName(event.target.value))}
                         onKeyUp={(event: any) => defineFinalPath(event.target.value)}
                       />
                     )}
                   </Field>
-                  <ErrorMessage name="name">
+                  <ErrorMessage name="folderName">
                     {(msg) => <ErrorMessageForm message={msg} />}
                   </ErrorMessage>
                   <Divider marginTop={20} />
