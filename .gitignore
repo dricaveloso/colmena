@@ -45,3 +45,4 @@ yarn-error.log*
 **/public/worker-*.js
 package-lock.json
 .env-develop
+.env
