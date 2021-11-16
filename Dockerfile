@@ -13,14 +13,16 @@ RUN yarn install --force --frozen-lockfile
 # ##linha que ch mandou
 ARG PRODUCTION
 ENV NODE_ENV=${PRODUCTION:+production}
+RUN echo " aqui é ${NODE_ENV}"
 ENV NODE_ENV=${NODE_ENV:-development}
+RUN echo ${NODE_ENV}
 
 FROM node:16-alpine AS builder
 WORKDIR /app
 COPY .env .env
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN  echo "$NODE_ENV"
+RUN echo ${NODE_ENV}
 RUN yarn build && yarn install --force --production --ignore-scripts --prefer-offline
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
