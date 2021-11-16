@@ -6,6 +6,11 @@ import CONSTANTS from "@/constants/index";
 
 export default class MyDocument extends Document {
   render() {
+    console.log("NODE_ENV: ",process.env.NODE_ENV);
+    console.log("NEXT_PUBLIC_API_BASE_URL: ",process.env.NEXT_PUBLIC_API_BASE_URL);
+    console.log("NEXTAUTH_URL: ",process.env.NEXTAUTH_URL);
+    console.log("NEXT_PUBLIC_NEXTCLOUD_TALK_VERSION: ",process.env.NEXT_PUBLIC_NEXTCLOUD_TALK_VERSION);
+    console.log("NEXT_PUBLIC_DEFAULT_USER_PASSWORD: ",process.env.NEXT_PUBLIC_DEFAULT_USER_PASSWORD);
     return (
       <Html lang="en">
         <Head>
