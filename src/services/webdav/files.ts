@@ -1,7 +1,7 @@
 import webdav from "@/services/webdav";
 import { BufferLike, ResponseDataDetailed } from "webdav";
 import { removeFirstSlash, getRandomInt, trailingSlash } from "@/utils/utils";
-import { arrayBufferToBinaryString, arrayBufferToBlob, createObjectURL } from "blob-util";
+import { arrayBufferToBlob, createObjectURL } from "blob-util";
 
 // ver se não tem 404
 export function listFile(

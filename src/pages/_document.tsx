@@ -3,6 +3,9 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
 import theme from "@/styles/theme";
 import CONSTANTS from "@/constants/index";
+import getConfig from "next/config";
+
+const { serverRuntimeConfig } = getConfig();
 
 export default class MyDocument extends Document {
   render() {
@@ -55,7 +58,11 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap"
             rel="stylesheet"
           />
-          <script src={process.env.NEXT_PUBLIC_HOTJAR_PROD ? "/js/prod_hotjar.js" : "/js/dev_hotjar.js"}></script>
+          <script
+            src={
+              serverRuntimeConfig.hotjarProd === "yes" ? "/js/prod_hotjar.js" : "/js/dev_hotjar.js"
+            }
+          />
         </Head>
         <body>
           <Main />

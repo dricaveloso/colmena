@@ -105,7 +105,9 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
         }
         const moved = await copyFile(userId, filename, finalPath);
         if (moved) {
+          // eslint-disable-next-line
           const newId = id.replace(/\/[^\/]*$$/, `/${name}`);
+          // eslint-disable-next-line
           const newFilename = filename.replace(/\/[^\/]*$$/, `/${name}`);
           const date = new Date();
           const item: LibraryItemInterface = {

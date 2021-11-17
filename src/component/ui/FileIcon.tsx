@@ -66,7 +66,7 @@ export default function FileIcon({
   folderSecondIcon,
 }: Props) {
   const classes = useStyles();
-
+  console.log(environment);
   let icon: AllIconProps = "folder";
   if (type === "file") {
     icon = "file";
@@ -94,7 +94,7 @@ export default function FileIcon({
     if (mime) {
       const splitMime = mime.split("/");
       const firstName = splitMime[0];
-      const lastName = splitMime[1];
+      // const lastName = splitMime[1];
       switch (firstName) {
         case "image":
           fileSecondIcon = "art_gallery";

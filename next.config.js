@@ -10,6 +10,9 @@ module.exports = withImages(
     sassOptions: {
       includePaths: [path.join(__dirname, 'src/styles')],
     },
+    serverRuntimeConfig: {
+      hotjarProd: process.env.HOTJAR_PROD,
+    },
     publicRuntimeConfig: {
       api: {
         baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL
