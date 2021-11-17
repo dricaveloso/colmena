@@ -62,6 +62,7 @@ function MyLibrary() {
   const [order, setOrder] = useState(OrderEnum.LATEST_FIRST);
   const [filter, setFilter] = useState("");
   const { t } = useTranslation("common");
+  const { t: l } = useTranslation("library");
   const dispatch = useDispatch();
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
 
@@ -281,7 +282,7 @@ function MyLibrary() {
   };
 
   return (
-    <LayoutApp title="Library">
+    <LayoutApp title={l("title")}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0 }}>
         <HeaderBar
           path={path}

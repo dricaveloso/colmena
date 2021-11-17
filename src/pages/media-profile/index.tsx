@@ -29,7 +29,6 @@ function MediaProfile() {
       title="Radio Colmena"
       drawer={false}
       back
-      templateHeader="variation2"
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>

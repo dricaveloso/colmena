@@ -67,9 +67,11 @@ function Honeycomb() {
   // }, []);
 
   const [value, setValue] = useState(0);
+  const [showInputMessage, setShowInputMessage] = useState(true);
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setShowInputMessage(newValue === 0);
     setValue(newValue);
   };
 
@@ -131,8 +133,7 @@ function Honeycomb() {
       back
       title={displayName}
       subtitle={!data ? "..." : prepareParticipantsString(data.ocs.data.length)}
-      templateHeader="variation2"
-      showFooter={false}
+      showFooter={!showInputMessage}
       drawer={false}
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >
@@ -157,7 +158,7 @@ function Honeycomb() {
                     direction="horizontal"
                     color={theme.palette.icon.main}
                     textStyle={{ fontSize: 14 }}
-                    title="Chat"
+                    title={t("tab1Title")}
                   />
                 }
                 {...a11yProps(0)}
@@ -170,7 +171,7 @@ function Honeycomb() {
                     direction="horizontal"
                     color={theme.palette.icon.main}
                     textStyle={{ fontSize: 14 }}
-                    title="Library"
+                    title={t("tab2Title")}
                   />
                 }
                 {...a11yProps(1)}
@@ -188,7 +189,9 @@ function Honeycomb() {
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>
           </SwipeableViews>
-          <InputSendMessage handleSendMessage={(message: string) => sendMessageAPI(message)} />
+          {showInputMessage && (
+            <InputSendMessage handleSendMessage={(message: string) => sendMessageAPI(message)} />
+          )}
         </Box>
       </FlexBox>
     </LayoutApp>

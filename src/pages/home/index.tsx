@@ -24,7 +24,7 @@ function Home() {
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("home");
   return (
-    <LayoutApp title={t("welcomeTitle")} templateHeader="variation2">
+    <LayoutApp title={t("welcomeTitle")}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <Section1 />
         <FlexBox
