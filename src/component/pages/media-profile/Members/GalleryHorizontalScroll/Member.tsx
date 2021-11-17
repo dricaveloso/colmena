@@ -12,7 +12,7 @@ type Props = {
   url?: string;
 };
 
-export default function Honeycomb({ title = "Ana", url = "teste" }: Props) {
+export default function Member({ title = "Ana", url = "teste" }: Props) {
   return (
     <Box
       key={uuid()}

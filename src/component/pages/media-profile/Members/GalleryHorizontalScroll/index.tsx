@@ -4,7 +4,11 @@ import theme from "@/styles/theme";
 import IconButton from "@/components/ui/IconButton";
 import Member from "./Member";
 
-export default function GalleryHorizontalScroll() {
+type Props = {
+  handleOpenInviteForm: () => void;
+};
+
+export default function GalleryHorizontalScroll({ handleOpenInviteForm }: Props) {
   return (
     <Box
       width="100%"
@@ -18,6 +22,7 @@ export default function GalleryHorizontalScroll() {
         iconColor={theme.palette.secondary.main}
         iconStyle={{ fontSize: 60 }}
         fontSizeIcon="large"
+        handleClick={handleOpenInviteForm}
         title="add"
         style={{ marginRight: 8 }}
         textStyle={{
