@@ -49,7 +49,7 @@ builder_develop:
     - cp $ENV_FILE .env
     - docker build -t $IMAGE_TAG . 
   environment:
-    name: develop
+    name: Staging
   only:
     - develop  
 
