@@ -62,7 +62,7 @@ type Props = {
 };
 
 type MyFormValues = {
-  conversationName: string;
+  room: string;
   description: string;
 };
 
@@ -80,11 +80,11 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
 
   const initialValues = {
-    conversationName: "",
+    room: "",
   };
 
   const schemaValidation = Yup.object().shape({
-    conversationName: Yup.string().required(c("form.requiredTitle")),
+    room: Yup.string().required(c("form.requiredTitle")),
   });
 
   return (
@@ -110,12 +110,12 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
               initialValues={initialValues}
               validationSchema={schemaValidation}
               onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-                const { conversationName } = values;
+                const { room } = values;
                 (async () => {
                   try {
                     setSubmitting(true);
 
-                    if (conversationName.indexOf("/") !== -1) {
+                    if (room.indexOf("/") !== -1) {
                       throw new Error(
                         c("form.slashNotAllowed", {
                           field: c("form.fields.name"),
@@ -123,12 +123,12 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       );
                     }
 
-                    const directoryExists = await existDirectory(userId, conversationName);
+                    const directoryExists = await existDirectory(userId, room);
                     if (directoryExists) {
                       throw new Error(c("honeycombModal.errorCreatePanal"));
                     }
 
-                    const conversation = await createNewConversation(conversationName);
+                    const conversation = await createNewConversation(room);
                     const { token } = conversation.data.ocs.data;
 
                     participants.forEach(async (item) => {
@@ -159,7 +159,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       message: c("honeycombModal.chatRoomSuccess"),
                       status: NotificationStatusEnum.SUCCESS,
                     });
-                    router.push(`/honeycomb/${token}/${conversationName}`);
+                    router.push(`/honeycomb/${token}/${room}`);
                   } catch (e) {
                     console.log(e);
                     const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
@@ -177,25 +177,26 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                 <Form className={classes.form}>
                   {step === 1 && (
                     <>
-                      <Field name="conversationName" InputProps={{ notched: true }}>
+                      <Field name="room" InputProps={{ notched: true }}>
                         {({ field }: FieldProps) => (
                           <TextField
-                            id="conversationName"
-                            autoComplete="new-conversationName"
+                            id="room"
+                            autoComplete="new-room"
                             label={c("form.fields.name")}
                             variant="outlined"
+                            inputProps={{ maxLength: 60 }}
                             {...field}
                           />
                         )}
                       </Field>
-                      {errors.conversationName && touched.conversationName ? (
-                        <ErrorMessageForm message={errors.conversationName} />
+                      {errors.room && touched.room ? (
+                        <ErrorMessageForm message={errors.room} />
                       ) : null}
                       <Divider marginTop={20} />
                       <Button
                         handleClick={() => setStep(2)}
                         title={c("honeycombModal.buttonStep1")}
-                        disabled={!(values.conversationName !== "")}
+                        disabled={!(values.room !== "")}
                         color={ButtonColorEnum.PRIMARY}
                         variant={ButtonVariantEnum.CONTAINED}
                         style={{ float: "right" }}

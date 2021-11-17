@@ -29,7 +29,7 @@ function LayoutApp({
   drawer = true,
   back = false,
   headerPosition = PositionEnum.FIXED,
-  templateHeader = "variation1",
+  templateHeader = "variation2",
   showFooter = true,
   extraElement = undefined,
   children,

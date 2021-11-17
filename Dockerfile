@@ -11,10 +11,10 @@ RUN yarn install --force --frozen-lockfile
 # ENV NODE_ENV=${NODE_ENV:-production}
 
 # ##linha que ch mandou
-ARG PRODUCTION
-ENV NODE_ENV=${PRODUCTION:+production}
-ENV NODE_ENV=${NODE_ENV:-development}
-RUN echo $NODE_ENV
+# ARG PRODUCTION
+# ENV NODE_ENV=${PRODUCTION:+production}
+# ENV NODE_ENV=${NODE_ENV:-development}
+# RUN echo $NODE_ENV
 
 FROM node:16-alpine AS builder
 WORKDIR /app
@@ -26,7 +26,6 @@ RUN yarn build && yarn install --force --production --ignore-scripts --prefer-of
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
 WORKDIR /app
-
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001

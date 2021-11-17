@@ -25,7 +25,6 @@ function Profile() {
     <LayoutApp
       title={getFirstname(userRdx.user.name)}
       back
-      templateHeader="variation2"
       drawer={false}
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >

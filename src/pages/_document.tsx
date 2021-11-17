@@ -3,12 +3,12 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
 import theme from "@/styles/theme";
 import CONSTANTS from "@/constants/index";
+import getConfig from "next/config";
 
-// const prod = process.env.NODE_ENV === "production";
-const prod = process.env.NODE_ENV;
+const { serverRuntimeConfig } = getConfig();
+
 export default class MyDocument extends Document {
   render() {
-    const url = prod ? "/js/prod_hotjar.js" : false;
     return (
       <Html lang="en">
         <Head>
@@ -58,7 +58,11 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap"
             rel="stylesheet"
           />
-          {url && <script src={url}></script>}
+          <script
+            src={
+              serverRuntimeConfig.hotjarProd === "yes" ? "/js/prod_hotjar.js" : "/js/dev_hotjar.js"
+            }
+          />
         </Head>
         <body>
           <Main />

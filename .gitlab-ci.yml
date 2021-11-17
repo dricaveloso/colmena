@@ -59,7 +59,7 @@ builder_production:
   stage: build
   script:
     - cp $ENV_FILE .env
-    - docker build -t $IMAGE_TAG . --build-arg PRODUCTION=true 
+    - docker build -t $IMAGE_TAG . 
   environment:
     name: production
   only:

@@ -2,5 +2,8 @@
   "title": "Nid d'abeille",
   "memberTitle": "Membre",
   "membersTitle": "Membres",
-  "noMemberTitle": "Aucun membre"
+  "noMemberTitle": "Aucun membre",
+  "tab1Title": "Chat",
+  "tab2Title": "Library",
+  "emptyTalkDescription": "Click on the plus icon below to create a honeycomb"
 }
