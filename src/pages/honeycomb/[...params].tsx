@@ -45,6 +45,8 @@ function Honeycomb() {
   // const [scrollPosition, setScrollPosition] = useState(0);
   // const [tabFixedHeader, setTabFixedHeader] = useState({});
 
+  // asljkd aslkdj slakdj slakdj laskdj slakdj
+
   // function handleScroll() {
   //   const position = window.pageYOffset;
   //   if (position >= 100) {
