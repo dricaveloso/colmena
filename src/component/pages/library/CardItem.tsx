@@ -85,7 +85,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
         break;
       default:
         if (filename && filename.indexOf("/") < 0) {
-          folderSecondIcon = "panal";
+          folderSecondIcon = "panal_flat";
         }
         break;
     }
