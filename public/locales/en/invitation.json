@@ -1,0 +1,10 @@
+{ 
+  "greeting": "Hello", 
+  "description": "DW Akademie and Redes A.C. invite you to be part of Colmena, a space for community and local media to work together: create, collaborate, share.", 
+  "invalidTokenTitle": "Invalid token",
+  "forms": { 
+    "button1": "Accept invitation", 
+    "button2": "About Colmena" 
+  } 
+} 
+

@@ -1,0 +1,10 @@
+{
+  "welcomeTitle": "Welcome",
+  "myFilesLabel": "My files",
+  "sharedLabel": "Shared",
+  "publicLabel": "Public",
+  "section3Title": "Favorite honeycombs",
+  "section4Title": "Recent",
+  "exampleHoneycombTitle": "Honeycomb {{num}}",
+  "exampleFileTitle": "File {{num}}"
+}

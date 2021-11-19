@@ -1,0 +1,12 @@
+{
+  "title": "Grabación",
+  "pressToStartTitle": "Pulsa para iniciar la grabación",
+  "pressToStopTitle": "Pulsa para terminar la grabación",
+  "recordingFinishLabelForm": "Titulo",
+  "recordingFinishTitle": "Grabación finalizada",
+  "recordingFinishDescription": "Titulo de la grabación.",
+  "submitButton": "Finalizar",
+  "cancelButton": "Cancelar",
+  "errorStorageMessage": "No fue posible guardar esta grabación.",
+  "errorGetAudioStreamMessage": "Necesita habilitar la captura de audio para comenzar a grabar."
+}

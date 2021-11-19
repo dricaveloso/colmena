@@ -1,0 +1,17 @@
+{
+  "title": "Profile",
+  "textEditButton": "Edit profile",
+  "textPhotoButton": "Upload picture",
+  "mediaTitle": "Media",
+  "switchLanguage": "Language",
+  "successMessage": "Information saved successfully",
+  "nameField": "Name",
+  "lastnameField": "Last name",
+  "emailField": "E-mail",
+  "urlField": "URL / BLOG",
+  "socialMediaTitle": "Social media",
+  "editButton": "Edit",
+  "saveButton": "Save",
+  "resetPasswordButton": "Reset password",
+  "manageTitle": "Manage"
+}

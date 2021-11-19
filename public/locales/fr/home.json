@@ -1,0 +1,14 @@
+{
+  "welcomeTitle": "Bienvenue",
+  "myFilesLabel": "Mes dossiers",
+  "sharedLabel": "Contenu partagé",
+  "publicLabel": "Contenu public",
+  "section2Title": "Derniers messages",
+  "section3Title": "Nids d'abeille préférés",
+  "section4Title": "Récent",
+  "seeAllTitle": "voir tout",
+  "exampleHoneycombTitle": "Nid d'abeille {{num}}",
+  "exampleFileTitle": "Fichier {{num}}",
+  "examplePostTitle": "Afficher {{num}} Radio Colmena",
+  "examplePostSubtitle": "5 jours | 12mb"
+}

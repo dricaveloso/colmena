@@ -1,0 +1,16 @@
+{
+  "title": "Profil",
+  "textEditButton": "Editer le profil",
+  "textPhotoButton": "Envoyer la photo",
+  "mediaTitle": "Média",
+  "nameField": "Nom",
+  "emailField": "Courriel",
+  "urlField": "URL / BLOG",
+  "titleSwitchLanguage": "Changer de langue",
+  "socialMediaTitle": "Médias sociaux",
+  "successMessage": "Informations enregistrées avec succès.",
+  "editButton": "Éditer",
+  "saveButton": "Sauvgarder",
+  "resetPasswordButton": "Réinitialiser le mot de passe",
+  "manageTitle": "Gérer"
+}

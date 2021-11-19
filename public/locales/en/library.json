@@ -1,0 +1,49 @@
+{
+  "title": "Library",
+  "sort": {
+    "title": "Sorting",
+    "highlights": "Highlights",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "alphabeticalOrder": "Alphabetical order",
+    "descendingAlphabeticalOrder": "Descending alphabetical order"
+  },
+  "filter": {
+    "title": "Filters",
+    "all": "All",
+    "availableOffline": "Available offline",
+    "synchronized": "Synchronized",
+    "audios": "Audios",
+    "images": "Images",
+    "texts": "Texts"
+  },
+  "language": {
+    "title": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "french": "French"
+  },
+  "contextMenuOptions": {
+    "edit": "Edit",
+    "copy": "Copy",
+    "move": "Move",
+    "duplicate": "Duplicate",
+    "download": "Download",
+    "rename": "Rename",
+    "details": "Details",
+    "synchronize": "Synchronize",
+    "publish": "Publish",
+    "delete": "Delete"
+  },
+  "messages": {
+    "couldNotRemove": "Could not remove.",
+    "fileAlreadyExists": "There is already a directory with that name.",
+    "cannotDownloadFile": "Cannot download this file."
+  },
+  "renameTitle": "Rename",
+  "saveButton": "Save",
+  "downloadTitle": "Download",
+  "downloadButton": "Download",
+  "duplicateTitle": "Duplicate",
+  "duplicateButton": "Duplicate"
+}

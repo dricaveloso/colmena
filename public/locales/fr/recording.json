@@ -1,0 +1,12 @@
+{
+  "title": "Enregistrement",
+  "pressToStartTitle": "Appuyer pour commencer l'enregistrement.",
+  "pressToStopTitle": "Appuyer pour arrêter l'enregistrement",
+  "recordingFinishLabelForm": "Titre",
+  "recordingFinishTitle": "Enregistrement terminé.",
+  "recordingFinishDescription": "Enfin, taper un titre pour cet enregistrement.",
+  "submitButton": "Terminer",
+  "cancelButton": "Annuler",
+  "errorStorageMessage": "Impossible de sauvegarder cet enregistrement.",
+  "errorGetAudioStreamMessage": "Activer la capture audio pour commencer l'enregistrement."
+}

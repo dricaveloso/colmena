@@ -1,0 +1,49 @@
+{
+  "title": "Bibliothèque",
+  "sort": {
+    "title": "Trier",
+    "highlights": "Points forts",
+    "newest": "Le plus récent",
+    "oldest": "Le plus vieux",
+    "alphabeticalOrder": "Ordre alphabétique",
+    "descendingAlphabeticalOrder": "Ordre alphabétique décroissant"
+  },
+  "filter": {
+    "title": "Filtres",
+    "all": "Toutes",
+    "availableOffline": "Disponible hors ligne",
+    "synchronized": "Synchronisé",
+    "audios": "Audios",
+    "images": "Images",
+    "texts": "Textes"
+  },
+  "language": {
+    "title": "Langue",
+    "english": "Anglais",
+    "spanish": "Espagnol",
+    "french": "Français"
+  },
+  "contextMenuOptions": {
+    "edit": "Editer",
+    "copy": "Copier",
+    "move": "Déplacer",
+    "duplicate": "Dupliquer",
+    "download": "Télécharger",
+    "rename": "Renommer",
+    "details": "Détails",
+    "synchronize": "Synchroniser",
+    "publish": "Publier",
+    "delete": "Supprimer"
+  },
+  "messages": {
+    "couldNotRemove": "Impossible de supprimer",
+    "fileAlreadyExists": "There is already a directory with that name.",
+    "cannotDownloadFile": "Cannot download this file."
+  },
+  "renameTitle": "Rename",
+  "saveButton": "Save",
+  "downloadTitle": "Download",
+  "downloadButton": "Download",
+  "duplicateTitle": "Duplicate",
+  "duplicateButton": "Duplicate"
+}

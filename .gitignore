@@ -33,6 +33,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# history plugin
+.history
+
 **/public/workbox-*.js
 **/public/workbox-*.map
 **/public/fallback-*.js
@@ -40,3 +43,7 @@ yarn-error.log*
 **/public/sw.js.map
 **/public/service-worker.js
 **/public/worker-*.js
+package-lock.json
+
+.env.develop
+.env

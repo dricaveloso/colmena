@@ -1,0 +1,19 @@
+{
+  "title": "My library",
+  "sort": {
+    "title": "Sorting",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "alphabeticalOrder": "Alphabetical order",
+    "descendingAlphabeticalOrder": "Descending alphabetical order"
+  },
+  "filter": {
+    "title": "Filters",
+    "all": "All",
+    "availableOffline": "Available offline",
+    "synchronized": "Synchronized",
+    "audios": "Audios",
+    "images": "Images",
+    "texts": "Texts"
+  }
+}

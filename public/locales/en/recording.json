@@ -1,0 +1,12 @@
+{
+  "title": "Record",
+  "pressToStartTitle": "Press to start recording",
+  "pressToStopTitle": "Press to stop recording",
+  "recordingFinishLabelForm": "Title",
+  "recordingFinishTitle": "Recording finished",
+  "recordingFinishDescription": "Title of this recording.",
+  "submitButton": "Finish",
+  "cancelButton": "Cancel",
+  "errorStorageMessage": "Could not save this recording.",
+  "errorGetAudioStreamMessage": "You need to enable audio capture to start recording."
+}

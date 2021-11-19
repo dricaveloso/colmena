@@ -1,0 +1,92 @@
+variables:
+  CONTAINER_IMAGE: maia/frontend:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: http://localhost:5000/maia/frontend:$CI_BUILD_REF_NAME
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+
+stages:
+  - prepare
+  - build
+  - deploy
+  #- livetest
+  # - cleanup
+cache:
+  paths:
+    - node_modules/
+    - out/
+
+tests:
+  stage: prepare
+  script:
+    - echo "TODO TESTS"
+  only:
+    - branches
+  except:
+   - main
+   
+
+builder_feature:
+  tags:
+    - docker
+  stage: build
+  script:
+    - cp $ENV_FILE .env
+    - docker build . -t $IMAGE_TAG --no-cache
+  environment:
+    name: feature
+    #name: $CI_BUILD_REF_NAME
+  only:
+    - branches
+  except:
+   - main
+   - develop
+
+builder_develop:
+  tags:
+    - docker
+  stage: build
+  script:
+    - cp $ENV_FILE .env
+    - docker build -t $IMAGE_TAG . 
+  environment:
+    name: Staging
+  only:
+    - develop  
+
+builder_production:
+  tags:
+    - docker
+  stage: build
+  script:
+    - cp $ENV_FILE .env
+    - docker build -t $IMAGE_TAG . 
+  environment:
+    name: production
+  only:
+    - main  
+
+deployer:
+  tags:
+    - docker
+  stage: deploy
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $IMAGE_TAG
+
+#configure cluster:
+# tags:
+#  - k8
+#stage: deploy
+#script: echo $KUBE_NAMESPACE
+#environment:
+# name: production
+
+#test_all:
+#  stage: livetest
+#  tags:
+#    - lighthouse
+#  script:
+#    - npm install
+#    - npm run build
+#    - npm install -g @lhci/cli@0.3.x
+#    - lhci autorun --upload.target=temporary-public-storage --collect.settings.chromeFlags="--no-sandbox" || echo "LHCI failed!"

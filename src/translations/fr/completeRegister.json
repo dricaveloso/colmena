@@ -1,8 +1,0 @@
-{
-  "description": "Et quel sera votre mot de passe.",
-  "forms": {
-    "placeholderPassword": "le mot de passe",
-    "placeholderPasswordConfirmation": "confirmation mot de passe",
-    "submitButton": "Sauver"
-  }
-}
