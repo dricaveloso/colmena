@@ -25,13 +25,13 @@ type Props = {
 
 function LayoutApp({
   title,
-  subtitle = "",
+  // subtitle = "",
   drawer = true,
   back = false,
   headerPosition = PositionEnum.FIXED,
-  templateHeader = "variation2",
+  // templateHeader = "variation2",
   showFooter = true,
-  extraElement = undefined,
+  // extraElement = undefined,
   children,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -57,15 +57,7 @@ function LayoutApp({
   return (
     <Container extraStyle={{ padding: 0, backgroundColor: "#F9F9F9" }}>
       <FlexBox extraStyle={{ margin: 0, padding: 0 }}>
-        <AppBar
-          title={title}
-          subtitle={subtitle}
-          headerPosition={headerPosition}
-          drawer={drawer}
-          templateHeader={templateHeader}
-          back={back}
-          extraElement={extraElement}
-        />
+        <AppBar title={title} headerPosition={headerPosition} drawer={drawer} back={back} />
         <>{children}</>
         {showFooter && <FooterApp />}
       </FlexBox>
