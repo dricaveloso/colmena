@@ -1,11 +1,11 @@
 import React from "react";
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { getFirstLettersOfTwoFirstNames, isValidUrl } from "@/utils/utils";
+import { getFirstLettersOfTwoFirstNames } from "@/utils/utils";
 
 type Props = {
   size: number;
-  image?: string | undefined;
+  image?: string | undefined | null;
   name?: string | undefined;
 };
 
@@ -18,7 +18,7 @@ function AvatarAux({ size, name = "", image }: Props) {
   }));
   const classes = useStyles();
 
-  if (!image || !isValidUrl(image) || !navigator.onLine) {
+  if (!image || !navigator.onLine) {
     return <Avatar className={classes.size}>{getFirstLettersOfTwoFirstNames(name)}</Avatar>;
   }
 

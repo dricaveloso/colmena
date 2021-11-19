@@ -4,10 +4,10 @@ import getConfig from "next/config";
 
 const { publicRuntimeConfig } = getConfig();
 
-const talkInstance = (version = "v1") => {
+const coreInstance = () => {
   const { password, id: username } = initializeStore({}).getState().user.user;
   const api = axios.create({
-    baseURL: `${publicRuntimeConfig.api.baseUrl}/ocs/v2.php/apps/spreed/api/${version}`,
+    baseURL: `${publicRuntimeConfig.api.baseUrl}/ocs/v2.php/core`,
     auth: {
       username,
       password,
@@ -18,5 +18,4 @@ const talkInstance = (version = "v1") => {
   });
   return api;
 };
-
-export default talkInstance;
+export default coreInstance;

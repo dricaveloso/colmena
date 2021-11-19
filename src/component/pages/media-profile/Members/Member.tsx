@@ -6,22 +6,24 @@ import Text from "@/components/ui/Text";
 import { TextDisplayEnum, TextVariantEnum } from "@/enums/*";
 import Image from "next/image";
 import theme from "@/styles/theme";
+import UserAvatar from "@/components/ui/Avatar";
 
 type Props = {
-  title?: string;
-  url?: string;
+  title: string;
+  urlImage?: string | null;
 };
 
-export default function Member({ title = "Ana", url = "teste" }: Props) {
+export default function Member({ title, urlImage = null }: Props) {
   return (
     <Box
-      key={uuid()}
       justifyContent="center"
       alignItems="center"
       display="flex"
       flexDirection="column"
+      margin={1}
+      width={70}
     >
-      <Image width={60} height={60} src="/images/member.png" />
+      <UserAvatar size={9} name={title} image={!urlImage ? "/images/user.png" : urlImage} />
       <Text
         variant={TextVariantEnum.SUBTITLE1}
         display={TextDisplayEnum.BLOCK}

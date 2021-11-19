@@ -2,13 +2,16 @@ import ocs from "@/services/ocs";
 import {
   CreateUserInterface,
   WelcomeUserInterface,
-  // SetPasswordInterface,
   UserUpdateInterface,
   UsersListInterface,
 } from "@/interfaces/ocs";
 import useOcsFetch from "@/hooks/useOcsFetch";
 import { initializeStore } from "@/store/index";
 import axios from "axios";
+import { RoleUserEnum } from "@/enums/index";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 export function listAllUsers(): UsersListInterface {
   return useOcsFetch("/users?format=json");
@@ -29,19 +32,33 @@ export function welcomeUser(userId: string | number): Promise<WelcomeUserInterfa
   return ocs().post(`/users/${userId}/welcome`);
 }
 
+interface UserObjParams {
+  userid: string;
+  displayName: string;
+  email: string;
+  groups: string[];
+  password: string;
+  subadmin?: string[];
+}
+
 export function createUser(
   displayName: string,
   email: string,
-  groups: string[],
-  password = process.env.NEXT_PUBLIC_DEFAULT_USER_PASSWORD,
+  group: string,
+  permission: string,
+  password = publicRuntimeConfig.user.defaultNewUserPassword || "",
 ): Promise<CreateUserInterface> {
-  return ocs().post(`/users`, {
+  const userObj: UserObjParams = {
     userid: email.split("@")[0],
     displayName,
     email,
-    groups,
+    groups: [group],
     password,
-  });
+  };
+
+  if (permission === RoleUserEnum.ADMIN) userObj.subadmin = [group];
+
+  return ocs().post(`/users`, userObj);
 }
 export function deleteUser(userId: string | number) {
   return ocs().delete(`/users/${userId}`);

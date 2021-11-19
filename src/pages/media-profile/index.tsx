@@ -12,6 +12,8 @@ import LatestPosts from "@/components/pages/home/Section2";
 import Members from "@/components/pages/media-profile/Members";
 import SocialMedia from "@/components/pages/media-profile/SocialMedia";
 import Divider from "@/components/ui/Divider";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -20,9 +22,14 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 function MediaProfile() {
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const group =
+    Array.isArray(userRdx.user.media?.groups) && userRdx.user.media?.groups[0]
+      ? userRdx.user.media?.groups[0]
+      : "";
   return (
     <LayoutApp
-      title="Radio Colmena"
+      title={userRdx.user.media?.name || ""}
       drawer={false}
       back
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
@@ -34,8 +41,12 @@ function MediaProfile() {
           extraStyle={{ paddingTop: 8, marginTop: 0 }}
         >
           <LatestPosts />
-          <Divider marginTop={8} />
-          <Members />
+          {userRdx.user.subadmin.includes(group) && (
+            <>
+              <Divider marginTop={8} />
+              <Members group={group} />
+            </>
+          )}
           <Divider marginTop={8} />
           <SocialMedia />
           <WhiteSpaceFooter />

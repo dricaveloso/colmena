@@ -32,7 +32,7 @@ export default function Honeycomb() {
     revalidateOnReconnect: false,
   });
 
-  if (!data)
+  if (!data && !error)
     return (
       <LayoutWrapper>
         <FileListSkeleton />

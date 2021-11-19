@@ -16,6 +16,9 @@ module.exports = withImages(
     publicRuntimeConfig: {
       api: {
         baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL
+      },
+      user: {
+        defaultNewUserPassword: process.env.NEXT_PUBLIC_DEFAULT_USER_PASSWORD
       }
     },
     pwa: {

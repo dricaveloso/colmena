@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable camelcase */
 import React, { useContext, useState } from "react";
 import Button from "@material-ui/core/Button";
 import {
@@ -11,14 +13,24 @@ import {
 import Select from "@/components/ui/Select";
 import { useTranslation } from "next-i18next";
 import NotificationContext from "@/store/context/notification-context";
-import { NotificationStatusEnum, SelectVariantEnum } from "@/enums/index";
+import {
+  NotificationStatusEnum,
+  SelectVariantEnum,
+  RoleUserEnum,
+  ConfigFilesNCEnum,
+} from "@/enums/index";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
-import { SelectOptionItem } from "@/types/index";
 import * as Yup from "yup";
 import { createUser } from "@/services/ocs/users";
-// import { listAllGroups } from "@/services/ocs/groups";
+import { putFile, listFile } from "@/services/webdav/files";
 import Backdrop from "@/components/ui/Backdrop";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
+import getConfig from "next/config";
+import { UserProfileInterface } from "@/interfaces/index";
+
+const { publicRuntimeConfig } = getConfig();
 
 type Props = {
   openInviteForm: boolean;
@@ -29,6 +41,7 @@ type MyFormValues = {
   name: string;
   email: string;
   group: string;
+  permission: string;
 };
 
 export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Props) {
@@ -36,32 +49,28 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
   const { t: c } = useTranslation("common");
   const notificationCtx = useContext(NotificationContext);
   const [showBackdrop, setShowBackdrop] = useState(false);
-  // const { data } = listAllGroups();
-
-  const optionsGroup: SelectOptionItem[] = [];
-  // if (data) {
-  //   const optionsAux = data.ocs.data.groups.filter((item: string) => item !== "admin").sort();
-  //   optionsGroup = optionsAux.map((item) => ({
-  //     id: item,
-  //     value: item,
-  //   }));
-  // }
-  optionsGroup.unshift({
-    id: "admin",
-    value: "Administrador",
-  });
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
     email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
     group: Yup.string().required(c("form.requiredTitle")),
+    permission: Yup.string().required(c("form.requiredTitle")),
   });
 
   const initialValues: MyFormValues = {
     name: "",
     email: "",
     group: "",
+    permission: "",
   };
+
+  async function createOrUpdateFile(userId: string, file: UserProfileInterface) {
+    await putFile(userId, ConfigFilesNCEnum.USER_PROFILE, JSON.stringify(file), {
+      username: userId,
+      password: publicRuntimeConfig.user.defaultNewUserPassword,
+    });
+  }
 
   return (
     <div>
@@ -78,25 +87,45 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
           onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
             setShowBackdrop(true);
             setSubmitting(false);
-            const { name, email, group } = values;
+            const { name, email, group, permission } = values;
 
             (async () => {
               try {
-                await createUser(name, email, [group]);
+                const user = await createUser(name, email, group, permission);
+                const userId = user.data.ocs.data.id;
+                let file: UserProfileInterface;
+                try {
+                  const userProfileFile = await listFile(
+                    userId,
+                    ConfigFilesNCEnum.USER_PROFILE,
+                    {
+                      username: userId,
+                      password: publicRuntimeConfig.user.defaultNewUserPassword,
+                    },
+                    true,
+                  );
+                  file = JSON.parse(String(userProfileFile));
+                  file.medias.push(group);
+                  await createOrUpdateFile(userId, file);
+                } catch (e) {
+                  console.log("Arquivo .profile.json não encontrado", e);
+                }
 
-                setShowBackdrop(false);
                 handleCloseInviteForm();
                 notificationCtx.showNotification({
                   message: t("messageOkModalDialogInvite"),
                   status: NotificationStatusEnum.SUCCESS,
                 });
               } catch (e) {
-                setShowBackdrop(false);
+                console.log(e);
+
                 handleCloseInviteForm();
                 notificationCtx.showNotification({
                   message: t("messageErrorModalDialogInvite"),
                   status: NotificationStatusEnum.WARNING,
                 });
+              } finally {
+                setShowBackdrop(false);
               }
             })();
           }}
@@ -140,9 +169,12 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   <Field name="group" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <Select
-                        label={t("placeholderPermission")}
+                        label={t("placeholderGroup")}
                         variant={SelectVariantEnum.STANDARD}
-                        options={optionsGroup}
+                        options={userRdx.user.subadmin.map((item) => ({
+                          id: item,
+                          value: item,
+                        }))}
                         id="group"
                         {...field}
                       />
@@ -150,6 +182,29 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   </Field>
                   {errors.group && touched.group ? (
                     <ErrorMessageForm message={errors.group} />
+                  ) : null}
+                  <Field name="permission" InputProps={{ notched: true }}>
+                    {({ field }: FieldProps) => (
+                      <Select
+                        label={t("placeholderPermission")}
+                        variant={SelectVariantEnum.STANDARD}
+                        options={[
+                          {
+                            id: RoleUserEnum.COLLABORATOR,
+                            value: t("inviteCollaboratorTitle"),
+                          },
+                          {
+                            id: RoleUserEnum.ADMIN,
+                            value: t("inviteAdministratorTitle"),
+                          },
+                        ]}
+                        id="permission"
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                  {errors.permission && touched.permission ? (
+                    <ErrorMessageForm message={errors.permission} />
                   ) : null}
                 </Form>
               </DialogContent>

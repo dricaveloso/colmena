@@ -73,6 +73,8 @@ export function getFirstLettersOfTwoFirstNames(word: string | undefined): string
   if (arr.length > 2) {
     if (arr[1].length < 4) result += arr[2][0];
     else result += arr[1][0];
+  } else if (arr.length === 1) {
+    result += arr[0][1];
   }
 
   return result.toUpperCase();
