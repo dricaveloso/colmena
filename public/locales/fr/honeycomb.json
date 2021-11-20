@@ -1,6 +1,9 @@
 {
-  "title": "Rayon de miel",
-  "memberTitle": "membre",
-  "membersTitle": "membres",
-  "noMemberTitle": "Aucun membre"
+  "title": "Nid d'abeille",
+  "memberTitle": "Membre",
+  "membersTitle": "Membres",
+  "noMemberTitle": "Aucun membre",
+  "tab1Title": "Chat",
+  "tab2Title": "Library",
+  "emptyTalkDescription": "Click on the plus icon below to create a honeycomb"
 }

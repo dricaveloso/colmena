@@ -26,32 +26,34 @@ export async function listLibraryDirectories(userId: string | number, path?: str
   return directories;
 }
 
-export function existDirectory(userId: string | number, remotePath: string) {
+export function existDirectory(userId: string | number, remotePath: string): Promise<boolean> {
   try {
     return webdav().exists(`${userId}/${removeFirstSlash(remotePath)}`);
   } catch (err) {
     console.log(err.response);
   }
-  return true;
+
+  return Promise.resolve(true);
 }
 
-export function createDirectory(userId: string | number, dirPath: string) {
+export async function createDirectory(userId: string | number, dirPath: string): Promise<boolean> {
   try {
-    webdav().createDirectory(`${userId}/${removeFirstSlash(dirPath)}`);
+    await webdav().createDirectory(`${userId}/${removeFirstSlash(dirPath)}`);
   } catch (error) {
     if (error) {
-      return false;
+      return Promise.resolve(false);
     }
   }
-  return true;
+
+  return Promise.resolve(true);
 }
 
 export async function deleteDirectory(userId: string | number, filename: string): Promise<boolean> {
   try {
     await webdav().deleteFile(`${userId}/${removeFirstSlash(filename)}`);
   } catch (err) {
-    return false;
+    return Promise.resolve(false);
   }
 
-  return true;
+  return Promise.resolve(true);
 }

@@ -28,7 +28,7 @@ function AppBarSys({
   headerPosition = PositionEnum.FIXED,
   drawer = true,
   back = false,
-  templateHeader = "variation1",
+  templateHeader = "variation2",
   extraElement = undefined,
 }: Props) {
   // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);

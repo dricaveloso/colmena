@@ -1,38 +1,46 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext } from "react";
-import { LibraryItemInterface } from "@/interfaces/index";
+import { LibraryCardItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
 import Box from "@material-ui/core/Box";
 import Image from "next/image";
 import VerticalItemList from "@/components/ui/VerticalItemList";
 import GridItemList from "@/components/ui/GridItemList";
-import { hasExclusivePath } from "@/utils/directory";
+import {
+  hasExclusivePath,
+  getPublicPath,
+  getPrivatePath,
+  getOfflinePath,
+  isRootPath,
+} from "@/utils/directory";
 import { NotificationStatusEnum } from "@/enums/*";
 import { removeCornerSlash } from "@/utils/utils";
 import theme from "@/styles/theme";
-import { FileIcon } from "react-file-icon";
-import ContextMenuOptions from "./ContextMenuOptions";
+import FileIcon from "@/components/ui/FileIcon";
+import ContextMenuOptions from "./contextMenu";
 import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "react-i18next";
+import { AllIconProps } from "@/types/index";
 
-interface CarItemInterface extends LibraryItemInterface {
-  orientation: string | ["vertical", "horizontal"];
-}
-
-const CardItem = ({
-  id,
-  basename,
-  filename,
-  environment,
-  createdAt,
-  createdAtDescription,
-  tags,
-  type,
-  arrayBufferBlob,
-  image,
-  extension,
-  orientation,
-}: CarItemInterface) => {
+const CardItem = (cardItem: LibraryCardItemInterface) => {
+  const {
+    id,
+    basename,
+    filename,
+    environment,
+    createdAt,
+    createdAtDescription,
+    tags,
+    type,
+    arrayBufferBlob,
+    image,
+    extension,
+    orientation,
+    mime,
+    size,
+  } = cardItem;
   const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
   const { t: c } = useTranslation("common");
@@ -54,7 +62,7 @@ const CardItem = ({
   const bottomOptions = [];
   const shareOption = (
     <IconButton
-      key="share"
+      key={`${basename}-share`}
       icon="share"
       color="#9A9A9A"
       style={{ padding: 0, margin: 0, minWidth: 30 }}
@@ -62,6 +70,27 @@ const CardItem = ({
       handleClick={unavailable}
     />
   );
+
+  let folderSecondIcon: AllIconProps | null | undefined = null;
+  if (type === "directory") {
+    switch (filename) {
+      case getPublicPath():
+        folderSecondIcon = "global";
+        break;
+      case getPrivatePath():
+        folderSecondIcon = "private";
+        break;
+      case getOfflinePath():
+        folderSecondIcon = "offline";
+        break;
+      default:
+        if (filename && filename.indexOf("/") < 0) {
+          folderSecondIcon = "panal_flat";
+        }
+        break;
+    }
+  }
+
   const avatar = (
     <>
       {image !== undefined ? (
@@ -75,11 +104,11 @@ const CardItem = ({
       ) : (
         <Box width={60} px={1} onClick={() => handleClick()}>
           <FileIcon
+            folderSecondIcon={folderSecondIcon}
             extension={extension}
-            foldColor={theme.palette.primary.dark}
-            glyphColor="#fff"
-            color={theme.palette.primary.main}
-            labelColor={theme.palette.primary.dark}
+            environment={environment}
+            mime={mime}
+            type={type === "directory" ? type : "file"}
           />
         </Box>
       )}
@@ -93,20 +122,14 @@ const CardItem = ({
       bottomOptions.push(shareOption);
     }
 
-    options.push(
-      <ContextMenuOptions
-        id={id}
-        type={type}
-        filename={filename ?? ""}
-        environment={environment}
-      />,
-    );
+    options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);
   }
 
   return (
     <>
       {orientation === "vertical" ? (
         <VerticalItemList
+          key={`${basename}-card`}
           avatar={avatar}
           primary={basename}
           secondary={createdAtDescription}
@@ -115,6 +138,7 @@ const CardItem = ({
         />
       ) : (
         <GridItemList
+          key={`${basename}-card`}
           avatar={avatar}
           primary={basename}
           secondary={createdAtDescription}

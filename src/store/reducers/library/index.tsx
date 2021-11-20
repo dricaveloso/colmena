@@ -28,22 +28,22 @@ const reducer = (state = initialState, action: any) => {
       return { ...state, libraryFiles: state.libraryFiles.concat(action.libraryFile) };
     case EDIT_LIBRARY_FILE:
       // eslint-disable-next-line no-case-declarations
-      const updatedLibrary: LibraryItemInterface[] = action.libraryFiles;
-      updatedLibrary.map((item: LibraryItemInterface) => {
-        if (item.id === action.libraryFile.id) {
-          return action.libraryFile;
-        }
+      const updatedLibrary: LibraryItemInterface[] = state.libraryFiles.map(
+        (item: LibraryItemInterface) => {
+          if (item.id === action.libraryFile?.id) {
+            return { ...item, ...action.libraryFile };
+          }
 
-        return item;
-      });
+          return item;
+        },
+      );
       return { ...state, libraryFiles: updatedLibrary };
     case REMOVE_LIBRARY_FILE:
       return {
         ...state,
-        libraryFiles: state.libraryFiles.filter((item: LibraryItemInterface) => {
-          console.log(item.id, action.id);
-          return item.id !== action.id;
-        }),
+        libraryFiles: state.libraryFiles.filter(
+          (item: LibraryItemInterface) => item.id !== action.id,
+        ),
       };
     case SET_LIBRARY_PATH_EXISTS:
       return { ...state, currentPathExists: action.pathExists };

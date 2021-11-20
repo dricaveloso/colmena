@@ -1,14 +1,14 @@
 {
-  "welcomeTitle": "Welcome",
-  "myFilesLabel": "My files",
-  "sharedLabel": "Shared",
-  "publicLabel": "Public",
-  "section2Title": "Latest posts",
-  "section3Title": "Favorite honeycombs",
-  "section4Title": "Recent",
-  "seeAllTitle": "see all",
-  "exampleHoneycombTitle": "Honeycomb {{num}}",
-  "exampleFileTitle": "File {{num}}",
-  "examplePostTitle": "Show {{num}} Radio Colmena",
-  "examplePostSubtitle": "5 days | 12mb"
+  "welcomeTitle": "Bienvenue",
+  "myFilesLabel": "Mes dossiers",
+  "sharedLabel": "Contenu partagé",
+  "publicLabel": "Contenu public",
+  "section2Title": "Derniers messages",
+  "section3Title": "Nids d'abeille préférés",
+  "section4Title": "Récent",
+  "seeAllTitle": "voir tout",
+  "exampleHoneycombTitle": "Nid d'abeille {{num}}",
+  "exampleFileTitle": "Fichier {{num}}",
+  "examplePostTitle": "Afficher {{num}} Radio Colmena",
+  "examplePostSubtitle": "5 jours | 12mb"
 }

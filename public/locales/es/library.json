@@ -1,12 +1,12 @@
 {
-  "title": "Mi librería",
+  "title": "Librería",
   "sort": {
     "title": "Ordenar",
     "highlights": "Destacadas",
     "newest": "Más reciente",
     "oldest": "Más antiguas",
-    "alphabeticalOrder": "Orden alfabetica",
-    "descendingAlphabeticalOrder": "Orden alfabetica descendente"
+    "alphabeticalOrder": "Orden alfabético",
+    "descendingAlphabeticalOrder": "Orden alfabético descendente"
   },
   "filter": {
     "title": "Filtros",
@@ -18,7 +18,7 @@
     "texts": "Textos"
   },
   "language": {
-    "title": "Language",
+    "title": "Idioma",
     "english": "Inglés",
     "spanish": "Espanõl",
     "french": "Francés"
@@ -36,6 +36,14 @@
     "delete": "Borrar"
   },
   "messages": {
-    "couldNotRemove": "No fue posible borrar"
-  }
+    "couldNotRemove": "No se ha podido eliminar",
+    "fileAlreadyExists": "There is already a directory with that name.",
+    "cannotDownloadFile": "Cannot download this file."
+  },
+  "renameTitle": "Rename",
+  "saveButton": "Save",
+  "downloadTitle": "Download",
+  "downloadButton": "Download",
+  "duplicateTitle": "Duplicate",
+  "duplicateButton": "Duplicate"
 }

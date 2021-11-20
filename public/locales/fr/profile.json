@@ -4,13 +4,13 @@
   "textPhotoButton": "Envoyer la photo",
   "mediaTitle": "Média",
   "nameField": "Nom",
-  "emailField": "E-mail",
+  "emailField": "Courriel",
   "urlField": "URL / BLOG",
-  "titleSwitchLanguage": "Switch Language",
+  "titleSwitchLanguage": "Changer de langue",
   "socialMediaTitle": "Médias sociaux",
-  "successMessage": "Information saved successfully",
+  "successMessage": "Informations enregistrées avec succès.",
   "editButton": "Éditer",
-  "saveButton": "Sauver",
+  "saveButton": "Sauvgarder",
   "resetPasswordButton": "Réinitialiser le mot de passe",
-  "manageTitle": "Manage"
+  "manageTitle": "Gérer"
 }

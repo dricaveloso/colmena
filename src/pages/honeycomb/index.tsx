@@ -103,7 +103,7 @@ function LayoutWrapper({ children }: LayoutWrapperProps) {
   // }
 
   return (
-    <LayoutApp title={t("title")} templateHeader="variation2">
+    <LayoutApp title={t("title")}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <Box width="100%">
           {/* <Tabs

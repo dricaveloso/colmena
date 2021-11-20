@@ -10,7 +10,7 @@ import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import HeaderProfile from "@/components/pages/profile/Header";
-import { capitalizeFirstLetter } from "@/utils/utils";
+import { getFirstname } from "@/utils/utils";
 import IconButton from "@/components/ui/IconButton";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
@@ -23,9 +23,8 @@ function Profile() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   return (
     <LayoutApp
-      title={capitalizeFirstLetter(userRdx.user.name)}
+      title={getFirstname(userRdx.user.name)}
       back
-      templateHeader="variation2"
       drawer={false}
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >

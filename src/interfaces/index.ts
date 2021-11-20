@@ -60,6 +60,12 @@ export interface UserInfoInterface {
   quota: UserQuotaInterface;
   media: MediaInfoInterface;
 }
+export interface UserInfoUpdateInterface {
+  name?: string;
+  avatar?: string;
+  email?: string;
+  password?: string;
+}
 export interface FileInterface {
   id: number;
   name: string;
@@ -132,6 +138,12 @@ export interface LibraryItemInterface {
   createdAtDescription?: string | undefined;
   environment: Environment;
   image?: string;
+  mime?: string;
+  size?: number;
+}
+
+export interface LibraryCardItemInterface extends LibraryItemInterface {
+  orientation: string | ["vertical", "horizontal"];
 }
 export interface BreadcrumbItemInterface {
   description: string | undefined;

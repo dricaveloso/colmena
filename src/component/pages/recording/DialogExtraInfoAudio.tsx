@@ -76,6 +76,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
                     margin="dense"
                     id="name"
                     label={t("recordingFinishLabelForm")}
+                    inputProps={{ maxLength: 60 }}
                     fullWidth
                     {...field}
                   />

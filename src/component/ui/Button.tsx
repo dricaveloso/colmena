@@ -2,7 +2,8 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { ButtonColorProps, ButtonVariantProps, ButtonSizeProps } from "@/types/index";
 import { ButtonColorEnum, ButtonVariantEnum, ButtonSizeEnum } from "@/enums/index";
-import Link from "next/link";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { useTranslation } from "next-i18next";
 
 type Props = {
   title: string | React.ReactNode;
@@ -17,6 +18,10 @@ type Props = {
   component?: any;
   url?: string;
   fullWidth?: boolean;
+  isLoading?: boolean;
+  type?: string;
+  className?: string;
+  download?: string;
 };
 
 export default function Btn({
@@ -31,26 +36,43 @@ export default function Btn({
   component = "button",
   url = "no-navigation",
   fullWidth = false,
+  isLoading = false,
+  className,
+  type,
+  download,
 }: Props) {
+  const { t } = useTranslation("common");
+
   return url !== "no-navigation" ? (
-    <Link href={url}>
-      <Button
-        variant={variant}
-        color={color}
-        size={size}
-        // className="width-based-device"
-        style={{ textTransform: "lowercase", ...style }}
-        endIcon={endIcon}
-        disabled={disabled}
-        component="a"
-        fullWidth={fullWidth}
-      >
-        {title}
-      </Button>
-    </Link>
+    <Button
+      download={download}
+      href={url}
+      className={className}
+      variant={variant}
+      color={color}
+      size={size}
+      // className="width-based-device"
+      type={type}
+      style={{ textTransform: "lowercase", ...style }}
+      endIcon={endIcon}
+      disabled={disabled}
+      component="a"
+      fullWidth={fullWidth}
+    >
+      {isLoading ? (
+        <>
+          <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} /> {t("loading")}
+          ..
+        </>
+      ) : (
+        <>{title}</>
+      )}
+    </Button>
   ) : (
     <Button
+      className={className}
       // className="width-based-device"
+      type={type}
       style={{ textTransform: "lowercase", ...style }}
       variant={variant}
       color={color}
@@ -61,7 +83,14 @@ export default function Btn({
       component={component}
       fullWidth={fullWidth}
     >
-      {title}
+      {isLoading ? (
+        <>
+          <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} /> {t("loading")}
+          ..
+        </>
+      ) : (
+        <>{title}</>
+      )}
     </Button>
   );
 }

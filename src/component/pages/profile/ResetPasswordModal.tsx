@@ -14,11 +14,12 @@ import { useTranslation } from "next-i18next";
 import NotificationContext from "@/store/context/notification-context";
 import { useDispatch, useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
-import { updatePassword } from "@/services/ocs/users";
-import { userUpdatePassword } from "@/store/actions/users";
+import { updateUser } from "@/services/ocs/users";
+import { userInfoUpdate } from "@/store/actions/users";
 import BackdropModal from "@/components/ui/Backdrop";
 import { signOut } from "next-auth/client";
 import { useRouter } from "next/router";
+import { v4 as uuid } from "uuid";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -56,7 +57,6 @@ type MyFormValues = {
 export default function ResetPasswordModal({ open, handleClose }: Props) {
   const { t: c } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const userId = userRdx.user.id;
   const currentPasswordRdx = userRdx.user.password;
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -99,7 +99,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
             <h4 id="transition-modal-title" className={classes.title}>
               {c("resetPasswordTitle")}
             </h4>
-            <BackdropModal open={showBackdrop} />
+            {showBackdrop && <BackdropModal open={showBackdrop} />}
             <Formik
               initialValues={initialValues}
               validationSchema={schemaValidation}
@@ -113,11 +113,11 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                     setSubmitting(true);
                     setShowBackdrop(true);
 
-                    const result = await updatePassword(userId, newPassword, currentPassword);
+                    const result = await updateUser<string | number>("password", newPassword);
                     if (result.data.ocs.meta.statuscode !== 200) {
                       throw new Error(c("messages.unableToUpdatePassword"));
                     }
-                    dispatch(userUpdatePassword(newPassword));
+                    dispatch(userInfoUpdate({ password: newPassword }));
 
                     setSubmitting(false);
                     setShowBackdrop(false);
@@ -155,7 +155,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                   <Field name="currentPassword" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
-                        id="outlined-search"
+                        id={uuid()}
                         label={c("form.placeholderCurrentPassword")}
                         variant="outlined"
                         type="password"
@@ -170,7 +170,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                   <Field name="newPassword" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
-                        id="outlined-search"
+                        id={uuid()}
                         type="password"
                         label={c("form.placeholderNewPassword")}
                         variant="outlined"
