@@ -19,13 +19,13 @@ export interface ListAllInterface extends SWRDefaultOptionsInterface {
     };
   };
 }
-export interface CreateTagInterface extends SWRDefaultOptionsInterface {
-  data: {
-    ocs: {
-      meta: OCSMetaDefaultInterface;
-      data: {
-        groups: string[];
-      };
-    };
-  };
-}
+// export interface CreateTagInterface extends SWRDefaultOptionsInterface {
+//   data: {
+//     ocs: {
+//       meta: OCSMetaDefaultInterface;
+//       data: {
+//         groups: string[];
+//       };
+//     };
+//   };
+// }

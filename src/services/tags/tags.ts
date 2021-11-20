@@ -1,9 +1,8 @@
-import useTagsFetch from "@/hooks/useTagsFetch";
 import { ListAllInterface } from "@/interfaces/tags";
-// import tags from "@/services/tags";
+import tags from "@/services/tags";
 
 export function listAllTags(): ListAllInterface {
-  return useTagsFetch("/");
+  return tags().PROPFIND("/");
 }
 
 // export function createTag(): CreateTagInterface {

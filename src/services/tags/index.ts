@@ -1,11 +1,10 @@
 import axios from "axios";
-
 import { initializeStore } from "@/store/index";
 
-const tagInstance = () => {
+export default function tags() {
   const { password, id: username } = initializeStore({}).getState().user.user;
   const api = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/remote.php/dav/systemtags`,
+    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}remote.php/dav/systemtags`,
     auth: {
       username,
       password,
@@ -15,5 +14,4 @@ const tagInstance = () => {
     },
   });
   return api;
-};
-export default tagInstance;
+}
