@@ -7,13 +7,33 @@ import CONSTANTS from "@/constants/index";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { JustifyContentEnum } from "@/enums/*";
 import FlexBox from "@/components/ui/FlexBox";
+// import { listGroupsUser } from "../../services/ocs/users";
+import { listAllGroups, createOneGroup } from "../../services/ocs/groupFolders";
 
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   console.log(userRdx.user.id);
   async function Capabilitie() {
     try {
-      const listG = await listAllCapabilities();
+      const listC = await listAllCapabilities();
+
+      console.log(listC);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function ListGroups() {
+    try {
+      const listG = await listAllGroups();
+
+      console.log(listG);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function createGroup() {
+    try {
+      const listG = await createOneGroup();
 
       console.log(listG);
     } catch (e) {
@@ -28,6 +48,20 @@ export default function OCS() {
             <div>
               <button type="button" onClick={Capabilitie}>
                 List All Capabilities
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={ListGroups}>
+                List All Groups
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={createGroup}>
+                create One Group
               </button>
             </div>
           </FlexBox>
