@@ -2,10 +2,10 @@ import axios from "axios";
 
 import { initializeStore } from "@/store/index";
 
-const ocsInstance = () => {
+const gfoldersInstance = () => {
   const { password, id: username } = initializeStore({}).getState().user.user;
   const api = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}ocs/v2.php/cloud`,
+    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}apps/groupfolders/folders`,
     auth: {
       username,
       password,
@@ -16,4 +16,4 @@ const ocsInstance = () => {
   });
   return api;
 };
-export default ocsInstance;
+export default gfoldersInstance;

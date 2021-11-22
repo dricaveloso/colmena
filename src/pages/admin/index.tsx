@@ -8,7 +8,7 @@ import LayoutApp from "@/components/statefull/LayoutApp";
 import { JustifyContentEnum } from "@/enums/*";
 import FlexBox from "@/components/ui/FlexBox";
 // import { listGroupsUser } from "../../services/ocs/users";
-import { listAllGroups, createOneGroup } from "../../services/ocs/groupFolders";
+import { listAllGroups, createOneGroup, createGroupFolders } from "../../services/ocs/groupFolders";
 
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -33,7 +33,16 @@ export default function OCS() {
   }
   async function createGroup() {
     try {
-      const listG = await createOneGroup();
+      const listG = await createOneGroup("testeAPI");
+
+      console.log(listG);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function createGFolders() {
+    try {
+      const listG = await createGroupFolders("testeAPI");
 
       console.log(listG);
     } catch (e) {
@@ -62,6 +71,13 @@ export default function OCS() {
             <div>
               <button type="button" onClick={createGroup}>
                 create One Group
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={createGFolders}>
+                create Grop Folders
               </button>
             </div>
           </FlexBox>
