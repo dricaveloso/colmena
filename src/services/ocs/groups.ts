@@ -1,6 +1,10 @@
 import useOcsFetch from "@/hooks/useOcsFetch";
-import { GroupsInfoInterface } from "@/interfaces/ocs";
+import { GroupsListInterface, GroupsItemInterface } from "@/interfaces/ocs";
 
-export function listAllGroups(): GroupsInfoInterface {
+export function listAllGroups(): GroupsListInterface {
   return useOcsFetch("/groups?format=json");
+}
+
+export function getSpecificGroup(group: string): GroupsItemInterface {
+  return useOcsFetch(`/groups/${group}?format=json`);
 }

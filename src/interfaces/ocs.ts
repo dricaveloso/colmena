@@ -30,6 +30,32 @@ export interface CreateUserInterface {
   };
 }
 
+export interface AutocompleteGroupsUsersInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: [
+        {
+          id: string;
+          label: string;
+          icon: string;
+          source: string;
+          status?:
+            | {
+                status: string;
+                message: string | null;
+                icon: string | null;
+                clearAt: string | null;
+              }
+            | string[]
+            | string;
+          subline: string;
+        },
+      ];
+    };
+  };
+}
+
 export interface WelcomeUserInterface {
   data: {
     ocs: {
@@ -53,12 +79,23 @@ export interface AppPasswordInterface {
   };
 }
 
-export interface GroupsInfoInterface extends SWRDefaultOptionsInterface {
+export interface GroupsListInterface extends SWRDefaultOptionsInterface {
   data: {
     ocs: {
       meta: OCSMetaDefaultInterface;
       data: {
         groups: string[];
+      };
+    };
+  };
+}
+
+export interface GroupsItemInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        users: string[];
       };
     };
   };

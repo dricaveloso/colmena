@@ -150,3 +150,13 @@ export enum FilterEnum {
   IMAGE = "image",
   TEXT = "text",
 }
+
+export enum RoleUserEnum {
+  COLLABORATOR = "collaborator",
+  ADMIN = "admin",
+}
+
+export enum ConfigFilesNCEnum {
+  USER_PROFILE = ".profile.json",
+  MEDIA_PROFILE = ".media.cfg",
+}

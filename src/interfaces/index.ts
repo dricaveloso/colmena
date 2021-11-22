@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // eslint-disable-next-line import/no-cycle
 import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
 import React from "react";
@@ -28,11 +29,26 @@ export interface NotificationDataInterface {
   status: NotificationStatusProps;
 }
 
+export interface UserProfileInterface {
+  medias: string[];
+  avatar: string;
+  social_medias: string[];
+}
+
 export interface MediaInfoInterface {
   name: string;
-  logo: string;
-  url: string;
-  slogan: string;
+  logo?: string;
+  url?: string;
+  slogan?: string;
+  groups?: string[];
+  quota?: string;
+  email?: string;
+  social_medias?: [
+    {
+      name: string;
+      url: string;
+    },
+  ];
 }
 
 export interface UserQuotaInterface {
@@ -49,7 +65,6 @@ export interface UserInfoInterface {
   avatar?: string;
   email: string;
   lastLogin: number;
-  userToken: string;
   password: string;
   language: string;
   website?: string;
@@ -58,7 +73,7 @@ export interface UserInfoInterface {
   groups: string[];
   subadmin: string[];
   quota: UserQuotaInterface;
-  media: MediaInfoInterface;
+  media?: MediaInfoInterface;
 }
 export interface UserInfoUpdateInterface {
   name?: string;

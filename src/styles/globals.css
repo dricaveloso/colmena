@@ -34,7 +34,8 @@ a {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  margin-bottom: 10;
+  text-align: left;
+  /* margin-bottom: 10; */
 }
 
 .scrollingContainer div {
