@@ -8,7 +8,15 @@ import LayoutApp from "@/components/statefull/LayoutApp";
 import { JustifyContentEnum } from "@/enums/*";
 import FlexBox from "@/components/ui/FlexBox";
 // import { listGroupsUser } from "../../services/ocs/users";
-import { listAllGroups, createOneGroup, createGroupFolders } from "../../services/ocs/groupFolders";
+import {
+  listAllGroups,
+  createOneGroup,
+  createGroupFolders,
+  listGroupFolders,
+  givGroupFoldersAGroup,
+  quotaGroupFolders,
+  listUsers,
+} from "../../services/ocs/groupFolders";
 
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -42,9 +50,42 @@ export default function OCS() {
   }
   async function createGFolders() {
     try {
-      const listG = await createGroupFolders("testeAPI");
+      const listG = await createGroupFolders();
 
       console.log(listG);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function listGFolders() {
+    try {
+      const listG = await listGroupFolders();
+
+      console.log(listG);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function givGF() {
+    try {
+      const listG = await givGroupFoldersAGroup(28);
+      console.log(listG);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function quota() {
+    try {
+      const listG = await quotaGroupFolders(28);
+      console.log(listG);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function users() {
+    try {
+      const listG = await listUsers();
+      console.log(listG.data.ocs.data);
     } catch (e) {
       console.log("error", e);
     }
@@ -78,6 +119,34 @@ export default function OCS() {
             <div>
               <button type="button" onClick={createGFolders}>
                 create Grop Folders
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={listGFolders}>
+                list Grop Folders
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={givGF}>
+                give a group access to a folder
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={quota}>
+                qota a group folder
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={users}>
+                list All users
               </button>
             </div>
           </FlexBox>

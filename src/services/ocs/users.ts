@@ -13,6 +13,7 @@ import axios from "axios";
 export function listAllUsers(): UsersListInterface {
   return useOcsFetch("/users?format=json");
 }
+
 export function listOneUser(userId: string | number) {
   return ocs().get(`/users/${userId}`);
 }
