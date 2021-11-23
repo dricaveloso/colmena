@@ -200,7 +200,51 @@ export default function OCS() {
       console.log("error", e);
     }
   }
+  async function retrieveTagsFile() {
+    const data = `<oc:filter-files  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <d:prop>
+                  <d:getcontentlength />
+                  <d:getcontenttype />
+                  <d:getetag />
+                  <d:getlastmodified />
+                  <d:lockdiscovery />
+                  <d:resourcetype />
+                  <oc:comments-unread />
+                  <oc:favorites />
+                  <oc:fileid />
+                  <oc:owner-display-name />
+                  <oc:permissions />
+                  <oc:share-types />
+                  <oc:size />
+                  <oc:tags />
+            </d:prop>
+              <oc:filter-rules>
+                  <oc:systemtag>7</oc:systemtag>
+                  <oc:systemtag>3</oc:systemtag>
+              </oc:filter-rules>
+            </oc:filter-files>`;
 
+    const config = {
+      method: "report",
+      url: "https://claudio.colmena.network/remote.php/webdav",
+      headers: {
+        "OCS-APIRequest": "true",
+        Accept: "application/json",
+        Authorization:
+          "Bearer zIBhpCVNZY8pzHIiBOTX2zUmO229J2RQ45FDe9pPoPjfMaAZQvVzKdRwTtNZDsxK4mRIWAXP",
+        "Content-Type": "application/xml",
+      },
+      data,
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
     <LayoutApp title="title">
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0 }}>
@@ -247,6 +291,13 @@ export default function OCS() {
               </button>
               <button type="button" onClick={AsstagInFile}>
                 Assing tags File
+              </button>
+            </div>
+          </FlexBox>
+          <FlexBox>
+            <div>
+              <button type="button" onClick={retrieveTagsFile}>
+                Retrieve all files with a tag Id
               </button>
             </div>
           </FlexBox>
