@@ -1,10 +1,10 @@
-import capabilities from "@/services/ocs/capabilities";
+// import capabilities from "@/services/ocs/capabilities";
 import axios from "axios";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { JustifyContentEnum } from "@/enums/*";
 import FlexBox from "@/components/ui/FlexBox";
 
-import {} from "../../services/tags/tags";
+import { assingTagFile, createAndAssignTags } from "../../services/tags/tags";
 
 export default function OCS() {
   // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -18,14 +18,14 @@ export default function OCS() {
   //       console.log("error", e);
   //     }
   //   }
-  async function ListCababilities() {
-    try {
-      const listC = await capabilities();
-      console.log(listC);
-    } catch (e) {
-      console.log("error", e);
-    }
-  }
+  // async function ListCababilities() {
+  //   try {
+  //     const listC = await capabilities();
+  //     console.log(listC);
+  //   } catch (e) {
+  //     console.log("error", e);
+  //   }
+  // }
   async function listTags() {
     const data = `<?xml version="1.0" encoding="utf-8" ?>
                     <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
@@ -94,6 +94,14 @@ export default function OCS() {
       console.log("error", e);
     }
   }
+  async function createAssingTag() {
+    try {
+      const createT = await createAndAssignTags(5025);
+      console.log(createT);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
   async function editTag() {
     const data = `<?xml version="1.0"?>
         <d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
@@ -125,26 +133,90 @@ export default function OCS() {
       });
   }
 
+  async function returnFileId() {
+    const data = `<?xml version="1.0" encoding="utf-8" ?>
+        <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <a:prop>
+            <oc:fileid/>
+          </a:prop>
+        </a:propfind>`;
+    const config = {
+      method: "propfind",
+      url: "https://claudio.colmena.network/remote.php/dav/files/nilson",
+      headers: {
+        "OCS-APIRequest": "true",
+        Accept: "application/json",
+        Authorization:
+          "Bearer zIBhpCVNZY8pzHIiBOTX2zUmO229J2RQ45FDe9pPoPjfMaAZQvVzKdRwTtNZDsxK4mRIWAXP",
+        "Content-Type": "application/xml",
+      },
+      data,
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  async function returnTagsFile() {
+    const data = `<?xml version="1.0" encoding="utf-8" ?>
+        <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <a:prop>
+              <oc:display-name/>
+              <oc:user-visible/>
+              <oc:user-assignable/>
+              <oc:id/>
+          </a:prop>
+        </a:propfind>`;
+    const config = {
+      method: "propfind",
+      url: "https://claudio.colmena.network/remote.php/dav/systemtags-relations/files/5025",
+      headers: {
+        "OCS-APIRequest": "true",
+        Accept: "application/json",
+        Authorization:
+          "Bearer zIBhpCVNZY8pzHIiBOTX2zUmO229J2RQ45FDe9pPoPjfMaAZQvVzKdRwTtNZDsxK4mRIWAXP",
+        "Content-Type": "application/xml",
+      },
+      data,
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  async function AsstagInFile() {
+    try {
+      const assTagFile = await assingTagFile(5025, 7);
+      console.log(assTagFile);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+
   return (
     <LayoutApp title="title">
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0 }}>
         <div style={{ width: "100vw", margin: 5 }}>
-          <FlexBox>
+          {/* <FlexBox>
             <div>
               <button type="button" onClick={ListCababilities}>
                 Listar Capabilities
               </button>
             </div>
-          </FlexBox>
+          </FlexBox> */}
           <FlexBox>
             <div>
               <button type="button" onClick={listTags}>
                 Listar Tags
               </button>
-            </div>
-          </FlexBox>
-          <FlexBox>
-            <div>
               <button type="button" onClick={listOneTags}>
                 Listar One Tags
               </button>
@@ -155,12 +227,26 @@ export default function OCS() {
               <button type="button" onClick={createTag}>
                 Create Tag
               </button>
+              <button type="button" onClick={editTag}>
+                Editar One Tags
+              </button>
             </div>
           </FlexBox>
           <FlexBox>
             <div>
-              <button type="button" onClick={editTag}>
-                Editar One Tags
+              <button type="button" onClick={returnFileId}>
+                File Id
+              </button>
+              <button type="button" onClick={returnTagsFile}>
+                tags File
+              </button>
+            </div>
+            <div>
+              <button type="button" onClick={createAssingTag}>
+                Create and Assing tags File
+              </button>
+              <button type="button" onClick={AsstagInFile}>
+                Assing tags File
               </button>
             </div>
           </FlexBox>
