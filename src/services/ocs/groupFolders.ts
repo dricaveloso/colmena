@@ -74,3 +74,27 @@ export function quotaGroupFolders(groupid: number) {
 export function listUsers() {
   return ocs().get("/users");
 }
+export function createOneUser() {
+  return ocs().post("/users", {
+    userid: "Myriam Teste",
+    email: "test-8e7836@test.mailgenius.com",
+    password: "colmena@123",
+    quota: "1 GB",
+  });
+}
+export function setGroupOneUser(userid: string) {
+  return ocs().post(`/users/${userid}/groups`, {
+    groupid: "devteam57",
+  });
+}
+export function listGroupOneUser(userid: string) {
+  return ocs().get(`/users/${userid}/groups`);
+}
+export function suadminGroup(userid: string) {
+  return ocs().post(`/users/${userid}/subadmins`, {
+    groupid: "devteam57",
+  });
+}
+export function listOneUser(userid: string) {
+  return ocs().get(`/users/${userid}`);
+}

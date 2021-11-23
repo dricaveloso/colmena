@@ -16,7 +16,12 @@ import {
   givGroupFoldersAGroup,
   quotaGroupFolders,
   listUsers,
+  createOneUser,
+  setGroupOneUser,
+  listGroupOneUser,
+  suadminGroup,
 } from "../../services/ocs/groupFolders";
+import { listOneUser } from "../../services/ocs/users";
 
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -41,7 +46,7 @@ export default function OCS() {
   }
   async function createGroup() {
     try {
-      const listG = await createOneGroup("testeAPI");
+      const listG = await createOneGroup();
 
       console.log(listG);
     } catch (e) {
@@ -90,6 +95,46 @@ export default function OCS() {
       console.log("error", e);
     }
   }
+  async function createUser() {
+    try {
+      const listG = await createOneUser();
+      console.log(listG.data.ocs.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function setGroup() {
+    try {
+      const listG = await setGroupOneUser("Myriam Teste");
+      console.log(listG.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function listGroup() {
+    try {
+      const listG = await listGroupOneUser("Myriam Teste");
+      console.log(listG.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function setSubadmin() {
+    try {
+      const listG = await suadminGroup("Myriam Teste");
+      console.log(listG.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function listUser() {
+    try {
+      const listG = await listOneUser("Myriam Teste");
+      console.log(listG.data.ocs.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
@@ -106,40 +151,29 @@ export default function OCS() {
               <button type="button" onClick={ListGroups}>
                 List All Groups
               </button>
-            </div>
-          </FlexBox>
-          <FlexBox>
-            <div>
               <button type="button" onClick={createGroup}>
                 create One Group
               </button>
             </div>
           </FlexBox>
           <FlexBox>
-            <div>
-              <button type="button" onClick={createGFolders}>
-                create Grop Folders
-              </button>
-            </div>
+            <div></div>
           </FlexBox>
           <FlexBox>
             <div>
               <button type="button" onClick={listGFolders}>
                 list Grop Folders
               </button>
+              <button type="button" onClick={createGFolders}>
+                create Grop Folders
+              </button>
             </div>
-          </FlexBox>
-          <FlexBox>
             <div>
               <button type="button" onClick={givGF}>
                 give a group access to a folder
               </button>
-            </div>
-          </FlexBox>
-          <FlexBox>
-            <div>
               <button type="button" onClick={quota}>
-                qota a group folder
+                quota a group folder
               </button>
             </div>
           </FlexBox>
@@ -148,8 +182,28 @@ export default function OCS() {
               <button type="button" onClick={users}>
                 list All users
               </button>
+              <button type="button" onClick={createUser}>
+                Create a subadmin
+              </button>
+              <button type="button" onClick={setGroup}>
+                set Group
+              </button>
+            </div>
+            <div>
+              <button type="button" onClick={listGroup}>
+                List Group User
+              </button>
+              <button type="button" onClick={setSubadmin}>
+                Set Subadmin
+              </button>
+            </div>
+            <div>
+              <button type="button" onClick={listUser}>
+                List User
+              </button>
             </div>
           </FlexBox>
+
           {/* <VerticalListWebDav data={data} /> */}
         </div>
       </FlexBox>
