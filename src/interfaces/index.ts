@@ -2,6 +2,7 @@
 // eslint-disable-next-line import/no-cycle
 import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
 import React from "react";
+import { ListTypeEnum } from "../enums";
 
 export interface I18nInterface {
   locale: string;
@@ -140,10 +141,19 @@ export interface UserInvitationInterface {
   iat: number;
   exp: number;
 }
+export interface LibraryInterface {
+  listType?: ListTypeEnum;
+  items?: LibraryItemInterface[];
+  isLoading?: boolean;
+  isDisabled?: boolean;
+  options?: (cardItem: LibraryCardItemInterface) => React.ReactNode;
+  bottomOptions?: (cardItem: LibraryCardItemInterface) => React.ReactNode;
+  handleItemClick: (item: LibraryItemInterface) => void;
+}
 export interface LibraryItemInterface {
   id: string;
-  filename?: string;
-  basename?: string;
+  filename: string;
+  basename: string;
   extension?: string | undefined;
   type?: string;
   tags?: NXTagsProps[];
@@ -159,11 +169,15 @@ export interface LibraryItemInterface {
 
 export interface LibraryCardItemInterface extends LibraryItemInterface {
   orientation: string | ["vertical", "horizontal"];
+  options?: (item: LibraryItemInterface) => React.ReactNode;
+  bottomOptions?: (item: LibraryItemInterface) => React.ReactNode;
+  handleOpenCard: (item: LibraryItemInterface) => void;
+  isDisabled?: boolean;
 }
 export interface BreadcrumbItemInterface {
   description: string | undefined;
   path: string;
-  isCurrent: boolean;
+  isCurrent?: boolean;
   icon?: AllIconProps | undefined;
 }
 

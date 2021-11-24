@@ -15,13 +15,7 @@ import {
   getOfflinePath,
   isRootPath,
 } from "@/utils/directory";
-import { NotificationStatusEnum } from "@/enums/*";
-import { removeCornerSlash } from "@/utils/utils";
-import theme from "@/styles/theme";
 import FileIcon from "@/components/ui/FileIcon";
-import ContextMenuOptions from "./contextMenu";
-import NotificationContext from "@/store/context/notification-context";
-import { useTranslation } from "react-i18next";
 import { AllIconProps } from "@/types/index";
 
 const CardItem = (cardItem: LibraryCardItemInterface) => {
@@ -40,36 +34,18 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     orientation,
     mime,
     size,
+    options,
+    bottomOptions,
+    handleOpenCard,
+    isDisabled,
   } = cardItem;
   const router = useRouter();
-  const notificationCtx = useContext(NotificationContext);
-  const { t: c } = useTranslation("common");
 
   const handleClick = () => {
-    if (type === "directory" && router.query.path !== filename) {
-      router.push(`/library/${filename}`);
+    if (!isDisabled) {
+      handleOpenCard(cardItem);
     }
   };
-
-  const unavailable = () => {
-    notificationCtx.showNotification({
-      message: c("featureUnavailable"),
-      status: NotificationStatusEnum.WARNING,
-    });
-  };
-
-  const options = [];
-  const bottomOptions = [];
-  const shareOption = (
-    <IconButton
-      key={`${basename}-share`}
-      icon="share"
-      color="#9A9A9A"
-      style={{ padding: 0, margin: 0, minWidth: 30 }}
-      fontSizeIcon="small"
-      handleClick={unavailable}
-    />
-  );
 
   let folderSecondIcon: AllIconProps | null | undefined = null;
   if (type === "directory") {
@@ -115,16 +91,6 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     </>
   );
 
-  if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
-    if (orientation === "vertical") {
-      options.push(shareOption);
-    } else {
-      bottomOptions.push(shareOption);
-    }
-
-    options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);
-  }
-
   return (
     <>
       {orientation === "vertical" ? (
@@ -133,7 +99,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           avatar={avatar}
           primary={basename}
           secondary={createdAtDescription}
-          options={options}
+          options={options && options(cardItem)}
           handleClick={handleClick}
         />
       ) : (
@@ -142,8 +108,8 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           avatar={avatar}
           primary={basename}
           secondary={createdAtDescription}
-          topOptions={options}
-          bottomOptions={bottomOptions}
+          topOptions={options && options(cardItem)}
+          bottomOptions={bottomOptions && bottomOptions(cardItem)}
           handleClick={handleClick}
         />
       )}

@@ -144,6 +144,7 @@ export enum OrderEnum {
 }
 
 export enum FilterEnum {
+  ALL = "",
   OFFLINE = "offline",
   SYNC = "sync",
   AUDIO = "audio",

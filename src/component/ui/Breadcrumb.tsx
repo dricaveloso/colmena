@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Button from "@material-ui/core/Button";
 import { BreadcrumbItemInterface } from "@/interfaces/index";
-import { useRouter } from "next/router";
 import { Box, makeStyles } from "@material-ui/core";
 import { moveScrollToRight } from "@/utils/utils";
 import IconButton from "@material-ui/core/IconButton";
@@ -10,6 +9,8 @@ import SvgIcon from "@/components/ui/SvgIcon";
 
 type Props = {
   breadcrumbs: Array<BreadcrumbItemInterface>;
+  handleNavigate: (dir: BreadcrumbItemInterface) => void;
+  isDisabled?: boolean;
 };
 
 const useStyles = makeStyles(() => ({
@@ -33,14 +34,16 @@ const useStyles = makeStyles(() => ({
         marginLeft: "2px",
         marginRight: "2px",
       },
+      "& .MuiButton-root": {
+        textTransform: "inherit",
+      },
     },
   },
 }));
 
-function Breadcrumb({ breadcrumbs }: Props) {
+function Breadcrumb({ breadcrumbs, handleNavigate, isDisabled = false }: Props) {
   const breadcrumbRef = useRef<HTMLDivElement>(null);
   const classes = useStyles();
-  const router = useRouter();
 
   useEffect(() => moveScrollToRight(breadcrumbRef), [breadcrumbRef.current?.scrollWidth]);
 
@@ -58,8 +61,8 @@ function Breadcrumb({ breadcrumbs }: Props) {
               key={dir.path}
               color="primary"
               component="span"
-              disabled={dir.isCurrent}
-              onClick={() => router.push(dir.path)}
+              disabled={dir.isCurrent || isDisabled}
+              onClick={() => handleNavigate(dir)}
             >
               <SvgIcon
                 icon={dir.icon}
@@ -79,8 +82,8 @@ function Breadcrumb({ breadcrumbs }: Props) {
           <Button
             key={dir.path}
             style={{ color: dir.isCurrent ? "#999" : "#292929" }}
-            disabled={dir.isCurrent}
-            onClick={() => router.push(dir.path)}
+            disabled={dir.isCurrent || isDisabled}
+            onClick={() => handleNavigate(dir)}
           >
             {dir.description}
           </Button>

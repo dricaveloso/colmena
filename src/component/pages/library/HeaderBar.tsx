@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useTranslation } from "next-i18next";
 import { Box, makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@/components/ui/SvgIcon";
@@ -37,6 +36,11 @@ type Props = {
   order: OrderEnum;
   filter: string | FilterEnum;
   pathExists: boolean;
+  handleNavigate: (dir: BreadcrumbItemInterface) => void;
+  hasFilter?: boolean;
+  canChangeList?: boolean;
+  firstBreadcrumbItem?: BreadcrumbItemInterface;
+  isDisabled?: boolean;
 };
 
 const defineIconListType = (type: string) => (type === ListTypeEnum.LIST ? "grid" : "checklist");
@@ -51,25 +55,33 @@ function HeaderBar({
   order,
   filter,
   pathExists,
+  handleNavigate,
+  hasFilter = true,
+  canChangeList = true,
+  firstBreadcrumbItem,
+  isDisabled = false,
 }: Props) {
   const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
   const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
-  const { t } = useTranslation("library");
   const classes = useStyles();
   const [breadcrumb, setBreadcrumb] = useState<Array<BreadcrumbItemInterface>>(
     [] as Array<BreadcrumbItemInterface>,
   );
 
   useEffect(() => {
-    const generatedBreadcrumb = generateBreadcrumb(path, "/library");
-    const firstMenu: BreadcrumbItemInterface = {
-      icon: "library",
-      isCurrent: generatedBreadcrumb.length === 0,
-      description: generatedBreadcrumb.length === 0 ? t("title") : undefined,
-      path: "/library",
-    };
+    if (firstBreadcrumbItem) {
+      const generatedBreadcrumb = generateBreadcrumb(path, firstBreadcrumbItem.path);
+      const newBreadcrumbItem = {
+        ...firstBreadcrumbItem,
+        isCurrent: generatedBreadcrumb.length === 0,
+        description: generatedBreadcrumb.length === 0 ? firstBreadcrumbItem.description : undefined,
+      };
 
-    setBreadcrumb([firstMenu, ...generatedBreadcrumb]);
+      setBreadcrumb([newBreadcrumbItem, ...generatedBreadcrumb]);
+    } else {
+      const generatedBreadcrumb = generateBreadcrumb(path);
+      setBreadcrumb(generatedBreadcrumb);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
@@ -107,25 +119,37 @@ function HeaderBar({
       width="100%"
     >
       <Box className={classes.breadcrumb}>
-        <Breadcrumb breadcrumbs={breadcrumb} />
+        <Breadcrumb
+          breadcrumbs={breadcrumb}
+          handleNavigate={handleNavigate}
+          isDisabled={isDisabled}
+        />
       </Box>
       {pathExists && (
         <Box className={classes.options}>
-          {!isRootPath(currentPath) && (
+          {!isRootPath(currentPath) && hasFilter && (
             <IconButton
               color="primary"
               component="span"
               onClick={handleOpenFilterDrawer}
               aria-controls="filter-menu"
               aria-haspopup="true"
+              disabled={isDisabled}
             >
               <SvgIcon icon="settings_adjust" htmlColor="#292929" fontSize="small" />
             </IconButton>
           )}
 
-          <IconButton color="primary" component="span" onClick={changeListType}>
-            <SvgIcon icon={iconListType} htmlColor="#292929" fontSize="small" />
-          </IconButton>
+          {canChangeList && (
+            <IconButton
+              color="primary"
+              component="span"
+              onClick={changeListType}
+              disabled={isDisabled}
+            >
+              <SvgIcon icon={iconListType} htmlColor="#292929" fontSize="small" />
+            </IconButton>
+          )}
         </Box>
       )}
 

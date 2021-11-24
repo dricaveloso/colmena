@@ -1,4 +1,4 @@
-import { removeFirstSlash } from "./utils";
+import { removeFirstSlash, removeCornerSlash, trailingSlash } from "./utils";
 
 const PRIVATE_PATH = "private";
 const PUBLIC_PATH = "public";
@@ -58,4 +58,23 @@ export function getPathName(path: string): string {
 
 export function isRootPath(path: string | undefined | null): boolean {
   return path === "/" || path === "";
+}
+
+export function pathIsInFilename(path: string, filename: string | undefined): boolean {
+  if (!filename) {
+    return false;
+  }
+
+  const handledPath = trailingSlash(path).replace(/\/.+?\..*$/, "");
+  const handledFilename = trailingSlash(filename).replace(/\/.+?\..*$/, "");
+
+  const regex = new RegExp(`^${removeFirstSlash(handledPath)}.*`, "g");
+
+  return removeFirstSlash(handledFilename).replace(regex, "") === "";
+}
+
+export function removeInitialPath(fullPath: string, initialPath: string): string {
+  const regex = new RegExp(`^${removeCornerSlash(initialPath)}`, "g");
+
+  return removeCornerSlash(fullPath).replace(regex, "");
 }

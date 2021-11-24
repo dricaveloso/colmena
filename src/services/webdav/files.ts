@@ -94,8 +94,7 @@ export async function putFile(
   });
 }
 
-export function listImages(userId: string | number, filename: string) {
-  console.log(filename);
+export function listImages(userId: string | number) {
   return webdav().getDirectoryContents(`${userId}/`, {
     deep: true,
     glob: "/**/*.{png,jpg,gif,jpeg}",

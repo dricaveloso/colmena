@@ -13,7 +13,9 @@ import { useTranslation } from "react-i18next";
 import DownloadModal from "./DownloadModal";
 import RenameItemModal from "./RenameItemModal";
 import DuplicateItemModal from "./DuplicateItemModal";
+import CopyItemModal from "./CopyItemModal";
 import { LibraryCardItemInterface } from "@/interfaces/index";
+import MoveItemModal from "./MoveItemModal";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment } = cardItem;
@@ -31,6 +33,8 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
   const [openRenameItemModal, setOpenRenameItemModal] = useState(false);
   const [openDuplicateItemModal, setOpenDuplicateItemModal] = useState(false);
+  const [openCopyItemModal, setOpenCopyItemModal] = useState(false);
+  const [openMoveItemModal, setOpenMoveItemModal] = useState(false);
 
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -52,6 +56,16 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
 
   const handleOpenDuplicateModal = (opt: boolean) => {
     setOpenDuplicateItemModal(opt);
+    handleCloseContextMenu();
+  };
+
+  const handleOpenCopyModal = (opt: boolean) => {
+    setOpenCopyItemModal(opt);
+    handleCloseContextMenu();
+  };
+
+  const handleOpenMoveModal = (opt: boolean) => {
+    setOpenMoveItemModal(opt);
     handleCloseContextMenu();
   };
 
@@ -115,10 +129,10 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
             {t("contextMenuOptions.edit")}
           </MenuItem>
         )}
-        <MenuItem key="copy" onClick={unavailable} style={{ color: "#aaa" }}>
+        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
           {t("contextMenuOptions.copy")}
         </MenuItem>
-        <MenuItem key="move" onClick={unavailable} style={{ color: "#aaa" }}>
+        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
           {t("contextMenuOptions.move")}
         </MenuItem>
         <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
@@ -168,6 +182,22 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           key={`${basename}-rename-modal`}
           open={openDuplicateItemModal}
           handleOpen={() => handleOpenDuplicateModal(false)}
+          cardItem={{ ...cardItem }}
+        />
+      )}
+      {openCopyItemModal && (
+        <CopyItemModal
+          key={`${basename}-copy-modal`}
+          open={openCopyItemModal}
+          handleOpen={() => handleOpenCopyModal(false)}
+          cardItem={{ ...cardItem }}
+        />
+      )}
+      {openMoveItemModal && (
+        <MoveItemModal
+          key={`${basename}-move-modal`}
+          open={openMoveItemModal}
+          handleOpen={() => handleOpenMoveModal(false)}
           cardItem={{ ...cardItem }}
         />
       )}
