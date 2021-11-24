@@ -3,29 +3,11 @@ import axios from "axios";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { JustifyContentEnum } from "@/enums/*";
 import FlexBox from "@/components/ui/FlexBox";
+import xml2js from "xml2js";
 
 import { assingTagFile, createAndAssignTags } from "../../services/tags/tags";
 
 export default function OCS() {
-  // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  // const [data, setData] = useState([]);
-  // const directory = "";
-  //   async function ResetPass() {
-  //     try {
-  //       const resetPassU = await resetPass("nil", "rocha123");
-  //       console.log(resetPassU);
-  //     } catch (e) {
-  //       console.log("error", e);
-  //     }
-  //   }
-  // async function ListCababilities() {
-  //   try {
-  //     const listC = await capabilities();
-  //     console.log(listC);
-  //   } catch (e) {
-  //     console.log("error", e);
-  //   }
-  // }
   async function listTags() {
     const data = `<?xml version="1.0" encoding="utf-8" ?>
                     <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
@@ -50,12 +32,19 @@ export default function OCS() {
 
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        xml2js.parseString(response.data, (err, result) => {
+          if (err) {
+            throw err;
+          }
+          const json = JSON.stringify(result, null, 4);
+          console.log(json);
+        });
       })
       .catch((error) => {
         console.log(error);
       });
   }
+
   async function listOneTags() {
     const data = `<?xml version="1.0" encoding="utf-8" ?>
             <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
@@ -80,7 +69,13 @@ export default function OCS() {
 
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        xml2js.parseString(response.data, (err, result) => {
+          if (err) {
+            throw err;
+          }
+          const json = JSON.stringify(result, null, 4);
+          console.log(json);
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -126,7 +121,13 @@ export default function OCS() {
 
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        xml2js.parseString(response.data, (err, result) => {
+          if (err) {
+            throw err;
+          }
+          const json = JSON.stringify(result, null, 4);
+          console.log(json);
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -142,7 +143,7 @@ export default function OCS() {
         </a:propfind>`;
     const config = {
       method: "propfind",
-      url: "https://claudio.colmena.network/remote.php/dav/files/nilson",
+      url: "https://claudio.colmena.network/remote.php/dav/files/nilson/private/",
       headers: {
         "OCS-APIRequest": "true",
         Accept: "application/json",
@@ -155,7 +156,13 @@ export default function OCS() {
 
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        xml2js.parseString(response.data, (err, result) => {
+          if (err) {
+            throw err;
+          }
+          const json = JSON.stringify(result, null, 4);
+          console.log(json);
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -186,7 +193,13 @@ export default function OCS() {
 
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        xml2js.parseString(response.data, (err, result) => {
+          if (err) {
+            throw err;
+          }
+          const json = JSON.stringify(result, null, 4);
+          console.log(json);
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -194,7 +207,7 @@ export default function OCS() {
   }
   async function AsstagInFile() {
     try {
-      const assTagFile = await assingTagFile(5025, 7);
+      const assTagFile = await assingTagFile(5070, 7);
       console.log(assTagFile);
     } catch (e) {
       console.log("error", e);
@@ -220,7 +233,6 @@ export default function OCS() {
             </d:prop>
               <oc:filter-rules>
                   <oc:systemtag>7</oc:systemtag>
-                  <oc:systemtag>3</oc:systemtag>
               </oc:filter-rules>
             </oc:filter-files>`;
 
@@ -239,7 +251,13 @@ export default function OCS() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
+        xml2js.parseString(response.data, (err, result) => {
+          if (err) {
+            throw err;
+          }
+          const json = JSON.stringify(result, null, 4);
+          console.log(json);
+        });
       })
       .catch((error) => {
         console.log(error);

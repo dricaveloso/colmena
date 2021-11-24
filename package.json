@@ -81,6 +81,7 @@
     "webdav-client": "^1.4.3",
     "webdav-fs": "^3.0.0",
     "webdav.client": "^5.20.5656",
+    "xml2js": "^0.4.23",
     "yup": "^0.32.9"
   },
   "devDependencies": {
