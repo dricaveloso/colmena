@@ -25,6 +25,9 @@ import { listOneUser } from "../../services/ocs/users";
 
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  if (!userRdx.user.groups.includes("admin")) {
+    throw new Error("permissionDenied");
+  }
   console.log(userRdx.user.id);
   async function Capabilitie() {
     try {
