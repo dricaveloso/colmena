@@ -107,10 +107,10 @@ export function getExtensionFilename(filename: string) {
 
 export function generateBreadcrumb(
   path: string | Array<string> | string[] | undefined,
-  initialPath: string,
+  initialPath?: string,
 ): Array<BreadcrumbItemInterface> {
   const directories: BreadcrumbItemInterface[] = [];
-  let breadcrumb = initialPath;
+  let breadcrumb = initialPath ?? "/";
 
   if (empty(path)) {
     return directories;
@@ -210,7 +210,7 @@ export function dateDescription(date: Date | undefined, timeDescription: TimeDes
 }
 
 export function trailingSlash(path: string) {
-  return `${path.replace(/\/$/, "")}/`;
+  return `${removeLastSlash(path)}/`;
 }
 
 export function removeFirstSlash(path: string | null | undefined): string {
@@ -218,7 +218,7 @@ export function removeFirstSlash(path: string | null | undefined): string {
     return "";
   }
 
-  return `${path.replace(/^\//, "")}`;
+  return path.replace(/^[/]*/, "");
 }
 
 export function removeLastSlash(path: string | null | undefined): string {
@@ -226,7 +226,7 @@ export function removeLastSlash(path: string | null | undefined): string {
     return "";
   }
 
-  return `${path.replace(/\/$/, "")}`;
+  return path.replace(/[/]*$/, "");
 }
 
 export function removeCornerSlash(path: string | null | undefined): string {

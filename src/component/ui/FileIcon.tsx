@@ -62,11 +62,9 @@ export default function FileIcon({
   iconTextColor,
   mime,
   extension,
-  environment,
   folderSecondIcon,
 }: Props) {
   const classes = useStyles();
-  console.log(environment);
   let icon: AllIconProps = "folder";
   if (type === "file") {
     icon = "file";

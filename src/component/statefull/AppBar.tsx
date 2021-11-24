@@ -22,6 +22,16 @@ type Props = {
   extraElement?: React.ReactNode | undefined;
 };
 
+export const tplHeader = new Map();
+tplHeader.set("variation1", {
+  backgroundAppBar: "#fff",
+  textColor: "#292929",
+});
+tplHeader.set("variation2", {
+  backgroundAppBar: theme.palette.primary.main,
+  textColor: "#fff",
+});
+
 function AppBarSys({
   title,
   subtitle,
@@ -36,16 +46,6 @@ function AppBarSys({
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
 
   const [openDrawer, setOpenDrawer] = useState(false);
-
-  const tplHeader = new Map();
-  tplHeader.set("variation1", {
-    backgroundAppBar: "#fff",
-    textColor: "#292929",
-  });
-  tplHeader.set("variation2", {
-    backgroundAppBar: theme.palette.primary.main,
-    textColor: "#fff",
-  });
 
   const handleBack = () => {
     if (router.pathname === "/profile") router.push(configRdx.currentPage);
@@ -122,7 +122,9 @@ function AppBarSys({
           </Box>
         </Toolbar>
       </AppBar>
-      <Toolbar style={{ height: 70 }} />
+      {(headerPosition === PositionEnum.FIXED || headerPosition === PositionEnum.ABSOLUTE) && (
+        <Toolbar style={{ height: 70 }} />
+      )}
     </header>
   );
 }

@@ -42,7 +42,13 @@ function ItemList({ items = [], type = ListTypeEnum.LIST }: Props) {
             disableGutters
             className={isVerticalList ? classes.verticalList : classes.gridList}
           >
-            <CardItem {...item} orientation={orientation} />
+            <CardItem
+              handleOpenCard={(item) => {
+                console.log(item);
+              }}
+              {...item}
+              orientation={orientation}
+            />
           </ListItem>
         ))}
     </List>
