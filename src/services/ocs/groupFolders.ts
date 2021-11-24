@@ -76,8 +76,8 @@ export function listUsers() {
 }
 export function createOneUser() {
   return ocs().post("/users", {
-    userid: "Myriam Teste",
-    email: "test-8e7836@test.mailgenius.com",
+    userid: "TesteSubadmin",
+    email: "test-8e78367@test.mailgenius.com",
     password: "colmena@123",
     quota: "1 GB",
   });

@@ -21,7 +21,9 @@ import { listOneUser } from "../../services/ocs/users";
 
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-
+  if (userRdx.user.subadmin.includes("")) {
+    throw new Error("permissionDenied");
+  }
   console.log(userRdx.user.id);
   async function Capabilitie() {
     try {
@@ -135,7 +137,7 @@ export default function OCS() {
                 list All users
               </button>
               <button type="button" onClick={createUser}>
-                Create a subadmin
+                Create a user
               </button>
               <button type="button" onClick={setGroup}>
                 set Group
