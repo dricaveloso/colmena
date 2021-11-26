@@ -16,6 +16,7 @@ import DuplicateItemModal from "./DuplicateItemModal";
 import CopyItemModal from "./CopyItemModal";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import MoveItemModal from "./MoveItemModal";
+import DetailsModal from "./DetailsModal";
 import { getOfflinePath, pathIsInFilename } from "@/utils/directory";
 import { remove } from "@/store/idb/models/audios";
 
@@ -33,6 +34,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const [openDuplicateItemModal, setOpenDuplicateItemModal] = useState(false);
   const [openCopyItemModal, setOpenCopyItemModal] = useState(false);
   const [openMoveItemModal, setOpenMoveItemModal] = useState(false);
+  const [openDetailsModal, setOpenDetailsModal] = useState(false);
 
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -64,6 +66,11 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
 
   const handleOpenMoveModal = (opt: boolean) => {
     setOpenMoveItemModal(opt);
+    handleCloseContextMenu();
+  };
+
+  const handleOpenDetailsModal = (opt: boolean) => {
+    setOpenDetailsModal(opt);
     handleCloseContextMenu();
   };
 
@@ -157,7 +164,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           </MenuItem>
         )}
         {!insideOfflinePath && (
-          <MenuItem key="details" onClick={unavailable} style={{ color: "#aaa" }}>
+          <MenuItem key="details" onClick={() => handleOpenDetailsModal(true)}>
             {t("contextMenuOptions.details")}
           </MenuItem>
         )}
@@ -171,7 +178,6 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
             {t("contextMenuOptions.publish")}
           </MenuItem>
         )}
-
         <MenuItem key="delete" onClick={handleDelete}>
           {t("contextMenuOptions.delete")}
         </MenuItem>
@@ -199,7 +205,31 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           key={`${basename}-rename-modal`}
           open={openDuplicateItemModal}
           handleOpen={() => handleOpenDuplicateModal(false)}
-          cardItem={{ ...cardItem }}
+          cardItem={cardItem}
+        />
+      )}
+      {openCopyItemModal && (
+        <CopyItemModal
+          key={`${basename}-copy-modal`}
+          open={openCopyItemModal}
+          handleOpen={() => handleOpenCopyModal(false)}
+          cardItem={cardItem}
+        />
+      )}
+      {openMoveItemModal && (
+        <MoveItemModal
+          key={`${basename}-move-modal`}
+          open={openMoveItemModal}
+          handleOpen={() => handleOpenMoveModal(false)}
+          cardItem={cardItem}
+        />
+      )}
+      {openDetailsModal && (
+        <DetailsModal
+          key={`${basename}-details-modal`}
+          open={openDetailsModal}
+          handleOpen={() => handleOpenDetailsModal(false)}
+          cardItem={cardItem}
         />
       )}
       {openCopyItemModal && (

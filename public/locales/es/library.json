@@ -49,5 +49,13 @@
   "copyModalTitle": "Choose the destination",
   "pasteButton": "Paste",
   "moveModalTitle": "Choose the destination",
-  "chooseButton": "Choose"
+  "chooseButton": "Choose",
+  "detailsTitle": "Details",
+  "detailsModal": {
+    "name": "Name",
+    "path": "Path",
+    "lastUpdate": "Last update at",
+    "size": "Size",
+    "type": "Type"
+  }
 }
