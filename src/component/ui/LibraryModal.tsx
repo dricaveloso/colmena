@@ -95,6 +95,7 @@ export default function LibraryModal({
       let defaultOrder = order;
       if (isRootPath(path)) {
         defaultOrder = OrderEnum.HIGHLIGHT;
+        setOrder(defaultOrder);
       }
 
       setItems(orderItems(defaultOrder, filterItems(filter, rawItems)));

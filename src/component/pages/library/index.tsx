@@ -13,7 +13,12 @@ import { listLibraryDirectories } from "@/services/webdav/directories";
 import { FileStat } from "webdav";
 import { getAllAudios } from "@/store/idb/models/audios";
 import { makeStyles } from "@material-ui/core";
-import { getExtensionFilename, dateDescription, removeCornerSlash } from "@/utils/utils";
+import {
+  getExtensionFilename,
+  dateDescription,
+  removeCornerSlash,
+  trailingSlash,
+} from "@/utils/utils";
 import { EnvironmentEnum, OrderEnum, FilterEnum, ListTypeEnum } from "@/enums/index";
 import {
   getOfflinePath,
@@ -79,10 +84,11 @@ export async function getWebDavDirectories(
 export async function getLocalFiles(userId: string, timeDescription: TimeDescriptionInterface) {
   const items: LibraryItemInterface[] = [];
   const localFiles = await getAllAudios(userId);
+  const offlinePath = getOfflinePath();
   if (localFiles.length > 0) {
     localFiles.forEach((file: RecordingInterface) => {
       const item: LibraryItemInterface = {
-        filename: file.title ?? "",
+        filename: trailingSlash(offlinePath) + file.title,
         basename: file.title ?? "",
         id: file.id,
         type: "audio",

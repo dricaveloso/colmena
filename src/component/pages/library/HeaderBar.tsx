@@ -127,7 +127,7 @@ function HeaderBar({
       </Box>
       {pathExists && (
         <Box className={classes.options}>
-          {!isRootPath(currentPath) && hasFilter && (
+          {hasFilter && (
             <IconButton
               color="primary"
               component="span"
@@ -160,6 +160,7 @@ function HeaderBar({
         handleClose={handleCloseFilterDrawer}
         filter={filter}
         order={order}
+        isRootPath={isRootPath(currentPath)}
       />
     </Box>
   );

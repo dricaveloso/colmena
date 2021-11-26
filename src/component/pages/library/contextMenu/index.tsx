@@ -16,13 +16,11 @@ import DuplicateItemModal from "./DuplicateItemModal";
 import CopyItemModal from "./CopyItemModal";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import MoveItemModal from "./MoveItemModal";
+import { getOfflinePath, pathIsInFilename } from "@/utils/directory";
+import { remove } from "@/store/idb/models/audios";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
-  const { id, type, environment } = cardItem;
-  // eslint-disable-next-line react/destructuring-assignment
-  const filename: string = cardItem.filename ?? "";
-  // eslint-disable-next-line react/destructuring-assignment
-  const basename: string = cardItem.basename ?? "";
+  const { id, type, environment, filename, basename } = cardItem;
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
@@ -74,6 +72,8 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
       let deleted = false;
       if (isRemote) {
         deleted = await deleteRemoteItem();
+      } else {
+        deleted = await remove(id, userRdx.user.id);
       }
 
       if (deleted) {
@@ -106,6 +106,8 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     });
   };
 
+  const insideOfflinePath = pathIsInFilename(getOfflinePath(), filename);
+
   return (
     <>
       <IconButton
@@ -124,37 +126,52 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         open={Boolean(anchorEl)}
         onClose={handleCloseContextMenu}
       >
-        {type === "file" && (
+        {!insideOfflinePath && type === "file" && (
           <MenuItem key="edit" onClick={unavailable} style={{ color: "#aaa" }}>
             {t("contextMenuOptions.edit")}
           </MenuItem>
         )}
-        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
-          {t("contextMenuOptions.copy")}
-        </MenuItem>
-        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
-          {t("contextMenuOptions.move")}
-        </MenuItem>
-        <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
-          {t("contextMenuOptions.duplicate")}
-        </MenuItem>
-        {type === "file" && (
+        {!insideOfflinePath && (
+          <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
+            {t("contextMenuOptions.copy")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
+            {t("contextMenuOptions.move")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
+            {t("contextMenuOptions.duplicate")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && type === "file" && (
           <MenuItem key="download" onClick={() => handleOpenDownloadModal(true)}>
             {t("contextMenuOptions.download")}
           </MenuItem>
         )}
-        <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
-          {t("contextMenuOptions.rename")}
-        </MenuItem>
-        <MenuItem key="details" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.details")}
-        </MenuItem>
-        <MenuItem key="sync" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.synchronize")}
-        </MenuItem>
-        <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.publish")}
-        </MenuItem>
+        {!insideOfflinePath && (
+          <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
+            {t("contextMenuOptions.rename")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="details" onClick={unavailable} style={{ color: "#aaa" }}>
+            {t("contextMenuOptions.details")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="sync" onClick={unavailable} style={{ color: "#aaa" }}>
+            {t("contextMenuOptions.synchronize")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
+            {t("contextMenuOptions.publish")}
+          </MenuItem>
+        )}
+
         <MenuItem key="delete" onClick={handleDelete}>
           {t("contextMenuOptions.delete")}
         </MenuItem>
