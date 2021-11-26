@@ -21,7 +21,7 @@ import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import NotificationContext from "@/store/context/notification-context";
 import { removeCornerSlash } from "@/utils/utils";
 import IconButton from "@/components/ui/IconButton";
-import { hasExclusivePath, isRootPath } from "@/utils/directory";
+import { getOfflinePath, hasExclusivePath, isRootPath, pathIsInFilename } from "@/utils/directory";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { Button } from "@material-ui/core";
 import Image from "next/image";
@@ -76,7 +76,7 @@ function MyLibrary() {
     );
 
     if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
-      if (orientation === "vertical") {
+      if (!pathIsInFilename(getOfflinePath(), filename) && orientation === "vertical") {
         options.push(shareOption);
       }
 
@@ -101,7 +101,7 @@ function MyLibrary() {
     );
 
     if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
-      if (orientation === "horizontal") {
+      if (!pathIsInFilename(getOfflinePath(), filename) && orientation === "horizontal") {
         options.push(shareOption);
       }
     }
@@ -147,6 +147,7 @@ function MyLibrary() {
     let defaultOrder = order;
     if (isRootPath(currentPath)) {
       defaultOrder = OrderEnum.HIGHLIGHT;
+      setOrder(defaultOrder);
     }
 
     setItems(orderItems(defaultOrder, filterItems(filter, rawItems)));
