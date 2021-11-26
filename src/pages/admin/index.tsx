@@ -16,11 +16,11 @@ import {
   givGroupFoldersAGroup,
   quotaGroupFolders,
   listUsers,
-  createOneUser,
+  // createOneUser,
   setGroupOneUser,
-  listGroupOneUser,
+  // listGroupOneUser,
   suadminGroup,
-} from "../../services/ocs/groupFolders";
+} from "../../services/ocs/servicesAdminSubadmin";
 import { listOneUser } from "../../services/ocs/users";
 
 export default function OCS() {
@@ -98,14 +98,14 @@ export default function OCS() {
       console.log("error", e);
     }
   }
-  async function createUser() {
-    try {
-      const listG = await createOneUser();
-      console.log(listG.data.ocs.data);
-    } catch (e) {
-      console.log("error", e);
-    }
-  }
+  // async function createUser() {
+  //   try {
+  //      const listG = await createOneUser();
+  //     console.log(listG.data.ocs.data);
+  //   } catch (e) {
+  //     console.log("error", e);
+  //   }
+  // }
   async function setGroup() {
     try {
       const listG = await setGroupOneUser("Myriam Teste");
@@ -114,14 +114,14 @@ export default function OCS() {
       console.log("error", e);
     }
   }
-  async function listGroup() {
-    try {
-      const listG = await listGroupOneUser("Myriam Teste");
-      console.log(listG.data);
-    } catch (e) {
-      console.log("error", e);
-    }
-  }
+  // async function listGroup() {
+  //   try {
+  //      const listG = await listGroupOneUser("Myriam Teste");
+  //     console.log(listG.data);
+  //   } catch (e) {
+  //     console.log("error", e);
+  //   }
+  // }
   async function setSubadmin() {
     try {
       const listG = await suadminGroup("Myriam Teste");
@@ -185,17 +185,17 @@ export default function OCS() {
               <button type="button" onClick={users}>
                 list All users
               </button>
-              <button type="button" onClick={createUser}>
+              {/* <button type="button" onClick={createUser}>
                 Create a subadmin
-              </button>
+              </button> */}
               <button type="button" onClick={setGroup}>
                 set Group
               </button>
             </div>
             <div>
-              <button type="button" onClick={listGroup}>
+              {/* <button type="button" onClick={listGroup}>
                 List Group User
-              </button>
+              </button> */}
               <button type="button" onClick={setSubadmin}>
                 Set Subadmin
               </button>

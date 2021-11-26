@@ -34,6 +34,8 @@ export function createUser(
   displayName: string,
   email: string,
   groups: string[],
+  quota: string,
+  subadmin?: string[],
   password = process.env.NEXT_PUBLIC_DEFAULT_USER_PASSWORD,
 ): Promise<CreateUserInterface> {
   return ocs().post(`/users`, {
@@ -41,6 +43,8 @@ export function createUser(
     displayName,
     email,
     groups,
+    quota,
+    subadmin,
     password,
   });
 }

@@ -64,6 +64,17 @@ export interface GroupsInfoInterface extends SWRDefaultOptionsInterface {
   };
 }
 
+export interface GroupsUserInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: {
+        users: string[];
+      };
+    };
+  };
+}
+
 export interface SetPasswordInterface {
   data: {
     password: string;
