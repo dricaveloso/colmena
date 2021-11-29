@@ -97,6 +97,7 @@
     "@types/react-lottie": "^1.2.5",
     "@types/react-swipeable-views": "^0.13.1",
     "@types/uuid": "^8.3.1",
+    "@types/xml2js": "^0.4.9",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
     "babel-jest": "^27.0.6",
