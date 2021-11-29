@@ -21,7 +21,7 @@ import {
   // listGroupOneUser,
   suadminGroup,
 } from "../../services/ocs/servicesAdminSubadmin";
-import { listOneUser } from "../../services/ocs/users";
+import { createUser, listOneUser } from "../../services/ocs/users";
 
 export default function OCS() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -98,14 +98,17 @@ export default function OCS() {
       console.log("error", e);
     }
   }
-  // async function createUser() {
-  //   try {
-  //      const listG = await createOneUser();
-  //     console.log(listG.data.ocs.data);
-  //   } catch (e) {
-  //     console.log("error", e);
-  //   }
-  // }
+  async function create() {
+    try {
+      const listC = await createUser("teste", "teste@teste.com", ["devteam57"], "1GB", [
+        "devteam57",
+      ]);
+
+      console.log(listC);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
   async function setGroup() {
     try {
       const listG = await setGroupOneUser("Myriam Teste");
@@ -185,9 +188,9 @@ export default function OCS() {
               <button type="button" onClick={users}>
                 list All users
               </button>
-              {/* <button type="button" onClick={createUser}>
+              <button type="button" onClick={create}>
                 Create a subadmin
-              </button> */}
+              </button>
               <button type="button" onClick={setGroup}>
                 set Group
               </button>

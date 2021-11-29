@@ -6,7 +6,14 @@ import CONSTANTS from "@/constants/index";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { JustifyContentEnum } from "@/enums/*";
 import FlexBox from "@/components/ui/FlexBox";
-import { listAllGroups, listUsers } from "../../services/ocs/servicesAdminSubadmin";
+import {
+  addGroupConversation,
+  createTalk,
+  listAllGroups,
+  listAllTalks,
+  listUsers,
+  listUsersConversation,
+} from "../../services/ocs/servicesAdminSubadmin";
 import { listOneUser, listGroupsUser, createUser } from "../../services/ocs/users";
 
 export default function OCS() {
@@ -82,12 +89,37 @@ export default function OCS() {
   }
   async function listTalks() {
     try {
-      const listG = await listOneUser("teste");
+      const listG = await listAllTalks();
       console.log(listG.data.ocs.data);
     } catch (e) {
       console.log("error", e);
     }
   }
+  async function createOneTalk() {
+    try {
+      const listG = await createTalk("devteam58", 2);
+      console.log(listG.data.ocs.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function addGroupOneTalk() {
+    try {
+      const listG = await addGroupConversation("ze7s2xwr", "devteam57", "groups");
+      console.log(listG.data.ocs.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function listParticipantsOneTalk() {
+    try {
+      const listG = await listUsersConversation("ze7s2xwr");
+      console.log(listG.data.ocs.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+
   return (
     <LayoutApp title={CONSTANTS.APP_NAME}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
@@ -133,6 +165,17 @@ export default function OCS() {
               <div>
                 <button type="button" onClick={listTalks}>
                   List Talks
+                </button>
+                <button type="button" onClick={createOneTalk}>
+                  Create Talk of group
+                </button>
+              </div>
+              <div>
+                <button type="button" onClick={addGroupOneTalk}>
+                  add group users in Talk
+                </button>
+                <button type="button" onClick={listParticipantsOneTalk}>
+                  list participants
                 </button>
               </div>
             </FlexBox>

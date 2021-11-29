@@ -5,7 +5,7 @@ import gfolders from "@/services/gfolders";
 
 export function listAllGroups() {
   return ocs()
-    .get(`groups`)
+    .get(`/cloud/groups`)
     .then((response) => {
       console.log(response.data.ocs.data);
     })
@@ -16,7 +16,7 @@ export function listAllGroups() {
 
 export function createOneGroup() {
   return ocs()
-    .post(`groups`, { groupid: "devteam57" })
+    .post(`/cloud/groups`, { groupid: "devteam57" })
     .then((response) => {
       console.log(response.data.ocs);
     })
@@ -26,7 +26,7 @@ export function createOneGroup() {
 }
 export function createGroupFolders() {
   return gfolders()
-    .post("/folders", {
+    .post("/cloud/folders", {
       mountpoint: "devteam57",
     })
     .then((response) => {
@@ -38,7 +38,7 @@ export function createGroupFolders() {
 }
 export function listGroupFolders() {
   return gfolders()
-    .get("/folders")
+    .get("/cloud/folders")
     .then((response) => {
       console.log(response.data);
     })
@@ -49,7 +49,7 @@ export function listGroupFolders() {
 
 export function givGroupFoldersAGroup(groupid: number) {
   return gfolders()
-    .post(`/folders/${groupid}/groups`, {
+    .post(`/cloud/folders/${groupid}/groups`, {
       group: `devteam57`,
     })
     .then((response) => {
@@ -61,7 +61,7 @@ export function givGroupFoldersAGroup(groupid: number) {
 }
 export function quotaGroupFolders(groupid: number) {
   return gfolders()
-    .post(`/folders/${groupid}/quota`, {
+    .post(`/cloud/folders/${groupid}/quota`, {
       quota: 10737412742,
     })
     .then((response) => {
@@ -72,20 +72,33 @@ export function quotaGroupFolders(groupid: number) {
     });
 }
 export function listUsers() {
-  return ocs().get("/users");
+  return ocs().get("/cloud/users");
 }
 
 export function setGroupOneUser(userid: string) {
-  return ocs().post(`/users/${userid}/groups`, {
+  return ocs().post(`/cloud/users/${userid}/groups`, {
     groupid: "devteam57",
   });
 }
 
 export function suadminGroup(userid: string) {
-  return ocs().post(`/users/${userid}/subadmins`, {
+  return ocs().post(`/cloud/users/${userid}/subadmins`, {
     groupid: "devteam57",
   });
 }
 export function listAllTalks() {
-  return ocs().get(`/v3/room`);
+  return ocs().get(`apps/spreed/api/v3/room`);
+}
+
+export function createTalk(roomName: string, roomType: number) {
+  return ocs().post(`apps/spreed/api/v3/room`, { roomName, roomType });
+}
+export function addGroupConversation(tokenTalk: string, newParticipant: string, source: string) {
+  return ocs().post(`apps/spreed/api/v3/room/${tokenTalk}/participants`, {
+    newParticipant,
+    source,
+  });
+}
+export function listUsersConversation(tokenTalk: string) {
+  return ocs().get(`apps/spreed/api/v3/room/${tokenTalk}/participants`);
 }
