@@ -83,7 +83,6 @@ export default NextAuth({
             password,
           };
         } catch (e) {
-          console.log(e);
           const result = searchByTerm(e.message, "permissionDenied")
             ? "permissionDenied"
             : "invalidCredentials";
