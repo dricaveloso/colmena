@@ -232,22 +232,6 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           cardItem={cardItem}
         />
       )}
-      {openCopyItemModal && (
-        <CopyItemModal
-          key={`${basename}-copy-modal`}
-          open={openCopyItemModal}
-          handleOpen={() => handleOpenCopyModal(false)}
-          cardItem={{ ...cardItem }}
-        />
-      )}
-      {openMoveItemModal && (
-        <MoveItemModal
-          key={`${basename}-move-modal`}
-          open={openMoveItemModal}
-          handleOpen={() => handleOpenMoveModal(false)}
-          cardItem={{ ...cardItem }}
-        />
-      )}
     </>
   );
 };
