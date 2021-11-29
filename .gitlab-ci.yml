@@ -26,7 +26,7 @@ tests:
    - main
 
 
-builder:
+builder-feature:
   tags:
     - docker
   stage: build
@@ -37,7 +37,37 @@ builder:
     name: feature
     #name: $CI_BUILD_REF_NAME
   except:
+   - main
+   - develop
+   - tags
    - translation
+
+builder-staging:
+  tags:
+    - docker
+  stage: build
+  script:
+    - cp $ENV_FILE .env
+    - docker build . -t $IMAGE_TAG --no-cache
+  environment:
+    name: staging
+    #name: $CI_BUILD_REF_NAME
+  only:
+    - develop
+    - tags
+
+builder-production:
+  tags:
+    - docker
+  stage: build
+  script:
+    - cp $ENV_FILE .env
+    - docker build . -t $IMAGE_TAG --no-cache
+  environment:
+    name: production
+    #name: $CI_BUILD_REF_NAME
+  only:
+    - main
 
 deployer:
   tags:
