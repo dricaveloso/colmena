@@ -17,11 +17,11 @@ import CopyItemModal from "./CopyItemModal";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import MoveItemModal from "./MoveItemModal";
 import DetailsModal from "./DetailsModal";
-import { getOfflinePath, pathIsInFilename } from "@/utils/directory";
+import { getAudioPath, pathIsInFilename } from "@/utils/directory";
 import { remove } from "@/store/idb/models/audios";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
-  const { id, type, environment, filename, basename } = cardItem;
+  const { id, type, environment, filename, basename, aliasFilename } = cardItem;
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
@@ -113,7 +113,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     });
   };
 
-  const insideOfflinePath = pathIsInFilename(getOfflinePath(), filename);
+  const insideOfflinePath = pathIsInFilename(getAudioPath(), filename);
 
   return (
     <>
@@ -196,6 +196,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           open={openRenameItemModal}
           handleOpen={() => handleOpenRenameModal(false)}
           filename={filename}
+          aliasFilename={aliasFilename}
           basename={basename}
           type={type ?? "file"}
         />

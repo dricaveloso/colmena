@@ -92,13 +92,16 @@ export default function LibraryModal({
 
       const rawItems = await getItems(path, userRdx.user.id, timeDescription);
 
-      let defaultOrder = order;
+      let currentOrder = order;
       if (isRootPath(path)) {
-        defaultOrder = OrderEnum.HIGHLIGHT;
-        setOrder(defaultOrder);
+        currentOrder = OrderEnum.HIGHLIGHT;
+        setOrder(currentOrder);
+      } else if (!isRootPath(path) && currentOrder === OrderEnum.HIGHLIGHT) {
+        currentOrder = OrderEnum.LATEST_FIRST;
+        setOrder(currentOrder);
       }
 
-      setItems(orderItems(defaultOrder, filterItems(filter, rawItems)));
+      setItems(orderItems(currentOrder, filterItems(filter, rawItems)));
 
       setNotFoundDir(false);
       setRawItems(rawItems);
@@ -133,9 +136,9 @@ export default function LibraryModal({
     setItems(orderItems(order, filterItems(filter, rawItems)));
   };
 
-  const handleItemClick = ({ type, filename }: LibraryCardItemInterface) => {
+  const handleItemClick = ({ type, aliasFilename }: LibraryCardItemInterface) => {
     if (type === "directory") {
-      mountItems(filename ?? "/");
+      mountItems(aliasFilename);
     }
   };
 

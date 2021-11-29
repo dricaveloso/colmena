@@ -145,6 +145,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                         basename: folderName,
                         id: "",
                         filename: "",
+                        aliasFilename: "",
                         type: "directory",
                         environment: EnvironmentEnum.REMOTE,
                         createdAt: date,

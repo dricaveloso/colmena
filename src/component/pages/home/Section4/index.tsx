@@ -16,6 +16,7 @@ export default function Section2() {
   const items: Array<LibraryItemInterface> = [
     {
       filename: "/",
+      aliasFilename: "/",
       basename: t("exampleFileTitle", { num: 1 }),
       id: uuid(),
       type: "audio",
@@ -26,6 +27,7 @@ export default function Section2() {
     },
     {
       filename: "/",
+      aliasFilename: "/",
       basename: t("exampleFileTitle", { num: 2 }),
       id: uuid(),
       type: "audio",

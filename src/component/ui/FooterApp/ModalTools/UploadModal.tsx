@@ -27,7 +27,12 @@ import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
 import { blobToArrayBuffer } from "blob-util";
 import { useRouter } from "next/router";
-import { getOfflinePath, getRootPath } from "@/utils/directory";
+import {
+  convertPrivateToUsername,
+  convertUsernameToPrivate,
+  getAudioPath,
+  getRootPath,
+} from "@/utils/directory";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -118,7 +123,7 @@ export default function Upload({ open, handleClose }: Props) {
     const fileName = await handleFileName(name);
     const finalPath = `${trailingSlash(handledPath())}${fileName}`;
 
-    const create = await putFile(userId, finalPath, data);
+    const create = await putFile(userId, convertUsernameToPrivate(finalPath, userId), data);
     if (create) {
       // addFileIntoLibrary(fileName, finalPath);
     }
@@ -134,7 +139,7 @@ export default function Upload({ open, handleClose }: Props) {
     const extension = getExtensionFilename(handledName);
     const finalName = `${onlyName.substr(0, 60)}.${extension}`;
 
-    return getUniqueName(userId, handledPath(), finalName);
+    return getUniqueName(userId, convertUsernameToPrivate(handledPath(), userId), finalName);
   };
 
   // const addFileIntoLibrary = (name: string, finalPath: string) => {
@@ -156,8 +161,13 @@ export default function Upload({ open, handleClose }: Props) {
   const handledPath = useCallback(() => {
     const rootPath = getRootPath();
 
-    return !pathExists || !path || path === "/" || path === getOfflinePath() ? rootPath : path;
-  }, [path, pathExists]);
+    return !pathExists ||
+      !path ||
+      path === "/" ||
+      convertUsernameToPrivate(path, userId) === getAudioPath()
+      ? convertPrivateToUsername(rootPath, userId)
+      : path;
+  }, [path, pathExists, userId]);
 
   return (
     <>

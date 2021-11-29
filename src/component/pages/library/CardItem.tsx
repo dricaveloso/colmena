@@ -12,7 +12,7 @@ import {
   hasExclusivePath,
   getPublicPath,
   getPrivatePath,
-  getOfflinePath,
+  getAudioPath,
   isRootPath,
 } from "@/utils/directory";
 import FileIcon from "@/components/ui/FileIcon";
@@ -54,10 +54,10 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
         folderSecondIcon = "global";
         break;
       case getPrivatePath():
-        folderSecondIcon = "private";
+        folderSecondIcon = "user";
         break;
-      case getOfflinePath():
-        folderSecondIcon = "offline";
+      case getAudioPath():
+        folderSecondIcon = "microphone";
         break;
       default:
         if (filename && filename.indexOf("/") < 0) {

@@ -153,6 +153,7 @@ export interface LibraryInterface {
 export interface LibraryItemInterface {
   id: string;
   filename: string;
+  aliasFilename: string;
   basename: string;
   extension?: string | undefined;
   type?: string;
