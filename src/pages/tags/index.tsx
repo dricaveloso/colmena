@@ -1,4 +1,3 @@
-// import capabilities from "@/services/ocs/capabilities";
 // import axios from "axios";
 // import LayoutApp from "@/components/statefull/LayoutApp";
 // import { JustifyContentEnum } from "@/enums/*";
