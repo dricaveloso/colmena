@@ -21,11 +21,12 @@ import {
 } from "@/utils/utils";
 import { EnvironmentEnum, OrderEnum, FilterEnum, ListTypeEnum } from "@/enums/index";
 import {
-  getOfflinePath,
+  getAudioPath,
   getPathName,
   getPrivatePath,
   getPublicPath,
-  isRootPath,
+  convertPrivateToUsername,
+  convertUsernameToPrivate,
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 
@@ -52,16 +53,30 @@ export async function getWebDavDirectories(
 ) {
   const items: LibraryItemInterface[] = [];
 
-  const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
+  const nxDirectories = await listLibraryDirectories(
+    userId,
+    convertUsernameToPrivate(currentDirectory, userId),
+  );
   if (nxDirectories?.data.length > 0) {
     nxDirectories.data.forEach((directory: FileStat) => {
       const filename = removeCornerSlash(directory.filename.replace(/^.+?(\/|$)/, ""));
+      let { basename } = directory;
+      const aliasFilename = convertPrivateToUsername(filename, userId);
       const date = new Date(directory.lastmod);
-      if (filename !== "" && filename !== removeCornerSlash(currentDirectory)) {
+      if (
+        filename !== "" &&
+        filename !== removeCornerSlash(currentDirectory) &&
+        aliasFilename !== removeCornerSlash(currentDirectory)
+      ) {
+        if (filename === getPrivatePath()) {
+          basename = userId;
+        }
+
         const item: LibraryItemInterface = {
-          basename: directory.basename,
+          basename,
           id: directory.filename,
           filename,
+          aliasFilename,
           type: directory.type,
           environment: EnvironmentEnum.REMOTE,
           extension: getExtensionFilename(filename),
@@ -84,12 +99,13 @@ export async function getWebDavDirectories(
 export async function getLocalFiles(userId: string, timeDescription: TimeDescriptionInterface) {
   const items: LibraryItemInterface[] = [];
   const localFiles = await getAllAudios(userId);
-  const offlinePath = getOfflinePath();
+  const audioPath = getAudioPath();
   if (localFiles.length > 0) {
     localFiles.forEach((file: RecordingInterface) => {
       const item: LibraryItemInterface = {
-        filename: trailingSlash(offlinePath) + file.title,
+        filename: trailingSlash(audioPath) + file.title,
         basename: file.title ?? "",
+        aliasFilename: trailingSlash(audioPath) + file.title,
         id: file.id,
         type: "audio",
         environment: EnvironmentEnum.LOCAL,
@@ -170,7 +186,7 @@ export function orderItems(order: string, items: Array<LibraryItemInterface>) {
 
   if (order === OrderEnum.HIGHLIGHT) {
     items.sort((a, b) => {
-      if (b.filename === getOfflinePath()) {
+      if (b.filename === getAudioPath()) {
         return 1;
       }
 
@@ -194,17 +210,19 @@ export async function getItems(
   userId: string,
   timeDescription: TimeDescriptionInterface,
 ) {
-  const offlinePath = getOfflinePath();
-  if (path === offlinePath) {
+  const realPath = convertUsernameToPrivate(path, userId);
+  const audioPath = getAudioPath();
+  if (realPath === audioPath) {
     return getLocalFiles(userId, timeDescription);
   }
 
-  const items = await getWebDavDirectories(userId, path, timeDescription);
-  if (isRootPath(path)) {
+  const items = await getWebDavDirectories(userId, realPath, timeDescription);
+  if (realPath === getPrivatePath()) {
     const item: LibraryItemInterface = {
-      basename: getPathName(offlinePath),
-      id: offlinePath,
-      filename: offlinePath,
+      basename: getPathName(audioPath),
+      aliasFilename: convertPrivateToUsername(audioPath, userId),
+      id: audioPath,
+      filename: audioPath,
       type: "directory",
       environment: EnvironmentEnum.LOCAL,
     };

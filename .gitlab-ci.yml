@@ -21,11 +21,12 @@ tests:
     - echo "TODO TESTS"
   only:
     - branches
+    - tags
   except:
    - main
-   
 
-builder_feature:
+
+builder:
   tags:
     - docker
   stage: build
@@ -35,35 +36,8 @@ builder_feature:
   environment:
     name: feature
     #name: $CI_BUILD_REF_NAME
-  only:
-    - branches
   except:
-   - main
-   - develop
-
-builder_develop:
-  tags:
-    - docker
-  stage: build
-  script:
-    - cp $ENV_FILE .env
-    - docker build -t $IMAGE_TAG . 
-  environment:
-    name: Staging
-  only:
-    - develop  
-
-builder_production:
-  tags:
-    - docker
-  stage: build
-  script:
-    - cp $ENV_FILE .env
-    - docker build -t $IMAGE_TAG . 
-  environment:
-    name: production
-  only:
-    - main  
+   - translation
 
 deployer:
   tags:

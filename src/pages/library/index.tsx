@@ -21,7 +21,7 @@ import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import NotificationContext from "@/store/context/notification-context";
 import { removeCornerSlash } from "@/utils/utils";
 import IconButton from "@/components/ui/IconButton";
-import { getOfflinePath, hasExclusivePath, isRootPath, pathIsInFilename } from "@/utils/directory";
+import { getAudioPath, hasExclusivePath, isRootPath, pathIsInFilename } from "@/utils/directory";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { Button } from "@material-ui/core";
 import Image from "next/image";
@@ -76,7 +76,7 @@ function MyLibrary() {
     );
 
     if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
-      if (!pathIsInFilename(getOfflinePath(), filename) && orientation === "vertical") {
+      if (!pathIsInFilename(getAudioPath(), filename) && orientation === "vertical") {
         options.push(shareOption);
       }
 
@@ -101,7 +101,7 @@ function MyLibrary() {
     );
 
     if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
-      if (!pathIsInFilename(getOfflinePath(), filename) && orientation === "horizontal") {
+      if (!pathIsInFilename(getAudioPath(), filename) && orientation === "horizontal") {
         options.push(shareOption);
       }
     }
@@ -144,13 +144,16 @@ function MyLibrary() {
   }, [path]);
 
   useEffect(() => {
-    let defaultOrder = order;
+    let currentOrder = order;
     if (isRootPath(currentPath)) {
-      defaultOrder = OrderEnum.HIGHLIGHT;
-      setOrder(defaultOrder);
+      currentOrder = OrderEnum.HIGHLIGHT;
+      setOrder(currentOrder);
+    } else if (!isRootPath(currentPath) && currentOrder === OrderEnum.HIGHLIGHT) {
+      currentOrder = OrderEnum.LATEST_FIRST;
+      setOrder(currentOrder);
     }
 
-    setItems(orderItems(defaultOrder, filterItems(filter, rawItems)));
+    setItems(orderItems(currentOrder, filterItems(filter, rawItems)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawItems]);
 
@@ -164,9 +167,9 @@ function MyLibrary() {
     setItems(orderItems(order, filterItems(filter, rawItems)));
   };
 
-  const handleItemClick = ({ type, filename }: LibraryCardItemInterface) => {
-    if (type === "directory" && router.query.path !== filename) {
-      router.push(`/library/${filename}`);
+  const handleItemClick = ({ type, aliasFilename }: LibraryCardItemInterface) => {
+    if (type === "directory" && router.query.path !== aliasFilename) {
+      router.push(`/library/${aliasFilename}`);
     }
   };
 
