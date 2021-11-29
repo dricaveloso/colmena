@@ -86,6 +86,6 @@ export function suadminGroup(userid: string) {
     groupid: "devteam57",
   });
 }
-// export function listOneUser(userid: string) {
-//   return ocs().get(`/users/${userid}`);
-// }
+export function listAllTalks() {
+  return ocs().get(`/v3/room`);
+}

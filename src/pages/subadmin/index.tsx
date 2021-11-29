@@ -53,19 +53,10 @@ export default function OCS() {
       console.log("error", e);
     }
   }
-  async function groupsUser() {
-    try {
-      const listG = await listGroupsUser("devteam57");
-      console.log(listG.data.ocs.data);
-    } catch (e) {
-      console.log("error", e);
-    }
-  }
-
-  // async function setGroup() {
+  // async function groupsUser() {
   //   try {
-  //     const listG = await setGroupOneUser("Myriam Teste");
-  //     console.log(listG.data);
+  //     const listG = await listGroupsUser("devteam57");
+  //     console.log(listG.data.ocs.data);
   //   } catch (e) {
   //     console.log("error", e);
   //   }
@@ -81,15 +72,15 @@ export default function OCS() {
     }
   }
 
-  // async function setSubadmin() {
-  //   try {
-  //     const listG = await suadminGroup("teste");
-  //     console.log(listG.data);
-  //   } catch (e) {
-  //     console.log("error", e);
-  //   }
-  // }
   async function listUser() {
+    try {
+      const listG = await listOneUser("teste");
+      console.log(listG.data.ocs.data);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
+  async function listTalks() {
     try {
       const listG = await listOneUser("teste");
       console.log(listG.data.ocs.data);
@@ -137,10 +128,14 @@ export default function OCS() {
               <button type="button" onClick={listGroupsOneUser}>
                 List group
               </button>
-              <button type="button" onClick={groupsUser}>
-                List groups user
-              </button>
             </div>
+            <FlexBox>
+              <div>
+                <button type="button" onClick={listTalks}>
+                  List Talks
+                </button>
+              </div>
+            </FlexBox>
           </FlexBox>
 
           {/* <VerticalListWebDav data={data} /> */}
