@@ -58,11 +58,8 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap"
             rel="stylesheet"
           />
-          <script
-            src={
-              serverRuntimeConfig.hotjarProd === "yes" ? "/js/prod_hotjar.js" : "/js/dev_hotjar.js"
-            }
-          />
+          {serverRuntimeConfig.appEnv === "staging" && <script src="/js/dev_hotjar.js" />}
+          {serverRuntimeConfig.appEnv === "production" && <script src="/js/prod_hotjar.js" />}
         </Head>
         <body>
           <Main />

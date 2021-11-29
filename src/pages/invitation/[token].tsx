@@ -8,7 +8,6 @@ import MailOutlineSharpIcon from "@material-ui/icons/MailOutlineSharp";
 import { useRouter } from "next/router";
 import Box100 from "@/components/ui/Box100";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
@@ -16,10 +15,11 @@ import { TextVariantEnum } from "@/enums/index";
 import { isJWTValidInvitation } from "@/utils/utils";
 import { useDispatch } from "react-redux";
 import { setInvitationToken } from "@/store/actions/users/index";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["invitation", "common"])),
+    ...(await serverSideTranslations(locale, ["invitation"])),
   },
 });
 

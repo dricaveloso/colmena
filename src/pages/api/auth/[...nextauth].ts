@@ -12,8 +12,12 @@ import {
   UserInfoInterface,
   // CapabilitiesInfoInterface,
 } from "../../../interfaces/ocs";
+// import { ErrorAuthEnum } from "../../../enums";
+import getConfig from "next/config";
 
-const baseUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php`;
+const { serverRuntimeConfig } = getConfig();
+
+const baseUrl = `${serverRuntimeConfig.api.baseUrl}/ocs/v2.php`;
 
 // function getAppPassword(email: string, password: string): Promise<AppPasswordInterface> {
 //   return axios.get(`${baseUrl}/core/getapppassword`, {
@@ -51,6 +55,7 @@ export default NextAuth({
           // eslint-disable-next-line camelcase
           const {
             id,
+            enabled,
             groups,
             twitter,
             website,
@@ -60,7 +65,6 @@ export default NextAuth({
             language,
             quota,
           } = dataUser;
-          // const { name: mediaName, url, slogan, logo } = dataMedia;
 
           let userLang = constants.DEFAULT_LANGUAGE;
           if (Object.values(constants.LOCALES).includes(language)) userLang = language;

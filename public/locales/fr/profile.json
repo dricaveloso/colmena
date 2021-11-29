@@ -12,5 +12,14 @@
   "editButton": "Éditer",
   "saveButton": "Sauvgarder",
   "resetPasswordButton": "Réinitialiser le mot de passe",
-  "manageTitle": "Gérer"
+  "manageTitle": "Gérer",
+  "contextMenuOptions": {
+    "settings": "Settings",
+    "remove": "Remove account",
+    "deactivate": "Deactivate account"
+  },
+  "confirmationRemoveAccountMessage": "This action permanently deletes your user, and consequently you will no longer have access to Colmena.",
+  "confirmationSuspendAccountMessage": "This action will disable your user account, and only with the administrator's permission will you be able to return.",
+  "messageSuccessAccountDeactivated": "User successfully disabled.",
+  "messageSuccessAccountDeleted": "User removed successfully."
 }

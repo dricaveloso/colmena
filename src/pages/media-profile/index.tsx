@@ -1,7 +1,6 @@
 import React from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum } from "@/enums/index";
@@ -14,10 +13,11 @@ import SocialMedia from "@/components/pages/media-profile/SocialMedia";
 import Divider from "@/components/ui/Divider";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["mediaProfile", "drawer", "common"])),
+    ...(await serverSideTranslations(locale, ["mediaProfile"])),
   },
 });
 

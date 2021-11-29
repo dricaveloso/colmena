@@ -41,6 +41,7 @@
     "skipButton": "Saltar",
     "nextIntro": "Continuar",
     "backButton": "Volver",
+    "recoverPasswordButton": "Redefine password",
     "cancelButton": "Cancelar",
     "invalidEmailTitle": "E-mail invalido",
     "placeholderEmail": "E-mail",
@@ -97,5 +98,14 @@
   "membersTitle": "Miembros",
   "manageTitle": "Administrar",
   "socialMediaTitle": "Redes sociales",
-  "resetPasswordTitle": "Actualizar contraseña"
+  "resetPasswordTitle": "Actualizar contraseña",
+  "administratorTitle": "Administrator",
+  "collaboratorTitle": "Collaborator",
+  "confirmTitleDelete": "Are you sure ?",
+  "confirmMessageDelete": "By performing this action, it will be impossible to reverse it.",
+  "yesTitle": "Yes",
+  "noTitle": "No",
+  "genericErrorMessage": "Unable to perform this action.",
+  "passwordRecoveryMessage": "Password recovery email sent successfully.",
+  "backToLogin": "Back to login"
 }

@@ -10,10 +10,13 @@ import {
   DeleteConversationInterface,
 } from "@/interfaces/talk";
 import talkInstance from "@/services/talk";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 const responseFormat = "?format=json";
 
-const version = process.env.NEXT_PUBLIC_NEXTCLOUD_TALK_VERSION || "v3";
+const version = publicRuntimeConfig.ncTalkVersion || "v3";
 
 export function getUsersConversations(options?: {}): RoomListInterface {
   return useTalkFetch(version)(`/room${responseFormat}`, {}, options);

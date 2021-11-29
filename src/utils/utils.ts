@@ -268,3 +268,27 @@ export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en"
     locale: lce,
   });
 }
+
+export function formatCookies(cookies: string[]) {
+  if (!cookies || cookies.length === 0) return "";
+
+  const cookiesKeys = cookies
+    .map((item: string) => item.split(";")[0])
+    .map((item: string) => item.split("=")[0]);
+
+  const cookiesPre = cookies.map((item: string) => item.split(";")[0]).reverse();
+
+  const cookiesMap = new Map();
+  cookiesKeys.forEach((element: string) => {
+    const value = cookiesPre.find((item: string) => item.indexOf(element) !== -1)?.split("=")[1];
+    cookiesMap.set(element, value);
+  });
+
+  const cookiesR = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of cookiesMap) {
+    cookiesR.push(`${key}=${value}`);
+  }
+
+  return cookiesR.join(";");
+}

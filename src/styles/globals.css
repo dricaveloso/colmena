@@ -15,6 +15,10 @@ a {
   box-sizing: border-box;
 }
 
+body {
+  background-color: #fff;
+}
+
 @media all and (max-width: 480px) {
   .width-based-device {
     width: 100%;

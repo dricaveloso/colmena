@@ -24,9 +24,13 @@ export function enableUser(userId: string | number) {
   return ocs().put(`/users/${userId}/enable`);
 }
 
-export function disableUser(userId: string | number) {
-  return ocs().put(`/users/${userId}/disable`);
-}
+// export function disableUser(userId: string | number) {
+//   return ocs().put(`/users/${userId}/disable`);
+// }
+
+// export function removeUser(userId: string | number) {
+//   return ocs().delete(`/users/${userId}`);
+// }
 
 export function welcomeUser(userId: string | number): Promise<WelcomeUserInterface> {
   return ocs().post(`/users/${userId}/welcome`);
@@ -74,7 +78,7 @@ export function updateUser<T>(key: string, value: T): Promise<UserUpdateInterfac
 
 export function resetPassword(userId: string, password: string): Promise<UserUpdateInterface> {
   return axios.put(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/users/${userId}?format=json`,
+    `${publicRuntimeConfig.api.baseUrl}/ocs/v2.php/cloud/users/${userId}?format=json`,
     {
       key: "password",
       value: password,
@@ -82,7 +86,7 @@ export function resetPassword(userId: string, password: string): Promise<UserUpd
     {
       auth: {
         username: userId,
-        password: process.env.NEXT_PUBLIC_DEFAULT_USER_PASSWORD || "",
+        password: publicRuntimeConfig.user.defaultNewUserPassword || "",
       },
       headers: {
         "OCS-APIRequest": true,
