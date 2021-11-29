@@ -8,13 +8,13 @@ import { appWithTranslation } from "next-i18next";
 import type { AppProps } from "next/app";
 import theme from "@/styles/theme";
 import CONSTANTS from "@/constants/index";
-import "@/styles/globals.css";
 import { useStore } from "@/store/index";
 import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as NextAuthProvider } from "next-auth/client";
 import CenterProgress from "@/components/ui/CenterProgress";
+import "@/styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const store = useStore(pageProps.initialReduxState);

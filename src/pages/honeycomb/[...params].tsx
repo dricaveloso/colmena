@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import LayoutApp from "@/components/statefull/LayoutApp";
@@ -18,10 +17,11 @@ import InputSendMessage from "@/components/pages/honeycomb/Chat/InputSendMessage
 import ChatMessage from "@/components/pages/honeycomb/Chat";
 import { sendChatMessage } from "@/services/talk/chat";
 import { getRoomParticipants } from "@/services/talk/room";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["honeycomb", "common"])),
+    ...(await serverSideTranslations(locale, ["honeycomb"])),
   },
 });
 

@@ -1,7 +1,7 @@
 {
-  "title": "Hi! This is your first access. Please update your password to continue.",
+  "title": "Update your password.",
   "errorMessagePassword": "Passwords do not match",
   "errorUpdatingPassword": "Unable to update your password.",
-  "successUpdatingPassword": "Password updated successfully."  
+  "successUpdatingPassword": "Password updated successfully."
 }
 

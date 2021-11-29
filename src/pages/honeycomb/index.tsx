@@ -1,5 +1,4 @@
 import React from "react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
@@ -17,10 +16,11 @@ import AlertInfoCenter from "@/components/ui/AlertInfoCenter";
 // import Tab from "@material-ui/core/Tab";
 // import SwipeableViews from "react-swipeable-views";
 // import theme from "@/styles/theme";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["drawer", "common", "honeycomb"])),
+    ...(await serverSideTranslations(locale, ["honeycomb"])),
   },
 });
 

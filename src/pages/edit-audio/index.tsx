@@ -3,15 +3,15 @@ import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import Divider from "@/components/ui/Divider";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum } from "@/enums/index";
 import MaterialIcon from "@/components/ui/MaterialIcon";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["editAudio", "drawer", "common"])),
+    ...(await serverSideTranslations(locale, ["editAudio"])),
   },
 });
 

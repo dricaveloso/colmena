@@ -45,6 +45,7 @@
       "skipButton": "Skip",
       "nextIntro": "Next",
       "backButton": "Back",
+      "recoverPasswordButton": "Redefine password",
       "cancelButton": "Cancel",
       "placeholderEmail": "Email",
       "placeholderPassword": "Password",
@@ -104,5 +105,14 @@
   "membersTitle": "Members",
   "manageTitle": "Manage",
   "socialMediaTitle": "Social Media",
-  "resetPasswordTitle": "Update password"
+  "resetPasswordTitle": "Update password",
+  "administratorTitle": "Administrator",
+  "collaboratorTitle": "Collaborator",
+  "confirmTitleDelete": "Are you sure ?",
+  "confirmMessageDelete": "By performing this action, it will be impossible to reverse it.",
+  "yesTitle": "Yes",
+  "noTitle": "No",
+  "genericErrorMessage": "Unable to perform this action.",
+  "passwordRecoveryMessage": "Password recovery email sent successfully.",
+  "backToLogin": "Back to login"
 }

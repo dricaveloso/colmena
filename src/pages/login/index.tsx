@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Container from "@/components/ui/Container";
 import Box from "@material-ui/core/Box";
 import Divider from "@/components/ui/Divider";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import Form from "@/components/pages/login/Form";
@@ -11,10 +10,11 @@ import { useRouter } from "next/router";
 import CenterProgress from "@/components/ui/CenterProgress";
 import ExternalVerticalLogo from "@/components/ui/ExternalVerticalLogo";
 import FooterDW from "@/components/ui/FooterDW";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["login", "common"])),
+    ...(await serverSideTranslations(locale, ["login"])),
   },
 });
 

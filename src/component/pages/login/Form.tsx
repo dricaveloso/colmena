@@ -39,6 +39,11 @@ export default function WrapperForm() {
   const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
 
+  // const errorsAuth = new Map();
+  // errorsAuth.set(ErrorAuthEnum.ERR001, t("loginInvalid"));
+  // errorsAuth.set(ErrorAuthEnum.ERR002, t("permissionDenied"));
+  // errorsAuth.set(ErrorAuthEnum.ERR003, t("userDeactivated"));
+
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
     password: Yup.string()
@@ -50,6 +55,10 @@ export default function WrapperForm() {
   const initialValues: MyFormValues = {
     email: "",
     password: "",
+  };
+
+  const navigateToForgotPassword = () => {
+    router.push("/forgot-password");
   };
 
   return (
@@ -97,7 +106,6 @@ export default function WrapperForm() {
                   true,
                 );
                 const mediaObj: MediaInfoInterface = JSON.parse(String(mediaFile));
-                console.log("Teste", mediaObj);
                 mediaOrg = mediaObj;
               } catch (e) {
                 mediaOrg = {
@@ -193,6 +201,7 @@ export default function WrapperForm() {
                 title={c("form.forgetPasswordTitle")}
                 style={{ fontSize: 12 }}
                 variant={ButtonVariantEnum.TEXT}
+                handleClick={navigateToForgotPassword}
               />
               <Button
                 title={c("form.submitLoginTitle")}
