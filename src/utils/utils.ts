@@ -73,6 +73,8 @@ export function getFirstLettersOfTwoFirstNames(word: string | undefined): string
   if (arr.length > 2) {
     if (arr[1].length < 4) result += arr[2][0];
     else result += arr[1][0];
+  } else if (arr.length === 1) {
+    result += arr[0][1];
   }
 
   return result.toUpperCase();
@@ -105,10 +107,10 @@ export function getExtensionFilename(filename: string) {
 
 export function generateBreadcrumb(
   path: string | Array<string> | string[] | undefined,
-  initialPath: string,
+  initialPath?: string,
 ): Array<BreadcrumbItemInterface> {
   const directories: BreadcrumbItemInterface[] = [];
-  let breadcrumb = initialPath;
+  let breadcrumb = initialPath ?? "/";
 
   if (empty(path)) {
     return directories;
@@ -208,7 +210,7 @@ export function dateDescription(date: Date | undefined, timeDescription: TimeDes
 }
 
 export function trailingSlash(path: string) {
-  return `${path.replace(/\/$/, "")}/`;
+  return `${removeLastSlash(path)}/`;
 }
 
 export function removeFirstSlash(path: string | null | undefined): string {
@@ -216,7 +218,7 @@ export function removeFirstSlash(path: string | null | undefined): string {
     return "";
   }
 
-  return `${path.replace(/^\//, "")}`;
+  return path.replace(/^[/]*/, "");
 }
 
 export function removeLastSlash(path: string | null | undefined): string {
@@ -224,7 +226,7 @@ export function removeLastSlash(path: string | null | undefined): string {
     return "";
   }
 
-  return `${path.replace(/\/$/, "")}`;
+  return path.replace(/[/]*$/, "");
 }
 
 export function removeCornerSlash(path: string | null | undefined): string {
@@ -265,4 +267,28 @@ export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en"
   return formatDistanceToNow(new Date(timestamp * 1000), {
     locale: lce,
   });
+}
+
+export function formatCookies(cookies: string[]) {
+  if (!cookies || cookies.length === 0) return "";
+
+  const cookiesKeys = cookies
+    .map((item: string) => item.split(";")[0])
+    .map((item: string) => item.split("=")[0]);
+
+  const cookiesPre = cookies.map((item: string) => item.split(";")[0]).reverse();
+
+  const cookiesMap = new Map();
+  cookiesKeys.forEach((element: string) => {
+    const value = cookiesPre.find((item: string) => item.indexOf(element) !== -1)?.split("=")[1];
+    cookiesMap.set(element, value);
+  });
+
+  const cookiesR = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of cookiesMap) {
+    cookiesR.push(`${key}=${value}`);
+  }
+
+  return cookiesR.join(";");
 }

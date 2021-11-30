@@ -2,13 +2,16 @@ import ocs from "@/services/ocs";
 import {
   CreateUserInterface,
   WelcomeUserInterface,
-  // SetPasswordInterface,
   UserUpdateInterface,
   UsersListInterface,
 } from "@/interfaces/ocs";
 import useOcsFetch from "@/hooks/useOcsFetch";
 import { initializeStore } from "@/store/index";
 import axios from "axios";
+//  /import { RoleUserEnum } from "@/enums/index";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 export function listAllUsers(): UsersListInterface {
   return useOcsFetch("/users?format=json");
@@ -22,12 +25,25 @@ export function enableUser(userId: string | number) {
   return ocs().put(`/users/${userId}/enable`);
 }
 
-export function disableUser(userId: string | number) {
-  return ocs().put(`/users/${userId}/disable`);
-}
+// export function disableUser(userId: string | number) {
+//   return ocs().put(`/users/${userId}/disable`);
+// }
+
+// export function removeUser(userId: string | number) {
+//   return ocs().delete(`/users/${userId}`);
+// }
 
 export function welcomeUser(userId: string | number): Promise<WelcomeUserInterface> {
   return ocs().post(`/users/${userId}/welcome`);
+}
+
+interface UserObjParams {
+  userid: string;
+  displayName: string;
+  email: string;
+  groups: string[];
+  password: string;
+  subadmin?: string[];
 }
 
 export function createUser(
@@ -38,7 +54,7 @@ export function createUser(
   subadmin?: string[],
   password = process.env.NEXT_PUBLIC_DEFAULT_USER_PASSWORD,
 ): Promise<CreateUserInterface> {
-  return ocs().post(`/users`, {
+  const userObj: UserObjParams = {
     userid: email.split("@")[0],
     displayName,
     email,
@@ -46,7 +62,11 @@ export function createUser(
     quota,
     subadmin,
     password,
-  });
+  };
+
+  //  if (permission === RoleUserEnum.ADMIN) userObj.subadmin = [group];
+
+  return ocs().post(`/users`, userObj);
 }
 export function deleteUser(userId: string | number) {
   return ocs().delete(`/users/${userId}`);
@@ -62,7 +82,7 @@ export function updateUser<T>(key: string, value: T): Promise<UserUpdateInterfac
 
 export function resetPassword(userId: string, password: string): Promise<UserUpdateInterface> {
   return axios.put(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/ocs/v2.php/cloud/users/${userId}?format=json`,
+    `${publicRuntimeConfig.api.baseUrl}/ocs/v2.php/cloud/users/${userId}?format=json`,
     {
       key: "password",
       value: password,
@@ -70,7 +90,7 @@ export function resetPassword(userId: string, password: string): Promise<UserUpd
     {
       auth: {
         username: userId,
-        password: process.env.NEXT_PUBLIC_DEFAULT_USER_PASSWORD || "",
+        password: publicRuntimeConfig.user.defaultNewUserPassword || "",
       },
       headers: {
         "OCS-APIRequest": true,

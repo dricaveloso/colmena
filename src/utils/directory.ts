@@ -1,8 +1,8 @@
-import { removeFirstSlash } from "./utils";
+import { removeFirstSlash, removeCornerSlash, trailingSlash } from "./utils";
 
 const PRIVATE_PATH = "private";
 const PUBLIC_PATH = "public";
-const OFFLINE_PATH = "offline";
+const AUDIO_PATH = "private/audios";
 
 export function getPrivatePath(): string {
   return PRIVATE_PATH;
@@ -16,12 +16,12 @@ export function getRootPath(): string {
   return PRIVATE_PATH;
 }
 
-export function getOfflinePath(): string {
-  return OFFLINE_PATH;
+export function getAudioPath(): string {
+  return AUDIO_PATH;
 }
 
 export function localPaths(): Array<string> {
-  return [getOfflinePath()];
+  return [getAudioPath()];
 }
 
 export function hasLocalPath(path: string | undefined | null): boolean {
@@ -33,7 +33,7 @@ export function hasLocalPath(path: string | undefined | null): boolean {
 }
 
 export function exclusivePaths(): Array<string> {
-  return [getOfflinePath(), getPrivatePath(), getPublicPath()];
+  return [getAudioPath(), getPrivatePath(), getPublicPath()];
 }
 
 export function hasExclusivePath(path: string | undefined | null): boolean {
@@ -58,4 +58,35 @@ export function getPathName(path: string): string {
 
 export function isRootPath(path: string | undefined | null): boolean {
   return path === "/" || path === "";
+}
+
+export function pathIsInFilename(path: string, filename: string | undefined): boolean {
+  if (!filename) {
+    return false;
+  }
+
+  const handledPath = trailingSlash(path).replace(/\/.+?\..*$/, "");
+  const handledFilename = trailingSlash(filename).replace(/\/.+?\..*$/, "");
+
+  const regex = new RegExp(`^${removeFirstSlash(handledPath)}.*`, "g");
+
+  return removeFirstSlash(handledFilename).replace(regex, "") === "";
+}
+
+export function removeInitialPath(fullPath: string, initialPath: string): string {
+  const regex = new RegExp(`^${removeCornerSlash(initialPath)}`, "g");
+
+  return removeCornerSlash(fullPath).replace(regex, "");
+}
+
+export function convertPrivateToUsername(path: string, username: string): string {
+  const regex = new RegExp(`^${trailingSlash(getPrivatePath())}`);
+
+  return removeCornerSlash(trailingSlash(path).replace(regex, trailingSlash(username)));
+}
+
+export function convertUsernameToPrivate(path: string, username: string): string {
+  const regex = new RegExp(`^${trailingSlash(username)}`);
+
+  return removeCornerSlash(trailingSlash(path).replace(regex, trailingSlash(getPrivatePath())));
 }

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useContext } from "react";
 import Button from "@/components/ui/Button";
 import { LinearProgress, TextField } from "@material-ui/core";
@@ -8,15 +9,21 @@ import { useTranslation } from "next-i18next";
 import NotificationContext from "@/store/context/notification-context";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
-import { NotificationStatusEnum, SelectVariantEnum, ButtonVariantEnum } from "@/enums/index";
+import {
+  NotificationStatusEnum,
+  SelectVariantEnum,
+  ButtonVariantEnum,
+  ConfigFilesNCEnum,
+} from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
 import { signIn, getSession } from "next-auth/client";
 import { parseCookies, setCookie } from "nookies";
 import { useDispatch } from "react-redux";
 import { userUpdate } from "@/store/actions/users/index";
-import { UserInfoInterface } from "@/interfaces/index";
+import { UserInfoInterface, MediaInfoInterface, UserProfileInterface } from "@/interfaces/index";
 import Box from "@material-ui/core/Box";
+import { listFile } from "@/services/webdav/files";
 
 type MyFormValues = {
   email: string;
@@ -32,6 +39,11 @@ export default function WrapperForm() {
   const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
 
+  // const errorsAuth = new Map();
+  // errorsAuth.set(ErrorAuthEnum.ERR001, t("loginInvalid"));
+  // errorsAuth.set(ErrorAuthEnum.ERR002, t("permissionDenied"));
+  // errorsAuth.set(ErrorAuthEnum.ERR003, t("userDeactivated"));
+
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
     password: Yup.string()
@@ -43,6 +55,10 @@ export default function WrapperForm() {
   const initialValues: MyFormValues = {
     email: "",
     password: "",
+  };
+
+  const navigateToForgotPassword = () => {
+    router.push("/forgot-password");
   };
 
   return (
@@ -65,6 +81,47 @@ export default function WrapperForm() {
             if (!result.error) {
               const session: any = await getSession();
               const { user }: { user: UserInfoInterface } = session;
+
+              let mediaOrg;
+              try {
+                const userProfileFile = await listFile(
+                  user.id,
+                  ConfigFilesNCEnum.USER_PROFILE,
+                  {
+                    username: user.id,
+                    password: user.password,
+                  },
+                  true,
+                );
+                const file: UserProfileInterface = JSON.parse(String(userProfileFile));
+                const mediaName = file.medias[0];
+
+                const mediaFile = await listFile(
+                  user.id,
+                  `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE}`,
+                  {
+                    username: user.id,
+                    password: user.password,
+                  },
+                  true,
+                );
+                const mediaObj: MediaInfoInterface = JSON.parse(String(mediaFile));
+                mediaOrg = mediaObj;
+              } catch (e) {
+                mediaOrg = {
+                  name: "Radio Colmena",
+                  logo: "",
+                  slogan:
+                    "Gulf Radio is a community radio based in kosele town, rachuonyo subcounty in homabay county in Kenya.",
+                  email: "",
+                  groups: ["devteam"],
+                  quota: "10GB",
+                  url: "htt://www.radiotal.org",
+                };
+              }
+
+              user.media = mediaOrg;
+
               dispatch(
                 userUpdate({
                   user,
@@ -144,6 +201,7 @@ export default function WrapperForm() {
                 title={c("form.forgetPasswordTitle")}
                 style={{ fontSize: 12 }}
                 variant={ButtonVariantEnum.TEXT}
+                handleClick={navigateToForgotPassword}
               />
               <Button
                 title={c("form.submitLoginTitle")}

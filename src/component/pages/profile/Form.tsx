@@ -135,7 +135,7 @@ export default function FormProfile() {
             <Field name="lastname" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
-                  id="lastName"
+                  id="lastname"
                   autoComplete="new-lastname"
                   label={t("lastnameField")}
                   variant={SelectVariantEnum.OUTLINED}
@@ -145,8 +145,8 @@ export default function FormProfile() {
                 />
               )}
             </Field>
-            {errors.lastName && touched.lastName ? (
-              <ErrorMessageForm message={errors.lastName} />
+            {errors.lastname && touched.lastname ? (
+              <ErrorMessageForm message={errors.lastname} />
             ) : null}
             <Divider marginTop={20} />
             <Field name="email" InputProps={{ notched: true }}>

@@ -1,6 +1,8 @@
 import axios from "axios";
-
 import { initializeStore } from "@/store/index";
+// import getConfig from "next/config";
+
+// const { publicRuntimeConfig } = getConfig();
 
 const ocsInstance = () => {
   const { password, id: username } = initializeStore({}).getState().user.user;

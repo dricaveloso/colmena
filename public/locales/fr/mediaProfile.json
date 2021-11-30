@@ -11,6 +11,7 @@
   "placeholderName": "Nom",
   "placeholderEmail": "Courriel",
   "placeholderPermission": "Permission",
+  "placeholderGroup": "Group",
   "messageSuccessInvite": "Invitation envoyée avec succès.",
   "messageSuccessInformation": "Informations sauvegardées avec succès.",
   "titleModalDialogInvite": "Inviter un collaborateur.",

@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
-import { JustifyContentEnum, NotificationStatusEnum } from "@/enums/index";
+import { JustifyContentEnum } from "@/enums/index";
 import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 import HeaderMediaProfile from "@/components/pages/media-profile/Header";
 import IconButton from "@/components/ui/IconButton";
@@ -12,21 +11,25 @@ import LatestPosts from "@/components/pages/home/Section2";
 import Members from "@/components/pages/media-profile/Members";
 import SocialMedia from "@/components/pages/media-profile/SocialMedia";
 import Divider from "@/components/ui/Divider";
-import NotificationContext from "@/store/context/notification-context";
-import { useTranslation } from "next-i18next";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["profile", "drawer", "common"])),
+    ...(await serverSideTranslations(locale, ["mediaProfile"])),
   },
 });
 
 function MediaProfile() {
-  const notificationCtx = useContext(NotificationContext);
-  const { t: c } = useTranslation("common");
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const group =
+    Array.isArray(userRdx.user.media?.groups) && userRdx.user.media?.groups[0]
+      ? userRdx.user.media?.groups[0]
+      : "";
   return (
     <LayoutApp
-      title="Radio Colmena"
+      title={userRdx.user.media?.name || ""}
       drawer={false}
       back
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
@@ -37,21 +40,15 @@ function MediaProfile() {
           justifyContent={JustifyContentEnum.FLEXSTART}
           extraStyle={{ paddingTop: 8, marginTop: 0 }}
         >
-          <div
-            style={{ width: "100%" }}
-            onClick={() =>
-              notificationCtx.showNotification({
-                message: c("featureUnavailable"),
-                status: NotificationStatusEnum.WARNING,
-              })
-            }
-          >
-            <LatestPosts />
-            <Divider marginTop={8} />
-            <Members />
-            <Divider marginTop={8} />
-            <SocialMedia />
-          </div>
+          <LatestPosts />
+          {userRdx.user.subadmin.includes(group) && (
+            <>
+              <Divider marginTop={8} />
+              <Members group={group} />
+            </>
+          )}
+          <Divider marginTop={8} />
+          <SocialMedia />
           <WhiteSpaceFooter />
         </FlexBox>
       </FlexBox>

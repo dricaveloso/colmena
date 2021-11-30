@@ -7,10 +7,13 @@ import { TextVariantEnum, NotificationStatusEnum } from "@/enums/*";
 import IconButton from "@/components/ui/IconButton";
 import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
 
 export default function HeaderMediaProfile() {
   const { t: c } = useTranslation("common");
   const notificationCtx = useContext(NotificationContext);
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const textAlign = "left";
   const colorBody1 = "#D2D3DC";
@@ -24,7 +27,7 @@ export default function HeaderMediaProfile() {
       flexDirection="row"
       style={{ backgroundColor: theme.palette.primary.main, width: "100%" }}
     >
-      <UserAvatar size={10} name="Radio Colmena" />
+      <UserAvatar size={10} name={userRdx.user.media?.name} />
       <Box
         display="flex"
         flexDirection="column"
@@ -36,8 +39,7 @@ export default function HeaderMediaProfile() {
           variant={TextVariantEnum.BODY2}
           style={{ color: colorBody1, fontSize: 12, textAlign }}
         >
-          Gulf Radio is a community radio based in kosele town, rachuonyo subcounty in homabay
-          county in Kenya.
+          {userRdx.user.media?.slogan}
         </Text>
         <Box
           display="flex"
@@ -50,7 +52,7 @@ export default function HeaderMediaProfile() {
             variant={TextVariantEnum.BODY2}
             style={{ color: colorBody1, fontSize: 12, textAlign }}
           >
-            htt://www.radiotal.org
+            {userRdx.user.media?.url}
           </Text>
           <IconButton
             handleClick={() =>

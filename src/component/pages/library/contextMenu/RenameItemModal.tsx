@@ -14,11 +14,12 @@ import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
 import { removeFirstSlash, trailingSlash } from "@/utils/utils";
 import {
-  getOfflinePath,
+  getAudioPath,
   hasLocalPath,
   getRootPath,
   handleDirectoryName,
   handleFileName,
+  convertUsernameToPrivate,
 } from "@/utils/directory";
 import NotificationContext from "@/store/context/notification-context";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
@@ -53,11 +54,20 @@ type Props = {
   open: boolean;
   handleOpen: (opt: boolean) => void;
   filename: string;
+  aliasFilename: string;
   basename: string;
   type: string;
 };
 
-export default function RenameItemModal({ id, open, handleOpen, filename, basename, type }: Props) {
+export default function RenameItemModal({
+  id,
+  open,
+  handleOpen,
+  filename,
+  aliasFilename,
+  basename,
+  type,
+}: Props) {
   const { t } = useTranslation("common");
   const { t: l } = useTranslation("library");
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -66,6 +76,7 @@ export default function RenameItemModal({ id, open, handleOpen, filename, basena
   const classes = useStyles();
   const notificationCtx = useContext(NotificationContext);
   const [finalPath, setFinalPath] = useState(filename);
+  const [aliasPath, setAliasPath] = useState(aliasFilename);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const initialValues = {
@@ -95,6 +106,7 @@ export default function RenameItemModal({ id, open, handleOpen, filename, basena
             throw new Error(l("messages.fileAlreadyExists"));
           }
         }
+
         const moved = await moveFile(userId, filename, finalPath);
         if (moved) {
           dispatch(editLibraryFile({ id, filename: finalPath, basename: name }));
@@ -116,7 +128,9 @@ export default function RenameItemModal({ id, open, handleOpen, filename, basena
   });
 
   const defineFinalPath = (name: any) => {
-    setFinalPath(`${trailingSlash(definePath(path))}${treatName(name)}`);
+    const realPath = `${trailingSlash(definePath(path))}${treatName(name)}`;
+    setFinalPath(convertUsernameToPrivate(realPath, userRdx.user.id));
+    setAliasPath(realPath);
   };
 
   const treatName = (name: string) => {
@@ -129,7 +143,7 @@ export default function RenameItemModal({ id, open, handleOpen, filename, basena
 
   const definePath = useCallback((path) => {
     const rootPath = getRootPath();
-    return !path || path === "/" || path === getOfflinePath() ? rootPath : path;
+    return !path || path === "/" || path === getAudioPath() ? rootPath : path;
   }, []);
 
   useEffect(() => {
@@ -190,7 +204,7 @@ export default function RenameItemModal({ id, open, handleOpen, filename, basena
                     id="outlined-search"
                     label={t("form.local")}
                     variant="outlined"
-                    value={finalPath}
+                    value={aliasPath}
                     disabled
                   />
                   <Divider marginTop={20} />

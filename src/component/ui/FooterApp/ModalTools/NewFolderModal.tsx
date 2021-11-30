@@ -14,7 +14,14 @@ import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
 // import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
 import { removeFirstSlash, trailingSlash } from "@/utils/utils";
-import { getOfflinePath, hasLocalPath, getRootPath, handleDirectoryName } from "@/utils/directory";
+import {
+  getAudioPath,
+  hasLocalPath,
+  getRootPath,
+  handleDirectoryName,
+  convertUsernameToPrivate,
+  convertPrivateToUsername,
+} from "@/utils/directory";
 // import { addLibraryFile } from "@/store/actions/library";
 // import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 // import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
@@ -72,23 +79,24 @@ export default function NewFolderModal({ open, handleClose }: Props) {
     path,
   };
 
-  const handleSubmit = (values: any) => {
+  // eslint-disable-next-line no-unused-vars
+  const handleSubmit = () => {
     setIsLoading(true);
     (async () => {
       try {
-        const directoryExists = await existDirectory(userId, finalPath);
+        const realPath = convertUsernameToPrivate(finalPath, userId);
+        const directoryExists = await existDirectory(userId, realPath);
         if (directoryExists) {
           throw new Error(t("messages.directoryAlreadyExists"));
         }
 
-        const handledPath: string = removeFirstSlash(finalPath) ?? "";
+        const handledPath: string = removeFirstSlash(realPath) ?? "";
         if (hasLocalPath(handledPath)) {
           throw new Error(t("messages.directoryAlreadyExists"));
         }
 
-        const create = await createDirectory(userId, finalPath);
+        const create = await createDirectory(userId, realPath);
         if (create) {
-          console.log(values.folderName);
           // const date = new Date();
           // const item: LibraryItemInterface = {
           //   basename: values.folderName,
@@ -126,9 +134,14 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const definePath = useCallback(
     (path) => {
       const rootPath = getRootPath();
-      return !pathExists || !path || path === "/" || path === getOfflinePath() ? rootPath : path;
+      return !pathExists ||
+        !path ||
+        path === "/" ||
+        convertUsernameToPrivate(path, userId) === getAudioPath()
+        ? convertPrivateToUsername(rootPath, userId)
+        : path;
     },
-    [pathExists],
+    [pathExists, userId],
   );
 
   useEffect(() => {
@@ -162,7 +175,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
             <Formik
               initialValues={initialValues}
               validationSchema={NewFolderSchema}
-              onSubmit={(values) => handleSubmit(values)}
+              onSubmit={() => handleSubmit()}
             >
               {({ setFieldValue }: any) => (
                 <Form className={classes.form}>

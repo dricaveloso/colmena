@@ -12,10 +12,22 @@ module.exports = withImages(
     },
     serverRuntimeConfig: {
       hotjarProd: process.env.HOTJAR_PROD,
+      appEnv: process.env.APP_ENV,
+      adminInfo: {
+        username: process.env.USERNAME_ADMIN_NC,
+        password: process.env.PASSWORD_ADMIN_NC
+      },
+      api: {
+        baseUrl: process.env.API_BASE_URL
+      },
     },
     publicRuntimeConfig: {
       api: {
-        baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL
+        baseUrl: process.env.API_BASE_URL
+      },
+      NCTalkVersion: process.env.NEXTCLOUD_TALK_VERSION,
+      user: {
+        defaultNewUserPassword: process.env.DEFAULT_USER_PASSWORD
       }
     },
     pwa: {

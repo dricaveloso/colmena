@@ -13,14 +13,15 @@ import { useTranslation } from "react-i18next";
 import DownloadModal from "./DownloadModal";
 import RenameItemModal from "./RenameItemModal";
 import DuplicateItemModal from "./DuplicateItemModal";
+import CopyItemModal from "./CopyItemModal";
 import { LibraryCardItemInterface } from "@/interfaces/index";
+import MoveItemModal from "./MoveItemModal";
+import DetailsModal from "./DetailsModal";
+import { getAudioPath, pathIsInFilename } from "@/utils/directory";
+import { remove } from "@/store/idb/models/audios";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
-  const { id, type, environment } = cardItem;
-  // eslint-disable-next-line react/destructuring-assignment
-  const filename: string = cardItem.filename ?? "";
-  // eslint-disable-next-line react/destructuring-assignment
-  const basename: string = cardItem.basename ?? "";
+  const { id, type, environment, filename, basename, aliasFilename } = cardItem;
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
@@ -31,6 +32,9 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
   const [openRenameItemModal, setOpenRenameItemModal] = useState(false);
   const [openDuplicateItemModal, setOpenDuplicateItemModal] = useState(false);
+  const [openCopyItemModal, setOpenCopyItemModal] = useState(false);
+  const [openMoveItemModal, setOpenMoveItemModal] = useState(false);
+  const [openDetailsModal, setOpenDetailsModal] = useState(false);
 
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -55,11 +59,28 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     handleCloseContextMenu();
   };
 
+  const handleOpenCopyModal = (opt: boolean) => {
+    setOpenCopyItemModal(opt);
+    handleCloseContextMenu();
+  };
+
+  const handleOpenMoveModal = (opt: boolean) => {
+    setOpenMoveItemModal(opt);
+    handleCloseContextMenu();
+  };
+
+  const handleOpenDetailsModal = (opt: boolean) => {
+    setOpenDetailsModal(opt);
+    handleCloseContextMenu();
+  };
+
   const handleDelete = async () => {
     try {
       let deleted = false;
       if (isRemote) {
         deleted = await deleteRemoteItem();
+      } else {
+        deleted = await remove(id, userRdx.user.id);
       }
 
       if (deleted) {
@@ -92,6 +113,8 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     });
   };
 
+  const insideOfflinePath = pathIsInFilename(getAudioPath(), filename);
+
   return (
     <>
       <IconButton
@@ -110,37 +133,51 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         open={Boolean(anchorEl)}
         onClose={handleCloseContextMenu}
       >
-        {type === "file" && (
+        {!insideOfflinePath && type === "file" && (
           <MenuItem key="edit" onClick={unavailable} style={{ color: "#aaa" }}>
             {t("contextMenuOptions.edit")}
           </MenuItem>
         )}
-        <MenuItem key="copy" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.copy")}
-        </MenuItem>
-        <MenuItem key="move" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.move")}
-        </MenuItem>
-        <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
-          {t("contextMenuOptions.duplicate")}
-        </MenuItem>
-        {type === "file" && (
+        {!insideOfflinePath && (
+          <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
+            {t("contextMenuOptions.copy")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
+            {t("contextMenuOptions.move")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
+            {t("contextMenuOptions.duplicate")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && type === "file" && (
           <MenuItem key="download" onClick={() => handleOpenDownloadModal(true)}>
             {t("contextMenuOptions.download")}
           </MenuItem>
         )}
-        <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
-          {t("contextMenuOptions.rename")}
-        </MenuItem>
-        <MenuItem key="details" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.details")}
-        </MenuItem>
-        <MenuItem key="sync" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.synchronize")}
-        </MenuItem>
-        <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.publish")}
-        </MenuItem>
+        {!insideOfflinePath && (
+          <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
+            {t("contextMenuOptions.rename")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="details" onClick={() => handleOpenDetailsModal(true)}>
+            {t("contextMenuOptions.details")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="sync" onClick={unavailable} style={{ color: "#aaa" }}>
+            {t("contextMenuOptions.synchronize")}
+          </MenuItem>
+        )}
+        {!insideOfflinePath && (
+          <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
+            {t("contextMenuOptions.publish")}
+          </MenuItem>
+        )}
         <MenuItem key="delete" onClick={handleDelete}>
           {t("contextMenuOptions.delete")}
         </MenuItem>
@@ -159,6 +196,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           open={openRenameItemModal}
           handleOpen={() => handleOpenRenameModal(false)}
           filename={filename}
+          aliasFilename={aliasFilename}
           basename={basename}
           type={type ?? "file"}
         />
@@ -168,7 +206,31 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           key={`${basename}-rename-modal`}
           open={openDuplicateItemModal}
           handleOpen={() => handleOpenDuplicateModal(false)}
-          cardItem={{ ...cardItem }}
+          cardItem={cardItem}
+        />
+      )}
+      {openCopyItemModal && (
+        <CopyItemModal
+          key={`${basename}-copy-modal`}
+          open={openCopyItemModal}
+          handleOpen={() => handleOpenCopyModal(false)}
+          cardItem={cardItem}
+        />
+      )}
+      {openMoveItemModal && (
+        <MoveItemModal
+          key={`${basename}-move-modal`}
+          open={openMoveItemModal}
+          handleOpen={() => handleOpenMoveModal(false)}
+          cardItem={cardItem}
+        />
+      )}
+      {openDetailsModal && (
+        <DetailsModal
+          key={`${basename}-details-modal`}
+          open={openDetailsModal}
+          handleOpen={() => handleOpenDetailsModal(false)}
+          cardItem={cardItem}
         />
       )}
     </>

@@ -105,11 +105,7 @@ function DrawerAux({ open, onClose }: Props) {
       id: uuid(),
       icon: <SvgIcon icon="settings" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("settingsTitle"),
-      handleClick: () =>
-        notificationCtx.showNotification({
-          message: c("featureUnavailable"),
-          status: NotificationStatusEnum.WARNING,
-        }),
+      url: "/settings",
     },
     {
       id: uuid(),
@@ -127,13 +123,19 @@ function DrawerAux({ open, onClose }: Props) {
       id: uuid(),
       icon: <SvgIcon icon="help" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("supportTitle"),
-      url: "/talk-to-us",
+      url: "/help",
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="info" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("aboutMaia"),
       url: "/about",
+    },
+    {
+      id: uuid(),
+      icon: <SvgIcon icon="faq" fontSize={iconSize} htmlColor={iconColor} />,
+      title: t("faqTitle"),
+      url: "/faq",
     },
     {
       id: uuid(),
@@ -204,7 +206,7 @@ function DrawerAux({ open, onClose }: Props) {
         defaultLang={cookies.NEXT_LOCALE}
         open={openChangeLanguage}
         onClose={handleCloseChangeLanguage}
-        backUrl={router.pathname}
+        backUrl={router.asPath}
       />
       <Backdrop open={showBackdrop} />
       <Drawer anchor="left" open={open} onClose={onClose}>

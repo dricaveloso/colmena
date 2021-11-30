@@ -5,14 +5,14 @@ import Divider from "@/components/ui/Divider";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum, TextVariantEnum } from "@/enums/index";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["recordDone", "drawer", "common"])),
+    ...(await serverSideTranslations(locale, ["recordDone"])),
   },
 });
 

@@ -41,6 +41,7 @@
     "skipButton": "Sauter",
     "nextIntro": "Suivant",
     "backButton": "Retourner",
+    "recoverPasswordButton": "Redefine password",
     "cancelButton": "Annuler",
     "invalidEmailTitle": "Courriel non valide",
     "placeholderEmail": "Courriel",
@@ -97,5 +98,14 @@
   "membersTitle": "Membres",
   "manageTitle": "Gérer",
   "socialMediaTitle": "Médias sociaux",
-  "resetPasswordTitle": "Mise à jour du mot de passe"
+  "resetPasswordTitle": "Mise à jour du mot de passe",
+  "administratorTitle": "Administrator",
+  "collaboratorTitle": "Collaborator",
+  "confirmTitleDelete": "Are you sure ?",
+  "confirmMessageDelete": "By performing this action, it will be impossible to reverse it.",
+  "yesTitle": "Yes",
+  "noTitle": "No",
+  "genericErrorMessage": "Unable to perform this action.",
+  "passwordRecoveryMessage": "Password recovery email sent successfully.",
+  "backToLogin": "Back to login"
 }
