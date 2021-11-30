@@ -17,11 +17,16 @@ export function listFile(
   formatText = false,
 ): Promise<BufferLike | string | ResponseDataDetailed<BufferLike | string>> {
   if (formatText)
-    return webdav(customCredentials).getFileContents(`${userId}/${removeFirstSlash(filePath)}`, {
-      format: "text",
-    });
+    return webdav("files", customCredentials).getFileContents(
+      `${userId}/${removeFirstSlash(filePath)}`,
+      {
+        format: "text",
+      },
+    );
 
-  return webdav(customCredentials).getFileContents(`${userId}/${removeFirstSlash(filePath)}`);
+  return webdav("files", customCredentials).getFileContents(
+    `${userId}/${removeFirstSlash(filePath)}`,
+  );
 }
 
 export async function existFile(userId: string | number, remotePath: string): Promise<boolean> {
@@ -88,7 +93,7 @@ export async function putFile(
   data: string | ArrayBuffer,
   customCredentials: CustomCredentialsInterface | null = null,
 ): Promise<boolean> {
-  return webdav(customCredentials).putFileContents(`${userId}/${filePath}`, data, {
+  return webdav("files", customCredentials).putFileContents(`${userId}/${filePath}`, data, {
     overwrite: true,
     contentLength: false,
   });

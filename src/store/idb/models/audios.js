@@ -16,6 +16,6 @@ export function remove(id, userId) {
   return db.audios.where({ id, userId }).delete();
 }
 
-export function update(id, data) {
+export function updateAudio(id, data) {
   return db.audios.update(id, data);
 }

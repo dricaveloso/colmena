@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -11,7 +11,10 @@ import * as Yup from "yup";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { NXTagsProps, PropsAudioSave } from "@/types/index";
+import { PropsAudioSave, SelectOptionItem } from "@/types/index";
+import Chip from "@material-ui/core/Chip";
+import { listTags } from "@/services/webdav/tags";
+import { SystemTagsInterface } from "@/interfaces/tags";
 
 type Props = {
   open: boolean;
@@ -21,28 +24,16 @@ type Props = {
 
 type MyFormValues = {
   name: string;
-  tags: NXTagsProps[];
+  tags: string[];
 };
-
-const nextcloudTags: NXTagsProps[] = [
-  { id: 1, title: "Category 1" },
-  { id: 2, title: "Category 2" },
-  { id: 3, title: "Category 3" },
-];
 
 export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }: Props) {
   const { t } = useTranslation("recording");
-  const [requiredTag, setRequiredTag] = useState("");
+  const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const { t: c } = useTranslation("common");
-
-  const NXTagsSchema = Yup.object().shape({
-    id: Yup.number().required(),
-    title: Yup.string().required(),
-  });
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
-    tags: Yup.array().of(NXTagsSchema).required(c("form.requiredTitle")),
   });
 
   const initialValues: MyFormValues = {
@@ -50,21 +41,40 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
     tags: [],
   };
 
+  useEffect(() => {
+    (async () => {
+      const res = await listTags();
+      const tags: SelectOptionItem[] = res
+        .filter((_, idx) => idx !== 0)
+        .map((item: any | SystemTagsInterface) => ({
+          id: item.propstat.prop.id,
+          value: item.propstat.prop["display-name"],
+        }));
+      setOptionsTag(tags);
+    })();
+  }, []);
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={ValidationSchema}
       onSubmit={(values: MyFormValues) => {
-        if (values.tags.length === 0) {
-          setRequiredTag(c("form.requiredTitle"));
-          return;
-        }
-        setRequiredTag("");
+        // if (values.tags.length === 0) {
+        //   setRequiredTag(c("form.requiredTitle"));
+        //   return;
+        // }
+        // setRequiredTag("");
         handleSubmit(values);
       }}
     >
-      {({ submitForm, errors, touched, setFieldValue }: any) => (
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      {({ submitForm, errors, touched, setFieldValue, values }: any) => (
+        <Dialog
+          fullWidth
+          maxWidth="xs"
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="form-dialog-title"
+        >
           <DialogTitle id="form-dialog-title">{t("recordingFinishTitle")}</DialogTitle>
           <DialogContent>
             <DialogContentText>{t("recordingFinishDescription")}</DialogContentText>
@@ -74,6 +84,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
                   <TextField
                     autoFocus
                     margin="dense"
+                    autoComplete="new-name"
                     id="name"
                     label={t("recordingFinishLabelForm")}
                     inputProps={{ maxLength: 60 }}
@@ -85,13 +96,20 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
               {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
               <Autocomplete
                 multiple
+                value={values.tags}
+                id="tags-filled"
+                options={optionsTag.map((option) => option.value)}
+                defaultValue={["asd"]}
                 onChange={(e, value) => setFieldValue("tags", value)}
-                id="tags"
-                options={nextcloudTags}
-                getOptionLabel={(option: NXTagsProps) => option.title}
+                freeSolo
+                renderTags={(value: string[], getTagProps) =>
+                  value.map((option: string, index: number) => (
+                    <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                  ))
+                }
                 renderInput={(params) => <TextField {...params} variant="standard" label="Tags" />}
               />
-              {requiredTag !== "" ? <ErrorMessageForm message={requiredTag} /> : null}
+              {/* {requiredTag !== "" ? <ErrorMessageForm message={requiredTag} /> : null} */}
             </Form>
           </DialogContent>
           <DialogActions>

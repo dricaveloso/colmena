@@ -8,5 +8,7 @@
   "submitButton": "Finish",
   "cancelButton": "Cancel",
   "errorStorageMessage": "Could not save this recording.",
-  "errorGetAudioStreamMessage": "You need to enable audio capture to start recording."
+  "errorGetAudioStreamMessage": "You need to enable audio capture to start recording.",
+  "audioTitle": "Audio",
+  "audioSaveTitle": "saved"
 }

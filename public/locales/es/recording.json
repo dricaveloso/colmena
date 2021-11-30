@@ -8,5 +8,7 @@
   "submitButton": "Finalizar",
   "cancelButton": "Cancelar",
   "errorStorageMessage": "No fue posible guardar esta grabación.",
-  "errorGetAudioStreamMessage": "Necesita habilitar la captura de audio para comenzar a grabar."
+  "errorGetAudioStreamMessage": "Necesita habilitar la captura de audio para comenzar a grabar.",
+  "audioTitle": "Audio",
+  "audioSaveTitle": "saved"
 }

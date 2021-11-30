@@ -8,5 +8,7 @@
   "submitButton": "Terminer",
   "cancelButton": "Annuler",
   "errorStorageMessage": "Impossible de sauvegarder cet enregistrement.",
-  "errorGetAudioStreamMessage": "Activer la capture audio pour commencer l'enregistrement."
+  "errorGetAudioStreamMessage": "Activer la capture audio pour commencer l'enregistrement.",
+  "audioTitle": "Audio",
+  "audioSaveTitle": "saved"
 }

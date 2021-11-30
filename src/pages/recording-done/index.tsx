@@ -66,7 +66,7 @@ function RecordingDone() {
           </Text>
           {audio &&
             audio?.tags.map((item) => (
-              <Chip key={uuid()} label={item.title} style={{ marginRight: 5 }} />
+              <Chip key={uuid()} label={item} style={{ marginRight: 5 }} />
             ))}
         </div>
       </FlexBox>

@@ -42,7 +42,7 @@ export type PropsAudioData = {
 
 export type PropsAudioSave = {
   name: string;
-  tags: NXTagsProps[];
+  tags: string[];
 };
 
 export type PropsLibrarySelector = {
@@ -52,7 +52,7 @@ export type PropsLibrarySelector = {
 };
 
 export type NXTagsProps = {
-  id: number;
+  id?: number;
   title: string;
 };
 
