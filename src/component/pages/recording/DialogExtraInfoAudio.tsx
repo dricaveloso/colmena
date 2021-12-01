@@ -107,16 +107,18 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
                     <Chip variant="outlined" label={option} {...getTagProps({ index })} />
                   ))
                 }
-                renderInput={(params) => <TextField {...params} variant="standard" label="Tags" />}
+                renderInput={(params) => (
+                  <TextField {...params} variant="standard" label={t("tagsTitle")} />
+                )}
               />
               {/* {requiredTag !== "" ? <ErrorMessageForm message={requiredTag} /> : null} */}
             </Form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            {/* <Button onClick={handleClose} color="primary">
               {t("cancelButton")}
-            </Button>
-            <Button onClick={submitForm} color="primary">
+            </Button> */}
+            <Button onClick={submitForm} style={{ margin: 8 }} variant="contained" color="primary">
               {t("submitButton")}
             </Button>
           </DialogActions>

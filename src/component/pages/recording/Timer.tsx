@@ -6,35 +6,30 @@ import TimerDisplay from "./TimerDisplay";
 import { useDispatch } from "react-redux";
 import { updateRecordingState } from "@/store/actions/recordings/index";
 
-type Props = {
-  handleUpdateAudioTitle: () => void;
-};
-
-export default function Timer({ handleUpdateAudioTitle }: Props) {
+export default function Timer() {
   const dispatch = useDispatch();
-  const { seconds, minutes, hours, isRunning, start, pause, reset } = useStopwatch({
+  const { seconds, minutes, start, pause, reset } = useStopwatch({
     autoStart: false,
   });
 
-  function handleStart() {
+  const handleStart = () => {
     start();
-    handleUpdateAudioTitle();
     dispatch(updateRecordingState({ activeRecordingState: "START" }));
-  }
+  };
 
-  function handlePause() {
+  const handlePause = () => {
     pause();
     dispatch(updateRecordingState({ activeRecordingState: "PAUSE" }));
-  }
+  };
 
-  function handleStop() {
+  const handleStop = () => {
     dispatch(updateRecordingState({ activeRecordingState: "STOP" }));
     reset(0, false);
-  }
+  };
 
   return (
     <div>
-      <TimerDisplay seconds={seconds} minutes={minutes} hours={hours} isRunning={isRunning} />
+      <TimerDisplay seconds={seconds} minutes={minutes} />
       {/* eslint-disable-next-line react/jsx-no-bind */}
       <AudioControls handleStart={handleStart} handleStop={handleStop} handlePause={handlePause} />
     </div>

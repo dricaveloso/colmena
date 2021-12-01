@@ -18,7 +18,7 @@ import { LibraryCardItemInterface } from "@/interfaces/index";
 import MoveItemModal from "./MoveItemModal";
 import DetailsModal from "./DetailsModal";
 import { getAudioPath, pathIsInFilename } from "@/utils/directory";
-import { remove } from "@/store/idb/models/audios";
+import { remove } from "@/store/idb/models/files";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename } = cardItem;

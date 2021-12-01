@@ -249,10 +249,12 @@ export type AllIconProps =
   | "art_gallery"
   | "music"
   | "folder"
+  | "folder_outlined"
   | "private"
   | "offline"
   | "file"
   | "faq"
-  | "warning";
+  | "warning"
+  | "record_outlined";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;

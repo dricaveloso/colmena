@@ -3,6 +3,8 @@ import webdav from "@/services/webdav";
 import { BufferLike, ResponseDataDetailed } from "webdav";
 import { removeFirstSlash, getRandomInt, trailingSlash } from "@/utils/utils";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
+import davAxiosConnection from "@/services/webdav/axiosConnection";
+import { initializeStore } from "@/store/index";
 
 interface CustomCredentialsInterface {
   username: string;
@@ -133,4 +135,17 @@ export async function downloadLink(
     console.log(error);
     return false;
   }
+}
+
+export async function getFileId(filePath = "Readme.md") {
+  const { id: userId } = initializeStore({}).getState().user.user;
+  const body = `<?xml version="1.0" encoding="utf-8" ?>
+        <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <a:prop>
+            <oc:fileid/>
+          </a:prop>
+        </a:propfind>`;
+
+  const result = await davAxiosConnection(body, `files/${userId}/${filePath}`);
+  return result.multistatus.response;
 }

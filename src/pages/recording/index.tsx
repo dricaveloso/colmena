@@ -1,30 +1,27 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/jsx-indent */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
-import {
-  AlignItemsEnum,
-  JustifyContentEnum,
-  NotificationStatusEnum,
-  TextVariantEnum,
-} from "@/enums/index";
+import { AlignItemsEnum, JustifyContentEnum, NotificationStatusEnum } from "@/enums/index";
 import AudioRecorder from "@/components/pages/recording/AudioRecorder";
 import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAudio";
-import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 import Timer from "@/components/pages/recording/Timer";
 import Divider from "@/components/ui/Divider";
 import { useSelector, useDispatch } from "react-redux";
 import { PropsUserSelector, PropsAudioSave, PropsAudioData } from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
-import { createAudio, updateAudio } from "@/store/idb/models/audios";
+import { createFile, updateFile } from "@/store/idb/models/files";
 import { useRouter } from "next/router";
 import NotificationContext from "@/store/context/notification-context";
 import { updateRecordingState } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
-import Text from "@/components/ui/Text";
+import ActionConfirm from "@/components/ui/ActionConfirm";
+import theme from "@/styles/theme";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -35,10 +32,11 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function Recording() {
   const { t } = useTranslation("recording");
   const router = useRouter();
-  const [openDialogAudioName, setOpenDialogAudioName] = useState(true);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const [openDialogAudioName, setOpenDialogAudioName] = useState(false);
+  const [openContinueRecording, setOpenContinueRecording] = useState(false);
   const [audioId, setAudioId] = useState();
-  const [audioTitleSaved, setAudioTitleSaved] = useState<Date | string>("");
+  const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
   const notificationCtx = useContext(NotificationContext);
   const dispatch = useDispatch();
 
@@ -58,9 +56,9 @@ function Recording() {
         title,
         tags,
       };
-      await updateAudio(audioId, recording);
-      setAudioTitleSaved(title);
-      router.push("/recording-done");
+      await updateFile(audioId, recording);
+      setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
+      setOpenContinueRecording(true);
     } catch (e) {
       console.log(e);
       notificationCtx.showNotification({
@@ -72,11 +70,25 @@ function Recording() {
     }
   };
 
+  const keepRecordingHandle = () => {
+    notificationCtx.showNotification({
+      message: t("audioSavedSuccessfully"),
+      status: NotificationStatusEnum.SUCCESS,
+    });
+    setOpenDialogAudioName(false);
+    setOpenContinueRecording(false);
+  };
+
+  const finishRecordingHandle = () => {
+    router.push(
+      amountAudiosRecorded === 1 ? "/recording-done" : `/library/${userRdx.user.id}/audios`,
+    );
+  };
+
   async function createAudioHandle(audioData: PropsAudioData) {
     const { blob, type: audioType } = audioData;
     const arrayBufferBlob = await blobToArrayBuffer(blob);
     const title = new Date().toISOString();
-    setAudioTitleSaved(title);
     const recording = {
       title,
       arrayBufferBlob,
@@ -85,7 +97,7 @@ function Recording() {
       createdAt: new Date(),
       userId: userRdx.user.id,
     };
-    const audioId = await createAudio(recording);
+    const audioId = await createFile(recording);
     setAudioId(audioId);
     dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
   }
@@ -95,29 +107,29 @@ function Recording() {
     setOpenDialogAudioName(true);
   }
 
-  const handleUpdateAudioTitle = useCallback(() => {
-    setAudioTitleSaved("");
-  }, []);
-
   return (
-    <LayoutApp title={t("title")} back>
-      <FlexBox justifyContent={JustifyContentEnum.CENTER} alignItems={AlignItemsEnum.CENTER}>
-        {audioTitleSaved && (
-          <Text variant={TextVariantEnum.BODY2}>
-            {t("audioTitle")} <b>{audioTitleSaved}</b> {t("audioSaveTitle")}!
-          </Text>
-        )}
-        {/* eslint-disable-next-line react/jsx-no-bind */}
+    <LayoutApp title={t("title")} showFooter={false} back>
+      <FlexBox justifyContent={JustifyContentEnum.SPACEAROUND} alignItems={AlignItemsEnum.CENTER}>
         <AudioRecorder onStopRecording={onStopRecording} />
-        <Divider marginBottom={25} />
-        <Timer handleUpdateAudioTitle={handleUpdateAudioTitle} />
-        <DialogExtraInfoAudio
-          open={openDialogAudioName}
-          handleClose={handleCloseExtraInfo}
-          handleSubmit={handleAudioSave}
-        />
-        <WhiteSpaceFooter />
+        <Divider marginTop={25} />
+        <Timer />
+        {openDialogAudioName && (
+          <DialogExtraInfoAudio
+            open={openDialogAudioName}
+            handleClose={handleCloseExtraInfo}
+            handleSubmit={handleAudioSave}
+          />
+        )}
       </FlexBox>
+      {openContinueRecording && (
+        <ActionConfirm
+          title={t("audioConfirmationToKeep")}
+          icon="info"
+          iconColor={theme.palette.primary.dark}
+          onOk={keepRecordingHandle}
+          onClose={finishRecordingHandle}
+        />
+      )}
     </LayoutApp>
   );
 }

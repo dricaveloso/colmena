@@ -7,13 +7,17 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { createObjectURL } from "blob-util";
 import VUMeter from "@/components/ui/VUMeter";
-import { PropsAudioData, PropsRecordingSelector } from "@/types/index";
+import { PropsAudioData, PropsRecordingSelector, PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import NotificationContext from "@/store/context/notification-context";
-import { NotificationStatusEnum } from "@/enums/index";
 import { useTranslation } from "next-i18next";
+import IconButton from "@/components/ui/IconButton";
+import Button from "@/components/ui/Button";
+import Box from "@material-ui/core/Box";
+import { ButtonVariantEnum } from "@/enums/*";
+import { useRouter } from "next/router";
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
@@ -25,6 +29,8 @@ type StyleProps = {
 };
 
 function AudioRecorder({ onStopRecording }: Props) {
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const router = useRouter();
   const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("recording");
   const recordingRdx = useSelector(
@@ -39,15 +45,15 @@ function AudioRecorder({ onStopRecording }: Props) {
   const [removeCanvas, setRemoveCanvas] = useState(false);
   const theme = useTheme();
   const matchXs = useMediaQuery(theme.breakpoints.down("sm"));
-  const style: StyleProps = matchXs
-    ? {
-        width: "5em",
-        height: "20em",
-      }
-    : {
-        width: "5em",
-        height: "20em",
-      };
+  const styleMatchXs = {
+    width: "5em",
+    height: "20em",
+  };
+  const styleMatchRest = {
+    width: "5em",
+    height: "20em",
+  };
+  const style: StyleProps = matchXs ? styleMatchXs : styleMatchRest;
 
   const startRecording = useCallback(async () => {
     let mediaRecorder: MediaRecorder | null = mediaRcdr;
@@ -136,10 +142,30 @@ function AudioRecorder({ onStopRecording }: Props) {
     }
   }
 
+  const navigate = () => {
+    router.push(`/library/${userRdx.user.id}/audios`);
+  };
+
   return (
     <div style={{ width: style.width, height: style.height }}>
-      {isRecording && (
+      {isRecording ? (
         <VUMeter stream={audioStream} removeCanvas={removeCanvas} canvasSize={style} />
+      ) : (
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+          <IconButton
+            icon="folder_outlined"
+            textStyle={{ color: "#9A9A9A", fontSize: 14, width: 200 }}
+            title={t("recordingOrientation")}
+            iconStyle={{ fontSize: 90 }}
+            iconColor="#EBEBEB"
+          />
+          <Button
+            title="Show my recordings"
+            style={{ width: 200 }}
+            variant={ButtonVariantEnum.TEXT}
+            handleClick={navigate}
+          />
+        </Box>
       )}
     </div>
   );

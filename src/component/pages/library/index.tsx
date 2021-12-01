@@ -11,7 +11,7 @@ import {
 } from "@/interfaces/index";
 import { listLibraryDirectories } from "@/services/webdav/directories";
 import { FileStat } from "webdav";
-import { getAllAudios } from "@/store/idb/models/audios";
+import { getAllFiles } from "@/store/idb/models/files";
 import { makeStyles } from "@material-ui/core";
 import {
   getExtensionFilename,
@@ -98,7 +98,7 @@ export async function getWebDavDirectories(
 
 export async function getLocalFiles(userId: string, timeDescription: TimeDescriptionInterface) {
   const items: LibraryItemInterface[] = [];
-  const localFiles = await getAllAudios(userId);
+  const localFiles = await getAllFiles(userId);
   const audioPath = getAudioPath();
   if (localFiles.length > 0) {
     localFiles.forEach((file: RecordingInterface) => {

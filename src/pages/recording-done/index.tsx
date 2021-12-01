@@ -13,7 +13,7 @@ import Chip from "@material-ui/core/Chip";
 import RecordingDoneOptions from "@/components/pages/recording/RecordingDoneOptions";
 import { v4 as uuid } from "uuid";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
-import { getLastAudioRecordedByUser } from "@/store/idb/models/audios";
+import { getLastAudioRecordedByUser } from "@/store/idb/models/files";
 import { PropsUserSelector } from "@/types/index";
 import CenterProgress from "@/components/ui/CenterProgress";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
