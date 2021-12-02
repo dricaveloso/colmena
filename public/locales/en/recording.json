@@ -14,5 +14,7 @@
   "tagsTitle": "Tags",
   "recordingOrientation": "Audios are locally stored if there is no internet. Private synch by default with the possibility of sharing.",
   "audioSavedSuccessfully": "Audio saved succesfully",
-  "audioConfirmationToKeep": "Would you like to record another audio ?"
+  "audioConfirmationToKeep": "Would you like to record another audio ?",
+  "uploadLocationTitle": "Upload location",
+  "changeUploadLocationTitle": "change"
 }

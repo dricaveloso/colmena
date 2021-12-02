@@ -32,6 +32,7 @@ export type PropsHoneycombSelector = {
 
 export type PropsConfigSelector = {
   currentPage: string;
+  lastTwoPagesAccessed: string[];
 };
 
 export type PropsAudioData = {

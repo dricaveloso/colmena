@@ -159,12 +159,12 @@ function AudioRecorder({ onStopRecording }: Props) {
             iconStyle={{ fontSize: 90 }}
             iconColor="#EBEBEB"
           />
-          <Button
+          {/* <Button
             title="Show my recordings"
             style={{ width: 200 }}
             variant={ButtonVariantEnum.TEXT}
             handleClick={navigate}
-          />
+          /> */}
         </Box>
       )}
     </div>

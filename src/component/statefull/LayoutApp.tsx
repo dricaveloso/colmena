@@ -38,7 +38,7 @@ function LayoutApp({
   const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
-    if (router.pathname !== "/profile") dispatch(setCurrentPage(router.pathname));
+    if (router.asPath !== "/profile") dispatch(setCurrentPage(router.asPath));
     if (navigator.onLine) {
       (async () => {
         try {
