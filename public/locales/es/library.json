@@ -56,6 +56,11 @@
     "path": "Path",
     "lastUpdate": "Last update at",
     "size": "Size",
-    "type": "Type"
+    "type": "Type",
+    "creator": "Creator",
+    "fileId": "File ID",
+    "tags": "Tags",
+    "language": "Language",
+    "description": "Description"
   }
 }

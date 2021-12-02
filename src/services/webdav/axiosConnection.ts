@@ -2,6 +2,7 @@ import axios from "axios";
 import { initializeStore } from "@/store/index";
 import getConfig from "next/config";
 import { parseXML, RequestDataPayload } from "webdav";
+import { removeCornerSlash } from "@/utils/utils";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -10,12 +11,17 @@ export default async function axiosConnection(
   context = "systemtags",
   method = "PROPFIND",
   headers = {},
+  rootContext = false,
 ) {
   const { password, id: username } = initializeStore({}).getState().user.user;
+  let path = `${publicRuntimeConfig.api.baseUrl}/remote.php`;
+  if (!rootContext) {
+    path += "/dav";
+  }
 
   const config: any = {
     method,
-    url: `${publicRuntimeConfig.api.baseUrl}/remote.php/dav/${context}`,
+    url: `${path}/${removeCornerSlash(context)}`,
     headers: {
       "OCS-APIRequest": true,
       "Content-Type": "application/xml",
