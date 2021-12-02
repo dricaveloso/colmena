@@ -44,6 +44,7 @@ export type PropsAudioData = {
 export type PropsAudioSave = {
   name: string;
   tags: string[];
+  path: string;
 };
 
 export type PropsLibrarySelector = {
@@ -258,4 +259,4 @@ export type AllIconProps =
   | "warning"
   | "record_outlined";
 
-export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;
+export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import webdav from "@/services/webdav";
-import { BufferLike, ResponseDataDetailed } from "webdav";
-import { removeFirstSlash, getRandomInt, trailingSlash } from "@/utils/utils";
+import { BufferLike, ResponseDataDetailed, DAVResultResponseProps } from "webdav";
+import { removeFirstSlash, getRandomInt, trailingSlash, removeCornerSlash } from "@/utils/utils";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
 import davAxiosConnection from "@/services/webdav/axiosConnection";
-import { initializeStore } from "@/store/index";
+
+interface DAVFileIdResultResponseProps extends DAVResultResponseProps {
+  fileid?: number;
+}
 
 interface CustomCredentialsInterface {
   username: string;
@@ -137,15 +140,19 @@ export async function downloadLink(
   }
 }
 
-export async function getFileId(filePath = "Readme.md") {
-  const { id: userId } = initializeStore({}).getState().user.user;
+export async function getFileId(userId: string, path: string) {
   const body = `<?xml version="1.0" encoding="utf-8" ?>
-        <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
-          <a:prop>
-            <oc:fileid/>
-          </a:prop>
-        </a:propfind>`;
+                <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
+                  <a:prop>
+                    <oc:fileid/>
+                  </a:prop>
+                </a:propfind>`;
+  const result = await davAxiosConnection(body, `files/${userId}/${removeCornerSlash(path)}`);
+  if (typeof result.multistatus.response[0].propstat.prop === "object") {
+    const { prop }: { prop: DAVFileIdResultResponseProps } =
+      result.multistatus.response[0].propstat;
+    return prop.fileid;
+  }
 
-  const result = await davAxiosConnection(body, `files/${userId}/${filePath}`);
-  return result.multistatus.response;
+  return false;
 }

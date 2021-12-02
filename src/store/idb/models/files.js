@@ -19,3 +19,7 @@ export function remove(id, userId) {
 export function updateFile(id, data) {
   return db.files.update(id, data);
 }
+
+export function getFile(id) {
+  return db.files.where({ id }).first();
+}

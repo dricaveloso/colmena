@@ -14,22 +14,24 @@ import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAu
 import Timer from "@/components/pages/recording/Timer";
 import Divider from "@/components/ui/Divider";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  PropsUserSelector,
-  PropsAudioSave,
-  PropsAudioData,
-  PropsConfigSelector,
-  PropsLibrarySelector,
-} from "@/types/index";
+import { PropsUserSelector, PropsAudioSave, PropsAudioData, SelectOptionItem } from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
-import { createFile, updateFile } from "@/store/idb/models/files";
-import { useRouter } from "next/router";
+import {
+  createFile,
+  updateFile as updateFileLocal,
+  getFile as getFileLocal,
+} from "@/store/idb/models/files";
+// import { useRouter } from "next/router";
 import NotificationContext from "@/store/context/notification-context";
 import { updateRecordingState } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import theme from "@/styles/theme";
-import { convertUsernameToPrivate, getAudioPath } from "@/utils/directory";
+import { convertUsernameToPrivate } from "@/utils/directory";
+import { putFile as putFileOnline, getFileId as getFileOnlineId } from "@/services/webdav/files";
+import { assignTagFile, createAndAssignTagFile, listTags } from "@/services/webdav/tags";
+import { SystemTagsInterface } from "@/interfaces/tags";
+import Backdrop from "@/components/ui/Backdrop";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -39,21 +41,29 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 
 function Recording() {
   const { t } = useTranslation("recording");
-  const router = useRouter();
+  // const router = useRouter();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
-  const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const [openDialogAudioName, setOpenDialogAudioName] = useState(false);
   const [openContinueRecording, setOpenContinueRecording] = useState(false);
-  const [uploadLocation, setUploadLocation] = useState("");
+  const [showBackdrop, setShowBackdrop] = useState(false);
   const [audioId, setAudioId] = useState();
-  const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
+  // const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
+  const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const notificationCtx = useContext(NotificationContext);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
-    setUploadLocation(prepareUploadPath());
+    (async () => {
+      const res = await listTags();
+      const tags: SelectOptionItem[] = res
+        .filter((_, idx) => idx !== 0)
+        .map((item: any | SystemTagsInterface) => ({
+          id: item.propstat.prop.id,
+          value: item.propstat.prop["display-name"].toLowerCase(),
+        }));
+      setOptionsTag(tags);
+    })();
   }, []);
 
   const handleCloseExtraInfo = () => {
@@ -65,15 +75,47 @@ function Recording() {
     dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
   };
 
-  const handleAudioSave = async (values: PropsAudioSave) => {
-    const { name: title, tags } = values;
+  const saveAudioHandle = async (values: PropsAudioSave) => {
+    const { name: title, tags, path } = values;
     try {
       const recording = {
         title,
         tags,
+        path,
       };
-      await updateFile(audioId, recording);
-      setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
+      await updateFileLocal(audioId, recording);
+      const localFile = await getFileLocal(audioId);
+
+      try {
+        setOpenDialogAudioName(false);
+        setShowBackdrop(true);
+        const filePath = `${convertUsernameToPrivate(path, userRdx.user.id)}/${title}.opus`;
+        await putFileOnline(userRdx.user.id, filePath, localFile.arrayBufferBlob);
+        const fileId = await getFileOnlineId(userRdx.user.id, filePath);
+
+        const tagsFoundOnline = optionsTag
+          .filter((item) => tags.includes(item.value))
+          .map((item) => item.id);
+
+        const tagsOnlineValues = optionsTag.map((item) => item.value);
+        const tagsNotFoundOnline = tags.filter((item) => !tagsOnlineValues.includes(item));
+
+        tagsFoundOnline.forEach(async (item: number) => {
+          await assignTagFile(Number(fileId), item);
+        });
+
+        tagsNotFoundOnline.forEach(async (item: string) => {
+          await createAndAssignTagFile(Number(fileId), item);
+        });
+
+        await updateFileLocal(audioId, { nextcloudId: fileId });
+      } catch (e) {
+        console.log("Nao uploadeou online", e);
+      } finally {
+        setShowBackdrop(false);
+      }
+
+      // setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
       setOpenContinueRecording(true);
     } catch (e) {
       console.log(e);
@@ -95,34 +137,15 @@ function Recording() {
     setOpenContinueRecording(false);
   };
 
-  function prepareUploadPath() {
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
-    let url = "";
-
-    if (/^[/]library/.test(urlOrigin)) {
-      if ((urlOrigin.match(/[/]/g) || []).length > 1) {
-        const path = libraryRdx.currentPath;
-        url = convertUsernameToPrivate(path, userRdx.user.id).replace(/[/]library[/]/, "");
-      }
-    }
-
-    if (/^[/]honeycomb/.test(urlOrigin)) {
-      const url_ = urlOrigin.split("/");
-      if (urlOrigin.length > 2) {
-        url = url_[url_.length - 1];
-      }
-    }
-
-    return url || getAudioPath();
-  }
-
   const finishRecordingHandle = () => {
-    router.push(
-      amountAudiosRecorded === 1 ? "/recording-done" : `/library/${userRdx.user.id}/audios`,
-    );
+    setOpenDialogAudioName(false);
+    setOpenContinueRecording(false);
+    // router.push(
+    //   amountAudiosRecorded === 1 ? "/recording-done" : `/library/${userRdx.user.id}/audios`,
+    // );
   };
 
-  async function createAudioHandle(audioData: PropsAudioData) {
+  async function firstSaveAudioHandle(audioData: PropsAudioData) {
     const { blob, type: audioType } = audioData;
     const arrayBufferBlob = await blobToArrayBuffer(blob);
     const title = new Date().toISOString();
@@ -130,7 +153,6 @@ function Recording() {
       title,
       arrayBufferBlob,
       audioType,
-      tags: [],
       createdAt: new Date(),
       userId: userRdx.user.id,
     };
@@ -140,7 +162,7 @@ function Recording() {
   }
 
   async function onStopRecording(audioData: PropsAudioData) {
-    await createAudioHandle(audioData);
+    await firstSaveAudioHandle(audioData);
     setOpenDialogAudioName(true);
   }
 
@@ -154,11 +176,11 @@ function Recording() {
           <DialogExtraInfoAudio
             open={openDialogAudioName}
             handleClose={handleCloseExtraInfo}
-            handleSubmit={handleAudioSave}
-            uploadLocation={uploadLocation}
-            chooseUploadLocationHandle={(path: string) => setUploadLocation(path)}
+            handleSubmit={saveAudioHandle}
+            optionsTag={optionsTag}
           />
         )}
+        <Backdrop open={showBackdrop} />
       </FlexBox>
       {openContinueRecording && (
         <ActionConfirm

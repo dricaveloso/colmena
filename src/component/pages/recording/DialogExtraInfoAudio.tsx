@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState, useCallback } from "react";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -10,24 +12,31 @@ import * as Yup from "yup";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { PropsAudioSave, SelectOptionItem, PropsUserSelector } from "@/types/index";
+import {
+  PropsAudioSave,
+  SelectOptionItem,
+  PropsUserSelector,
+  PropsConfigSelector,
+  PropsLibrarySelector,
+} from "@/types/index";
 import Chip from "@material-ui/core/Chip";
-import { listTags } from "@/services/webdav/tags";
-import { SystemTagsInterface } from "@/interfaces/tags";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
 import { ButtonColorEnum, ButtonVariantEnum, TextVariantEnum, ButtonSizeEnum } from "@/enums/*";
 import ChangeUploadLocationModal from "./ChangeUploadLocationModal";
-import { convertPrivateToUsername } from "@/utils/directory";
+import {
+  convertPrivateToUsername,
+  convertUsernameToPrivate,
+  getPrivatePath,
+} from "@/utils/directory";
 import { useSelector } from "react-redux";
 
 type Props = {
   open: boolean;
   handleClose: () => void;
   handleSubmit: (values: PropsAudioSave) => void;
-  chooseUploadLocationHandle: (path: string) => void;
-  uploadLocation: string;
+  optionsTag: SelectOptionItem[];
 };
 
 type MyFormValues = {
@@ -39,14 +48,20 @@ export default function DialogExtraInfoAudio({
   open,
   handleClose,
   handleSubmit,
-  uploadLocation,
-  chooseUploadLocationHandle,
+  optionsTag,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
+  const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const { t } = useTranslation("recording");
-  const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const [changeLocationModal, setChangeLocationModal] = useState(false);
+  const [uploadLocation, setUploadLocation] = useState("");
   const { t: c } = useTranslation("common");
+
+  const chooseUploadLocationHandle = useCallback((path: string) => {
+    setUploadLocation(path);
+    setChangeLocationModal(false);
+  }, []);
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
@@ -58,17 +73,29 @@ export default function DialogExtraInfoAudio({
   };
 
   useEffect(() => {
-    (async () => {
-      const res = await listTags();
-      const tags: SelectOptionItem[] = res
-        .filter((_, idx) => idx !== 0)
-        .map((item: any | SystemTagsInterface) => ({
-          id: item.propstat.prop.id,
-          value: item.propstat.prop["display-name"],
-        }));
-      setOptionsTag(tags);
-    })();
+    setUploadLocation(prepareUploadPath());
   }, []);
+
+  function prepareUploadPath() {
+    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    let url = "";
+
+    if (/^[/]library/.test(urlOrigin)) {
+      if ((urlOrigin.match(/[/]/g) || []).length > 1) {
+        const path = libraryRdx.currentPath;
+        url = convertUsernameToPrivate(path, userRdx.user.id).replace(/[/]library[/]/, "");
+      }
+    }
+
+    if (/^[/]honeycomb/.test(urlOrigin)) {
+      const url_ = urlOrigin.split("/");
+      if (urlOrigin.length > 2) {
+        url = url_[url_.length - 1];
+      }
+    }
+
+    return url || getPrivatePath();
+  }
 
   return (
     <>
@@ -76,12 +103,8 @@ export default function DialogExtraInfoAudio({
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues) => {
-          // if (values.tags.length === 0) {
-          //   setRequiredTag(c("form.requiredTitle"));
-          //   return;
-          // }
-          // setRequiredTag("");
-          handleSubmit(values);
+          const tagsFiltered = values.tags.map((item: string) => item.toLocaleLowerCase());
+          handleSubmit({ ...values, tags: tagsFiltered, path: uploadLocation });
         }}
       >
         {({ submitForm, errors, touched, setFieldValue, values }: any) => (
@@ -122,7 +145,11 @@ export default function DialogExtraInfoAudio({
                   freeSolo
                   renderTags={(value: string[], getTagProps) =>
                     value.map((option: string, index: number) => (
-                      <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                      <Chip
+                        variant="outlined"
+                        label={option.toLocaleLowerCase()}
+                        {...getTagProps({ index })}
+                      />
                     ))
                   }
                   renderInput={(params) => (

@@ -128,6 +128,7 @@ export enum TextfieldVariantEnum {
 export enum EnvironmentEnum {
   LOCAL = "local",
   REMOTE = "remote",
+  BOTH = "both",
 }
 
 export enum ListTypeEnum {
