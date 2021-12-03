@@ -1,37 +1,50 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import { withStyles } from "@material-ui/core/styles";
 import { useTranslation } from "next-i18next";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import Grid from "@material-ui/core/Grid";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
 import { getDataFile, getFileTags, ItemTagInterface } from "@/services/webdav/tags";
+import Dialog from "@material-ui/core/Dialog";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    overflow: "auto",
+const styles: any = (theme: any) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
   },
-  title: { margin: theme.spacing(0, 0, 4, 0) },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(4),
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
   },
-  form: {
-    "& .MuiTextField-root": {
-      width: "100%",
-    },
+});
+
+const DialogTitle = withStyles(styles)((props: any) => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
   },
-  submit: {
-    float: "right",
-  },
-}));
+}))(MuiDialogContent);
 
 type Props = {
   open: boolean;
@@ -41,19 +54,14 @@ type Props = {
 
 export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
   const { t } = useTranslation("library");
-  const [isLoadingAdditionalData, setIsLoadingAdditionalData] = useState(true);
   const [data, setData] = useState<any>(cardItem);
   const [tags, setTags] = useState<ItemTagInterface[] | false>(false);
-  const [hideAdditionalData, setHideAdditionalData] = useState(false);
-  const classes = useStyles();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const getAdditionalDataFile = useCallback(async () => {
     try {
       const result: any = await getDataFile(userRdx.user.id, cardItem.filename);
       setData({ ...data, ...result });
-      setIsLoadingAdditionalData(false);
-      setHideAdditionalData(false);
 
       if (result.fileid) {
         const tags = await getFileTags(userRdx.user.id, cardItem.filename, result.fileid);
@@ -61,14 +69,10 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
       }
     } catch (e) {
       console.log(e);
-      setIsLoadingAdditionalData(false);
-      setHideAdditionalData(true);
     }
   }, [cardItem.filename, data, userRdx.user.id]);
 
   useEffect(() => {
-    console.log(isLoadingAdditionalData);
-    setIsLoadingAdditionalData(true);
     (async () => {
       await getAdditionalDataFile();
     })();
@@ -77,118 +81,108 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
 
   return (
     <>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
+      <Dialog
         onClose={() => handleOpen(false)}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        aria-labelledby="customized-dialog-title"
+        open={open}
       >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h4 id="transition-modal-title" className={classes.title}>
-              {t("detailsTitle")}
-            </h4>
-            <Grid container spacing={3}>
+        <DialogTitle id="customized-dialog-title" onClose={() => handleOpen(false)}>
+          {t("detailsTitle")}
+        </DialogTitle>
+        <DialogContent dividers>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.name")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {data.basename}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.path")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {data.filename}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.size")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {data?.size ? <>{Math.round(data.size / 1024)} KiB</> : "-"}
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.description")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {data?.description ?? "-"}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.lastUpdate")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {data.createdAt?.toLocaleDateString("en-US")} - {data.createdAtDescription}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.creator")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {typeof data["owner-display-name"] === "string" ? data["owner-display-name"] : "-"}
+            </Grid>
+          </Grid>
+          {data.type === "file" && (
+            <Grid container spacing={2}>
               <Grid item xs={6}>
-                {t("detailsModal.name")}
-              </Grid>
-              <Grid item xs={6}>
-                {data.basename}
-              </Grid>
-              <Grid item xs={6}>
-                {t("detailsModal.path")}
-              </Grid>
-              <Grid item xs={6}>
-                {data.filename}
-              </Grid>
-              {data.size && data.size > 0 && (
-                <>
-                  <Grid item xs={6}>
-                    {t("detailsModal.size")}
-                  </Grid>
-                  <Grid item xs={6}>
-                    {Math.round(data.size / 1024)} KiB
-                  </Grid>
-                </>
-              )}
-              {!hideAdditionalData && (
-                <>
-                  <Grid item xs={6}>
-                    {t("detailsModal.description")}
-                  </Grid>
-                  <Grid item xs={6}>
-                    {data.description}
-                  </Grid>
-                </>
-              )}
-              <Grid item xs={6}>
-                {t("detailsModal.lastUpdate")}
-              </Grid>
-              <Grid item xs={6}>
-                {data.createdAt?.toLocaleDateString("en-US")} - {data.createdAtDescription}
-              </Grid>
-              {!hideAdditionalData && (
-                <>
-                  <Grid item xs={6}>
-                    {t("detailsModal.creator")}
-                  </Grid>
-                  <Grid item xs={6}>
-                    {data["owner-display-name"]}
-                  </Grid>
-                </>
-              )}
-              <Grid item xs={6}>
-                {t("detailsModal.type")}
+                <strong>{t("detailsModal.type")}</strong>
               </Grid>
               <Grid item xs={6}>
                 {data.mime}
               </Grid>
-              {!hideAdditionalData && (
-                <>
-                  <Grid item xs={6}>
-                    {t("detailsModal.fileId")}
-                  </Grid>
-                  <Grid item xs={6}>
-                    {data.fileid}
-                  </Grid>
-                </>
-              )}
-              {!hideAdditionalData && (
-                <>
-                  <Grid item xs={6}>
-                    {t("detailsModal.language")}
-                  </Grid>
-                  <Grid item xs={6}>
-                    {data.language}
-                  </Grid>
-                </>
-              )}
-              {!hideAdditionalData && (
-                <>
-                  <Grid item xs={6}>
-                    {t("detailsModal.tags")}
-                  </Grid>
-                  <Grid item xs={6}>
-                    {tags &&
-                      tags.map((tag: ItemTagInterface, index: number) => (
-                        <span key={`tag-${tag.id}`}>
-                          {tag["display-name"]}
-                          {tags.length - 1 > index && ", "}
-                        </span>
-                      ))}
-                  </Grid>
-                </>
-              )}
             </Grid>
-          </div>
-        </Fade>
-      </Modal>
+          )}
+
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.fileId")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {data?.fileid ?? "-"}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.language")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {data.language ?? "-"}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <strong>{t("detailsModal.tags")}</strong>
+            </Grid>
+            <Grid item xs={6}>
+              {!tags && "-"}
+              {tags &&
+                tags.map((tag: ItemTagInterface, index: number) => (
+                  <span key={`tag-${tag.id}`}>
+                    {tag["display-name"]}
+                    {tags.length - 1 > index && ", "}
+                  </span>
+                ))}
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
