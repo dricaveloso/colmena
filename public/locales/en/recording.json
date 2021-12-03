@@ -16,5 +16,6 @@
   "audioSavedSuccessfully": "Audio saved succesfully",
   "audioConfirmationToKeep": "Would you like to record another audio ?",
   "uploadLocationTitle": "Upload location",
-  "changeUploadLocationTitle": "change"
+  "changeUploadLocationTitle": "change",
+  "availableWithoutInternetTitle": "Available without internet connection"
 }

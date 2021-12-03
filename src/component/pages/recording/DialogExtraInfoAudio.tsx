@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -12,6 +12,8 @@ import * as Yup from "yup";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
   PropsAudioSave,
   SelectOptionItem,
@@ -23,7 +25,13 @@ import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
-import { ButtonColorEnum, ButtonVariantEnum, TextVariantEnum, ButtonSizeEnum } from "@/enums/*";
+import {
+  ButtonColorEnum,
+  ButtonVariantEnum,
+  TextVariantEnum,
+  ButtonSizeEnum,
+  NotificationStatusEnum,
+} from "@/enums/*";
 import ChangeUploadLocationModal from "./ChangeUploadLocationModal";
 import {
   convertPrivateToUsername,
@@ -31,6 +39,7 @@ import {
   getPrivatePath,
 } from "@/utils/directory";
 import { useSelector } from "react-redux";
+import NotificationContext from "@/store/context/notification-context";
 
 type Props = {
   open: boolean;
@@ -50,11 +59,13 @@ export default function DialogExtraInfoAudio({
   handleSubmit,
   optionsTag,
 }: Props) {
+  const notificationCtx = useContext(NotificationContext);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const { t } = useTranslation("recording");
   const [changeLocationModal, setChangeLocationModal] = useState(false);
+  const [availableOffline, setAvailableOffline] = useState(true);
   const [uploadLocation, setUploadLocation] = useState("");
   const { t: c } = useTranslation("common");
 
@@ -97,14 +108,37 @@ export default function DialogExtraInfoAudio({
     return url || getPrivatePath();
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAvailableOffline(event.target.checked);
+  };
+
   return (
     <>
       <Formik
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues) => {
-          const tagsFiltered = values.tags.map((item: string) => item.toLocaleLowerCase());
-          handleSubmit({ ...values, tags: tagsFiltered, path: uploadLocation });
+          try {
+            if (values.name.indexOf("/") !== -1) {
+              throw new Error(
+                c("form.slashNotAllowed", {
+                  field: c("form.fields.name"),
+                }),
+              );
+            }
+            const tagsFiltered = values.tags.map((item: string) => item.toLocaleLowerCase());
+            handleSubmit({
+              ...values,
+              tags: tagsFiltered,
+              path: convertUsernameToPrivate(uploadLocation, userRdx.user.id),
+              availableOffline,
+            });
+          } catch (e) {
+            notificationCtx.showNotification({
+              message: e.message(),
+              status: NotificationStatusEnum.ERROR,
+            });
+          }
         }}
       >
         {({ submitForm, errors, touched, setFieldValue, values }: any) => (
@@ -161,6 +195,22 @@ export default function DialogExtraInfoAudio({
                     />
                   )}
                 />
+                <Box marginTop={1} marginBottom={2}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={availableOffline}
+                        onChange={handleChange}
+                        name="availableOffline"
+                      />
+                    }
+                    label={
+                      <Text variant={TextVariantEnum.BODY2}>
+                        {t("availableWithoutInternetTitle")}
+                      </Text>
+                    }
+                  />
+                </Box>
                 <Box
                   display="flex"
                   flexDirection="row"

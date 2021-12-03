@@ -8,7 +8,12 @@ import LayoutApp from "@/components/statefull/LayoutApp";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
-import { AlignItemsEnum, JustifyContentEnum, NotificationStatusEnum } from "@/enums/index";
+import {
+  AlignItemsEnum,
+  JustifyContentEnum,
+  NotificationStatusEnum,
+  EnvironmentEnum,
+} from "@/enums/index";
 import AudioRecorder from "@/components/pages/recording/AudioRecorder";
 import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAudio";
 import Timer from "@/components/pages/recording/Timer";
@@ -20,8 +25,9 @@ import {
   createFile,
   updateFile as updateFileLocal,
   getFile as getFileLocal,
+  remove as removeLocalFile,
 } from "@/store/idb/models/files";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import NotificationContext from "@/store/context/notification-context";
 import { updateRecordingState } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
@@ -41,13 +47,15 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 
 function Recording() {
   const { t } = useTranslation("recording");
-  // const router = useRouter();
+  const { t: c } = useTranslation("common");
+  const router = useRouter();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [openDialogAudioName, setOpenDialogAudioName] = useState(false);
   const [openContinueRecording, setOpenContinueRecording] = useState(false);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [audioId, setAudioId] = useState();
-  // const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
+  const [onlineAudioId, setOnlineAudioId] = useState(0);
+  const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
   const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const notificationCtx = useContext(NotificationContext);
   const dispatch = useDispatch();
@@ -76,12 +84,13 @@ function Recording() {
   };
 
   const saveAudioHandle = async (values: PropsAudioSave) => {
-    const { name: title, tags, path } = values;
+    const { name: title, tags, path, availableOffline } = values;
     try {
       const recording = {
         title,
         tags,
         path,
+        environment: EnvironmentEnum.LOCAL,
       };
       await updateFileLocal(audioId, recording);
       const localFile = await getFileLocal(audioId);
@@ -92,6 +101,7 @@ function Recording() {
         const filePath = `${convertUsernameToPrivate(path, userRdx.user.id)}/${title}.opus`;
         await putFileOnline(userRdx.user.id, filePath, localFile.arrayBufferBlob);
         const fileId = await getFileOnlineId(userRdx.user.id, filePath);
+        setOnlineAudioId(Number(fileId));
 
         const tagsFoundOnline = optionsTag
           .filter((item) => tags.includes(item.value))
@@ -108,14 +118,24 @@ function Recording() {
           await createAndAssignTagFile(Number(fileId), item);
         });
 
+        if (!availableOffline) {
+          await removeLocalFile(audioId, userRdx.user.id);
+        } else {
+          await updateFileLocal(audioId, { environment: EnvironmentEnum.BOTH });
+        }
+
         await updateFileLocal(audioId, { nextcloudId: fileId });
       } catch (e) {
         console.log("Nao uploadeou online", e);
+        notificationCtx.showNotification({
+          message: c("genericErrorMessage"),
+          status: NotificationStatusEnum.ERROR,
+        });
       } finally {
         setShowBackdrop(false);
       }
 
-      // setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
+      setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
       setOpenContinueRecording(true);
     } catch (e) {
       console.log(e);
@@ -140,9 +160,9 @@ function Recording() {
   const finishRecordingHandle = () => {
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
-    // router.push(
-    //   amountAudiosRecorded === 1 ? "/recording-done" : `/library/${userRdx.user.id}/audios`,
-    // );
+    if (amountAudiosRecorded === 1) {
+      router.push(`/file/${onlineAudioId}`);
+    }
   };
 
   async function firstSaveAudioHandle(audioData: PropsAudioData) {

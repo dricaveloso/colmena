@@ -45,6 +45,7 @@ export type PropsAudioSave = {
   name: string;
   tags: string[];
   path: string;
+  availableOffline: boolean;
 };
 
 export type PropsLibrarySelector = {
