@@ -14,7 +14,7 @@ import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
 import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
 import {
-  getOfflinePath,
+  getAudioPath,
   hasLocalPath,
   getRootPath,
   handleDirectoryName,
@@ -150,7 +150,7 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
 
   const definePath = useCallback((path) => {
     const rootPath = getRootPath();
-    return !path || path === "/" || path === getOfflinePath() ? rootPath : path;
+    return !path || path === "/" || path === getAudioPath() ? rootPath : path;
   }, []);
 
   useEffect(() => {

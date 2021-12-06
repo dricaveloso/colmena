@@ -1,0 +1,30 @@
+{
+  "title": "Questions courantes",
+  "subtitle": "10 frequently asked questions about Colmena",
+  "faq": {
+    "question1": "1 - What is Colmena?",
+    "answer1": "Colmena is a 100% free of charge and secure productivity suite for local and community media.",
+    "question2": "2 - What are the technologies behind Colmena?",
+    "answer2": "An integrated free software progressive web app (PWA) solution for mobile environments that works both online and offline",
+    "question3a": "3a - ¿Quién puede ingresar? ¿Cuales son los terminos de uso?",
+    "answer3a": "Para ingressar em Colmena es necessario acordar acerca de un código de conduta based on digital human righs and diversity.",
+    "question3b": "3b – For whom is Colmena designed?",
+    "answer3b": "A safe, private and free tool for human rights activists promoting gender equality.",
+    "question3c": "3c – Who is the target audience of Colmena?",
+    "answer3c": "It is designed  for human rights activists promoting grassroot communication with gender equality",
+    "question4": "4 - What are the main features of Colmena?",
+    "answer4": "Productivity suite for community radios with audio tools, collaborative space with chat and sharing files and folders and cloud library with secure synch",
+    "question5": "5 - Cuales son las hierramientas de audio?",
+    "answer5": "Grabador de audio, conferencias (internas y externas), streamer",
+    "question6": "6 - Cuales son los formatos de audio y sus metadatos?",
+    "answer6": "",
+    "question7": "7 - How does the collaborative space works?",
+    "answer7": "It is your daily chat room with the possibility of sharing files and folders with your team.",
+    "question8": "8 - How are my files stored and how are their status?",
+    "answer8": "Privacy by design with backup of local files into the cloud.",
+    "question9": "9 – What is the public Colmena?",
+    "answer9": "Media administrators can publish audio, image and text that can be shared on social media.",
+    "question10": "10 – What kind of licence will be available?",
+    "answer10": ""
+  }
+}

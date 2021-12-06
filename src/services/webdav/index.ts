@@ -1,22 +1,24 @@
-import { AuthType, createClient } from "webdav";
+// import { AuthType, createClient } from "webdav";
+import { createClient } from "webdav";
 import { initializeStore } from "@/store/index";
+import getConfig from "next/config";
 
-export default function webdav() {
-  // const { password, email: username } = initializeStore({}).getState().user.user;
-  const { userToken } = initializeStore({}).getState().user.user;
+const { publicRuntimeConfig } = getConfig();
 
-  const client = createClient(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/remote.php/dav/files/`,
+export default function webdav(
+  customCredentials: { username: string; password: string } | null = null,
+) {
+  if (!customCredentials) {
+    const { password, id: username } = initializeStore({}).getState().user.user;
+    const client = createClient(`${publicRuntimeConfig.api.baseUrl}/remote.php/dav/files/`, {
+      username,
+      password,
+    });
+    return client;
+  }
 
-    {
-      authType: AuthType.Token,
-      // username,
-      // password,
-      token: {
-        access_token: userToken,
-        token_type: "Bearer",
-      },
-    },
-  );
+  const client = createClient(`${publicRuntimeConfig.api.baseUrl}/remote.php/dav/files/`, {
+    ...customCredentials,
+  });
   return client;
 }

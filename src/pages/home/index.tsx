@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum, NotificationStatusEnum } from "@/enums/index";
@@ -12,6 +11,7 @@ import Section4 from "@/components/pages/home/Section4";
 import Divider from "@/components/ui/Divider";
 import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {

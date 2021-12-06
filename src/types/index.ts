@@ -251,6 +251,8 @@ export type AllIconProps =
   | "folder"
   | "private"
   | "offline"
-  | "file";
+  | "file"
+  | "faq"
+  | "warning";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;

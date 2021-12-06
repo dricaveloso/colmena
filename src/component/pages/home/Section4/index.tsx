@@ -15,6 +15,8 @@ export default function Section2() {
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
   const items: Array<LibraryItemInterface> = [
     {
+      filename: "/",
+      aliasFilename: "/",
       basename: t("exampleFileTitle", { num: 1 }),
       id: uuid(),
       type: "audio",
@@ -24,6 +26,8 @@ export default function Section2() {
       createdAtDescription: dateDescription(new Date(), timeDescription),
     },
     {
+      filename: "/",
+      aliasFilename: "/",
       basename: t("exampleFileTitle", { num: 2 }),
       id: uuid(),
       type: "audio",

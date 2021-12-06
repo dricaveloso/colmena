@@ -6,7 +6,6 @@ import FlexBox from "@/components/ui/FlexBox";
 import Box from "@material-ui/core/Box";
 import Divider from "@/components/ui/Divider";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface, UserInvitationInterface } from "@/interfaces/index";
 import { TextVariantEnum } from "@/enums/index";
@@ -15,10 +14,11 @@ import Form from "@/components/pages/complete-register/Form";
 import { parseJwt } from "@/utils/utils";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["completeRegister", "common"])),
+    ...(await serverSideTranslations(locale, ["completeRegister"])),
   },
 });
 

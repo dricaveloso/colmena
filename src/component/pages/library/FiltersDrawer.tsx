@@ -21,6 +21,7 @@ type Props = {
   orderItems: (order: OrderEnum) => void;
   order: OrderEnum;
   filter: string | FilterEnum;
+  isRootPath: boolean;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +46,7 @@ export default function TemporaryFiltersDrawer({
   handleClose,
   order,
   filter,
+  isRootPath,
 }: Props) {
   const notificationCtx = useContext(NotificationContext);
   const [expanded, setExpanded] = React.useState<string | boolean>("order");
@@ -77,6 +79,14 @@ export default function TemporaryFiltersDrawer({
         </AccordionSummary>
         <AccordionDetails>
           <List>
+            {isRootPath && (
+              <ListItem button key={uuid()} onClick={() => orderItems(OrderEnum.HIGHLIGHT)}>
+                <ListItemText
+                  primary={t("sort.highlights")}
+                  className={orderActive(OrderEnum.HIGHLIGHT)}
+                />
+              </ListItem>
+            )}
             <ListItem button key={uuid()} onClick={() => orderItems(OrderEnum.LATEST_FIRST)}>
               <ListItemText
                 primary={t("sort.newest")}

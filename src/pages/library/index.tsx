@@ -1,43 +1,30 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
 import {
+  BreadcrumbItemInterface,
   I18nInterface,
+  LibraryCardItemInterface,
   LibraryItemInterface,
-  RecordingInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { listLibraryDirectories } from "@/services/webdav/directories";
-import { PropsUserSelector, PropsLibrarySelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
-import { FileStat } from "webdav";
-import { getAllAudios } from "@/store/idb/models/audios";
 import FlexBox from "@/components/ui/FlexBox";
-import { Box, Button } from "@material-ui/core";
-import ItemList from "@/components/pages/library/ItemList";
-import HeaderBar from "@/components/pages/library/HeaderBar";
 import { useRouter } from "next/router";
-import { getExtensionFilename, dateDescription } from "@/utils/utils";
-import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import {
-  EnvironmentEnum,
-  JustifyContentEnum,
-  ListTypeEnum,
-  OrderEnum,
-  FilterEnum,
-} from "@/enums/index";
+import { JustifyContentEnum, ListTypeEnum, NotificationStatusEnum, OrderEnum } from "@/enums/index";
 import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
-import {
-  getOfflinePath,
-  getPathName,
-  getPrivatePath,
-  getPublicPath,
-  isRootPath,
-} from "@/utils/directory";
-import DirectoryList from "@/components/ui/skeleton/DirectoryList";
+import Library, { filterItems, getItems, orderItems } from "@/components/pages/library";
+import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
+import ContextMenuOptions from "@/components/pages/library/contextMenu";
+import NotificationContext from "@/store/context/notification-context";
+import { removeCornerSlash } from "@/utils/utils";
+import IconButton from "@/components/ui/IconButton";
+import { getAudioPath, hasExclusivePath, isRootPath, pathIsInFilename } from "@/utils/directory";
+import HeaderBar from "@/components/pages/library/HeaderBar";
+import { Button } from "@material-ui/core";
+import Image from "next/image";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -65,171 +52,84 @@ function MyLibrary() {
   const { t: l } = useTranslation("library");
   const dispatch = useDispatch();
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
+  const notificationCtx = useContext(NotificationContext);
 
-  const getWebDavDirectories = useCallback(
-    async (userId: string, currentDirectory: string) => {
-      const items: LibraryItemInterface[] = [];
-
-      const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
-      console.log(nxDirectories);
-      if (nxDirectories?.data.length > 0) {
-        nxDirectories.data.forEach((directory: FileStat) => {
-          const filename = directory.filename.replace(/^.+?(\/|$)/, "");
-          const date = new Date(directory.lastmod);
-          if (filename !== "" && filename !== currentDirectory) {
-            const item: LibraryItemInterface = {
-              basename: directory.basename,
-              id: directory.filename,
-              filename,
-              type: directory.type,
-              environment: EnvironmentEnum.REMOTE,
-              extension: getExtensionFilename(filename),
-              createdAt: date,
-              createdAtDescription: dateDescription(date, timeDescription),
-              mime: directory.mime,
-              size: directory.size,
-            };
-
-            items.push(item);
-          }
-        });
-      }
-
-      return items;
-    },
-    [timeDescription],
-  );
-
-  const getLocalFiles = useCallback(
-    async (userId: string) => {
-      const items: LibraryItemInterface[] = [];
-      const localFiles = await getAllAudios(userId);
-      if (localFiles.length > 0) {
-        localFiles.forEach((file: RecordingInterface) => {
-          const item: LibraryItemInterface = {
-            basename: file.title,
-            id: file.id,
-            type: "audio",
-            environment: EnvironmentEnum.LOCAL,
-            extension: "ogg",
-            createdAt: file.createdAt,
-            createdAtDescription: dateDescription(file.createdAt, timeDescription),
-            mime: "audio/ogg",
-          };
-
-          items.push(item);
-        });
-      }
-
-      return items;
-    },
-    [timeDescription],
-  );
-
-  const orderItems = useCallback((order: string, items: Array<LibraryItemInterface>) => {
-    if (items.length === 0 || order === "") {
-      return items;
-    }
-
-    items.sort((a, b) => {
-      switch (order) {
-        case OrderEnum.OLDEST_FIST:
-          return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt > b.createdAt
-            ? 1
-            : -1;
-        case OrderEnum.HIGHLIGHT:
-        case OrderEnum.LATEST_FIRST:
-          return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt < b.createdAt
-            ? 1
-            : -1;
-        case OrderEnum.ASC_ALPHABETICAL:
-          return a.basename !== undefined &&
-            b.basename !== undefined &&
-            a.basename.toLowerCase() > b.basename.toLowerCase()
-            ? 1
-            : -1;
-        case OrderEnum.DESC_ALPHABETICAL:
-          return a.basename !== undefined &&
-            b.basename !== undefined &&
-            a.basename.toLowerCase() < b.basename.toLowerCase()
-            ? 1
-            : -1;
-        default:
-          return 0;
-      }
+  const unavailable = () => {
+    notificationCtx.showNotification({
+      message: t("featureUnavailable"),
+      status: NotificationStatusEnum.WARNING,
     });
-
-    if (order === OrderEnum.HIGHLIGHT) {
-      items.sort((a, b) => {
-        if (b.filename === getOfflinePath()) {
-          return 1;
-        }
-
-        if (b.filename === getPrivatePath()) {
-          return 1;
-        }
-
-        if (b.filename === getPublicPath()) {
-          return 1;
-        }
-
-        return -1;
-      });
-    }
-
-    return items;
-  }, []);
-
-  const filterItems = useCallback((filter: string, items: Array<LibraryItemInterface>) => {
-    if (items.length === 0 || filter === "") {
-      return items;
-    }
-
-    const audioExtensions: Array<string> = ["mp3", "ogg", "wav"];
-    const textExtensions: Array<string> = ["md", "txt", "pdf"];
-    const imageExtensions: Array<string> = ["jpg", "png", "gif", "jpeg"];
-
-    return items.filter((item) => {
-      const extension = item.extension === undefined ? "" : item.extension.toLowerCase();
-
-      switch (filter) {
-        case FilterEnum.OFFLINE:
-          return item.environment === EnvironmentEnum.LOCAL;
-        case FilterEnum.SYNC:
-          return item.environment === EnvironmentEnum.REMOTE;
-        case FilterEnum.AUDIO:
-          return item.type === "audio" || audioExtensions.includes(extension);
-        case FilterEnum.IMAGE:
-          return imageExtensions.includes(extension);
-        case FilterEnum.TEXT:
-          return textExtensions.includes(extension);
-        default:
-          return item;
-      }
-    });
-  }, []);
-
-  const getItems = async (path: string) => {
-    const offlinePath = getOfflinePath();
-    if (path === offlinePath) {
-      return getLocalFiles(userRdx.user.id);
-    }
-
-    const items = await getWebDavDirectories(userRdx.user.id, path);
-    if (isRootPath(path)) {
-      const item: LibraryItemInterface = {
-        basename: getPathName(offlinePath),
-        id: offlinePath,
-        filename: offlinePath,
-        type: "directory",
-        environment: EnvironmentEnum.LOCAL,
-      };
-
-      items.push(item);
-    }
-
-    return items;
   };
+
+  const options = (cardItem: LibraryCardItemInterface) => {
+    const { filename, basename, orientation } = cardItem;
+    const options = [];
+    const shareOption = (
+      <IconButton
+        key={`${basename}-share`}
+        icon="share"
+        color="#9A9A9A"
+        style={{ padding: 0, margin: 0, minWidth: 30 }}
+        fontSizeIcon="small"
+        handleClick={unavailable}
+      />
+    );
+
+    if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
+      if (!pathIsInFilename(getAudioPath(), filename) && orientation === "vertical") {
+        options.push(shareOption);
+      }
+
+      options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);
+    }
+
+    return options;
+  };
+
+  const bottomOptions = (cardItem: LibraryCardItemInterface) => {
+    const { filename, basename, orientation } = cardItem;
+    const options = [];
+    const shareOption = (
+      <IconButton
+        key={`${basename}-share`}
+        icon="share"
+        color="#9A9A9A"
+        style={{ padding: 0, margin: 0, minWidth: 30 }}
+        fontSizeIcon="small"
+        handleClick={unavailable}
+      />
+    );
+
+    if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
+      if (!pathIsInFilename(getAudioPath(), filename) && orientation === "horizontal") {
+        options.push(shareOption);
+      }
+    }
+
+    return options;
+  };
+
+  const mountItems = useCallback(
+    async (path: string) => {
+      try {
+        if (path !== currentDirectory) {
+          setIsLoading(true);
+        }
+
+        const items = await getItems(path, userRdx.user.id, timeDescription);
+
+        dispatch(setLibraryPathExists(true));
+        dispatch(setLibraryFiles(items));
+        dispatch(setLibraryPath(path));
+      } catch (e) {
+        dispatch(setLibraryFiles([]));
+        dispatch(setLibraryPathExists(false));
+      }
+
+      setIsLoading(false);
+    },
+    [currentDirectory, dispatch, timeDescription, userRdx.user.id],
+  );
 
   useEffect(() => {
     let currentPath = "/";
@@ -238,53 +138,56 @@ function MyLibrary() {
     }
 
     setCurrentPath(currentPath);
-
-    (async () => {
-      try {
-        if (currentPath !== currentDirectory) {
-          setIsLoading(true);
-        }
-
-        const items = await getItems(currentPath);
-
-        dispatch(setLibraryPathExists(true));
-        dispatch(setLibraryFiles(items));
-        dispatch(setLibraryPath(currentPath));
-      } catch (e) {
-        dispatch(setLibraryFiles([]));
-        dispatch(setLibraryPathExists(false));
-      }
-
-      setIsLoading(false);
-    })();
+    mountItems(currentPath);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
 
   useEffect(() => {
-    let defaultOrder = order;
+    let currentOrder = order;
     if (isRootPath(currentPath)) {
-      defaultOrder = OrderEnum.HIGHLIGHT;
+      currentOrder = OrderEnum.HIGHLIGHT;
+      setOrder(currentOrder);
+    } else if (!isRootPath(currentPath) && currentOrder === OrderEnum.HIGHLIGHT) {
+      currentOrder = OrderEnum.LATEST_FIRST;
+      setOrder(currentOrder);
     }
 
-    setItems(orderItems(defaultOrder, filterItems(filter, rawItems)));
+    setItems(orderItems(currentOrder, filterItems(filter, rawItems)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawItems]);
 
   const handleOrder = (order: OrderEnum) => {
     setOrder(order);
-    setItems(orderItems(order, rawItems));
+    setItems(orderItems(order, filterItems(filter, rawItems)));
   };
 
   const handleFilter = (filter: OrderEnum) => {
     setFilter(filter);
-    setItems(filterItems(filter, rawItems));
+    setItems(orderItems(order, filterItems(filter, rawItems)));
+  };
+
+  const handleItemClick = ({ type, aliasFilename }: LibraryCardItemInterface) => {
+    if (type === "directory" && router.query.path !== aliasFilename) {
+      router.push(`/library/${aliasFilename}`);
+    }
+  };
+
+  const handleBreadcrumbNavigate = (dir: BreadcrumbItemInterface) => {
+    router.push(dir.path);
+  };
+
+  const firstBreadrcrumbMenu: BreadcrumbItemInterface = {
+    icon: "library",
+    description: l("title"),
+    path: "/library",
   };
 
   return (
     <LayoutApp title={l("title")}>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0 }}>
         <HeaderBar
+          key="library-modal"
           path={path}
           currentPath={currentPath}
           listType={listType}
@@ -294,14 +197,19 @@ function MyLibrary() {
           order={order}
           filter={filter}
           pathExists={!notFoundDir}
+          handleNavigate={handleBreadcrumbNavigate}
+          firstBreadcrumbItem={firstBreadrcrumbMenu}
         />
-        {isLoading && <DirectoryList />}
-        {!isLoading && !notFoundDir && (
-          <Box width="100%">
-            <ItemList items={items} type={listType} />
-          </Box>
-        )}
-        {notFoundDir && (
+        {!notFoundDir ? (
+          <Library
+            items={items}
+            options={options}
+            bottomOptions={bottomOptions}
+            handleItemClick={handleItemClick}
+            listType={listType}
+            isLoading={isLoading}
+          />
+        ) : (
           <>
             <Image alt="404 not found" src="/images/404 Error.png" width={500} height={500} />
             <Button color="primary" variant="outlined" onClick={() => router.back()}>

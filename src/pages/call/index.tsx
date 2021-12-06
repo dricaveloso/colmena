@@ -7,15 +7,15 @@ import ShareLinkComponent from "@/components/pages/call/ShareLink";
 import Timer from "@/components/pages/call/Timer";
 // import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { AlignItemsEnum, JustifyContentEnum } from "@/enums/index";
 import GoLive from "@/components/pages/call/GoLive";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["call", "recording", "drawer", "common"])),
+    ...(await serverSideTranslations(locale, ["call", "recording"])),
   },
 });
 

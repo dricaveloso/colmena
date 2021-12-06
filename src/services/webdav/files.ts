@@ -1,14 +1,27 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import webdav from "@/services/webdav";
 import { BufferLike, ResponseDataDetailed } from "webdav";
 import { removeFirstSlash, getRandomInt, trailingSlash } from "@/utils/utils";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
 
+interface CustomCredentialsInterface {
+  username: string;
+  password: string;
+}
+
 // ver se não tem 404
 export function listFile(
   userId: string | number,
   filePath: string | null | undefined,
+  customCredentials: CustomCredentialsInterface | null = null,
+  formatText = false,
 ): Promise<BufferLike | string | ResponseDataDetailed<BufferLike | string>> {
-  return webdav().getFileContents(`${userId}/${removeFirstSlash(filePath)}`);
+  if (formatText)
+    return webdav(customCredentials).getFileContents(`${userId}/${removeFirstSlash(filePath)}`, {
+      format: "text",
+    });
+
+  return webdav(customCredentials).getFileContents(`${userId}/${removeFirstSlash(filePath)}`);
 }
 
 export async function existFile(userId: string | number, remotePath: string): Promise<boolean> {
@@ -73,15 +86,15 @@ export async function putFile(
   userId: string | number,
   filePath: string,
   data: string | ArrayBuffer,
+  customCredentials: CustomCredentialsInterface | null = null,
 ): Promise<boolean> {
-  return webdav().putFileContents(`${userId}/${filePath}`, data, {
+  return webdav(customCredentials).putFileContents(`${userId}/${filePath}`, data, {
     overwrite: true,
     contentLength: false,
   });
 }
 
-export function listImages(userId: string | number, filename: string) {
-  console.log(filename);
+export function listImages(userId: string | number) {
   return webdav().getDirectoryContents(`${userId}/`, {
     deep: true,
     glob: "/**/*.{png,jpg,gif,jpeg}",

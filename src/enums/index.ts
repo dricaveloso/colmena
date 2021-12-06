@@ -144,9 +144,26 @@ export enum OrderEnum {
 }
 
 export enum FilterEnum {
+  ALL = "",
   OFFLINE = "offline",
   SYNC = "sync",
   AUDIO = "audio",
   IMAGE = "image",
   TEXT = "text",
+}
+
+export enum RoleUserEnum {
+  COLLABORATOR = "collaborator",
+  ADMIN = "admin",
+}
+
+export enum ConfigFilesNCEnum {
+  USER_PROFILE = ".profile.json",
+  MEDIA_PROFILE = ".media.cfg",
+}
+
+export enum ErrorAuthEnum {
+  ERR001 = "ERR001",
+  ERR002 = "ERR002",
+  ERR003 = "ERR003",
 }

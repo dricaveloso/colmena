@@ -4,6 +4,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #fff;
 }
 
 a {
@@ -13,6 +14,10 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+body {
+  background-color: #fff;
 }
 
 @media all and (max-width: 480px) {
@@ -34,7 +39,8 @@ a {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  margin-bottom: 10;
+  text-align: left;
+  /* margin-bottom: 10; */
 }
 
 .scrollingContainer div {

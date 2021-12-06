@@ -1,7 +1,6 @@
 import React from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum } from "@/enums/index";
@@ -11,11 +10,12 @@ import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import HeaderProfile from "@/components/pages/profile/Header";
 import { getFirstname } from "@/utils/utils";
-import IconButton from "@/components/ui/IconButton";
+import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
+import ContextMenuProfile from "@/components/pages/profile/ContextMenu";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["profile", "drawer", "common"])),
+    ...(await serverSideTranslations(locale, ["profile"])),
   },
 });
 
@@ -26,7 +26,7 @@ function Profile() {
       title={getFirstname(userRdx.user.name)}
       back
       drawer={false}
-      extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
+      extraElement={<ContextMenuProfile />}
     >
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <HeaderProfile />

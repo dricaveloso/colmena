@@ -11,3 +11,11 @@ export function getLastAudioRecordedByUser(userId) {
 export function getAllAudios(userId) {
   return db.audios.where({ userId }).sortBy("createdAt");
 }
+
+export function remove(id, userId) {
+  return db.audios.where({ id, userId }).delete();
+}
+
+export function update(id, data) {
+  return db.audios.update(id, data);
+}

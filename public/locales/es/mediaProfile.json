@@ -11,6 +11,7 @@
   "placeholderName": "Nombre",
   "placeholderEmail": "Email",
   "placeholderPermission": "Permiso",
+  "placeholderGroup": "Group",
   "messageSuccessInvite": "Invitación enviada con éxito",
   "messageSuccessInformation": "Información guardada con éxito.",
   "titleModalDialogInvite": "Invitar colaborador/a",

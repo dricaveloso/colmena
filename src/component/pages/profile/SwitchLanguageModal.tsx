@@ -55,7 +55,13 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
   };
 
   return (
-    <Dialog onClose={onClose} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog
+      fullWidth
+      maxWidth="xs"
+      onClose={onClose}
+      aria-labelledby="simple-dialog-title"
+      open={open}
+    >
       <DialogTitle id="simple-dialog-title">{t("titleSwitchLanguage")}</DialogTitle>
       <List>
         {languages.map((item: LanguageProps) => (

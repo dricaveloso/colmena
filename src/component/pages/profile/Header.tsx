@@ -37,13 +37,13 @@ export default function HeaderProfile() {
         justifyContent="flex-start"
       >
         <Text variant={TextVariantEnum.BODY1} style={{ color: colorBody1, textAlign }}>
-          Radio Colmena
+          {userRdx.user.media?.name}
         </Text>
         <Box display="flex" flexDirection="row" alignItems="center">
           <Text variant={TextVariantEnum.BODY2} style={{ color: colorBody2, textAlign }}>
             {Array.isArray(userRdx.user.subadmin) && userRdx.user.subadmin.length > 0
-              ? "Administrator"
-              : "Collaborator"}
+              ? c("administratorTitle")
+              : c("collaboratorTitle")}
           </Text>
           <IconButton
             handleClick={() =>
