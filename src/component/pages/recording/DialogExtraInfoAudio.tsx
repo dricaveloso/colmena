@@ -33,7 +33,11 @@ import {
   NotificationStatusEnum,
 } from "@/enums/*";
 import ChangeUploadLocationModal from "./ChangeUploadLocationModal";
-import { convertPrivateToUsername, getPrivatePath } from "@/utils/directory";
+import {
+  convertPrivateToUsername,
+  convertUsernameToPrivate,
+  getPrivatePath,
+} from "@/utils/directory";
 import { useSelector } from "react-redux";
 import NotificationContext from "@/store/context/notification-context";
 import { SystemTagsInterface } from "@/interfaces/tags";

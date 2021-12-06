@@ -46,10 +46,7 @@ export async function getWebDavDirectories(
 ) {
   const items: LibraryItemInterface[] = [];
 
-  const nxDirectories = await listLibraryDirectories(
-    userId,
-    convertUsernameToPrivate(currentDirectory, userId),
-  );
+  const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
 
   if (nxDirectories?.data.length > 0) {
     nxDirectories.data.forEach((directory: FileStat) => {
@@ -100,9 +97,9 @@ export async function getLocalFiles(
   if (localFiles.length > 0) {
     localFiles.forEach((file: any) => {
       const item: LibraryItemInterface = {
-        filename: `${file.path}/${file.title}.opus`,
-        basename: file.title ?? "",
-        aliasFilename: `${file.path}/${file.title}.opus`,
+        filename: file.filename,
+        basename: file.title ?? file.filename.replace(/(.*)\/.+?\..+?$/, ""),
+        aliasFilename: file.aliasFilename,
         id: file.id,
         type: "file",
         environment: EnvironmentEnum.LOCAL,
@@ -207,7 +204,7 @@ export async function getItems(
   timeDescription: TimeDescriptionInterface,
 ) {
   const realPath = convertUsernameToPrivate(path, userId);
-  const localItems = await getLocalFiles(userId, path, timeDescription);
+  const localItems = await getLocalFiles(userId, realPath, timeDescription);
   const remoteItems = await getWebDavDirectories(userId, realPath, timeDescription);
   const items = [...localItems, ...remoteItems];
   const deleteItems: Array<string> = [];
