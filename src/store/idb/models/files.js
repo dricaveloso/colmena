@@ -1,4 +1,5 @@
 import db from "@/store/idb/index";
+import { removeCornerSlash } from "@/utils/utils";
 
 export function createFile(file) {
   return db.files.add(file);
@@ -22,4 +23,8 @@ export function updateFile(id, data) {
 
 export function getFile(id) {
   return db.files.where({ id }).first();
+}
+
+export function getFilesByPath(userId, path) {
+  return db.files.where({ userId, path: removeCornerSlash(path) }).sortBy("createdAt");
 }

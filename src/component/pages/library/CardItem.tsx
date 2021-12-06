@@ -17,6 +17,7 @@ import {
 } from "@/utils/directory";
 import FileIcon from "@/components/ui/FileIcon";
 import { AllIconProps } from "@/types/index";
+import { EnvironmentEnum } from "@/enums/*";
 
 const CardItem = (cardItem: LibraryCardItemInterface) => {
   const {
@@ -91,6 +92,13 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     </>
   );
 
+  const secondaryText: Array<any> = [createdAtDescription];
+  if (environment === EnvironmentEnum.LOCAL) {
+    secondaryText.push(<div>offline</div>);
+  } else if (environment === EnvironmentEnum.BOTH) {
+    secondaryText.push(<div>sync</div>);
+  }
+
   return (
     <>
       {orientation === "vertical" ? (
@@ -98,7 +106,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           key={`${basename}-card`}
           avatar={avatar}
           primary={basename}
-          secondary={createdAtDescription}
+          secondary={secondaryText}
           options={options && options(cardItem)}
           handleClick={handleClick}
         />
@@ -107,7 +115,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           key={`${basename}-card`}
           avatar={avatar}
           primary={basename}
-          secondary={createdAtDescription}
+          secondary={secondaryText}
           topOptions={options && options(cardItem)}
           bottomOptions={bottomOptions && bottomOptions(cardItem)}
           handleClick={handleClick}

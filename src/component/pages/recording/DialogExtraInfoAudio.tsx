@@ -33,11 +33,7 @@ import {
   NotificationStatusEnum,
 } from "@/enums/*";
 import ChangeUploadLocationModal from "./ChangeUploadLocationModal";
-import {
-  convertPrivateToUsername,
-  convertUsernameToPrivate,
-  getPrivatePath,
-} from "@/utils/directory";
+import { convertPrivateToUsername, getPrivatePath } from "@/utils/directory";
 import { useSelector } from "react-redux";
 import NotificationContext from "@/store/context/notification-context";
 import { SystemTagsInterface } from "@/interfaces/tags";
@@ -105,7 +101,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
     if (/^[/]library/.test(urlOrigin)) {
       if ((urlOrigin.match(/[/]/g) || []).length > 1) {
         const path = libraryRdx.currentPath;
-        url = convertUsernameToPrivate(path, userRdx.user.id).replace(/[/]library[/]/, "");
+        url = convertPrivateToUsername(path, userRdx.user.id).replace(/[/]library[/]/, "");
       }
     }
 
@@ -116,7 +112,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
       }
     }
 
-    return url || getPrivatePath();
+    return url || convertPrivateToUsername(getPrivatePath(), userRdx.user.id);
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
