@@ -1,6 +1,5 @@
 import davAxiosConnection from "@/services/webdav/axiosConnection";
 import { webdavAxios } from "@/services/webdav";
-import { removeCornerSlash } from "@/utils/utils";
 import { getFileId } from "@/services/webdav/files";
 
 interface SearchInterface {
@@ -137,49 +136,4 @@ export async function search(filters: SearchInterface, props?: string[]) {
     true,
   );
   return result.multistatus.response;
-}
-
-export async function getDataFile(userId: string, path: string) {
-  const body = `<?xml version="1.0" encoding="utf-8" ?>
-                <d:propfind  xmlns:d="DAV:"
-                  xmlns:oc="http://owncloud.org/ns"
-                  xmlns:nc="http://nextcloud.org/ns"
-                  xmlns:ocs="http://open-collaboration-services.org/ns">
-                  <d:prop>
-                    <d:getlastmodified />
-                    <d:getetag />
-                    <d:getcontenttype />
-                    <d:resourcetype />
-                    <oc:fileid />
-                    <oc:permissions />
-                    <oc:size />
-                    <d:getcontentlength />
-                    <nc:has-preview />
-                    <nc:mount-type />
-                    <nc:is-encrypted />
-                    <ocs:share-permissions />
-                    <oc:tags />
-                    <oc:display-name/>
-                    <oc:user-visible/>
-                    <oc:user-assignable/>
-                    <oc:id/>
-                    <oc:favorite />
-                    <oc:comments-unread />
-                    <oc:owner-id />
-                    <oc:owner-display-name />
-                    <oc:share-types />
-
-                    <oc:created-at />
-                    <oc:title />
-                    <oc:description />
-                    <oc:language />
-
-                  </d:prop>
-                </d:propfind>`;
-  const result = await davAxiosConnection(body, `files/${userId}/${removeCornerSlash(path)}`);
-  if (typeof result.multistatus.response[0].propstat.prop === "object") {
-    return result.multistatus.response[0].propstat.prop;
-  }
-
-  return false;
 }

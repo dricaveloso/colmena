@@ -5,7 +5,8 @@ import { LibraryCardItemInterface } from "@/interfaces/index";
 import Grid from "@material-ui/core/Grid";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
-import { getDataFile, getFileTags, ItemTagInterface } from "@/services/webdav/tags";
+import { getFileTags, ItemTagInterface } from "@/services/webdav/tags";
+import { getDataFile } from "@/services/webdav/files";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -60,7 +61,7 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
 
   const getAdditionalDataFile = useCallback(async () => {
     try {
-      const result: any = await getDataFile(userRdx.user.id, cardItem.filename);
+      const result: any = await getDataFile(cardItem.filename);
       setData({ ...data, ...result });
 
       if (result.fileid) {

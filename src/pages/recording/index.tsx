@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-indent */
@@ -13,6 +14,7 @@ import {
   JustifyContentEnum,
   NotificationStatusEnum,
   EnvironmentEnum,
+  DefaultAudioTypeEnum,
 } from "@/enums/index";
 import AudioRecorder from "@/components/pages/recording/AudioRecorder";
 import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAudio";
@@ -33,11 +35,16 @@ import { updateRecordingState } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import theme from "@/styles/theme";
-import { convertUsernameToPrivate } from "@/utils/directory";
-import { putFile as putFileOnline, getFileId as getFileOnlineId } from "@/services/webdav/files";
+import { convertPrivateToUsername, convertUsernameToPrivate } from "@/utils/directory";
+import {
+  putFile as putFileOnline,
+  getFileId as getFileOnlineId,
+  setDataFile,
+} from "@/services/webdav/files";
 import { assignTagFile, createAndAssignTagFile, listTags } from "@/services/webdav/tags";
-import { SystemTagsInterface } from "@/interfaces/tags";
 import Backdrop from "@/components/ui/Backdrop";
+import { SystemTagsInterface } from "@/interfaces/tags";
+import { parseCookies } from "nookies";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -54,24 +61,15 @@ function Recording() {
   const [openContinueRecording, setOpenContinueRecording] = useState(false);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [audioId, setAudioId] = useState();
-  const [onlineAudioId, setOnlineAudioId] = useState(0);
+  const [filename, setFilename] = useState("");
   const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
-  const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const notificationCtx = useContext(NotificationContext);
+  const cookies = parseCookies();
+  const language = cookies.NEXT_LOCALE || "en";
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
-    (async () => {
-      const res = await listTags();
-      const tags: SelectOptionItem[] = res
-        .filter((_, idx) => idx !== 0)
-        .map((item: any | SystemTagsInterface) => ({
-          id: item.propstat.prop.id,
-          value: item.propstat.prop["display-name"].toLowerCase(),
-        }));
-      setOptionsTag(tags);
-    })();
   }, []);
 
   const handleCloseExtraInfo = () => {
@@ -85,11 +83,23 @@ function Recording() {
 
   const saveAudioHandle = async (values: PropsAudioSave) => {
     const { name: title, tags, path, availableOffline } = values;
+    const defaultAudioType = DefaultAudioTypeEnum.type;
     try {
+      const filename = `${convertUsernameToPrivate(
+        path,
+        userRdx.user.id,
+      )}/${title}.${defaultAudioType}`;
+      const aliasFilename = `${convertPrivateToUsername(
+        path,
+        userRdx.user.id,
+      )}/${title}.${defaultAudioType}`;
+
       const recording = {
         title,
         tags,
         path,
+        filename,
+        aliasFilename,
         environment: EnvironmentEnum.LOCAL,
       };
       await updateFileLocal(audioId, recording);
@@ -98,33 +108,44 @@ function Recording() {
       try {
         setOpenDialogAudioName(false);
         setShowBackdrop(true);
-        const filePath = `${convertUsernameToPrivate(path, userRdx.user.id)}/${title}.opus`;
-        await putFileOnline(userRdx.user.id, filePath, localFile.arrayBufferBlob);
-        const fileId = await getFileOnlineId(userRdx.user.id, filePath);
-        setOnlineAudioId(Number(fileId));
 
-        const tagsFoundOnline = optionsTag
-          .filter((item) => tags.includes(item.value))
-          .map((item) => item.id);
+        if (navigator.onLine) {
+          await putFileOnline(userRdx.user.id, filename, localFile.arrayBufferBlob);
+          const fileId = await getFileOnlineId(userRdx.user.id, filename);
 
-        const tagsOnlineValues = optionsTag.map((item) => item.value);
-        const tagsNotFoundOnline = tags.filter((item) => !tagsOnlineValues.includes(item));
+          await setDataFile({ title, language }, `${path}/${title}.${defaultAudioType}`);
 
-        tagsFoundOnline.forEach(async (item: number) => {
-          await assignTagFile(Number(fileId), item);
-        });
+          const res = await listTags();
+          const optionsTag: SelectOptionItem[] = res
+            .filter((_, idx) => idx !== 0)
+            .map((item: any | SystemTagsInterface) => ({
+              id: item.propstat.prop.id,
+              value: item.propstat.prop["display-name"].toLowerCase(),
+            }));
 
-        tagsNotFoundOnline.forEach(async (item: string) => {
-          await createAndAssignTagFile(Number(fileId), item);
-        });
+          const tagsFoundOnline = optionsTag
+            .filter((item) => tags.includes(item.value))
+            .map((item) => item.id);
 
-        if (!availableOffline) {
-          await removeLocalFile(audioId, userRdx.user.id);
-        } else {
-          await updateFileLocal(audioId, { environment: EnvironmentEnum.BOTH });
+          const tagsOnlineValues = optionsTag.map((item) => item.value);
+          const tagsNotFoundOnline = tags.filter((item) => !tagsOnlineValues.includes(item));
+
+          tagsFoundOnline.forEach(async (item: number) => {
+            await assignTagFile(Number(fileId), item);
+          });
+
+          tagsNotFoundOnline.forEach(async (item: string) => {
+            await createAndAssignTagFile(Number(fileId), item);
+          });
+
+          if (!availableOffline) {
+            await removeLocalFile(audioId, userRdx.user.id);
+          } else {
+            await updateFileLocal(audioId, { environment: EnvironmentEnum.BOTH });
+          }
+
+          await updateFileLocal(audioId, { nextcloudId: fileId });
         }
-
-        await updateFileLocal(audioId, { nextcloudId: fileId });
       } catch (e) {
         console.log("Nao uploadeou online", e);
         notificationCtx.showNotification({
@@ -134,7 +155,7 @@ function Recording() {
       } finally {
         setShowBackdrop(false);
       }
-
+      setFilename(btoa(filename));
       setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
       setOpenContinueRecording(true);
     } catch (e) {
@@ -161,18 +182,19 @@ function Recording() {
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
     if (amountAudiosRecorded === 1) {
-      router.push(`/file/${onlineAudioId}`);
+      router.push(`/file/${filename}`);
     }
   };
 
   async function firstSaveAudioHandle(audioData: PropsAudioData) {
-    const { blob, type: audioType } = audioData;
+    const { blob } = audioData;
     const arrayBufferBlob = await blobToArrayBuffer(blob);
     const title = new Date().toISOString();
     const recording = {
       title,
       arrayBufferBlob,
-      audioType,
+      type: blob?.type,
+      size: blob?.size,
       createdAt: new Date(),
       userId: userRdx.user.id,
     };
@@ -197,7 +219,6 @@ function Recording() {
             open={openDialogAudioName}
             handleClose={handleCloseExtraInfo}
             handleSubmit={saveAudioHandle}
-            optionsTag={optionsTag}
           />
         )}
         <Backdrop open={showBackdrop} />

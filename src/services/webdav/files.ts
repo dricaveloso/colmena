@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/ban-types */
 import webdav from "@/services/webdav";
 import { BufferLike, ResponseDataDetailed, DAVResultResponseProps } from "webdav";
@@ -152,6 +153,91 @@ export async function getFileId(userId: string, path: string) {
     const { prop }: { prop: DAVFileIdResultResponseProps } =
       result.multistatus.response[0].propstat;
     return prop.fileid;
+  }
+
+  return false;
+}
+
+export async function getDataFile(path: string) {
+  const body = `<?xml version="1.0" encoding="utf-8" ?>
+                <d:propfind  xmlns:d="DAV:"
+                  xmlns:oc="http://owncloud.org/ns"
+                  xmlns:nc="http://nextcloud.org/ns"
+                  xmlns:ocs="http://open-collaboration-services.org/ns">
+                  <d:prop>
+                    <d:getlastmodified />
+                    <d:getetag />
+                    <d:getcontenttype />
+                    <d:resourcetype />
+                    <oc:fileid />
+                    <oc:permissions />
+                    <oc:size />
+                    <d:getcontentlength />
+                    <nc:has-preview />
+                    <nc:mount-type />
+                    <nc:is-encrypted />
+                    <ocs:share-permissions />
+                    <oc:tags />
+                    <oc:display-name/>
+                    <oc:user-visible/>
+                    <oc:user-assignable/>
+                    <oc:id/>
+                    <oc:favorite />
+                    <oc:comments-unread />
+                    <oc:owner-id />
+                    <oc:owner-display-name />
+                    <oc:share-types />
+
+                    <oc:created-at />
+                    <oc:title />
+                    <oc:description />
+                    <oc:language />
+
+                  </d:prop>
+                </d:propfind>`;
+  const result = await davAxiosConnection(
+    body,
+    `files/${removeCornerSlash(path)}`,
+    undefined,
+    undefined,
+    true,
+  );
+  if (typeof result.multistatus.response[0].propstat.prop === "object") {
+    return result.multistatus.response[0].propstat.prop;
+  }
+
+  return false;
+}
+
+interface FileDataNCInterface {
+  title: string;
+  description?: string;
+  language: string;
+}
+
+export async function setDataFile(data: FileDataNCInterface, path: string) {
+  let body = `<?xml version="1.0"?>
+  <d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+    <d:set>
+        <d:prop>`;
+
+  Object.keys(data).forEach((item: "title" | "description" | "language") => {
+    body += `<oc:${item}>${data[item]}</oc:${item}>`;
+  });
+
+  body += `<oc:created-at>${new Date().toISOString()}</oc:created-at></d:prop>
+    </d:set>
+  </d:propertyupdate>`;
+
+  const result = await davAxiosConnection(
+    body,
+    `files/${removeCornerSlash(path)}`,
+    "PROPPATCH",
+    { "Content-Type": "application/xml" },
+    true,
+  );
+  if (typeof result.multistatus.response[0].propstat.prop === "object") {
+    return result.multistatus.response[0].propstat.prop;
   }
 
   return false;
