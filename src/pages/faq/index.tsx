@@ -29,16 +29,8 @@ function Faq() {
       answer: t("faq.answer2"),
     },
     {
-      question: t("faq.question3a"),
-      answer: t("faq.answer3a"),
-    },
-    {
-      question: t("faq.question3b"),
-      answer: t("faq.answer3b"),
-    },
-    {
-      question: t("faq.question3c"),
-      answer: t("faq.answer3c"),
+      question: t("faq.question3"),
+      answer: t("faq.answer3"),
     },
     {
       question: t("faq.question4"),
