@@ -40,12 +40,13 @@ import {
 } from "@/utils/directory";
 import { useSelector } from "react-redux";
 import NotificationContext from "@/store/context/notification-context";
+import { SystemTagsInterface } from "@/interfaces/tags";
+import { listTags } from "@/services/webdav/tags";
 
 type Props = {
   open: boolean;
   handleClose: () => void;
   handleSubmit: (values: PropsAudioSave) => void;
-  optionsTag: SelectOptionItem[];
 };
 
 type MyFormValues = {
@@ -53,18 +54,14 @@ type MyFormValues = {
   tags: string[];
 };
 
-export default function DialogExtraInfoAudio({
-  open,
-  handleClose,
-  handleSubmit,
-  optionsTag,
-}: Props) {
+export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }: Props) {
   const notificationCtx = useContext(NotificationContext);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const { t } = useTranslation("recording");
   const [changeLocationModal, setChangeLocationModal] = useState(false);
+  const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const [availableOffline, setAvailableOffline] = useState(true);
   const [uploadLocation, setUploadLocation] = useState("");
   const { t: c } = useTranslation("common");
@@ -85,6 +82,20 @@ export default function DialogExtraInfoAudio({
 
   useEffect(() => {
     setUploadLocation(prepareUploadPath());
+    (async () => {
+      try {
+        const res = await listTags();
+        const optionsTag: SelectOptionItem[] = res
+          .filter((_, idx) => idx !== 0)
+          .map((item: any | SystemTagsInterface) => ({
+            id: item.propstat.prop.id,
+            value: item.propstat.prop["display-name"].toLowerCase(),
+          }));
+        setOptionsTag(optionsTag);
+      } catch (e) {
+        console.log("erro ao consultar as tags", e);
+      }
+    })();
   }, []);
 
   function prepareUploadPath() {
@@ -135,7 +146,7 @@ export default function DialogExtraInfoAudio({
             });
           } catch (e) {
             notificationCtx.showNotification({
-              message: e.message(),
+              message: e.message,
               status: NotificationStatusEnum.ERROR,
             });
           }

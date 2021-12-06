@@ -167,9 +167,11 @@ function MyLibrary() {
     setItems(orderItems(order, filterItems(filter, rawItems)));
   };
 
-  const handleItemClick = ({ type, aliasFilename }: LibraryCardItemInterface) => {
+  const handleItemClick = ({ type, aliasFilename, filename }: LibraryCardItemInterface) => {
     if (type === "directory" && router.query.path !== aliasFilename) {
       router.push(`/library/${aliasFilename}`);
+    } else if (type === "file") {
+      router.push(`/file/${btoa(filename)}`);
     }
   };
 

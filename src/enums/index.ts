@@ -168,3 +168,7 @@ export enum ErrorAuthEnum {
   ERR002 = "ERR002",
   ERR003 = "ERR003",
 }
+
+export enum DefaultAudioTypeEnum {
+  type = "opus",
+}
