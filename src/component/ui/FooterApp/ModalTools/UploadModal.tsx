@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -20,10 +20,9 @@ import {
 // import { addLibraryFile } from "@/store/actions/library";
 // import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 // import { TimeDescriptionInterface } from "@/interfaces/index";
-import { NotificationStatusEnum } from "@/enums/*";
 // import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
 import { blobToArrayBuffer } from "blob-util";
 import { useRouter } from "next/router";
@@ -70,7 +69,6 @@ export default function Upload({ open, handleClose }: Props) {
   const pathExists = library.currentPathExists;
   const classes = useStyles();
   const router = useRouter();
-  const notificationCtx = useContext(NotificationContext);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation("common");
   // const timeDescription: TimeDescriptionInterface
@@ -102,11 +100,7 @@ export default function Upload({ open, handleClose }: Props) {
           default:
             message = t("messages.unableToProcessFile", { fileName });
         }
-
-        notificationCtx.showNotification({
-          message,
-          status: NotificationStatusEnum.ERROR,
-        });
+        toast(message, "error");
       }
     }
 

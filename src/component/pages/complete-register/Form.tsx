@@ -1,18 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Button from "@/components/ui/Button";
 import { Checkbox, LinearProgress } from "@material-ui/core";
 import PasswordField from "@/components/statefull/PasswordField";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import TermsOfUse from "@/components/statefull/TermsOfUse";
-import NotificationContext from "@/store/context/notification-context";
-import { NotificationStatusEnum } from "@/enums/index";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 import * as Yup from "yup";
+import { toast } from "@/utils/notifications";
 
 type MyFormValues = {
   password: string;
@@ -28,7 +27,6 @@ export default function WrapperForm({ invitationToken }: Props) {
   const [accept, setAccept] = useState(false);
   const { t } = useTranslation("completeRegister");
   const { t: c } = useTranslation("common");
-  const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
 
   const SignupSchema = Yup.object().shape({
@@ -59,10 +57,7 @@ export default function WrapperForm({ invitationToken }: Props) {
         const { password, passwordConfirmation } = values;
         setSubmitting(true);
         if (password !== passwordConfirmation) {
-          notificationCtx.showNotification({
-            message: c("form.differentPasswordsTitle"),
-            status: NotificationStatusEnum.WARNING,
-          });
+          toast(c("form.differentPasswordsTitle"), "warning");
           setSubmitting(false);
           return;
         }
@@ -77,25 +72,16 @@ export default function WrapperForm({ invitationToken }: Props) {
             );
 
             if (response.data.response.errorMessage) {
-              notificationCtx.showNotification({
-                message: t("invalidToken"),
-                status: NotificationStatusEnum.ERROR,
-              });
+              toast(t("invalidToken"), "error");
               router.push("/");
               return;
             }
 
-            notificationCtx.showNotification({
-              message: t("messagePasswordCreated"),
-              status: NotificationStatusEnum.SUCCESS,
-            });
+            toast(t("messagePasswordCreated"), "success");
 
             router.push("/login");
           } catch (e) {
-            notificationCtx.showNotification({
-              message: e.message,
-              status: NotificationStatusEnum.ERROR,
-            });
+            toast(e.message, "error");
           } finally {
             setSubmitting(false);
           }

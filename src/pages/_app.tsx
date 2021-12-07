@@ -3,7 +3,6 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import GlobalLayout from "@/components/layout/GlobalLayout";
-import { NotificationContextProvider } from "@/store/context/notification-context";
 import { appWithTranslation } from "next-i18next";
 import type { AppProps } from "next/app";
 import theme from "@/styles/theme";
@@ -50,12 +49,10 @@ function MyApp({ Component, pageProps }: AppProps) {
             />
           </Head>
           <ThemeProvider theme={theme}>
-            <NotificationContextProvider>
-              <GlobalLayout>
-                <CssBaseline />
-                <Component {...pageProps} />
-              </GlobalLayout>
-            </NotificationContextProvider>
+            <GlobalLayout>
+              <CssBaseline />
+              <Component {...pageProps} />
+            </GlobalLayout>
           </ThemeProvider>
         </PersistGate>
       </Provider>

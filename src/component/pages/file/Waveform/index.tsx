@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 
 type Props = {
-  audioURL: string;
+  audioURL: string | undefined;
 };
 
 export default function Waveform({ audioURL }: Props) {
-  return <audio id="audio" controls src={audioURL}></audio>;
+  if (!audioURL) return null;
+
+  return <audio id="audio" style={{ width: "100%" }} controls src={audioURL}></audio>;
 }

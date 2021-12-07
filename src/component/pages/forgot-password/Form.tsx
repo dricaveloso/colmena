@@ -1,17 +1,17 @@
 /* eslint-disable camelcase */
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Button from "@/components/ui/Button";
 import { TextField } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import NotificationContext from "@/store/context/notification-context";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
-import { NotificationStatusEnum, SelectVariantEnum, ButtonVariantEnum } from "@/enums/index";
+import { SelectVariantEnum, ButtonVariantEnum } from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
 import Box from "@material-ui/core/Box";
 import BackdropModal from "@/components/ui/Backdrop";
+import { toast } from "@/utils/notifications";
 
 type MyFormValues = {
   email: string;
@@ -20,7 +20,6 @@ type MyFormValues = {
 export default function WrapperForm() {
   const { t: c } = useTranslation("common");
   const [showBackdrop, setShowBackdrop] = useState(false);
-  const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
 
   const ValidationSchema = Yup.object().shape({
@@ -58,23 +57,14 @@ export default function WrapperForm() {
               const data = await response.json();
               console.log(data);
               if (data.success) {
-                notificationCtx.showNotification({
-                  message: c("passwordRecoveryMessage"),
-                  status: NotificationStatusEnum.SUCCESS,
-                });
+                toast(c("passwordRecoveryMessage"), "success");
                 router.push("/login");
               } else {
-                notificationCtx.showNotification({
-                  message: c("genericErrorMessage"),
-                  status: NotificationStatusEnum.ERROR,
-                });
+                toast(c("genericErrorMessage"), "error");
               }
             } catch (e) {
               console.log(e);
-              notificationCtx.showNotification({
-                message: c("genericErrorMessage"),
-                status: NotificationStatusEnum.ERROR,
-              });
+              toast(c("genericErrorMessage"), "error");
             } finally {
               setSubmitting(false);
               setShowBackdrop(false);

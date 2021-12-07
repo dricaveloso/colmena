@@ -1,5 +1,11 @@
 {
   "audioTitle": "Audio",
   "descriptionTitle": "Description",
-  "tagTitle": "Tags"
+  "tagTitle": "Tags",
+  "contextMenuOptions": {
+    "downloadTitle": "Download",
+    "renameTitle": "Rename title",
+    "editAudio": "Edit audio",
+    "deleteAudio": "Delete audio"
+  }
 }

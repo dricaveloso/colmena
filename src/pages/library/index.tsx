@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
@@ -13,12 +13,12 @@ import { useSelector, useDispatch } from "react-redux";
 import FlexBox from "@/components/ui/FlexBox";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { JustifyContentEnum, ListTypeEnum, NotificationStatusEnum, OrderEnum } from "@/enums/index";
+import { JustifyContentEnum, ListTypeEnum, OrderEnum } from "@/enums/index";
 import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
 import Library, { filterItems, getItems, orderItems } from "@/components/pages/library";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { removeCornerSlash } from "@/utils/utils";
 import IconButton from "@/components/ui/IconButton";
 import { getAudioPath, hasExclusivePath, isRootPath, pathIsInFilename } from "@/utils/directory";
@@ -52,13 +52,9 @@ function MyLibrary() {
   const { t: l } = useTranslation("library");
   const dispatch = useDispatch();
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
-  const notificationCtx = useContext(NotificationContext);
 
   const unavailable = () => {
-    notificationCtx.showNotification({
-      message: t("featureUnavailable"),
-      status: NotificationStatusEnum.WARNING,
-    });
+    toast(t("featureUnavailable"), "warning");
   };
 
   const options = (cardItem: LibraryCardItemInterface) => {

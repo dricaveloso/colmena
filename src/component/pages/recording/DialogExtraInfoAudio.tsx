@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -25,13 +25,7 @@ import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
-import {
-  ButtonColorEnum,
-  ButtonVariantEnum,
-  TextVariantEnum,
-  ButtonSizeEnum,
-  NotificationStatusEnum,
-} from "@/enums/*";
+import { ButtonColorEnum, ButtonVariantEnum, TextVariantEnum, ButtonSizeEnum } from "@/enums/*";
 import ChangeUploadLocationModal from "./ChangeUploadLocationModal";
 import {
   convertPrivateToUsername,
@@ -39,7 +33,7 @@ import {
   getPrivatePath,
 } from "@/utils/directory";
 import { useSelector } from "react-redux";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { listTags } from "@/services/webdav/tags";
 
@@ -55,7 +49,6 @@ type MyFormValues = {
 };
 
 export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }: Props) {
-  const notificationCtx = useContext(NotificationContext);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -145,10 +138,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
               availableOffline,
             });
           } catch (e) {
-            notificationCtx.showNotification({
-              message: e.message,
-              status: NotificationStatusEnum.ERROR,
-            });
+            toast(e.message, "error");
           }
         }}
       >

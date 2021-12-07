@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { useTranslation } from "next-i18next";
@@ -12,7 +12,6 @@ import { I18nInterface } from "@/interfaces/index";
 import {
   AlignItemsEnum,
   JustifyContentEnum,
-  NotificationStatusEnum,
   EnvironmentEnum,
   DefaultAudioTypeEnum,
 } from "@/enums/index";
@@ -30,7 +29,7 @@ import {
   remove as removeLocalFile,
 } from "@/store/idb/models/files";
 import { useRouter } from "next/router";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { updateRecordingState } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import ActionConfirm from "@/components/ui/ActionConfirm";
@@ -63,7 +62,6 @@ function Recording() {
   const [audioId, setAudioId] = useState();
   const [filename, setFilename] = useState("");
   const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
-  const notificationCtx = useContext(NotificationContext);
   const cookies = parseCookies();
   const language = cookies.NEXT_LOCALE || "en";
   const dispatch = useDispatch();
@@ -73,10 +71,7 @@ function Recording() {
   }, []);
 
   const handleCloseExtraInfo = () => {
-    notificationCtx.showNotification({
-      message: t("audioSavedSuccessfully"),
-      status: NotificationStatusEnum.SUCCESS,
-    });
+    toast(t("audioSavedSuccessfully"), "success");
     setOpenDialogAudioName(false);
     dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
   };
@@ -148,10 +143,7 @@ function Recording() {
         }
       } catch (e) {
         console.log("Nao uploadeou online", e);
-        notificationCtx.showNotification({
-          message: c("genericErrorMessage"),
-          status: NotificationStatusEnum.ERROR,
-        });
+        toast(c("genericErrorMessage"), "error");
       } finally {
         setShowBackdrop(false);
       }
@@ -160,20 +152,14 @@ function Recording() {
       setOpenContinueRecording(true);
     } catch (e) {
       console.log(e);
-      notificationCtx.showNotification({
-        message: t("errorStorageMessage"),
-        status: NotificationStatusEnum.ERROR,
-      });
+      toast(t("errorStorageMessage"), "error");
     } finally {
       setOpenDialogAudioName(false);
     }
   };
 
   const keepRecordingHandle = () => {
-    notificationCtx.showNotification({
-      message: t("audioSavedSuccessfully"),
-      status: NotificationStatusEnum.SUCCESS,
-    });
+    toast(t("audioSavedSuccessfully"), "success");
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
   };

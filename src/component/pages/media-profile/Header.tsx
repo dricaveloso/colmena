@@ -1,18 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import Box from "@material-ui/core/Box";
 import theme from "@/styles/theme";
 import UserAvatar from "@/components/ui/Avatar";
 import Text from "@/components/ui/Text";
-import { TextVariantEnum, NotificationStatusEnum } from "@/enums/*";
+import { TextVariantEnum } from "@/enums/*";
 import IconButton from "@/components/ui/IconButton";
-import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
+import { toast } from "@/utils/notifications";
 
 export default function HeaderMediaProfile() {
   const { t: c } = useTranslation("common");
-  const notificationCtx = useContext(NotificationContext);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const textAlign = "left";
@@ -55,12 +54,7 @@ export default function HeaderMediaProfile() {
             {userRdx.user.media?.url}
           </Text>
           <IconButton
-            handleClick={() =>
-              notificationCtx.showNotification({
-                message: c("featureUnavailable"),
-                status: NotificationStatusEnum.WARNING,
-              })
-            }
+            handleClick={() => toast(c("featureUnavailable"), "warning")}
             icon="speaker"
             fontSizeIcon="small"
             iconColor="#fff"

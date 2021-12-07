@@ -1,18 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import Box from "@material-ui/core/Box";
 import theme from "@/styles/theme";
 import UserAvatar from "@/components/ui/Avatar";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import Text from "@/components/ui/Text";
-import { TextVariantEnum, NotificationStatusEnum } from "@/enums/*";
+import { TextVariantEnum } from "@/enums/*";
 import IconButton from "@/components/ui/IconButton";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
 
 export default function HeaderProfile() {
   const { t: c } = useTranslation("common");
-  const notificationCtx = useContext(NotificationContext);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const textAlign = "left";
@@ -46,12 +45,7 @@ export default function HeaderProfile() {
               : c("collaboratorTitle")}
           </Text>
           <IconButton
-            handleClick={() =>
-              notificationCtx.showNotification({
-                message: c("featureUnavailable"),
-                status: NotificationStatusEnum.WARNING,
-              })
-            }
+            handleClick={() => toast(c("featureUnavailable"), "warning")}
             icon="question"
             fontSizeIcon="small"
             iconColor="#fff"

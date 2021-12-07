@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -20,10 +20,9 @@ import {
   handleDirectoryName,
   handleFileName,
 } from "@/utils/directory";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
-import { NotificationStatusEnum } from "@/enums/*";
 import { addLibraryFile } from "@/store/actions/library";
 import {
   LibraryCardItemInterface,
@@ -71,7 +70,6 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const path = library.currentPath;
   const classes = useStyles();
-  const notificationCtx = useContext(NotificationContext);
   const [finalPath, setFinalPath] = useState(filename);
   const [isLoading, setIsLoading] = useState(false);
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
@@ -123,10 +121,7 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
           handleOpen(false);
         }
       } catch (e) {
-        notificationCtx.showNotification({
-          message: e.message,
-          status: NotificationStatusEnum.ERROR,
-        });
+        toast(e.message, "error");
         setIsLoading(false);
       }
     })();

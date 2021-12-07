@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -21,10 +21,9 @@ import {
   handleFileName,
   convertUsernameToPrivate,
 } from "@/utils/directory";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
-import { NotificationStatusEnum } from "@/enums/*";
 import { editLibraryFile } from "@/store/actions/library";
 
 const useStyles = makeStyles((theme) => ({
@@ -74,7 +73,6 @@ export default function RenameItemModal({
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const path = library.currentPath;
   const classes = useStyles();
-  const notificationCtx = useContext(NotificationContext);
   const [finalPath, setFinalPath] = useState(filename);
   const [aliasPath, setAliasPath] = useState(aliasFilename);
   const [isLoading, setIsLoading] = useState(false);
@@ -114,10 +112,7 @@ export default function RenameItemModal({
           handleOpen(false);
         }
       } catch (e) {
-        notificationCtx.showNotification({
-          message: e.message,
-          status: NotificationStatusEnum.ERROR,
-        });
+        toast(e.message, "error");
         setIsLoading(false);
       }
     })();

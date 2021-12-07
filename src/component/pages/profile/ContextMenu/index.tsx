@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
@@ -10,8 +10,7 @@ import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
 // import { useSelector } from "react-redux";
 // import { PropsUserSelector } from "@/types/index";
-import NotificationContext from "@/store/context/notification-context";
-import { NotificationStatusEnum } from "@/enums/*";
+import { toast } from "@/utils/notifications";
 // import { signOut } from "next-auth/client";
 // import BackdropModal from "@/components/ui/Backdrop";
 
@@ -26,7 +25,6 @@ const ContextMenuOptions = () => {
   // const [openConfirmSuspend, setOpenConfirmSuspend] = useState(false);
   // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   // const [showBackdrop, setShowBackdrop] = useState(false);
-  const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("profile");
   const { t: c } = useTranslation("common");
   const router = useRouter();
@@ -126,10 +124,7 @@ const ContextMenuOptions = () => {
   // };
 
   const featureUnavailable = () => {
-    notificationCtx.showNotification({
-      message: c("featureUnavailable"),
-      status: NotificationStatusEnum.WARNING,
-    });
+    toast(c("featureUnavailable"), "warning");
   };
 
   return (

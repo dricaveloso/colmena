@@ -11,7 +11,6 @@ import { PropsAudioData, PropsRecordingSelector, PropsUserSelector } from "@/typ
 import { useSelector } from "react-redux";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "next-i18next";
 import IconButton from "@/components/ui/IconButton";
 import Button from "@/components/ui/Button";
@@ -31,7 +30,6 @@ type StyleProps = {
 function AudioRecorder({ onStopRecording }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
-  const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("recording");
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,

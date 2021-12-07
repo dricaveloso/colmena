@@ -292,3 +292,26 @@ export function formatCookies(cookies: string[]) {
 
   return cookiesR.join(";");
 }
+
+export function downloadFile(data: Blob | undefined, name = "file", type = "text/plain") {
+  if (!data) return false;
+
+  const {
+    URL: { createObjectURL, revokeObjectURL },
+    setTimeout,
+  } = window;
+
+  const blob = new Blob([data], { type });
+  const url = createObjectURL(blob);
+
+  const anchor = document.createElement("a");
+  anchor.setAttribute("href", url);
+  anchor.setAttribute("download", name);
+  anchor.click();
+
+  setTimeout(() => {
+    revokeObjectURL(url);
+  }, 100);
+
+  return true;
+}

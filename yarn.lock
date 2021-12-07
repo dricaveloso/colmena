@@ -1553,6 +1553,11 @@
     ejs "^2.6.1"
     magic-string "^0.25.0"
 
+"@sweetalert2/theme-material-ui@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@sweetalert2/theme-material-ui/-/theme-material-ui-5.0.8.tgz#05ec748f211e8b89b75af8d492c1c97c5af72dac"
+  integrity sha512-ZD2WN7DCoY5vyGUXLKBbzNTHxT1M0p7WOsR5crXjeJXs7XJQJDKjhGNFRz6w21WLk5zJDUbT2Whv1cE/svTovA==
+
 "@testing-library/dom@^8.0.0", "@testing-library/dom@^8.1.0":
   version "8.10.1"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.10.1.tgz#e24fed92ad51c619cf304c6f1410b4c76b1000c0"
@@ -8223,6 +8228,11 @@ svgo@^2.0.3:
     csso "^4.2.0"
     nanocolors "^0.1.12"
     stable "^0.1.8"
+
+sweetalert2@^11.3.0:
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.3.0.tgz#39be4b23a02be479f36441f3a5f16a5d6364aba3"
+  integrity sha512-C0TFp0VLxgx+PmhJ0mL8qzx+iYjnCLdDbvQHKY6KAGI+xwawMvLkStPgw2LmJl6itaDhR/qLQStPFIbr1VK9Ow==
 
 swr@^0.5.6:
   version "0.5.7"

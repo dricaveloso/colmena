@@ -1,14 +1,13 @@
 /* eslint-disable camelcase */
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Button from "@/components/ui/Button";
 import { LinearProgress } from "@material-ui/core";
 import PasswordField from "@/components/statefull/PasswordField";
 import { useTranslation } from "next-i18next";
 import TermsOfUse from "@/components/statefull/TermsOfUse";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
-import { NotificationStatusEnum } from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useRouter } from "next/router";
 import Box from "@material-ui/core/Box";
@@ -28,7 +27,6 @@ export default function WrapperForm({ userId }: Props) {
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("reset");
   const router = useRouter();
-  const notificationCtx = useContext(NotificationContext);
 
   const ValidationSchema = Yup.object().shape({
     password: Yup.string()
@@ -69,18 +67,11 @@ export default function WrapperForm({ userId }: Props) {
               const result = await response.json();
 
               if (!result.success) throw new Error(t("errorUpdatingPassword"));
-
-              notificationCtx.showNotification({
-                message: t("successUpdatingPassword"),
-                status: NotificationStatusEnum.SUCCESS,
-              });
+              toast(t("successUpdatingPassword"), "success");
               router.replace("/login");
             } catch (e) {
               console.log(e);
-              notificationCtx.showNotification({
-                message: e.message,
-                status: NotificationStatusEnum.ERROR,
-              });
+              toast(e.message, "error");
             } finally {
               setSubmitting(false);
             }

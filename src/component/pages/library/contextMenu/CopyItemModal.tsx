@@ -1,15 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import LibraryModal from "@/components/ui/LibraryModal";
 import Button from "@/components/ui/Button";
 import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
-import { ButtonSizeEnum, NotificationStatusEnum } from "@/enums/*";
+import { ButtonSizeEnum } from "@/enums/*";
 import { getPrivatePath, pathIsInFilename } from "@/utils/directory";
 import { copyFile, getUniqueName } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
 import { removeFirstSlash } from "@/utils/utils";
 import { useRouter } from "next/router";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { useTranslation } from "react-i18next";
 
 type Props = {
@@ -21,7 +21,6 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [isDisabled, setIsDisabled] = useState(false);
   const [itemIsLoading, setItemIsLoading] = useState({} as LibraryItemInterface);
-  const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("library");
   const router = useRouter();
   const options = (item: LibraryItemInterface) => {
@@ -63,10 +62,7 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
           }
         }
       } catch (e) {
-        notificationCtx.showNotification({
-          message: e.message,
-          status: NotificationStatusEnum.ERROR,
-        });
+        toast(e.message, "error");
 
         setItemIsLoading({} as LibraryItemInterface);
         setIsDisabled(false);

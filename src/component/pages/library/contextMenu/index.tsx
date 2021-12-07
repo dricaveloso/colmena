@@ -1,14 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { deleteFile } from "@/services/webdav/files";
 import { deleteDirectory } from "@/services/webdav/directories";
 import IconButton from "@/components/ui/IconButton";
 import { PropsUserSelector } from "@/types/index";
-import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
+import { EnvironmentEnum } from "@/enums/*";
 import { useSelector, useDispatch } from "react-redux";
 import { removeLibraryFile } from "@/store/actions/library";
-import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "react-i18next";
 import DownloadModal from "./DownloadModal";
 import RenameItemModal from "./RenameItemModal";
@@ -19,6 +18,7 @@ import MoveItemModal from "./MoveItemModal";
 import DetailsModal from "./DetailsModal";
 import { getAudioPath, pathIsInFilename } from "@/utils/directory";
 import { remove } from "@/store/idb/models/files";
+import { toast } from "@/utils/notifications";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename } = cardItem;
@@ -27,7 +27,6 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
   const dispatch = useDispatch();
-  const notificationCtx = useContext(NotificationContext);
   const isRemote = environment === EnvironmentEnum.REMOTE;
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
   const [openRenameItemModal, setOpenRenameItemModal] = useState(false);
@@ -86,10 +85,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
       if (deleted) {
         dispatch(removeLibraryFile(id));
       } else {
-        notificationCtx.showNotification({
-          message: t("messages.couldNotRemove"),
-          status: NotificationStatusEnum.ERROR,
-        });
+        toast(t("messages.couldNotRemove"), "error");
       }
 
       handleCloseContextMenu();
@@ -107,10 +103,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   };
 
   const unavailable = () => {
-    notificationCtx.showNotification({
-      message: c("featureUnavailable"),
-      status: NotificationStatusEnum.WARNING,
-    });
+    toast(c("featureUnavailable"), "warning");
   };
 
   const insideOfflinePath = pathIsInFilename(getAudioPath(), filename);
