@@ -20,6 +20,7 @@ import {
   getPublicPath,
   convertPrivateToUsername,
   convertUsernameToPrivate,
+  getFilename,
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 
@@ -98,7 +99,7 @@ export async function getLocalFiles(
     localFiles.forEach((file: any) => {
       const item: LibraryItemInterface = {
         filename: file.filename,
-        basename: file.title ?? file.filename.replace(/(.*)\/.+?\..+?$/, ""),
+        basename: getFilename(file.filename),
         aliasFilename: file.aliasFilename,
         id: file.id,
         type: "file",

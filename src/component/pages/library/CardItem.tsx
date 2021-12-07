@@ -99,20 +99,20 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     const secondaryText: Array<any> = [createdAtDescription];
     if (environment === EnvironmentEnum.LOCAL) {
       secondaryText.push(
-        <div style={{ display: "inline-block", marginLeft: "5px" }}>
+        <span key={`tag-${basename}-${id}`} style={{ display: "inline-block", marginLeft: "5px" }}>
           <Badge description="offline" variant={BadgeVariantEnum.ERROR} />
-        </div>,
+        </span>,
       );
     } else if (environment === EnvironmentEnum.BOTH) {
       secondaryText.push(
-        <div style={{ display: "inline-block", marginLeft: "5px" }}>
+        <span key={`tag-${basename}-${id}`} style={{ display: "inline-block", marginLeft: "5px" }}>
           <Badge description="sync" variant={BadgeVariantEnum.SUCCESS} />
-        </div>,
+        </span>,
       );
     }
 
     return secondaryText;
-  }, [createdAtDescription, environment]);
+  }, [basename, createdAtDescription, environment, id]);
 
   return (
     <>

@@ -199,6 +199,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           aliasFilename={aliasFilename}
           basename={basename}
           type={type ?? "file"}
+          environment={environment}
         />
       )}
       {openDuplicateItemModal && (

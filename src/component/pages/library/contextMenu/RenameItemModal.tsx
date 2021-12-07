@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback, useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -12,7 +12,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { removeFirstSlash, trailingSlash } from "@/utils/utils";
+import {
+  getExtensionFilename,
+  getOnlyFilename,
+  removeFirstSlash,
+  trailingSlash,
+} from "@/utils/utils";
 import {
   getAudioPath,
   hasLocalPath,
@@ -24,8 +29,9 @@ import {
 import NotificationContext from "@/store/context/notification-context";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
-import { NotificationStatusEnum } from "@/enums/*";
+import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
 import { editLibraryFile } from "@/store/actions/library";
+import { updateFile } from "@/store/idb/models/files";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -57,6 +63,7 @@ type Props = {
   aliasFilename: string;
   basename: string;
   type: string;
+  environment: EnvironmentEnum;
 };
 
 export default function RenameItemModal({
@@ -67,6 +74,7 @@ export default function RenameItemModal({
   aliasFilename,
   basename,
   type,
+  environment,
 }: Props) {
   const { t } = useTranslation("common");
   const { t: l } = useTranslation("library");
@@ -80,39 +88,46 @@ export default function RenameItemModal({
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const initialValues = {
-    name: basename,
+    name: getOnlyFilename(basename),
     path: finalPath,
   };
+  const extension = useMemo(() => getExtensionFilename(basename), [basename]);
 
   const handleSubmit = (values: any) => {
     setIsLoading(true);
     (async () => {
       try {
+        let moved = false;
         const userId = userRdx.user.id;
-        const name = values.name.trim();
-        if (type === "directory") {
-          const directoryExists = await existDirectory(userId, finalPath);
-          if (directoryExists) {
-            throw new Error(t("messages.directoryAlreadyExists"));
-          }
-
-          const handledPath: string = removeFirstSlash(finalPath) ?? "";
-          if (hasLocalPath(handledPath)) {
-            throw new Error(t("messages.directoryAlreadyExists"));
-          }
-        } else {
-          const fileExists = await existFile(userId, finalPath);
-          if (fileExists) {
-            throw new Error(l("messages.fileAlreadyExists"));
-          }
+        let name = values.name.trim();
+        if (extension) {
+          name += `.${extension}`;
         }
 
-        const moved = await moveFile(userId, filename, finalPath);
-        if (moved) {
-          dispatch(editLibraryFile({ id, filename: finalPath, basename: name }));
-          setIsLoading(false);
-          handleOpen(false);
+        switch (environment) {
+          case EnvironmentEnum.REMOTE:
+            moved = await renameRemoteItem(userId);
+            break;
+          case EnvironmentEnum.LOCAL:
+            moved = await renameLocalItem(name);
+            break;
+          case EnvironmentEnum.BOTH:
+            moved = await renameRemoteItem(userId);
+            if (moved) {
+              moved = await renameLocalItem(name);
+            }
+            break;
+          default:
+            throw new Error("Ambiente do arquivo não identificado.");
         }
+
+        if (!moved) {
+          throw new Error("Não foi possível concluir a solicitação.");
+        }
+
+        dispatch(editLibraryFile({ id, filename: finalPath, basename: name }));
+        setIsLoading(false);
+        handleOpen(false);
       } catch (e) {
         notificationCtx.showNotification({
           message: e.message,
@@ -123,12 +138,50 @@ export default function RenameItemModal({
     })();
   };
 
+  const renameRemoteItem = useCallback(
+    async (userId) => {
+      if (type === "directory") {
+        const directoryExists = await existDirectory(userId, finalPath);
+        if (directoryExists) {
+          throw new Error(t("messages.directoryAlreadyExists"));
+        }
+
+        const handledPath: string = removeFirstSlash(finalPath) ?? "";
+        if (hasLocalPath(handledPath)) {
+          throw new Error(t("messages.directoryAlreadyExists"));
+        }
+      } else {
+        const fileExists = await existFile(userId, finalPath);
+        if (fileExists) {
+          throw new Error(l("messages.fileAlreadyExists"));
+        }
+      }
+
+      return moveFile(userId, filename, finalPath);
+    },
+    [filename, finalPath, l, t, type],
+  );
+
+  const renameLocalItem = useCallback(
+    async (name) =>
+      updateFile(id, {
+        basename: name,
+        filename: finalPath,
+        aliasFilename: aliasPath,
+      }),
+    [aliasPath, finalPath, id],
+  );
+
   const RenameItemSchema = Yup.object().shape({
     name: Yup.string().required(t("form.requiredTitle")),
   });
 
   const defineFinalPath = (name: any) => {
-    const realPath = `${trailingSlash(definePath(path))}${treatName(name)}`;
+    let realPath = `${trailingSlash(definePath(path))}${treatName(name)}`;
+    if (extension) {
+      realPath += `.${extension}`;
+    }
+
     setFinalPath(convertUsernameToPrivate(realPath, userRdx.user.id));
     setAliasPath(realPath);
   };

@@ -74,5 +74,5 @@ export default function Badge({
     color = textColor;
   }
 
-  return <div style={{ background, color, padding, display, borderRadius }}>{description}</div>;
+  return <span style={{ background, color, padding, display, borderRadius }}>{description}</span>;
 }
