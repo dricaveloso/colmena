@@ -20,6 +20,8 @@ const useStyles = makeStyles(() => ({
     flexGrow: 1,
     alignSelf: "stretch",
     overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
     marginLeft: 5,
   },
   options: {

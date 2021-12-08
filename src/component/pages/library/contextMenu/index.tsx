@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { deleteFile } from "@/services/webdav/files";
-import { deleteDirectory } from "@/services/webdav/directories";
 import IconButton from "@/components/ui/IconButton";
-import { PropsUserSelector } from "@/types/index";
-import { EnvironmentEnum } from "@/enums/*";
-import { useSelector, useDispatch } from "react-redux";
-import { removeLibraryFile } from "@/store/actions/library";
 import { useTranslation } from "react-i18next";
 import DownloadModal from "./DownloadModal";
 import RenameItemModal from "./RenameItemModal";
@@ -16,24 +10,22 @@ import CopyItemModal from "./CopyItemModal";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import MoveItemModal from "./MoveItemModal";
 import DetailsModal from "./DetailsModal";
+import DeleteItemConfirm from "./DeleteItemConfirm";
 import { getAudioPath, pathIsInFilename } from "@/utils/directory";
-import { remove } from "@/store/idb/models/files";
 import { toast } from "@/utils/notifications";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename } = cardItem;
-  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
-  const dispatch = useDispatch();
-  const isRemote = environment === EnvironmentEnum.REMOTE;
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
   const [openRenameItemModal, setOpenRenameItemModal] = useState(false);
   const [openDuplicateItemModal, setOpenDuplicateItemModal] = useState(false);
   const [openCopyItemModal, setOpenCopyItemModal] = useState(false);
   const [openMoveItemModal, setOpenMoveItemModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
+  const [openDeleteItemConfirm, setOpenDeleteItemConfirm] = useState(false);
 
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -73,33 +65,9 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     handleCloseContextMenu();
   };
 
-  const handleDelete = async () => {
-    try {
-      let deleted = false;
-      if (isRemote) {
-        deleted = await deleteRemoteItem();
-      } else {
-        deleted = await remove(id, userRdx.user.id);
-      }
-
-      if (deleted) {
-        dispatch(removeLibraryFile(id));
-      } else {
-        toast(t("messages.couldNotRemove"), "error");
-      }
-
-      handleCloseContextMenu();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const deleteRemoteItem = async () => {
-    if (type === "directory") {
-      return deleteDirectory(userRdx.user.id, filename);
-    }
-
-    return deleteFile(userRdx.user.id, filename);
+  const handleOpenDeleteItemConfirm = (opt: boolean) => {
+    setOpenDeleteItemConfirm(opt);
+    handleCloseContextMenu();
   };
 
   const unavailable = () => {
@@ -171,7 +139,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
             {t("contextMenuOptions.publish")}
           </MenuItem>
         )}
-        <MenuItem key="delete" onClick={handleDelete}>
+        <MenuItem key="delete" onClick={() => handleOpenDeleteItemConfirm(true)}>
           {t("contextMenuOptions.delete")}
         </MenuItem>
       </Menu>
@@ -192,6 +160,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           aliasFilename={aliasFilename}
           basename={basename}
           type={type ?? "file"}
+          environment={environment}
         />
       )}
       {openDuplicateItemModal && (
@@ -223,6 +192,14 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           key={`${basename}-details-modal`}
           open={openDetailsModal}
           handleOpen={() => handleOpenDetailsModal(false)}
+          cardItem={cardItem}
+        />
+      )}
+
+      {openDeleteItemConfirm && (
+        <DeleteItemConfirm
+          key={`${basename}-delete-confirm`}
+          handleOpen={() => handleOpenDeleteItemConfirm(false)}
           cardItem={cardItem}
         />
       )}

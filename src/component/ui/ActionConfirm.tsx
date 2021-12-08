@@ -10,11 +10,12 @@ import Divider from "@/components/ui/Divider";
 
 type Props = {
   title?: string;
-  icon: AllIconProps;
-  iconColor: string;
+  icon?: AllIconProps;
+  iconColor?: string;
   message?: string;
-  onClose: () => void;
-  onOk: () => void;
+  onClose?: () => void;
+  onOk?: () => void;
+  isLoading?: boolean;
 };
 
 export default function ActionConfirm({
@@ -24,6 +25,7 @@ export default function ActionConfirm({
   message = "",
   onClose,
   onOk,
+  isLoading = false,
 }: Props) {
   const { t: c } = useTranslation("common");
 
@@ -61,6 +63,7 @@ export default function ActionConfirm({
             color={ButtonColorEnum.SECONDARY}
             title={c("noTitle")}
             style={{ textTransform: "capitalize" }}
+            disabled={isLoading}
           />
           <Button
             handleClick={onOk}
@@ -68,6 +71,8 @@ export default function ActionConfirm({
             color={ButtonColorEnum.PRIMARY}
             title={c("yesTitle")}
             style={{ textTransform: "capitalize", marginLeft: 5 }}
+            disabled={isLoading}
+            isLoading={isLoading}
           />
         </Box>
       </Box>

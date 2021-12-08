@@ -140,6 +140,10 @@ export async function downloadLink(
     return false;
   }
 }
+/*
+export async function downloadLink(userId: string | number, filename: string) {
+  return webdav().getFileDownloadLink(`${userId}/${filename}`);
+} */
 
 export async function getFileId(userId: string, path: string) {
   const body = `<?xml version="1.0" encoding="utf-8" ?>

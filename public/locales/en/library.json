@@ -37,8 +37,10 @@
   },
   "messages": {
     "couldNotRemove": "Could not remove.",
-    "fileAlreadyExists": "There is already a directory with that name.",
-    "cannotDownloadFile": "Cannot download this file."
+    "fileAlreadyExists": "There is already a file with that name.",
+    "cannotDownloadFile": "Cannot download this file.",
+    "unidentifiedEnvironment": "Unidentified environment.",
+    "unableToCompleteRequest": "Unable to complete request."
   },
   "renameTitle": "Rename",
   "saveButton": "Save",

@@ -6,27 +6,21 @@ import CardItem from "./CardItem";
 import {
   LibraryInterface,
   LibraryItemInterface,
-  RecordingInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
 import { listLibraryDirectories } from "@/services/webdav/directories";
 import { FileStat } from "webdav";
-import { getAllFiles } from "@/store/idb/models/files";
+import { getFilesByPath } from "@/store/idb/models/files";
 import { makeStyles } from "@material-ui/core";
-import {
-  getExtensionFilename,
-  dateDescription,
-  removeCornerSlash,
-  trailingSlash,
-} from "@/utils/utils";
+import { getExtensionFilename, dateDescription, removeCornerSlash } from "@/utils/utils";
 import { EnvironmentEnum, OrderEnum, FilterEnum, ListTypeEnum } from "@/enums/index";
 import {
   getAudioPath,
-  getPathName,
   getPrivatePath,
   getPublicPath,
   convertPrivateToUsername,
   convertUsernameToPrivate,
+  getFilename,
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 
@@ -53,10 +47,8 @@ export async function getWebDavDirectories(
 ) {
   const items: LibraryItemInterface[] = [];
 
-  const nxDirectories = await listLibraryDirectories(
-    userId,
-    convertUsernameToPrivate(currentDirectory, userId),
-  );
+  const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
+
   if (nxDirectories?.data.length > 0) {
     nxDirectories.data.forEach((directory: FileStat) => {
       const filename = removeCornerSlash(directory.filename.replace(/^.+?(\/|$)/, ""));
@@ -96,23 +88,25 @@ export async function getWebDavDirectories(
   return items;
 }
 
-export async function getLocalFiles(userId: string, timeDescription: TimeDescriptionInterface) {
+export async function getLocalFiles(
+  userId: string,
+  currentDirectory: string,
+  timeDescription: TimeDescriptionInterface,
+) {
   const items: LibraryItemInterface[] = [];
-  const localFiles = await getAllFiles(userId);
-  const audioPath = getAudioPath();
+  const localFiles = await getFilesByPath(userId, currentDirectory);
   if (localFiles.length > 0) {
-    localFiles.forEach((file: RecordingInterface) => {
+    localFiles.forEach((file: any) => {
       const item: LibraryItemInterface = {
-        filename: trailingSlash(audioPath) + file.title,
-        basename: file.title ?? "",
-        aliasFilename: trailingSlash(audioPath) + file.title,
+        filename: file.filename,
+        basename: getFilename(file.filename),
+        aliasFilename: file.aliasFilename,
         id: file.id,
-        type: "audio",
+        type: "file",
         environment: EnvironmentEnum.LOCAL,
-        extension: "ogg",
         createdAt: file.createdAt,
         createdAtDescription: dateDescription(file.createdAt, timeDescription),
-        mime: "audio/ogg",
+        mime: "audio/webm",
       };
 
       items.push(item);
@@ -211,26 +205,38 @@ export async function getItems(
   timeDescription: TimeDescriptionInterface,
 ) {
   const realPath = convertUsernameToPrivate(path, userId);
-  const audioPath = getAudioPath();
-  if (realPath === audioPath) {
-    return getLocalFiles(userId, timeDescription);
+  const localItems = await getLocalFiles(userId, realPath, timeDescription);
+  const remoteItems = await getWebDavDirectories(userId, realPath, timeDescription);
+  const items = [...localItems, ...remoteItems];
+  const deleteItems: Array<string> = [];
+
+  let mountedItems = items.map((item: LibraryItemInterface) => {
+    let updatedItem = item;
+    if (item.environment === EnvironmentEnum.LOCAL && item.type === "file") {
+      const remoteItem = remoteItems.find(
+        (remoteItem) => item.aliasFilename === remoteItem.aliasFilename,
+      );
+
+      if (remoteItem) {
+        updatedItem = { ...remoteItem, ...item };
+        updatedItem.environment = EnvironmentEnum.BOTH;
+        deleteItems.push(remoteItem.id);
+      }
+    }
+
+    return updatedItem;
+  });
+
+  if (deleteItems.length > 0) {
+    mountedItems = mountedItems.filter(
+      (item: LibraryItemInterface) =>
+        !deleteItems.some(
+          (itemId) => item.environment === EnvironmentEnum.REMOTE && item.id === itemId,
+        ),
+    );
   }
 
-  const items = await getWebDavDirectories(userId, realPath, timeDescription);
-  if (realPath === getPrivatePath()) {
-    const item: LibraryItemInterface = {
-      basename: getPathName(audioPath),
-      aliasFilename: convertPrivateToUsername(audioPath, userId),
-      id: audioPath,
-      filename: audioPath,
-      type: "directory",
-      environment: EnvironmentEnum.LOCAL,
-    };
-
-    items.push(item);
-  }
-
-  return items;
+  return mountedItems;
 }
 
 export default function Library({

@@ -102,6 +102,14 @@ export function searchByTerm(str: string, word: string): boolean {
 
 export const empty = (value: any) => value === null || value === "" || value === undefined;
 
+export function getOnlyFilename(filename: string) {
+  if (filename.indexOf(".") < 0) {
+    return filename;
+  }
+
+  return filename.replace(/(.*)\..+?$/, "$1");
+}
+
 export function getExtensionFilename(filename: string) {
   if (filename.indexOf(".") < 0) {
     return undefined;

@@ -172,3 +172,10 @@ export enum ErrorAuthEnum {
 export enum DefaultAudioTypeEnum {
   type = "opus",
 }
+
+export enum BadgeVariantEnum {
+  SUCCESS = "success",
+  ERROR = "error",
+  WARNING = "warning",
+  INFO = "info",
+}

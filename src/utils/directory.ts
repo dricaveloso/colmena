@@ -49,11 +49,19 @@ export function handleDirectoryName(name: string) {
 }
 
 export function handleFileName(name: string) {
-  return name.replace(/[^\w.\-\s]*/g, "");
+  return name.replace(/[^\w\-\s]*/g, "");
 }
 
 export function getPathName(path: string): string {
-  return path.replace(/.+?\/(.*)$/, "$1");
+  return path.replace(/.+?\/(.*)$/g, "$1");
+}
+
+export function getFilename(path: string): string {
+  return path.replace(/.*\/(.+?\..+?)$/, "$1");
+}
+
+export function getPath(path: string): string {
+  return path.replace(/(.*)\/.+?\..+?$/, "$1");
 }
 
 export function isRootPath(path: string | undefined | null): boolean {
