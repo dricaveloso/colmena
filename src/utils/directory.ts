@@ -60,6 +60,10 @@ export function getFilename(path: string): string {
   return path.replace(/.*\/(.+?\..+?)$/, "$1");
 }
 
+export function getPath(path: string): string {
+  return path.replace(/(.*)\/.+?\..+?$/, "$1");
+}
+
 export function isRootPath(path: string | undefined | null): boolean {
   return path === "/" || path === "";
 }
