@@ -28,7 +28,6 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { t: c } = useTranslation("common");
   const dispatch = useDispatch();
   const notificationCtx = useContext(NotificationContext);
-  const isRemote = environment === EnvironmentEnum.REMOTE;
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
   const [openRenameItemModal, setOpenRenameItemModal] = useState(false);
   const [openDuplicateItemModal, setOpenDuplicateItemModal] = useState(false);
@@ -77,10 +76,21 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const handleDelete = async () => {
     try {
       let deleted = false;
-      if (isRemote) {
-        deleted = await deleteRemoteItem();
-      } else {
-        deleted = await remove(id, userRdx.user.id);
+      switch (environment) {
+        case EnvironmentEnum.REMOTE:
+          deleted = await remove(id, userRdx.user.id);
+          break;
+        case EnvironmentEnum.LOCAL:
+          deleted = await deleteRemoteItem();
+          break;
+        case EnvironmentEnum.BOTH:
+          deleted = await deleteRemoteItem();
+          if (deleted) {
+            deleted = await remove(id, userRdx.user.id);
+          }
+          break;
+        default:
+          break;
       }
 
       if (deleted) {
