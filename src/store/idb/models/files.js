@@ -28,3 +28,7 @@ export function getFile(id) {
 export function getFilesByPath(userId, path) {
   return db.files.where({ userId, path: removeCornerSlash(path) }).sortBy("createdAt");
 }
+
+export function findByFilename(filename) {
+  return db.files.where({ filename }).first();
+}

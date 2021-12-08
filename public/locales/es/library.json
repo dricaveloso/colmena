@@ -37,7 +37,7 @@
   },
   "messages": {
     "couldNotRemove": "No se ha podido eliminar",
-    "fileAlreadyExists": "There is already a directory with that name.",
+    "fileAlreadyExists": "There is already a file with that name.",
     "cannotDownloadFile": "Cannot download this file."
   },
   "renameTitle": "Rename",

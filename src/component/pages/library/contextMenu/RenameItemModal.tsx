@@ -19,7 +19,6 @@ import {
   trailingSlash,
 } from "@/utils/utils";
 import {
-  getAudioPath,
   hasLocalPath,
   getRootPath,
   handleDirectoryName,
@@ -118,7 +117,7 @@ export default function RenameItemModal({
             }
             break;
           default:
-            throw new Error("Ambiente do arquivo não identificado.");
+            throw new Error("Ambiente não identificado.");
         }
 
         if (!moved) {
@@ -177,13 +176,13 @@ export default function RenameItemModal({
   });
 
   const defineFinalPath = (name: any) => {
-    let realPath = `${trailingSlash(definePath(path))}${treatName(name)}`;
+    let aliasPath = `${trailingSlash(definePath(path))}${treatName(name)}`;
     if (extension) {
-      realPath += `.${extension}`;
+      aliasPath += `.${extension}`;
     }
 
-    setFinalPath(convertUsernameToPrivate(realPath, userRdx.user.id));
-    setAliasPath(realPath);
+    setFinalPath(convertUsernameToPrivate(aliasPath, userRdx.user.id));
+    setAliasPath(aliasPath);
   };
 
   const treatName = (name: string) => {
@@ -196,7 +195,7 @@ export default function RenameItemModal({
 
   const definePath = useCallback((path) => {
     const rootPath = getRootPath();
-    return !path || path === "/" || path === getAudioPath() ? rootPath : path;
+    return !path || path === "/" ? rootPath : path;
   }, []);
 
   useEffect(() => {
