@@ -1,11 +1,9 @@
 module.exports = {
   ci: {
     upload: {
-      target: 'lhci',
+      target: "lhci",
       serverBaseUrl: LHCI_SERVER,
-      token: LHCI_TOKEN
+      token: LHCI_TOKEN,
     },
   },
 };
-
-

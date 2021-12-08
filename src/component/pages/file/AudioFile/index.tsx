@@ -11,7 +11,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { useTranslation } from "next-i18next";
 import Box from "@material-ui/core/Box";
 import ContextMenuFile from "@/components/pages/file/ContextMenu";
-import Waveform from "@/components/pages/file/Waveform";
+import AudioWave from "@/components/pages/file/AudioWave";
 
 type Props = {
   filename: string;
@@ -46,10 +46,20 @@ export default function AudioFile({ filename, data }: Props) {
       {loading ? (
         <Box display="flex" flex={1} flexDirection="row" justifyContent="space-between">
           <Skeleton variant="circle" style={{ marginRight: 10 }} width={60} height={60} />
-          <Skeleton width="90%" variant="rect" height={60} />
+          <Box
+            display="flex"
+            flex={1}
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            alignContent="flex-start"
+          >
+            <Skeleton variant="text" width={150} />
+            <Skeleton variant="text" width={40} />
+          </Box>
         </Box>
       ) : (
-        <Waveform audioURL={blobURL} />
+        <AudioWave audioURL={blobURL} data={data} />
       )}
     </Section>
   );

@@ -258,6 +258,8 @@ export type AllIconProps =
   | "file"
   | "faq"
   | "warning"
-  | "record_outlined";
+  | "record_outlined"
+  | "play"
+  | "pause";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

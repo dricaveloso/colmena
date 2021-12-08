@@ -7,6 +7,16 @@ module.exports = withImages(
   withPWA({
     i18n,
     future: { webpack5: true },
+    // webpack: (config, { webpack }) => {
+    //   config.plugins.push(new webpack.ProvidePlugin({
+    //     WaveSurfer: 'wavesurfer.js'
+    //   }))
+    //   config.resolve.alias = {
+    //     ...(config.resolve.alias || {}),
+    //     wavesurfer: require.resolve('wavesurfer.js')
+    //   }
+    //   return config;
+    // },
     sassOptions: {
       includePaths: [path.join(__dirname, 'src/styles')],
     },
@@ -44,6 +54,11 @@ module.exports = withImages(
         {
           source: '/reset',
           destination: '/',
+          permanent: true,
+        },
+        {
+          source: '/',
+          destination: '/login',
           permanent: true,
         },
       ]
