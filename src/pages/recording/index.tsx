@@ -44,6 +44,7 @@ import { assignTagFile, createAndAssignTagFile, listTags } from "@/services/webd
 import Backdrop from "@/components/ui/Backdrop";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { parseCookies } from "nookies";
+import { removeSpecialCharacters } from "@/utils/utils";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -88,12 +89,17 @@ function Recording() {
         path,
         userRdx.user.id,
       )}/${title}.${defaultAudioType}`;
+      const basename = `${convertUsernameToPrivate(
+        path,
+        userRdx.user.id,
+      )}/${removeSpecialCharacters(title)}.${defaultAudioType}`;
 
       const recording = {
         title,
         tags,
         path,
         filename,
+        basename,
         aliasFilename,
         environment: EnvironmentEnum.LOCAL,
       };
@@ -108,7 +114,10 @@ function Recording() {
           await putFileOnline(userRdx.user.id, filename, localFile.arrayBufferBlob);
           const fileId = await getFileOnlineId(userRdx.user.id, filename);
 
-          await setDataFile({ title, language }, `${path}/${title}.${defaultAudioType}`);
+          await setDataFile(
+            { customtitle: title, language },
+            `${path}/${title}.${defaultAudioType}`,
+          );
 
           const res = await listTags();
           const optionsTag: SelectOptionItem[] = res

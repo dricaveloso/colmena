@@ -7,6 +7,11 @@ import {
   TimeDescriptionInterface,
 } from "@/interfaces/index";
 
+export function removeSpecialCharacters(str: string) {
+  const parsed = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return parsed;
+}
+
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }

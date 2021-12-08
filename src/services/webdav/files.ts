@@ -189,7 +189,7 @@ export async function getDataFile(path: string) {
                     <oc:share-types />
 
                     <oc:created-at />
-                    <oc:title />
+                    <oc:customtitle />
                     <oc:description />
                     <oc:language />
 
@@ -210,18 +210,20 @@ export async function getDataFile(path: string) {
 }
 
 interface FileDataNCInterface {
-  title: string;
+  customtitle: string;
   description?: string;
   language: string;
 }
 
+type CustomFieldsFileDataProps = "customtitle" | "description" | "language";
+
 export async function setDataFile(data: FileDataNCInterface, path: string) {
-  let body = `<?xml version="1.0"?>
+  let body = `<?xml version="1.0" encoding="utf-8" ?>
   <d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
     <d:set>
         <d:prop>`;
 
-  Object.keys(data).forEach((item: "title" | "description" | "language") => {
+  Object.keys(data).forEach((item: CustomFieldsFileDataProps) => {
     body += `<oc:${item}>${data[item]}</oc:${item}>`;
   });
 

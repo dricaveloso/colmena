@@ -45,7 +45,7 @@ export default function AudioWave({ audioURL, data }: Props) {
         <Box display="flex" marginLeft={1} style={{ display: playing ? "none" : "block" }} flex={1}>
           <ListItemText
             data-testid="title"
-            primary={data?.title}
+            primary={data?.customtitle}
             secondary={fancyTimeFormat(duration)}
           />
         </Box>

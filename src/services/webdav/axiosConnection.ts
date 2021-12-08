@@ -20,8 +20,6 @@ export default async function axiosConnection(
     path += "/dav";
   }
 
-  console.log(`${path}/${removeCornerSlash(context)}`);
-
   const config: any = {
     method,
     url: `${path}/${removeCornerSlash(context)}`,
@@ -35,6 +33,7 @@ export default async function axiosConnection(
     },
     data,
   };
+
   const resp = await axios(config);
   const responseData: string = resp.data.toString();
   return parseXML(responseData);
