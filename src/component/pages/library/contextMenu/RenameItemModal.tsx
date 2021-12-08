@@ -117,11 +117,11 @@ export default function RenameItemModal({
             }
             break;
           default:
-            throw new Error("Ambiente não identificado.");
+            throw new Error(l("messages.unidentifiedEnvironment"));
         }
 
         if (!moved) {
-          throw new Error("Não foi possível concluir a solicitação.");
+          throw new Error(l("messages.unableToCompleteRequest"));
         }
 
         dispatch(editLibraryFile({ id, filename: finalPath, basename: name }));
