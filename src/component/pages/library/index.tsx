@@ -107,6 +107,7 @@ export async function getLocalFiles(
         createdAt: file.createdAt,
         createdAtDescription: dateDescription(file.createdAt, timeDescription),
         mime: "audio/webm",
+        arrayBufferBlob: file.arrayBufferBlob,
       };
 
       items.push(item);
