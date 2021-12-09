@@ -44,8 +44,6 @@
   },
   "renameTitle": "Rename",
   "saveButton": "Save",
-  "downloadTitle": "Download",
-  "downloadButton": "Download",
   "duplicateTitle": "Duplicate",
   "duplicateButton": "Duplicate",
   "copyModalTitle": "Choose the destination",
@@ -64,5 +62,7 @@
     "tags": "Tags",
     "language": "Language",
     "description": "Description"
-  }
+  },
+  "downloading": "Downloading",
+  "synchronizing": "Synchronizing"
 }
