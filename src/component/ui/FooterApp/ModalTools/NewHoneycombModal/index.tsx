@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -9,12 +9,7 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import {
-  NotificationStatusEnum,
-  ButtonColorEnum,
-  ButtonVariantEnum,
-  EnvironmentEnum,
-} from "@/enums/*";
+import { ButtonColorEnum, ButtonVariantEnum, EnvironmentEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useTranslation } from "next-i18next";
 import { createNewConversation, addParticipantToConversation } from "@/services/talk/room";
@@ -23,7 +18,7 @@ import UsersList from "./UsersList";
 import { listAllUsers } from "@/services/ocs/users";
 import UserListSkeleton from "@/components/ui/skeleton/UsersList";
 import { useRouter } from "next/router";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { useDispatch, useSelector } from "react-redux";
 import { addHoneycomb } from "@/store/actions/honeycomb";
 import { PropsUserSelector } from "@/types/*";
@@ -76,7 +71,6 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const router = useRouter();
-  const notificationCtx = useContext(NotificationContext);
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
 
   const initialValues = {
@@ -156,18 +150,12 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                     }
 
                     handleClose();
-                    notificationCtx.showNotification({
-                      message: c("honeycombModal.chatRoomSuccess"),
-                      status: NotificationStatusEnum.SUCCESS,
-                    });
+                    toast(c("honeycombModal.chatRoomSuccess"), "success");
                     router.push(`/honeycomb/${token}/${room}`);
                   } catch (e) {
                     console.log(e);
                     const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
-                    notificationCtx.showNotification({
-                      message: msg,
-                      status: NotificationStatusEnum.ERROR,
-                    });
+                    toast(msg, "error");
                   } finally {
                     setSubmitting(false);
                   }

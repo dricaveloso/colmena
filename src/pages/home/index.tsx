@@ -1,15 +1,14 @@
-import { useContext } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
-import { JustifyContentEnum, NotificationStatusEnum } from "@/enums/index";
+import { JustifyContentEnum } from "@/enums/index";
 import Section1 from "@/components/pages/home/Section1";
 import Section2 from "@/components/pages/home/Section2";
 import Section3 from "@/components/pages/home/Section3";
 import Section4 from "@/components/pages/home/Section4";
 import Divider from "@/components/ui/Divider";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
@@ -20,7 +19,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 function Home() {
-  const notificationCtx = useContext(NotificationContext);
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("home");
   return (
@@ -31,14 +29,7 @@ function Home() {
           justifyContent={JustifyContentEnum.FLEXSTART}
           extraStyle={{ paddingTop: 6, marginTop: 0 }}
         >
-          <div
-            onClick={() => [
-              notificationCtx.showNotification({
-                message: c("featureUnavailable"),
-                status: NotificationStatusEnum.WARNING,
-              }),
-            ]}
-          >
+          <div onClick={() => [toast(c("featureUnavailable"), "warning")]}>
             <Section2 />
             <Divider marginTop={10} />
             <Section3 />

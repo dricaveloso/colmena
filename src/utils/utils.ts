@@ -7,6 +7,11 @@ import {
   TimeDescriptionInterface,
 } from "@/interfaces/index";
 
+export function removeSpecialCharacters(str: string) {
+  const parsed = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return parsed;
+}
+
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -96,6 +101,14 @@ export function searchByTerm(str: string, word: string): boolean {
 }
 
 export const empty = (value: any) => value === null || value === "" || value === undefined;
+
+export function getOnlyFilename(filename: string) {
+  if (filename.indexOf(".") < 0) {
+    return filename;
+  }
+
+  return filename.replace(/(.*)\..+?$/, "$1");
+}
 
 export function getExtensionFilename(filename: string) {
   if (filename.indexOf(".") < 0) {
@@ -291,4 +304,45 @@ export function formatCookies(cookies: string[]) {
   }
 
   return cookiesR.join(";");
+}
+
+export function downloadFile(data: Blob | undefined, name = "file", type = "text/plain") {
+  if (!data) return false;
+
+  const {
+    URL: { createObjectURL, revokeObjectURL },
+    setTimeout,
+  } = window;
+
+  const blob = new Blob([data], { type });
+  const url = createObjectURL(blob);
+
+  const anchor = document.createElement("a");
+  anchor.setAttribute("href", url);
+  anchor.setAttribute("download", name);
+  anchor.click();
+
+  setTimeout(() => {
+    revokeObjectURL(url);
+  }, 100);
+
+  return true;
+}
+
+export function fancyTimeFormat(duration: number) {
+  // Hours, minutes and seconds
+  const hrs = Math.floor(duration / 3600);
+  const mins = Math.floor((duration % 3600) / 60);
+  const secs = Math.floor(duration % 60);
+
+  // Output like "1:01" or "4:03:59" or "123:03:59"
+  let ret = "";
+
+  if (hrs > 0) {
+    ret += `${hrs}:${mins < 10 ? "0" : ""}`;
+  }
+
+  ret += `${mins}:${secs < 10 ? "0" : ""}`;
+  ret += `${secs}`;
+  return ret;
 }

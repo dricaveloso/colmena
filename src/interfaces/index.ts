@@ -19,7 +19,7 @@ export interface RecordingInterface {
   arrayBufferBlob: ArrayBuffer;
   blob: Blob;
   audioUrl: string;
-  tags: NXTagsProps[];
+  tags: NXTagsProps[] | string[];
   audioType: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -157,12 +157,13 @@ export interface LibraryItemInterface {
   basename: string;
   extension?: string | undefined;
   type?: string;
-  tags?: NXTagsProps[];
+  tags?: NXTagsProps[] | string[];
   arrayBufferBlob?: ArrayBuffer;
   updatedAt?: Date;
   createdAt?: Date;
   createdAtDescription?: string | undefined;
   environment: Environment;
+  path?: string;
   image?: string;
   mime?: string;
   size?: number;

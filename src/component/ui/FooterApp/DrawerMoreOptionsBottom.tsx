@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { useRouter } from "next/router";
 import { v4 as uuid } from "uuid";
@@ -11,8 +11,8 @@ import IconButton from "@/components/ui/IconButton";
 import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import { FontSizeIconProps } from "@/types/index";
-import NotificationContext from "@/store/context/notification-context";
-import { ButtonColorEnum, ButtonVariantEnum, NotificationStatusEnum } from "@/enums/index";
+import { toast } from "@/utils/notifications";
+import { ButtonColorEnum, ButtonVariantEnum } from "@/enums/index";
 import Button from "@/components/ui/Button";
 
 type Props = {
@@ -25,7 +25,6 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
   const [openNewFolderModal, setOpenNewFolderModal] = useState(false);
   const [openUploadModal, setOpenUploadModal] = useState(false);
   const [openNewHoneycombModal, setOpenNewHoneycombModal] = useState(false);
-  const notificationCtx = useContext(NotificationContext);
 
   const { t } = useTranslation("common");
   const router = useRouter();
@@ -132,12 +131,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
                   color: defaultConfigButton.color.light,
                 }}
                 title={t("textDrawerBottomTitle")}
-                handleClick={() =>
-                  notificationCtx.showNotification({
-                    message: t("featureUnavailable"),
-                    status: NotificationStatusEnum.WARNING,
-                  })
-                }
+                handleClick={() => toast(t("featureUnavailable"), "warning")}
               />
             </Grid>
             <Grid item xs={3}>
@@ -176,12 +170,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
                   color: defaultConfigButton.color.light,
                 }}
                 title={t("streamDrawerBottomTitle")}
-                handleClick={() =>
-                  notificationCtx.showNotification({
-                    message: t("featureUnavailable"),
-                    status: NotificationStatusEnum.WARNING,
-                  })
-                }
+                handleClick={() => toast(t("featureUnavailable"), "warning")}
               />
             </Grid>
             <Grid item xs={3} key={uuid()}>
@@ -194,12 +183,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
                   color: defaultConfigButton.color.light,
                 }}
                 title={t("audioEditorDrawerBottomTitle")}
-                handleClick={() =>
-                  notificationCtx.showNotification({
-                    message: t("featureUnavailable"),
-                    status: NotificationStatusEnum.WARNING,
-                  })
-                }
+                handleClick={() => toast(t("featureUnavailable"), "warning")}
               />
             </Grid>
           </Grid>

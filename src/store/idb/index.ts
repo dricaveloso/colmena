@@ -1,8 +1,8 @@
 import Dexie from "dexie";
 
-const db = new Dexie("colmenaDb");
+const db = new Dexie("colmenaDatabase");
 db.version(1).stores({
-  audios: `++id, title, arrayBufferBlob, tags, audioType, userId, createdAt, updatedAt`,
+  files: `++id, title, arrayBufferBlob, tags, type, size, userId, path, filename, basename, aliasFilename, environment, nextcloudId, createdAt, updatedAt`,
 });
 
 export default db;

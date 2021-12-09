@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ListItemIcon, List, ListItem, ListItemText } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import NotificationContext from "@/store/context/notification-context";
-import { NotificationStatusEnum } from "@/enums/index";
+import { toast } from "@/utils/notifications";
 import Divider from "@material-ui/core/Divider";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
@@ -53,7 +52,6 @@ type Props = {
 function DrawerAux({ open, onClose }: Props) {
   const classes = useStyles();
   const router = useRouter();
-  const notificationCtx = useContext(NotificationContext);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const cookies = parseCookies();
   const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
@@ -89,11 +87,7 @@ function DrawerAux({ open, onClose }: Props) {
       id: uuid(),
       icon: <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("downloadTitle"),
-      handleClick: () =>
-        notificationCtx.showNotification({
-          message: c("featureUnavailable"),
-          status: NotificationStatusEnum.WARNING,
-        }),
+      handleClick: () => toast(c("featureUnavailable"), "warning"),
     },
     {
       id: uuid(),

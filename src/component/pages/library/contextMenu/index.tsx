@@ -1,14 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { deleteFile } from "@/services/webdav/files";
-import { deleteDirectory } from "@/services/webdav/directories";
 import IconButton from "@/components/ui/IconButton";
-import { PropsUserSelector } from "@/types/index";
-import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
-import { useSelector, useDispatch } from "react-redux";
-import { removeLibraryFile } from "@/store/actions/library";
-import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "react-i18next";
 import DownloadModal from "./DownloadModal";
 import RenameItemModal from "./RenameItemModal";
@@ -17,24 +10,25 @@ import CopyItemModal from "./CopyItemModal";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import MoveItemModal from "./MoveItemModal";
 import DetailsModal from "./DetailsModal";
-import { getAudioPath, pathIsInFilename } from "@/utils/directory";
-import { remove } from "@/store/idb/models/audios";
+import DeleteItemConfirm from "./DeleteItemConfirm";
+import SyncModal from "./SyncModal";
+import { toast } from "@/utils/notifications";
+import { EnvironmentEnum } from "@/enums/*";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
-  const { id, type, environment, filename, basename, aliasFilename } = cardItem;
-  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const { id, type, environment, filename, basename, aliasFilename, arrayBufferBlob, mime } =
+    cardItem;
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
-  const dispatch = useDispatch();
-  const notificationCtx = useContext(NotificationContext);
-  const isRemote = environment === EnvironmentEnum.REMOTE;
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
+  const [openSyncModal, setOpenSyncModal] = useState(false);
   const [openRenameItemModal, setOpenRenameItemModal] = useState(false);
   const [openDuplicateItemModal, setOpenDuplicateItemModal] = useState(false);
   const [openCopyItemModal, setOpenCopyItemModal] = useState(false);
   const [openMoveItemModal, setOpenMoveItemModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
+  const [openDeleteItemConfirm, setOpenDeleteItemConfirm] = useState(false);
 
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -74,46 +68,19 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     handleCloseContextMenu();
   };
 
-  const handleDelete = async () => {
-    try {
-      let deleted = false;
-      if (isRemote) {
-        deleted = await deleteRemoteItem();
-      } else {
-        deleted = await remove(id, userRdx.user.id);
-      }
-
-      if (deleted) {
-        dispatch(removeLibraryFile(id));
-      } else {
-        notificationCtx.showNotification({
-          message: t("messages.couldNotRemove"),
-          status: NotificationStatusEnum.ERROR,
-        });
-      }
-
-      handleCloseContextMenu();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const deleteRemoteItem = async () => {
-    if (type === "directory") {
-      return deleteDirectory(userRdx.user.id, filename);
-    }
-
-    return deleteFile(userRdx.user.id, filename);
+  const handleOpenDeleteItemConfirm = (opt: boolean) => {
+    setOpenDeleteItemConfirm(opt);
+    handleCloseContextMenu();
   };
 
   const unavailable = () => {
-    notificationCtx.showNotification({
-      message: c("featureUnavailable"),
-      status: NotificationStatusEnum.WARNING,
-    });
+    toast(c("featureUnavailable"), "warning");
   };
 
-  const insideOfflinePath = pathIsInFilename(getAudioPath(), filename);
+  const handleOpenSyncModal = (opt: boolean) => {
+    setOpenSyncModal(opt);
+    handleCloseContextMenu();
+  };
 
   return (
     <>
@@ -133,52 +100,40 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         open={Boolean(anchorEl)}
         onClose={handleCloseContextMenu}
       >
-        {!insideOfflinePath && type === "file" && (
+        {type === "file" && (
           <MenuItem key="edit" onClick={unavailable} style={{ color: "#aaa" }}>
             {t("contextMenuOptions.edit")}
           </MenuItem>
         )}
-        {!insideOfflinePath && (
-          <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
-            {t("contextMenuOptions.copy")}
-          </MenuItem>
-        )}
-        {!insideOfflinePath && (
-          <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
-            {t("contextMenuOptions.move")}
-          </MenuItem>
-        )}
-        {!insideOfflinePath && (
-          <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
-            {t("contextMenuOptions.duplicate")}
-          </MenuItem>
-        )}
-        {!insideOfflinePath && type === "file" && (
+        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
+          {t("contextMenuOptions.copy")}
+        </MenuItem>
+        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
+          {t("contextMenuOptions.move")}
+        </MenuItem>
+        <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
+          {t("contextMenuOptions.duplicate")}
+        </MenuItem>
+        {type === "file" && (
           <MenuItem key="download" onClick={() => handleOpenDownloadModal(true)}>
             {t("contextMenuOptions.download")}
           </MenuItem>
         )}
-        {!insideOfflinePath && (
-          <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
-            {t("contextMenuOptions.rename")}
-          </MenuItem>
-        )}
-        {!insideOfflinePath && (
-          <MenuItem key="details" onClick={() => handleOpenDetailsModal(true)}>
-            {t("contextMenuOptions.details")}
-          </MenuItem>
-        )}
-        {!insideOfflinePath && (
-          <MenuItem key="sync" onClick={unavailable} style={{ color: "#aaa" }}>
+        {type === "file" && environment === EnvironmentEnum.REMOTE && (
+          <MenuItem key="sync" onClick={() => handleOpenSyncModal(true)}>
             {t("contextMenuOptions.synchronize")}
           </MenuItem>
         )}
-        {!insideOfflinePath && (
-          <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
-            {t("contextMenuOptions.publish")}
-          </MenuItem>
-        )}
-        <MenuItem key="delete" onClick={handleDelete}>
+        <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
+          {t("contextMenuOptions.rename")}
+        </MenuItem>
+        <MenuItem key="details" onClick={() => handleOpenDetailsModal(true)}>
+          {t("contextMenuOptions.details")}
+        </MenuItem>
+        <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
+          {t("contextMenuOptions.publish")}
+        </MenuItem>
+        <MenuItem key="delete" onClick={() => handleOpenDeleteItemConfirm(true)}>
           {t("contextMenuOptions.delete")}
         </MenuItem>
       </Menu>
@@ -188,6 +143,8 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         handleOpen={() => handleOpenDownloadModal(false)}
         filename={filename}
         basename={basename}
+        mime={mime}
+        arrayBufferBlob={arrayBufferBlob}
       />
       {openRenameItemModal && (
         <RenameItemModal
@@ -199,6 +156,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           aliasFilename={aliasFilename}
           basename={basename}
           type={type ?? "file"}
+          environment={environment}
         />
       )}
       {openDuplicateItemModal && (
@@ -230,6 +188,23 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           key={`${basename}-details-modal`}
           open={openDetailsModal}
           handleOpen={() => handleOpenDetailsModal(false)}
+          cardItem={cardItem}
+        />
+      )}
+
+      {openDeleteItemConfirm && (
+        <DeleteItemConfirm
+          key={`${basename}-delete-confirm`}
+          handleOpen={() => handleOpenDeleteItemConfirm(false)}
+          cardItem={cardItem}
+        />
+      )}
+
+      {openSyncModal && (
+        <SyncModal
+          key={`${basename}-sync-modal`}
+          open={openSyncModal}
+          handleOpen={() => handleOpenDownloadModal(false)}
           cardItem={cardItem}
         />
       )}

@@ -1,10 +1,10 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
-import { AlignItemsEnum, JustifyContentEnum, NotificationStatusEnum } from "@/enums/index";
+import { AlignItemsEnum, JustifyContentEnum } from "@/enums/index";
 import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import { makeStyles } from "@material-ui/core/styles";
@@ -32,7 +32,7 @@ import theme from "@/styles/theme";
 import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal";
 import { parseCookies } from "nookies";
 import Switch from "@material-ui/core/Switch";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Settings() {
-  const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("settings");
   const { t: c } = useTranslation("common");
   const { t: d } = useTranslation("drawer");
@@ -64,10 +63,7 @@ function Settings() {
   const cookies = parseCookies();
 
   const unavailable = () => {
-    notificationCtx.showNotification({
-      message: c("featureUnavailable"),
-      status: NotificationStatusEnum.WARNING,
-    });
+    toast(c("featureUnavailable"), "warning");
   };
 
   const switchLanguageHandle = () => {

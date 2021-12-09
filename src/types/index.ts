@@ -32,6 +32,7 @@ export type PropsHoneycombSelector = {
 
 export type PropsConfigSelector = {
   currentPage: string;
+  lastTwoPagesAccessed: string[];
 };
 
 export type PropsAudioData = {
@@ -42,7 +43,9 @@ export type PropsAudioData = {
 
 export type PropsAudioSave = {
   name: string;
-  tags: NXTagsProps[];
+  tags: string[];
+  path: string;
+  availableOffline: boolean;
 };
 
 export type PropsLibrarySelector = {
@@ -52,7 +55,7 @@ export type PropsLibrarySelector = {
 };
 
 export type NXTagsProps = {
-  id: number;
+  id?: number;
   title: string;
 };
 
@@ -249,10 +252,14 @@ export type AllIconProps =
   | "art_gallery"
   | "music"
   | "folder"
+  | "folder_outlined"
   | "private"
   | "offline"
   | "file"
   | "faq"
-  | "warning";
+  | "warning"
+  | "record_outlined"
+  | "play"
+  | "pause";
 
-export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE;
+export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

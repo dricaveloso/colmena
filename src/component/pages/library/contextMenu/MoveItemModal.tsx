@@ -1,16 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useCallback } from "react";
 import LibraryModal from "@/components/ui/LibraryModal";
 import Button from "@/components/ui/Button";
 import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
-import { ButtonSizeEnum, NotificationStatusEnum } from "@/enums/*";
-import { getPrivatePath, pathIsInFilename } from "@/utils/directory";
+import { ButtonSizeEnum, EnvironmentEnum } from "@/enums/*";
+import {
+  getPrivatePath,
+  pathIsInFilename,
+  convertPrivateToUsername,
+  getPath,
+} from "@/utils/directory";
 import { moveFile, getUniqueName } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
 import { removeFirstSlash } from "@/utils/utils";
 import { useRouter } from "next/router";
-import NotificationContext from "@/store/context/notification-context";
 import { useTranslation } from "react-i18next";
+import { toast } from "@/utils/notifications";
+import { updateFile } from "@/store/idb/models/files";
 
 type Props = {
   open: boolean;
@@ -21,7 +27,6 @@ export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [isDisabled, setIsDisabled] = useState(false);
   const [itemIsLoading, setItemIsLoading] = useState({} as LibraryItemInterface);
-  const notificationCtx = useContext(NotificationContext);
   const { t } = useTranslation("library");
   const router = useRouter();
   const options = (item: LibraryItemInterface) => {
@@ -57,22 +62,53 @@ export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
         if (cardItem.filename && cardItem.basename) {
           const uniqueName = await handleFileName(cardItem.basename, item.filename);
           const destination = `${item.filename}/${uniqueName}`;
-          const moved = await moveFile(userRdx.user.id, cardItem.filename, destination);
+          let moved = false;
+
+          switch (cardItem.environment) {
+            case EnvironmentEnum.REMOTE:
+              moved = await moveRemoteItem(destination);
+              break;
+            case EnvironmentEnum.LOCAL:
+              moved = await moveLocalFile(destination);
+              break;
+            case EnvironmentEnum.BOTH:
+              moved = await moveRemoteItem(destination);
+              if (moved) {
+                moved = await moveLocalFile(destination);
+              }
+              break;
+
+            default:
+              break;
+          }
+
           if (moved) {
-            router.push(`/library/${removeFirstSlash(item.filename)}`);
+            router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
           }
         }
       } catch (e) {
-        notificationCtx.showNotification({
-          message: e.message,
-          status: NotificationStatusEnum.ERROR,
-        });
+        toast(e.message, "error");
 
         setItemIsLoading({} as LibraryItemInterface);
         setIsDisabled(false);
       }
     })();
   };
+
+  const moveRemoteItem = useCallback(
+    (destination) => moveFile(userRdx.user.id, cardItem.filename, destination),
+    [cardItem.filename, userRdx.user.id],
+  );
+
+  const moveLocalFile = useCallback(
+    async (destination) =>
+      updateFile(cardItem.id, {
+        path: getPath(destination),
+        filename: destination,
+        aliasFilename: convertPrivateToUsername(destination, userRdx.user.id),
+      }),
+    [cardItem.id, userRdx.user.id],
+  );
 
   const handleFileName = (name: string, path: string) => getUniqueName(userRdx.user.id, path, name);
 

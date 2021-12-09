@@ -1,8 +1,14 @@
+/* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/ban-types */
 import webdav from "@/services/webdav";
-import { BufferLike, ResponseDataDetailed } from "webdav";
-import { removeFirstSlash, getRandomInt, trailingSlash } from "@/utils/utils";
+import { BufferLike, ResponseDataDetailed, DAVResultResponseProps } from "webdav";
+import { removeFirstSlash, getRandomInt, trailingSlash, removeCornerSlash } from "@/utils/utils";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
+import davAxiosConnection from "@/services/webdav/axiosConnection";
+
+interface DAVFileIdResultResponseProps extends DAVResultResponseProps {
+  fileid?: number;
+}
 
 interface CustomCredentialsInterface {
   username: string;
@@ -15,13 +21,18 @@ export function listFile(
   filePath: string | null | undefined,
   customCredentials: CustomCredentialsInterface | null = null,
   formatText = false,
-): Promise<BufferLike | string | ResponseDataDetailed<BufferLike | string>> {
+): Promise<BufferLike | string | ResponseDataDetailed<BufferLike | string> | ArrayBuffer> {
   if (formatText)
-    return webdav(customCredentials).getFileContents(`${userId}/${removeFirstSlash(filePath)}`, {
-      format: "text",
-    });
+    return webdav("files", customCredentials).getFileContents(
+      `${userId}/${removeFirstSlash(filePath)}`,
+      {
+        format: "text",
+      },
+    );
 
-  return webdav(customCredentials).getFileContents(`${userId}/${removeFirstSlash(filePath)}`);
+  return webdav("files", customCredentials).getFileContents(
+    `${userId}/${removeFirstSlash(filePath)}`,
+  );
 }
 
 export async function existFile(userId: string | number, remotePath: string): Promise<boolean> {
@@ -88,7 +99,7 @@ export async function putFile(
   data: string | ArrayBuffer,
   customCredentials: CustomCredentialsInterface | null = null,
 ): Promise<boolean> {
-  return webdav(customCredentials).putFileContents(`${userId}/${filePath}`, data, {
+  return webdav("files", customCredentials).putFileContents(`${userId}/${filePath}`, data, {
     overwrite: true,
     contentLength: false,
   });
@@ -128,4 +139,135 @@ export async function downloadLink(
     console.log(error);
     return false;
   }
+}
+
+export async function blobFile(userId: string | number, filename: string): Promise<Blob | boolean> {
+  try {
+    const content: any = await webdav().getFileContents(`${userId}/${filename}`, {
+      details: true,
+    });
+    const mime = content?.headers["content-type"].replace(/;.*$/, "");
+    return arrayBufferToBlob(content.data, mime);
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+export async function getFileContents(
+  userId: string | number,
+  filename: string,
+): Promise<string | BufferLike | ResponseDataDetailed<string | BufferLike>> {
+  return webdav().getFileContents(`${userId}/${filename}`, {
+    details: true,
+  });
+}
+
+/*
+export async function downloadLink(userId: string | number, filename: string) {
+  return webdav().getFileDownloadLink(`${userId}/${filename}`);
+} */
+
+export async function getFileId(userId: string, path: string) {
+  const body = `<?xml version="1.0" encoding="utf-8" ?>
+                <a:propfind xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns">
+                  <a:prop>
+                    <oc:fileid/>
+                  </a:prop>
+                </a:propfind>`;
+  const result = await davAxiosConnection(body, `files/${userId}/${removeCornerSlash(path)}`);
+  if (typeof result.multistatus.response[0].propstat.prop === "object") {
+    const { prop }: { prop: DAVFileIdResultResponseProps } =
+      result.multistatus.response[0].propstat;
+    return prop.fileid;
+  }
+
+  return false;
+}
+
+export async function getDataFile(path: string) {
+  const body = `<?xml version="1.0" encoding="utf-8" ?>
+                <d:propfind  xmlns:d="DAV:"
+                  xmlns:oc="http://owncloud.org/ns"
+                  xmlns:nc="http://nextcloud.org/ns"
+                  xmlns:ocs="http://open-collaboration-services.org/ns">
+                  <d:prop>
+                    <d:getlastmodified />
+                    <d:getetag />
+                    <d:getcontenttype />
+                    <d:resourcetype />
+                    <oc:fileid />
+                    <oc:permissions />
+                    <oc:size />
+                    <d:getcontentlength />
+                    <nc:has-preview />
+                    <nc:mount-type />
+                    <nc:is-encrypted />
+                    <ocs:share-permissions />
+                    <oc:tags />
+                    <oc:display-name/>
+                    <oc:user-visible/>
+                    <oc:user-assignable/>
+                    <oc:id/>
+                    <oc:favorite />
+                    <oc:comments-unread />
+                    <oc:owner-id />
+                    <oc:owner-display-name />
+                    <oc:share-types />
+
+                    <oc:created-at />
+                    <oc:customtitle />
+                    <oc:description />
+                    <oc:language />
+
+                  </d:prop>
+                </d:propfind>`;
+  const result = await davAxiosConnection(
+    body,
+    `files/${removeCornerSlash(path)}`,
+    undefined,
+    undefined,
+    true,
+  );
+  if (typeof result.multistatus.response[0].propstat.prop === "object") {
+    return result.multistatus.response[0].propstat.prop;
+  }
+
+  return false;
+}
+
+interface FileDataNCInterface {
+  customtitle: string;
+  description?: string;
+  language: string;
+}
+
+type CustomFieldsFileDataProps = "customtitle" | "description" | "language";
+
+export async function setDataFile(data: FileDataNCInterface, path: string) {
+  let body = `<?xml version="1.0" encoding="utf-8" ?>
+  <d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+    <d:set>
+        <d:prop>`;
+
+  Object.keys(data).forEach((item: CustomFieldsFileDataProps) => {
+    body += `<oc:${item}>${data[item]}</oc:${item}>`;
+  });
+
+  body += `<oc:created-at>${new Date().toISOString()}</oc:created-at></d:prop>
+    </d:set>
+  </d:propertyupdate>`;
+
+  const result = await davAxiosConnection(
+    body,
+    `files/${removeCornerSlash(path)}`,
+    "PROPPATCH",
+    { "Content-Type": "application/xml" },
+    true,
+  );
+  if (typeof result.multistatus.response[0].propstat.prop === "object") {
+    return result.multistatus.response[0].propstat.prop;
+  }
+
+  return false;
 }

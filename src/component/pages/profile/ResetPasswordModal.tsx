@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -9,9 +9,9 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { NotificationStatusEnum, ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
+import { ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
 import { useTranslation } from "next-i18next";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { useDispatch, useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
 import { updateUser } from "@/services/ocs/users";
@@ -60,7 +60,6 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
   const currentPasswordRdx = userRdx.user.password;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const notificationCtx = useContext(NotificationContext);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const router = useRouter();
 
@@ -123,19 +122,13 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                     setShowBackdrop(false);
 
                     handleClose();
-                    notificationCtx.showNotification({
-                      message: c("messages.passwordUpdatedSuccessfully"),
-                      status: NotificationStatusEnum.SUCCESS,
-                    });
+                    toast(c("messages.passwordUpdatedSuccessfully"), "success");
                     await signOut({ redirect: false });
                     router.push("/login");
                   } catch (e) {
                     console.log(e);
                     const msg = e.message ? e.message : c("messages.unableToUpdatePassword");
-                    notificationCtx.showNotification({
-                      message: msg,
-                      status: NotificationStatusEnum.ERROR,
-                    });
+                    toast(msg, "error");
                   } finally {
                     setShowBackdrop(false);
                     setSubmitting(false);

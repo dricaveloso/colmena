@@ -37,13 +37,13 @@
   },
   "messages": {
     "couldNotRemove": "No se ha podido eliminar",
-    "fileAlreadyExists": "There is already a directory with that name.",
-    "cannotDownloadFile": "Cannot download this file."
+    "fileAlreadyExists": "There is already a file with that name.",
+    "cannotDownloadFile": "Cannot download this file.",
+    "unidentifiedEnvironment": "Unidentified environment.",
+    "unableToCompleteRequest": "Unable to complete request."
   },
   "renameTitle": "Rename",
   "saveButton": "Save",
-  "downloadTitle": "Download",
-  "downloadButton": "Download",
   "duplicateTitle": "Duplicate",
   "duplicateButton": "Duplicate",
   "copyModalTitle": "Choose the destination",
@@ -56,6 +56,13 @@
     "path": "Path",
     "lastUpdate": "Last update at",
     "size": "Size",
-    "type": "Type"
-  }
+    "type": "Type",
+    "creator": "Creator",
+    "fileId": "File ID",
+    "tags": "Tags",
+    "language": "Language",
+    "description": "Description"
+  },
+  "downloading": "Downloading",
+  "synchronizing": "Synchronizing"
 }

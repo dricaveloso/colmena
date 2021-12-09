@@ -128,6 +128,7 @@ export enum TextfieldVariantEnum {
 export enum EnvironmentEnum {
   LOCAL = "local",
   REMOTE = "remote",
+  BOTH = "both",
 }
 
 export enum ListTypeEnum {
@@ -166,4 +167,15 @@ export enum ErrorAuthEnum {
   ERR001 = "ERR001",
   ERR002 = "ERR002",
   ERR003 = "ERR003",
+}
+
+export enum DefaultAudioTypeEnum {
+  type = "opus",
+}
+
+export enum BadgeVariantEnum {
+  SUCCESS = "success",
+  ERROR = "error",
+  WARNING = "warning",
+  INFO = "info",
 }

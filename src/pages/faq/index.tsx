@@ -60,6 +60,14 @@ function Faq() {
       question: t("faq.question10"),
       answer: t("faq.answer10"),
     },
+    {
+      question: t("faq.question11"),
+      answer: t("faq.answer11"),
+    },
+    {
+      question: t("faq.question12"),
+      answer: t("faq.answer12"),
+    },
   ];
 
   return (

@@ -8,5 +8,14 @@
   "submitButton": "Finish",
   "cancelButton": "Cancel",
   "errorStorageMessage": "Could not save this recording.",
-  "errorGetAudioStreamMessage": "You need to enable audio capture to start recording."
+  "errorGetAudioStreamMessage": "You need to enable audio capture to start recording.",
+  "audioTitle": "Audio",
+  "audioSaveTitle": "saved",
+  "tagsTitle": "Tags",
+  "recordingOrientation": "Audios are locally stored if there is no internet. Private synch by default with the possibility of sharing.",
+  "audioSavedSuccessfully": "Audio saved succesfully",
+  "audioConfirmationToKeep": "Would you like to record another audio ?",
+  "uploadLocationTitle": "Upload location",
+  "changeUploadLocationTitle": "change",
+  "availableWithoutInternetTitle": "Available without internet connection"
 }

@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "next-i18next";
 import Button from "@/components/ui/Button";
-import NotificationContext from "@/store/context/notification-context";
-import { ButtonVariantEnum, NotificationStatusEnum, SelectVariantEnum } from "@/enums/index";
+import { toast } from "@/utils/notifications";
+import { ButtonVariantEnum, SelectVariantEnum } from "@/enums/index";
 import { makeStyles } from "@material-ui/styles";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
@@ -36,7 +36,6 @@ export default function FormProfile() {
   const { t: c } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const dispatch = useDispatch();
-  const notificationCtx = useContext(NotificationContext);
   const classes = useStyles();
   const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false);
   const [showBackdrop, setShowBackdrop] = useState(false);
@@ -88,24 +87,15 @@ export default function FormProfile() {
                 updated = true;
               }
               if (updated) {
-                notificationCtx.showNotification({
-                  message: c("form.successMessageFormSave"),
-                  status: NotificationStatusEnum.SUCCESS,
-                });
+                toast(c("form.successMessageFormSave"), "success");
                 dispatch(userInfoUpdate({ name: fullname, email }));
               } else {
-                notificationCtx.showNotification({
-                  message: c("form.dataAlreadyUpdated"),
-                  status: NotificationStatusEnum.WARNING,
-                });
+                toast(c("form.dataAlreadyUpdated"), "warning");
               }
             } catch (e) {
               console.log(e);
               const msg = e.message ? e.message : c("messages.unableToUpdatePassword");
-              notificationCtx.showNotification({
-                message: msg,
-                status: NotificationStatusEnum.ERROR,
-              });
+              toast(msg, "error");
             } finally {
               setShowBackdrop(false);
               setSubmitting(false);

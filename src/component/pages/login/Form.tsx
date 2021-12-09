@@ -1,20 +1,15 @@
 /* eslint-disable camelcase */
-import React, { useContext } from "react";
+import React from "react";
 import Button from "@/components/ui/Button";
 import { LinearProgress, TextField } from "@material-ui/core";
 import PasswordField from "@/components/statefull/PasswordField";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 // import TermsOfUse from "@/components/statefull/TermsOfUse";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
-import {
-  NotificationStatusEnum,
-  SelectVariantEnum,
-  ButtonVariantEnum,
-  ConfigFilesNCEnum,
-} from "@/enums/index";
+import { SelectVariantEnum, ButtonVariantEnum, ConfigFilesNCEnum } from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
 import { signIn, getSession } from "next-auth/client";
@@ -36,7 +31,6 @@ export default function WrapperForm() {
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("login");
   const cookies = parseCookies();
-  const notificationCtx = useContext(NotificationContext);
   const router = useRouter();
 
   // const errorsAuth = new Map();
@@ -141,12 +135,10 @@ export default function WrapperForm() {
             }
 
             setSubmitting(false);
-
-            notificationCtx.showNotification({
-              message:
-                result.error === "permissionDenied" ? t("permissionDenied") : t("loginInvalid"),
-              status: NotificationStatusEnum.ERROR,
-            });
+            toast(
+              result.error === "permissionDenied" ? t("permissionDenied") : t("loginInvalid"),
+              "error",
+            );
           })();
         }}
       >

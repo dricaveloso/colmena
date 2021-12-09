@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -25,9 +25,8 @@ import {
 // import { addLibraryFile } from "@/store/actions/library";
 // import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 // import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
-import { NotificationStatusEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import NotificationContext from "@/store/context/notification-context";
+import { toast } from "@/utils/notifications";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
@@ -68,7 +67,6 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const pathExists = library.currentPathExists;
   const classes = useStyles();
   const router = useRouter();
-  const notificationCtx = useContext(NotificationContext);
   const [finalPath, setFinalPath] = useState(path);
   const [isLoading, setIsLoading] = useState(false);
   // const timeDescription: TimeDescriptionInterface =
@@ -112,10 +110,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           router.push(`/library/${removeFirstSlash(finalPath)}`);
         }
       } catch (e) {
-        notificationCtx.showNotification({
-          message: e.message,
-          status: NotificationStatusEnum.ERROR,
-        });
+        toast(e.message, "error");
         setIsLoading(false);
       }
     })();

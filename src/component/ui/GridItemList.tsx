@@ -21,10 +21,14 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     flexGrow: 1,
     alignSelf: "center",
-    overflow: "hidden",
+
     marginLeft: 5,
     textAlign: "center",
     overflowWrap: "anywhere",
+    "& .MuiTypography-body1": {
+      overflow: "hidden",
+      height: 53,
+    },
   },
   options: {
     display: "flex",

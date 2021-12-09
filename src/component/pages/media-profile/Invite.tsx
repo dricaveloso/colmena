@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import {
   TextField,
@@ -12,13 +12,8 @@ import {
 } from "@material-ui/core";
 import Select from "@/components/ui/Select";
 import { useTranslation } from "next-i18next";
-import NotificationContext from "@/store/context/notification-context";
-import {
-  NotificationStatusEnum,
-  SelectVariantEnum,
-  RoleUserEnum,
-  ConfigFilesNCEnum,
-} from "@/enums/index";
+import { toast } from "@/utils/notifications";
+import { SelectVariantEnum, RoleUserEnum, ConfigFilesNCEnum } from "@/enums/index";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
@@ -47,7 +42,6 @@ type MyFormValues = {
 export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Props) {
   const { t } = useTranslation("mediaProfile");
   const { t: c } = useTranslation("common");
-  const notificationCtx = useContext(NotificationContext);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
@@ -112,18 +106,12 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                 }
 
                 handleCloseInviteForm();
-                notificationCtx.showNotification({
-                  message: t("messageOkModalDialogInvite"),
-                  status: NotificationStatusEnum.SUCCESS,
-                });
+                toast(t("messageOkModalDialogInvite"), "success");
               } catch (e) {
                 console.log(e);
 
                 handleCloseInviteForm();
-                notificationCtx.showNotification({
-                  message: t("messageErrorModalDialogInvite"),
-                  status: NotificationStatusEnum.WARNING,
-                });
+                toast(t("messageErrorModalDialogInvite"), "warning");
               } finally {
                 setShowBackdrop(false);
               }
