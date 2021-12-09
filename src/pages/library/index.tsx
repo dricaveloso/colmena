@@ -19,12 +19,13 @@ import Library, { filterItems, getItems, orderItems } from "@/components/pages/l
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { toast } from "@/utils/notifications";
-import { removeCornerSlash } from "@/utils/utils";
+import { removeCornerSlash, isAudioFile } from "@/utils/utils";
 import IconButton from "@/components/ui/IconButton";
 import { getAudioPath, hasExclusivePath, isRootPath, pathIsInFilename } from "@/utils/directory";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { Button } from "@material-ui/core";
 import Image from "next/image";
+import { v4 as uuid } from "uuid";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -57,12 +58,15 @@ function MyLibrary() {
     toast(t("featureUnavailable"), "warning");
   };
 
-  const options = (cardItem: LibraryCardItemInterface) => {
-    const { filename, basename, orientation } = cardItem;
+  const options = (
+    cardItem: LibraryCardItemInterface,
+    playIconComp: React.ReactNode | undefined = undefined,
+  ) => {
+    const { filename, basename, orientation, mime } = cardItem;
     const options = [];
     const shareOption = (
       <IconButton
-        key={`${basename}-share`}
+        key={`${uuid()}-share`}
         icon="share"
         color="#9A9A9A"
         style={{ padding: 0, margin: 0, minWidth: 30 }}
@@ -71,9 +75,13 @@ function MyLibrary() {
       />
     );
 
+    if (playIconComp) options.push(playIconComp);
+
     if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
       if (!pathIsInFilename(getAudioPath(), filename) && orientation === "vertical") {
-        options.push(shareOption);
+        if (!isAudioFile(mime)) {
+          options.push(shareOption);
+        }
       }
 
       options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);

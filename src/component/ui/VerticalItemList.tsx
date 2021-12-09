@@ -4,6 +4,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
 import { VerticalItemListInterface } from "@/interfaces/index";
+import AudioItemVertical from "@/components/pages/library/AudioFile/AudioItemVertical";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -37,19 +38,38 @@ const VerticalItemList = ({
   secondary,
   options,
   handleClick,
+  isPlaying = false,
+  filename,
+  environment,
+  size = 0,
 }: VerticalItemListInterface) => {
   const classes = useStyles();
 
   return (
     <Box className={classes.card}>
       {avatar && <ListItemAvatar>{avatar}</ListItemAvatar>}
-      <ListItemText
-        data-testid="title"
-        className={classes.description}
-        primary={primary}
-        secondary={secondary}
-        onClick={handleClick}
-      />
+      {isPlaying ? (
+        <ListItemText
+          data-testid="title"
+          className={classes.description}
+          primary={
+            <AudioItemVertical
+              primary={primary}
+              size={size}
+              filename={filename}
+              environment={environment}
+            />
+          }
+        />
+      ) : (
+        <ListItemText
+          data-testid="title"
+          className={classes.description}
+          primary={primary}
+          secondary={secondary}
+          onClick={handleClick}
+        />
+      )}
       <Box className={classes.options}>{options}</Box>
     </Box>
   );

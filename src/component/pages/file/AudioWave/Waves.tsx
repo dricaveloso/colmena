@@ -2,19 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import theme from "@/styles/theme";
-
-const formWaveSurferOptions = (ref: any) => ({
-  container: ref,
-  waveColor: "#eee",
-  progressColor: theme.palette.secondary.main,
-  // cursorColor: "OrangeRed",
-  barWidth: 4,
-  barRadius: 2,
-  responsive: true,
-  height: 65,
-  normalize: true,
-  partialRender: true,
-});
+import { v4 as uuid } from "uuid";
 
 interface WavesurferInterface {
   current: {
@@ -23,13 +11,40 @@ interface WavesurferInterface {
   };
 }
 
-type Props = {
-  audioURL: string;
+type WaveProps = {
+  waveColor?: string;
+  progressColor?: string;
+  barWidth?: number;
+  barRadius?: number;
+  responsive?: boolean;
+  height?: number;
+  normalize?: boolean;
+  partialRender?: boolean;
 };
 
-export default function Waves({ audioURL }: Props) {
+type Props = {
+  audioURL: string;
+  config?: WaveProps | undefined;
+};
+
+export default function Waves({ audioURL, config = undefined }: Props) {
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
+
+  const formWaveSurferOptions = (ref: any) => ({
+    container: ref,
+    waveColor: "#eee",
+    progressColor: theme.palette.secondary.main,
+    // cursorColor: "OrangeRed",
+    barWidth: 4,
+    barRadius: 2,
+    responsive: true,
+    height: 65,
+    normalize: true,
+    partialRender: true,
+    backend: "MediaElement",
+    ...config,
+  });
 
   useEffect(() => {
     create();
@@ -56,5 +71,5 @@ export default function Waves({ audioURL }: Props) {
     }
   };
 
-  return <div style={{ width: "100%" }} id="waveform" ref={waveformRef} />;
+  return <div style={{ width: "100%" }} id={`waveform-${uuid()}`} ref={waveformRef} />;
 }

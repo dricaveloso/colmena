@@ -260,6 +260,8 @@ export type AllIconProps =
   | "warning"
   | "record_outlined"
   | "play"
-  | "pause";
+  | "pause"
+  | "play_flat"
+  | "pause_flat";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext, useMemo, useCallback } from "react";
+import React, { useContext, useState, useMemo, useCallback } from "react";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
@@ -19,6 +19,7 @@ import FileIcon from "@/components/ui/FileIcon";
 import { AllIconProps } from "@/types/index";
 import { BadgeVariantEnum, EnvironmentEnum } from "@/enums/*";
 import Badge from "@/components/ui/Badge";
+import { isAudioFile } from "@/utils/utils";
 
 const CardItem = (cardItem: LibraryCardItemInterface) => {
   const {
@@ -42,12 +43,25 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     isDisabled,
   } = cardItem;
   const router = useRouter();
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const handleClick = useCallback(() => {
     if (!isDisabled) {
       handleOpenCard(cardItem);
     }
   }, [cardItem, handleOpenCard, isDisabled]);
+
+  const mountPlayPlauseButton: React.ReactNode | undefined =
+    type === "file" && isAudioFile(mime) ? (
+      <IconButton
+        key={`${basename}-share`}
+        icon={isPlaying ? "pause_flat" : "play_flat"}
+        color="#9A9A9A"
+        style={{ padding: 0, margin: 0, minWidth: 30 }}
+        fontSizeIcon="small"
+        handleClick={() => setIsPlaying(!isPlaying)}
+      />
+    ) : null;
 
   const avatar = useMemo(() => {
     let folderSecondIcon: AllIconProps | null | undefined = null;
@@ -122,8 +136,12 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           avatar={avatar}
           primary={basename}
           secondary={subtitle}
-          options={options && options(cardItem)}
+          options={options && options(cardItem, mountPlayPlauseButton)}
           handleClick={handleClick}
+          isPlaying={isPlaying}
+          environment={environment}
+          filename={filename}
+          size={size}
         />
       ) : (
         <GridItemList
@@ -131,9 +149,12 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           avatar={avatar}
           primary={basename}
           secondary={subtitle}
-          topOptions={options && options(cardItem)}
+          topOptions={options && options(cardItem, mountPlayPlauseButton)}
           bottomOptions={bottomOptions && bottomOptions(cardItem)}
           handleClick={handleClick}
+          isPlaying={isPlaying}
+          environment={environment}
+          filename={filename}
         />
       )}
     </>

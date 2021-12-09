@@ -127,7 +127,7 @@ export default function WrapperForm() {
                 path: "/",
               });
 
-              router.push("/home", "", {
+              router.push("/library", "", {
                 locale,
               });
               setSubmitting(false);

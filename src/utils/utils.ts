@@ -7,6 +7,18 @@ import {
   TimeDescriptionInterface,
 } from "@/interfaces/index";
 
+export function formatBytes(bytes: number, decimals = 2) {
+  if (bytes === 0) return "0 Bytes";
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+}
+
 export function removeSpecialCharacters(str: string) {
   const parsed = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   return parsed;
@@ -15,6 +27,12 @@ export function removeSpecialCharacters(str: string) {
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export const isAudioFile = (mime: string | undefined) => {
+  if (!mime) return false;
+
+  return /^audio/.test(mime);
+};
 
 export const isValidUrl = (url: string) => {
   try {

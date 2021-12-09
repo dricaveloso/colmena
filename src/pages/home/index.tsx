@@ -3,14 +3,9 @@ import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum } from "@/enums/index";
-import Section1 from "@/components/pages/home/Section1";
-import Section2 from "@/components/pages/home/Section2";
-import Section3 from "@/components/pages/home/Section3";
-import Section4 from "@/components/pages/home/Section4";
-import Divider from "@/components/ui/Divider";
-import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
+import ResourceUnavailable from "@/components/ui/ResourceUnavailable";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -23,20 +18,8 @@ function Home() {
   const { t } = useTranslation("home");
   return (
     <LayoutApp title={t("welcomeTitle")}>
-      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
-        <Section1 />
-        <FlexBox
-          justifyContent={JustifyContentEnum.FLEXSTART}
-          extraStyle={{ paddingTop: 6, marginTop: 0 }}
-        >
-          <div onClick={() => [toast(c("featureUnavailable"), "warning")]}>
-            <Section2 />
-            <Divider marginTop={10} />
-            <Section3 />
-            <Divider marginTop={10} />
-            <Section4 />
-          </div>
-        </FlexBox>
+      <FlexBox justifyContent={JustifyContentEnum.CENTER} extraStyle={{ padding: 0, margin: 0 }}>
+        <ResourceUnavailable icon="construction" title={c("constructionPageText")} />
       </FlexBox>
     </LayoutApp>
   );
