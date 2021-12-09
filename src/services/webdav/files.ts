@@ -154,6 +154,15 @@ export async function blobFile(userId: string | number, filename: string): Promi
   }
 }
 
+export async function getFileContents(
+  userId: string | number,
+  filename: string,
+): Promise<string | BufferLike | ResponseDataDetailed<string | BufferLike>> {
+  return webdav().getFileContents(`${userId}/${filename}`, {
+    details: true,
+  });
+}
+
 /*
 export async function downloadLink(userId: string | number, filename: string) {
   return webdav().getFileDownloadLink(`${userId}/${filename}`);

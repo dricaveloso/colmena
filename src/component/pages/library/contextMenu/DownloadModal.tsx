@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-  title: { margin: theme.spacing(0, 0, 4, 0) },
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
@@ -54,11 +53,9 @@ export default function DownloadModal({
   arrayBufferBlob,
 }: Props) {
   const { t } = useTranslation("library");
-  const { t: c } = useTranslation("common");
   const classes = useStyles();
   const [downloadError, setDownloadError] = useState<boolean>(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const btnDownloadRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     if (open === true) {
@@ -80,7 +77,7 @@ export default function DownloadModal({
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, filename, arrayBufferBlob, btnDownloadRef]);
+  }, [open, filename, arrayBufferBlob]);
 
   const localUrlDownload = (arrayBufferBlob: ArrayBuffer) => arrayBufferToBlob(arrayBufferBlob);
 
@@ -100,16 +97,13 @@ export default function DownloadModal({
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h4 id="transition-modal-title" className={classes.title}>
-              {t("downloadTitle")}
-            </h4>
             {downloadError === true ? (
               <>{t("messages.cannotDownloadFile")}</>
             ) : (
               <>
                 <div className={classes.loading}>
                   <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} />{" "}
-                  {c("loading")}
+                  {t("downloading")}
                 </div>
               </>
             )}
