@@ -15,7 +15,8 @@ import { getAudioPath, pathIsInFilename } from "@/utils/directory";
 import { toast } from "@/utils/notifications";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
-  const { id, type, environment, filename, basename, aliasFilename } = cardItem;
+  const { id, type, environment, filename, basename, aliasFilename, arrayBufferBlob, mime } =
+    cardItem;
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
@@ -149,6 +150,8 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         handleOpen={() => handleOpenDownloadModal(false)}
         filename={filename}
         basename={basename}
+        mime={mime}
+        arrayBufferBlob={arrayBufferBlob}
       />
       {openRenameItemModal && (
         <RenameItemModal

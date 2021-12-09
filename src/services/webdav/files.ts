@@ -140,6 +140,20 @@ export async function downloadLink(
     return false;
   }
 }
+
+export async function blobFile(userId: string | number, filename: string): Promise<Blob | boolean> {
+  try {
+    const content: any = await webdav().getFileContents(`${userId}/${filename}`, {
+      details: true,
+    });
+    const mime = content?.headers["content-type"].replace(/;.*$/, "");
+    return arrayBufferToBlob(content.data, mime);
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
 /*
 export async function downloadLink(userId: string | number, filename: string) {
   return webdav().getFileDownloadLink(`${userId}/${filename}`);
