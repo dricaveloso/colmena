@@ -42,7 +42,6 @@ export default function Waves({ audioURL, config = undefined }: Props) {
     height: 65,
     normalize: true,
     partialRender: true,
-    backend: "MediaElement",
     ...config,
   });
 

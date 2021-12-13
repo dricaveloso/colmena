@@ -176,6 +176,7 @@ function Recording() {
   const finishRecordingHandle = () => {
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
+    toast(t("audioSavedSuccessfully"), "success");
     if (amountAudiosRecorded === 1) {
       router.push(`/file/${filename}`);
     }

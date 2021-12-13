@@ -52,6 +52,7 @@ export type PropsLibrarySelector = {
   libraryFiles: LibraryItemInterface[];
   currentPath: string;
   currentPathExists: boolean;
+  currentAudioPlaying: string;
 };
 
 export type NXTagsProps = {

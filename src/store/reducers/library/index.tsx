@@ -6,18 +6,21 @@ import {
   REMOVE_LIBRARY_FILE,
   SET_LIBRARY_PATH_EXISTS,
   SET_LIBRARY_PATH,
+  CURRENT_AUDIO_PLAYING,
 } from "@/store/actions/index";
 
 type initialStateProps = {
   libraryFiles: LibraryItemInterface[];
   currentPath: string;
   currentPathExists: boolean;
+  currentAudioPlaying: string;
 };
 
 const initialState: initialStateProps = {
   libraryFiles: [],
   currentPath: "/",
   currentPathExists: true,
+  currentAudioPlaying: "",
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -47,6 +50,8 @@ const reducer = (state = initialState, action: any) => {
       };
     case SET_LIBRARY_PATH_EXISTS:
       return { ...state, currentPathExists: action.pathExists };
+    case CURRENT_AUDIO_PLAYING:
+      return { ...state, currentAudioPlaying: action.filename };
     case SET_LIBRARY_PATH:
       return { ...state, currentPath: action.path };
     default:

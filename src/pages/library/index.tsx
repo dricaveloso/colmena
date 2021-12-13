@@ -171,10 +171,10 @@ function MyLibrary() {
     setItems(orderItems(order, filterItems(filter, rawItems)));
   };
 
-  const handleItemClick = ({ type, aliasFilename, filename }: LibraryCardItemInterface) => {
+  const handleItemClick = ({ type, aliasFilename, filename, mime }: LibraryCardItemInterface) => {
     if (type === "directory" && router.query.path !== aliasFilename) {
       router.push(`/library/${aliasFilename}`);
-    } else if (type === "file") {
+    } else if (type === "file" && isAudioFile(mime)) {
       router.push(`/file/${btoa(filename)}`);
     }
   };
