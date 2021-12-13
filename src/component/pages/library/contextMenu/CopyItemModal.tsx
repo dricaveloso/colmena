@@ -99,6 +99,8 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
       const file = await getFile(cardItem.id);
       return createFile({
         ...file,
+        environment: EnvironmentEnum.LOCAL,
+        createAt: new Date(),
         id: undefined,
         path,
         filename,

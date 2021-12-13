@@ -54,7 +54,6 @@ builder-staging:
     #name: $CI_BUILD_REF_NAME
   only:
     - develop
-    - tags
 
 builder-production:
   tags:
@@ -68,6 +67,7 @@ builder-production:
     #name: $CI_BUILD_REF_NAME
   only:
     - main
+    - tags
 
 deployer:
   tags:
