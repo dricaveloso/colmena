@@ -9,7 +9,7 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { ButtonColorEnum, ButtonVariantEnum, EnvironmentEnum } from "@/enums/*";
+import { ButtonColorEnum, ButtonVariantEnum, EnvironmentEnum, TextVariantEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useTranslation } from "next-i18next";
 import { createNewConversation, addParticipantToConversation } from "@/services/talk/room";
@@ -27,6 +27,7 @@ import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { dateDescription } from "@/utils/utils";
 import { createNewShare } from "@/services/share/share";
+import Text from "@/components/ui/Text";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -72,6 +73,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
   const dispatch = useDispatch();
   const router = useRouter();
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
+  const [errorMessageValidation, setErrorMessageValidation] = useState("");
 
   const initialValues = {
     room: "",
@@ -104,10 +106,16 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
               initialValues={initialValues}
               validationSchema={schemaValidation}
               onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-                const { room } = values;
+                const { room: room2 } = values;
+                const room = room2.trim();
                 (async () => {
                   try {
+                    setErrorMessageValidation("");
                     setSubmitting(true);
+
+                    if (userRdx.user.id === room) {
+                      throw new Error(c("reservedNameError"));
+                    }
 
                     if (room.indexOf("/") !== -1) {
                       throw new Error(
@@ -153,9 +161,8 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                     toast(c("honeycombModal.chatRoomSuccess"), "success");
                     router.push(`/honeycomb/${token}/${room}`);
                   } catch (e) {
-                    console.log(e);
                     const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
-                    toast(msg, "error");
+                    setErrorMessageValidation(msg);
                   } finally {
                     setSubmitting(false);
                   }
@@ -208,6 +215,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                         flex="1"
                         flexDirection="row"
                         justifyContent="space-between"
+                        marginTop={1}
                       >
                         <Button
                           handleClick={() => setStep(1)}
@@ -236,6 +244,19 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                           }
                         />
                       </Box>
+                      {errorMessageValidation !== "" && (
+                        <Box
+                          display="flex"
+                          flex="1"
+                          marginTop={1}
+                          flexDirection="row"
+                          justifyContent="center"
+                        >
+                          <Text variant={TextVariantEnum.BODY2} style={{ color: "tomato" }}>
+                            {errorMessageValidation}
+                          </Text>
+                        </Box>
+                      )}
                     </>
                   )}
                 </Form>

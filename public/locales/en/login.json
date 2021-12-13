@@ -2,6 +2,8 @@
   "title": "Enter your email and password to login.",
   "loginInvalid": "Incorrect username or password",
   "permissionDenied": "User profile not allowed for access.",
-  "userDeactivated": "Your user is disabled."
+  "userDeactivated": "Your user is disabled.",
+  "mediaNotFound": "Your media was not found",
+  "loginSuccesfully": "Successfully logged in"
 }
 

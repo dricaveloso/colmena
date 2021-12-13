@@ -18,5 +18,8 @@ export function toast(message: string, type: PropsTypeToast = "info") {
   Toast.fire({
     icon: type,
     title: message,
+    customClass: {
+      container: "my-swal",
+    },
   });
 }

@@ -28,6 +28,7 @@
   "enterTitleIndexPage": "Login",
   "titleSwitchLanguage": "Switch language",
   "noItemsFound": "No items found",
+  "reservedNameError": "Name not available for registration.",
   "honeycombModal": {
     "chatRoomSuccess": "Chat room created successfully",
     "chatRoomFailed": "Unable to create chat room",
@@ -114,5 +115,6 @@
   "noTitle": "No",
   "genericErrorMessage": "Unable to perform this action.",
   "passwordRecoveryMessage": "Password recovery email sent successfully.",
-  "backToLogin": "Back to login"
+  "backToLogin": "Back to login",
+  "noPrivilegesAccessTitle": "No privileges to access."
 }

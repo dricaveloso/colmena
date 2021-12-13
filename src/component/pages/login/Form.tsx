@@ -5,7 +5,6 @@ import { LinearProgress, TextField } from "@material-ui/core";
 import PasswordField from "@/components/statefull/PasswordField";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-// import TermsOfUse from "@/components/statefull/TermsOfUse";
 import { toast } from "@/utils/notifications";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
@@ -26,7 +25,6 @@ type MyFormValues = {
 };
 
 export default function WrapperForm() {
-  // const [openTerms, setOpenTerms] = useState(true);
   const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("login");
@@ -38,8 +36,15 @@ export default function WrapperForm() {
   // errorsAuth.set(ErrorAuthEnum.ERR002, t("permissionDenied"));
   // errorsAuth.set(ErrorAuthEnum.ERR003, t("userDeactivated"));
 
+  function trimEmail(value: string, originalValue: string) {
+    return originalValue.trim();
+  }
+
   const ValidationSchema = Yup.object().shape({
-    email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
+    email: Yup.string()
+      .transform(trimEmail)
+      .email(c("form.invalidEmailTitle"))
+      .required(c("form.requiredTitle")),
     password: Yup.string()
       .min(6, c("form.passwordMinLengthTitle", { size: 6 }))
       .max(30, c("form.passwordMaxLengthTitle", { size: 30 }))
@@ -61,7 +66,8 @@ export default function WrapperForm() {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          const { password, email } = values;
+          const { password, email: emailv } = values;
+          const email = emailv.trim();
           setSubmitting(true);
           (async () => {
             const lang = cookies.NEXT_LOCALE || "en";
@@ -102,16 +108,9 @@ export default function WrapperForm() {
                 const mediaObj: MediaInfoInterface = JSON.parse(String(mediaFile));
                 mediaOrg = mediaObj;
               } catch (e) {
-                mediaOrg = {
-                  name: "Radio Colmena",
-                  logo: "",
-                  slogan:
-                    "Gulf Radio is a community radio based in kosele town, rachuonyo subcounty in homabay county in Kenya.",
-                  email: "",
-                  groups: ["devteam"],
-                  quota: "10GB",
-                  url: "htt://www.radiotal.org",
-                };
+                toast(t("mediaNotFound"), "error");
+                setSubmitting(false);
+                return;
               }
 
               user.media = mediaOrg;
@@ -127,6 +126,7 @@ export default function WrapperForm() {
                 path: "/",
               });
 
+              toast(t("loginSuccesfully"), "success");
               router.push("/library", "", {
                 locale,
               });
@@ -137,7 +137,7 @@ export default function WrapperForm() {
             setSubmitting(false);
             toast(
               result.error === "permissionDenied" ? t("permissionDenied") : t("loginInvalid"),
-              "error",
+              "warning",
             );
           })();
         }}
@@ -202,7 +202,6 @@ export default function WrapperForm() {
                 style={{ width: "40%" }}
               />
             </Box>
-            {/* <TermsOfUse open={openTerms} handleSetOpen={(flag) => setOpenTerms(flag)} /> */}
           </Form>
         )}
       </Formik>

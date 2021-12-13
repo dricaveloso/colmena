@@ -170,7 +170,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
             <Formik
               initialValues={initialValues}
               validationSchema={NewFolderSchema}
-              onSubmit={() => handleSubmit()}
+              onSubmit={handleSubmit}
             >
               {({ setFieldValue }: any) => (
                 <Form className={classes.form}>
