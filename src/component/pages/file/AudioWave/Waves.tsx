@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import theme from "@/styles/theme";
 import { v4 as uuid } from "uuid";
+import { toast } from "@/utils/notifications";
 
 interface WavesurferInterface {
   current: {
@@ -60,11 +61,15 @@ export default function Waves({ blob, config = undefined }: Props) {
 
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
-
       wavesurfer?.current.loadBlob(blob);
-      setTimeout(() => {
+
+      wavesurfer?.current.on("ready", () => {
         wavesurfer?.current?.play();
-      }, 800);
+      });
+
+      wavesurfer?.current.on("error", (error: string) => {
+        toast(error, "error");
+      });
     } catch (e) {
       // error container element not found
     }
