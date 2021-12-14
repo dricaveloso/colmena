@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
 import { toast } from "@/utils/notifications";
 import { downloadFile } from "@/utils/utils";
+import { DefaultAudioTypeEnum } from "@/enums/*";
 
 type PositionProps = {
   mouseX: null | number;
@@ -65,7 +66,9 @@ const ContextMenuOptions = ({ blob, data }: Props) => {
       >
         <MenuItem
           key="download"
-          onClick={() => downloadFile(blob, data.title, data.getcontenttype)}
+          onClick={() =>
+            downloadFile(blob, `${data.title}.${DefaultAudioTypeEnum.type}`, data.getcontenttype)
+          }
         >
           {t("contextMenuOptions.downloadTitle")}
         </MenuItem>

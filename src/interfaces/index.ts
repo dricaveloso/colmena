@@ -146,7 +146,10 @@ export interface LibraryInterface {
   items?: LibraryItemInterface[];
   isLoading?: boolean;
   isDisabled?: boolean;
-  options?: (cardItem: LibraryCardItemInterface) => React.ReactNode;
+  options?: (
+    cardItem: LibraryCardItemInterface,
+    playButton: React.ReactNode | undefined,
+  ) => React.ReactNode;
   bottomOptions?: (cardItem: LibraryCardItemInterface) => React.ReactNode;
   handleItemClick: (item: LibraryItemInterface) => void;
 }
@@ -171,7 +174,10 @@ export interface LibraryItemInterface {
 
 export interface LibraryCardItemInterface extends LibraryItemInterface {
   orientation: string | ["vertical", "horizontal"];
-  options?: (item: LibraryItemInterface) => React.ReactNode;
+  options?: (
+    item: LibraryItemInterface,
+    playButton: React.ReactNode | undefined,
+  ) => React.ReactNode;
   bottomOptions?: (item: LibraryItemInterface) => React.ReactNode;
   handleOpenCard: (item: LibraryItemInterface) => void;
   isDisabled?: boolean;
@@ -202,5 +208,9 @@ export interface VerticalItemListInterface {
   primary: string | React.ReactNode;
   secondary?: string | React.ReactNode;
   options?: React.ReactNode;
+  isPlaying: boolean;
   handleClick?: (event: any) => void | undefined;
+  filename: string;
+  environment: Environment;
+  size?: number;
 }

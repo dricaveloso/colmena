@@ -32,3 +32,7 @@ export function getFilesByPath(userId, path) {
 export function findByFilename(filename) {
   return db.files.where({ filename }).first();
 }
+
+export function findByBasename(userId, basename) {
+  return db.files.where({ userId, basename }).first();
+}

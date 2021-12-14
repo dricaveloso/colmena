@@ -66,6 +66,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
+    tags: Yup.array(Yup.string()).min(1, t("tagsRequiredTitle")),
   });
 
   const initialValues: MyFormValues = {
@@ -196,6 +197,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
                     />
                   )}
                 />
+                {errors.tags && touched.tags ? <ErrorMessageForm message={errors.tags} /> : null}
                 <Box marginTop={1} marginBottom={2}>
                   <FormControlLabel
                     control={

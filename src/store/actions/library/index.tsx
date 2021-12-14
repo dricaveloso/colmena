@@ -5,6 +5,7 @@ import {
   REMOVE_LIBRARY_FILE,
   SET_LIBRARY_PATH_EXISTS,
   SET_LIBRARY_PATH,
+  CURRENT_AUDIO_PLAYING,
 } from "@/store/actions/index";
 import { LibraryItemInterface } from "@/interfaces/index";
 
@@ -36,4 +37,9 @@ export const setLibraryPathExists = (pathExists: boolean) => ({
 export const setLibraryPath = (path: string) => ({
   type: SET_LIBRARY_PATH,
   path,
+});
+
+export const setCurrentAudioPlaying = (filename: string) => ({
+  type: CURRENT_AUDIO_PLAYING,
+  filename,
 });

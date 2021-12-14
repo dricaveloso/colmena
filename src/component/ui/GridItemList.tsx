@@ -3,6 +3,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
+import AudioItemGrid from "@/components/pages/library/AudioFile/AudioItemGrid";
+import { Environment } from "@/types/*";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -55,7 +57,10 @@ interface GridItemListInterface {
   secondary?: string | React.ReactNode;
   topOptions?: React.ReactNode;
   bottomOptions?: React.ReactNode;
+  isPlaying: boolean;
   handleClick?: (event: any) => void | undefined;
+  filename: string;
+  environment: Environment;
 }
 
 const VerticalItemList = ({
@@ -65,6 +70,7 @@ const VerticalItemList = ({
   topOptions,
   bottomOptions,
   handleClick,
+  isPlaying = false,
 }: GridItemListInterface) => {
   const classes = useStyles();
 
@@ -72,13 +78,21 @@ const VerticalItemList = ({
     <Box className={classes.card}>
       <Box className={[classes.options, classes.topOptions].join(" ")}>{topOptions}</Box>
       {avatar && <ListItemAvatar>{avatar}</ListItemAvatar>}
-      <ListItemText
-        data-testid="title"
-        className={classes.description}
-        primary={primary}
-        secondary={secondary}
-        onClick={handleClick}
-      />
+      {isPlaying ? (
+        <ListItemText
+          data-testid="title"
+          className={classes.description}
+          primary={<AudioItemGrid />}
+        />
+      ) : (
+        <ListItemText
+          data-testid="title"
+          className={classes.description}
+          primary={primary}
+          secondary={secondary}
+          onClick={handleClick}
+        />
+      )}
       <Box className={[classes.options, classes.bottomOptions].join(" ")}>{bottomOptions}</Box>
     </Box>
   );

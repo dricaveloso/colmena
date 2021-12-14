@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import MaterialIcon from "@/components/ui/MaterialIcon";
-// import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { TextVariantEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
@@ -12,12 +12,12 @@ type Props = {
 };
 
 function ResourceUnavailable({ icon, title = "" }: Props) {
-  // const { t } = useTranslation("common");
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   return (
     <>
-      <MaterialIcon icon={icon} style={{ fontSize: 120 }} />
+      <MaterialIcon icon={icon} style={{ fontSize: 90 }} />
       <Text
         variant={TextVariantEnum.BODY1}
         gutterBottom
@@ -33,8 +33,7 @@ function ResourceUnavailable({ icon, title = "" }: Props) {
         {title}
       </Text>
       <Button color="primary" variant="outlined" onClick={() => router.back()}>
-        {/* {t("form.backButton")} */}
-        Back
+        {t("form.backButton")}
       </Button>
     </>
   );

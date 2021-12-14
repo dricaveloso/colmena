@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import ListItem from "@material-ui/core/ListItem";
 import { v4 as uuid } from "uuid";
 import List from "@material-ui/core/List";
@@ -23,6 +23,7 @@ import {
   getFilename,
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
+import { setCurrentAudioPlaying } from "@/store/actions/library";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -122,7 +123,7 @@ export function filterItems(filter: string, items: Array<LibraryItemInterface>) 
     return items;
   }
 
-  const audioExtensions: Array<string> = ["mp3", "ogg", "wav"];
+  const audioExtensions: Array<string> = ["mp3", "ogg", "wav", "opus", "weba"];
   const textExtensions: Array<string> = ["md", "txt", "pdf"];
   const imageExtensions: Array<string> = ["jpg", "png", "gif", "jpeg"];
 
@@ -250,6 +251,10 @@ export default function Library({
   handleItemClick,
 }: LibraryInterface) {
   const classes = useStyles();
+
+  useEffect(() => {
+    setCurrentAudioPlaying("");
+  }, []);
 
   const isVerticalList = useMemo(() => listType === ListTypeEnum.LIST, [listType]);
   const orientation = isVerticalList ? "vertical" : "horizontal";

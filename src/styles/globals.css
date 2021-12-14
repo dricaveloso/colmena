@@ -106,3 +106,7 @@ body {
   padding: 5;
   width: 100%;
 }
+
+.my-swal {
+  z-index: 9999999999 !important;
+}
