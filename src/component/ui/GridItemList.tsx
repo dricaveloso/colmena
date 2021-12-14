@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
-import AudioItemGrid from "@/components/pages/library/AudioFile/AudioItemGrid";
 import { Environment } from "@/types/*";
+import AudioItemGrid from "@/components/pages/library/AudioFile/AudioItemGrid";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -18,6 +20,7 @@ const useStyles = makeStyles(() => ({
     position: "relative",
     boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.18)",
     borderRadius: 4,
+    overflow: "hidden",
   },
   description: {
     flexDirection: "column",
@@ -44,16 +47,22 @@ const useStyles = makeStyles(() => ({
     right: 4,
     top: 8,
   },
-  bottomOptions: {
+  bottomOptionsRight: {
     position: "absolute",
     right: 4,
     bottom: 8,
+  },
+  bottomOptionsLeft: {
+    position: "absolute",
+    left: 4,
+    bottom: 11,
   },
 }));
 
 interface GridItemListInterface {
   avatar?: React.ReactElement;
   primary: string | React.ReactNode;
+  primaryFormatted: React.ReactNode;
   secondary?: string | React.ReactNode;
   topOptions?: React.ReactNode;
   bottomOptions?: React.ReactNode;
@@ -61,16 +70,21 @@ interface GridItemListInterface {
   handleClick?: (event: any) => void | undefined;
   filename: string;
   environment: Environment;
+  size?: number;
 }
 
-const VerticalItemList = ({
+const GridItemList = ({
   avatar,
   primary,
+  primaryFormatted,
   secondary,
   topOptions,
   bottomOptions,
   handleClick,
   isPlaying = false,
+  filename,
+  environment,
+  size = 0,
 }: GridItemListInterface) => {
   const classes = useStyles();
 
@@ -81,21 +95,26 @@ const VerticalItemList = ({
       {isPlaying ? (
         <ListItemText
           data-testid="title"
-          className={classes.description}
-          primary={<AudioItemGrid />}
+          primary={
+            <AudioItemGrid
+              primary={primary}
+              size={size}
+              filename={filename}
+              environment={environment}
+            />
+          }
         />
       ) : (
-        <ListItemText
-          data-testid="title"
-          className={classes.description}
-          primary={primary}
-          secondary={secondary}
-          onClick={handleClick}
-        />
+        <ListItemText data-testid="title" primary={primaryFormatted} onClick={handleClick} />
       )}
-      <Box className={[classes.options, classes.bottomOptions].join(" ")}>{bottomOptions}</Box>
+      {Array.isArray(bottomOptions) && bottomOptions[2] && (
+        <Box className={classes.bottomOptionsLeft}>{bottomOptions[2]}</Box>
+      )}
+      <Box className={[classes.options, classes.bottomOptionsRight].join(" ")}>
+        {bottomOptions && Array.isArray(bottomOptions) && bottomOptions.slice(0, 2)}
+      </Box>
     </Box>
   );
 };
 
-export default VerticalItemList;
+export default GridItemList;

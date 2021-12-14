@@ -7,25 +7,29 @@ import Waves from "@/components/pages/file/AudioWave/Waves";
 import ListItemText from "@material-ui/core/ListItemText";
 import getBlobDuration from "get-blob-duration";
 import { fancyTimeFormat } from "@/utils/utils";
+import { createObjectURL } from "blob-util";
 
 type Props = {
-  audioURL: string;
+  blob: Blob | null;
   data: any;
 };
-export default function AudioWave({ audioURL, data }: Props) {
+export default function AudioWave({ blob, data }: Props) {
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
     (async () => {
       try {
-        const duration = await getBlobDuration(audioURL);
-        setDuration(duration);
+        if (blob) {
+          const audioURL = createObjectURL(blob);
+          const duration = await getBlobDuration(audioURL);
+          setDuration(duration);
+        }
       } catch (e) {
         console.log(e);
       }
     })();
-  }, []);
+  }, [blob]);
 
   const handlePlayPause = () => {
     setPlaying(!playing);
@@ -40,7 +44,7 @@ export default function AudioWave({ audioURL, data }: Props) {
         iconColor={theme.palette.primary.main}
       />
       {playing ? (
-        <Waves audioURL={audioURL} />
+        <Waves blob={blob} />
       ) : (
         <Box display="flex" marginLeft={1} style={{ display: playing ? "none" : "block" }} flex={1}>
           <ListItemText

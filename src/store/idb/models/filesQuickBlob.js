@@ -5,5 +5,5 @@ export function createFile(file) {
 }
 
 export function findByBasename(userId, basename) {
-  return db.filesQuickBlob.where({ userId, basename }).first();
+  return db.filesQuickBlob.where("[userId+basename]").equals([userId, basename]).first();
 }

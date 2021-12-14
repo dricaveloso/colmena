@@ -5,7 +5,7 @@ type PropsTypeToast = "success" | "warning" | "error" | "info";
 export function toast(message: string, type: PropsTypeToast = "info") {
   const Toast = Swal.mixin({
     toast: true,
-    position: "bottom",
+    position: "top-end",
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,

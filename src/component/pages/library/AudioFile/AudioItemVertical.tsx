@@ -27,7 +27,7 @@ type Props = {
 export default function AudioItemVertical({ filename, environment, primary, size }: Props) {
   const [loading, setLoading] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const [urlBlob, setUrlBlob] = useState("");
+  const [blob, setBlob] = useState<Blob | null>(null);
   const [duration, setDuration] = useState("");
 
   async function prepareAudioBlob(content: ArrayBuffer) {
@@ -35,7 +35,7 @@ export default function AudioItemVertical({ filename, environment, primary, size
     const urlBlob = createObjectURL(blob);
     const duration = await getBlobDuration(urlBlob);
     setDuration(fancyTimeFormat(duration));
-    setUrlBlob(urlBlob);
+    setBlob(blob);
   }
 
   useEffect(() => {
@@ -70,6 +70,12 @@ export default function AudioItemVertical({ filename, environment, primary, size
       } finally {
         setLoading(false);
       }
+
+      return () => {
+        setBlob(null);
+        setDuration("");
+        setLoading(false);
+      };
     })();
   }, []);
 
@@ -85,7 +91,7 @@ export default function AudioItemVertical({ filename, environment, primary, size
       <Text variant={TextVariantEnum.BODY2} style={{ fontSize: 10, color: "gray" }}>
         {`${duration} - ${formatBytes(size)}`}
       </Text>
-      {urlBlob && <Waves audioURL={urlBlob} config={{ height: 20 }} />}
+      {blob && <Waves blob={blob} config={{ height: 20 }} />}
     </Box>
   );
 }

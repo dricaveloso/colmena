@@ -52,6 +52,7 @@ function MyLibrary() {
   const { t } = useTranslation("common");
   const { t: l } = useTranslation("library");
   const dispatch = useDispatch();
+
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
 
   const unavailable = () => {
@@ -90,9 +91,15 @@ function MyLibrary() {
     return options;
   };
 
-  const bottomOptions = (cardItem: LibraryCardItemInterface) => {
+  const bottomOptions = (
+    cardItem: LibraryCardItemInterface,
+    playIconComp: React.ReactNode | undefined = undefined,
+    badgeStatusGrid: React.ReactNode | undefined = undefined,
+  ) => {
     const { filename, basename, orientation } = cardItem;
     const options = [];
+    if (playIconComp) options.push(playIconComp);
+
     const shareOption = (
       <IconButton
         key={`${basename}-share`}
@@ -109,6 +116,8 @@ function MyLibrary() {
         options.push(shareOption);
       }
     }
+
+    if (badgeStatusGrid) options.push(badgeStatusGrid);
 
     return options;
   };

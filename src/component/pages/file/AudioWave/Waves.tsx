@@ -23,11 +23,11 @@ type WaveProps = {
 };
 
 type Props = {
-  audioURL: string;
+  blob: Blob | null;
   config?: WaveProps | undefined;
 };
 
-export default function Waves({ audioURL, config = undefined }: Props) {
+export default function Waves({ blob, config = undefined }: Props) {
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
 
@@ -61,7 +61,7 @@ export default function Waves({ audioURL, config = undefined }: Props) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
 
-      wavesurfer?.current.load(audioURL);
+      wavesurfer?.current.loadBlob(blob);
       setTimeout(() => {
         wavesurfer?.current?.play();
       }, 800);

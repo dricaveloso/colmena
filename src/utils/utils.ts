@@ -324,7 +324,7 @@ export function formatCookies(cookies: string[]) {
   return cookiesR.join(";");
 }
 
-export function downloadFile(data: Blob | undefined, name = "file", type = "text/plain") {
+export function downloadFile(data: Blob | null, name = "file", type = "text/plain") {
   if (!data) return false;
 
   const {

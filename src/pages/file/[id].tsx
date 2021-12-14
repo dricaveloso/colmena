@@ -52,12 +52,14 @@ function File() {
       try {
         setLoading(true);
         const result: any = await getDataFile(filename);
-        setData(result);
 
+        let tags: boolean | ItemTagInterface[] = false;
         if (result.fileid) {
-          const tags = await getFileTags(userRdx.user.id, filename, result.fileid);
-          setTags(!tags ? [] : tags);
+          tags = await getFileTags(userRdx.user.id, filename, result.fileid);
         }
+
+        setTags(!tags ? [] : tags);
+        setData(result);
       } catch (e) {
         console.log(e);
       } finally {
