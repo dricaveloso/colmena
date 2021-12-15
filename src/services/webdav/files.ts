@@ -3,8 +3,12 @@
 import webdav from "@/services/webdav";
 import { BufferLike, ResponseDataDetailed, DAVResultResponseProps } from "webdav";
 import { removeFirstSlash, getRandomInt, trailingSlash, removeCornerSlash } from "@/utils/utils";
-import { arrayBufferToBlob, createObjectURL } from "blob-util";
+import { arrayBufferToBlob, blobToArrayBuffer, createObjectURL } from "blob-util";
 import davAxiosConnection from "@/services/webdav/axiosConnection";
+import axiosBase from "@/services/webdav/axiosBase";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 interface DAVFileIdResultResponseProps extends DAVResultResponseProps {
   fileid?: number;
@@ -270,4 +274,84 @@ export async function setDataFile(data: FileDataNCInterface, path: string) {
   }
 
   return false;
+}
+
+export async function chunkFileUpload(userId: string | number, file: File, filename: string) {
+  const maxChunkFile = 2 * 1000000; // 2mb
+  const totalLength = file.size;
+
+  if (maxChunkFile >= totalLength) {
+    const contentFile = await blobToArrayBuffer(file);
+
+    return putFile(userId, filename, contentFile);
+  }
+
+  let tempFilename = "file";
+  // eslint-disable-next-line no-plusplus
+  for (let count = 1; count < 4; count++) {
+    tempFilename += `-${getRandomInt(1000, 9999)}`;
+  }
+
+  const created = await createBaseFileUpload(userId, tempFilename);
+  if (created.status !== 201) {
+    return false;
+  }
+
+  let initialChunk = 0;
+  let finalChunk = 0;
+  let done = false;
+  let chunkNumber = 0;
+  while (done === false) {
+    chunkNumber += 1;
+    if (chunkNumber > 1) {
+      initialChunk += maxChunkFile;
+    }
+
+    finalChunk = initialChunk + maxChunkFile;
+    if (finalChunk > totalLength) {
+      finalChunk = totalLength;
+    }
+
+    // eslint-disable-next-line no-await-in-loop
+    const chunkContent = await file.slice(initialChunk, finalChunk, file.type).arrayBuffer();
+    // console.log(initialChunk, finalChunk, totalLength, chunkNumber, chunkContent);
+    const positionPath = `${(initialChunk + 1).toString().padStart(15, "0")}-${finalChunk
+      .toString()
+      .padStart(15, "0")}`;
+
+    // eslint-disable-next-line no-await-in-loop
+    await sendChunkFile(userId, tempFilename, positionPath, chunkContent);
+
+    if (finalChunk >= totalLength) done = true;
+  }
+
+  await doneChunkFileUpload(userId, tempFilename, filename);
+
+  return true;
+}
+
+async function createBaseFileUpload(userId: string | number, tempFilename: string) {
+  return axiosBase(null, `dav/uploads/${userId}/${tempFilename}`, "MKCOL", {});
+}
+
+async function sendChunkFile(
+  userId: string | number,
+  tempFilename: string,
+  position: string,
+  content: ArrayBuffer,
+) {
+  return axiosBase(content, `dav/uploads/${userId}/${tempFilename}/${position}`, "PUT", {
+    "Content-Type": "application/octet-stream",
+  });
+}
+
+async function doneChunkFileUpload(
+  userId: string | number,
+  tempFilename: string,
+  destination: string,
+) {
+  return axiosBase(null, `dav/uploads/${userId}/${tempFilename}/.file`, "MOVE", {
+    Destination: `${publicRuntimeConfig.api.baseUrl}/remote.php/dav/files/${userId}/${destination}`,
+    "Content-Type": null,
+  });
 }
