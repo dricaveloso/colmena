@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable arrow-body-style */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
@@ -17,11 +19,14 @@ import {
 } from "@/utils/directory";
 import FileIcon from "@/components/ui/FileIcon";
 import { AllIconProps, PropsLibrarySelector } from "@/types/index";
-import { BadgeVariantEnum, EnvironmentEnum } from "@/enums/*";
+import { BadgeVariantEnum, EnvironmentEnum, TextColorEnum, TextVariantEnum } from "@/enums/*";
 import Badge from "@/components/ui/Badge";
 import { isAudioFile } from "@/utils/utils";
 import { setCurrentAudioPlaying } from "@/store/actions/library";
 import { useDispatch, useSelector } from "react-redux";
+import Text from "@/components/ui/Text";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import theme from "@/styles/theme";
 
 const CardItem = (cardItem: LibraryCardItemInterface) => {
   const {
@@ -136,6 +141,53 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     return secondaryText;
   }, [basename, createdAtDescription, environment, id]);
 
+  const badgeStatusGrid = useMemo(() => {
+    if (environment === EnvironmentEnum.LOCAL) {
+      return (
+        <span
+          key={`tag-grid-${basename}-${id}`}
+          style={{ display: "inline-block", marginLeft: "5px" }}
+        >
+          <Badge description="offline" variant={BadgeVariantEnum.ERROR} />
+        </span>
+      );
+    }
+    if (environment === EnvironmentEnum.BOTH) {
+      return (
+        <span
+          key={`tag-grid-${basename}-${id}`}
+          style={{ display: "inline-block", marginLeft: "5px" }}
+        >
+          <Badge description="sync" variant={BadgeVariantEnum.SUCCESS} />
+        </span>
+      );
+    }
+    return "";
+  }, [basename, environment, id]);
+
+  const matchXs = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const formatPrimaryWithSecondaryGrid = (
+    <Box
+      display="flex"
+      paddingBottom={3}
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Text
+        variant={TextVariantEnum.BODY1}
+        noWrap
+        style={{ width: matchXs ? 150 : 250, textAlign: "center" }}
+      >
+        {basename}
+      </Text>
+      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#757575" }}>
+        {createdAtDescription}
+      </Text>
+    </Box>
+  );
+
   return (
     <>
       {orientation === "vertical" ? (
@@ -155,14 +207,17 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
         <GridItemList
           key={`${basename}-card`}
           avatar={avatar}
+          primaryFormatted={formatPrimaryWithSecondaryGrid}
           primary={basename}
-          secondary={subtitle}
-          topOptions={options && options(cardItem, mountPlayPlauseButton)}
-          bottomOptions={bottomOptions && bottomOptions(cardItem)}
+          topOptions={options && options(cardItem)}
+          bottomOptions={
+            bottomOptions && bottomOptions(cardItem, mountPlayPlauseButton, badgeStatusGrid)
+          }
           handleClick={handleClick}
           isPlaying={isPlaying}
           environment={environment}
           filename={filename}
+          size={size}
         />
       )}
     </>

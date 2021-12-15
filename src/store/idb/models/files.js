@@ -26,7 +26,10 @@ export function getFile(id) {
 }
 
 export function getFilesByPath(userId, path) {
-  return db.files.where({ userId, path: removeCornerSlash(path) }).sortBy("createdAt");
+  return db.files
+    .where("[userId+path]")
+    .equals([userId, removeCornerSlash(path)])
+    .sortBy("createdAt");
 }
 
 export function findByFilename(filename) {
@@ -34,5 +37,5 @@ export function findByFilename(filename) {
 }
 
 export function findByBasename(userId, basename) {
-  return db.files.where({ userId, basename }).first();
+  return db.files.where("[userId+basename]").equals([userId, basename]).first();
 }

@@ -10,6 +10,7 @@ import { PositionEnum } from "@/enums/index";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentPage } from "@/store/actions/config/index";
+import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 
 type Props = {
   title: string;
@@ -38,6 +39,7 @@ function LayoutApp({
   const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
+    dispatch(setCurrentAudioPlaying(""));
     if (router.asPath !== "/profile") dispatch(setCurrentPage(router.asPath));
     if (navigator.onLine) {
       (async () => {

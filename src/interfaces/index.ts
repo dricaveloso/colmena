@@ -148,9 +148,13 @@ export interface LibraryInterface {
   isDisabled?: boolean;
   options?: (
     cardItem: LibraryCardItemInterface,
-    playButton: React.ReactNode | undefined,
+    playButton?: React.ReactNode | undefined,
   ) => React.ReactNode;
-  bottomOptions?: (cardItem: LibraryCardItemInterface) => React.ReactNode;
+  bottomOptions?: (
+    cardItem: LibraryCardItemInterface,
+    playButton?: React.ReactNode | undefined,
+    badgeStatusGrid?: React.ReactNode | undefined,
+  ) => React.ReactNode;
   handleItemClick: (item: LibraryItemInterface) => void;
 }
 export interface LibraryItemInterface {
@@ -176,9 +180,13 @@ export interface LibraryCardItemInterface extends LibraryItemInterface {
   orientation: string | ["vertical", "horizontal"];
   options?: (
     item: LibraryItemInterface,
-    playButton: React.ReactNode | undefined,
+    playButton?: React.ReactNode | undefined,
   ) => React.ReactNode;
-  bottomOptions?: (item: LibraryItemInterface) => React.ReactNode;
+  bottomOptions?: (
+    item: LibraryItemInterface,
+    playButton?: React.ReactNode | undefined,
+    badgeStatusGrid?: React.ReactNode | undefined,
+  ) => React.ReactNode;
   handleOpenCard: (item: LibraryItemInterface) => void;
   isDisabled?: boolean;
 }

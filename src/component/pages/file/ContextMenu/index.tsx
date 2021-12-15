@@ -16,7 +16,7 @@ type PositionProps = {
 
 type Props = {
   data: any | undefined;
-  blob: Blob | undefined;
+  blob: Blob | null;
 };
 
 const ContextMenuOptions = ({ blob, data }: Props) => {

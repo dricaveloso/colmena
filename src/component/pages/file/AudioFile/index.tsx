@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
 import { listFile } from "@/services/webdav/files";
-import { arrayBufferToBlob, createObjectURL } from "blob-util";
+import { arrayBufferToBlob } from "blob-util";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import Section from "@/components/pages/file/Section";
@@ -21,8 +21,7 @@ type Props = {
 export default function AudioFile({ filename, data }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [loading, setLoading] = useState(false);
-  const [blobURL, setBlobURL] = useState<string>("");
-  const [blob, setBlob] = useState<Blob>();
+  const [blob, setBlob] = useState<Blob | null>(null);
   const { t } = useTranslation("file");
 
   useEffect(() => {
@@ -31,14 +30,17 @@ export default function AudioFile({ filename, data }: Props) {
         setLoading(true);
         const blobResult: any = await listFile(userRdx.user.id, filename);
         const blob = arrayBufferToBlob(blobResult);
-        const audioUrl = createObjectURL(blob);
-        setBlobURL(audioUrl);
         setBlob(blob);
       } catch (e) {
         console.log(e);
       } finally {
         setLoading(false);
       }
+
+      return () => {
+        setBlob(null);
+        setLoading(false);
+      };
     })();
   }, []);
   return (
@@ -59,7 +61,7 @@ export default function AudioFile({ filename, data }: Props) {
           </Box>
         </Box>
       ) : (
-        <AudioWave audioURL={blobURL} data={data} />
+        <AudioWave blob={blob} data={data} />
       )}
     </Section>
   );

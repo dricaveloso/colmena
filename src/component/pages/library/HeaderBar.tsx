@@ -9,6 +9,8 @@ import Breadcrumb from "@/components/ui/Breadcrumb";
 import { AllIconProps } from "@/types/index";
 import TemporaryFiltersDrawer from "./FiltersDrawer";
 import { isRootPath } from "@/utils/directory";
+import { useDispatch } from "react-redux";
+import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 
 const useStyles = makeStyles(() => ({
   breadcrumb: {
@@ -64,6 +66,7 @@ function HeaderBar({
   const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
   const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [breadcrumb, setBreadcrumb] = useState<Array<BreadcrumbItemInterface>>(
     [] as Array<BreadcrumbItemInterface>,
   );
@@ -87,6 +90,7 @@ function HeaderBar({
   }, [path]);
 
   const changeListType = () => {
+    dispatch(setCurrentAudioPlaying(""));
     setIconListType(defineIconListType(listType));
     setListType(listType === ListTypeEnum.LIST ? ListTypeEnum.GRID : ListTypeEnum.LIST);
   };

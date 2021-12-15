@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import theme from "@/styles/theme";
 import { v4 as uuid } from "uuid";
+import { toast } from "@/utils/notifications";
 
 interface WavesurferInterface {
   current: {
@@ -23,11 +24,11 @@ type WaveProps = {
 };
 
 type Props = {
-  audioURL: string;
+  blob: Blob | null;
   config?: WaveProps | undefined;
 };
 
-export default function Waves({ audioURL, config = undefined }: Props) {
+export default function Waves({ blob, config = undefined }: Props) {
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
 
@@ -60,11 +61,15 @@ export default function Waves({ audioURL, config = undefined }: Props) {
 
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
+      wavesurfer?.current.loadBlob(blob);
 
-      wavesurfer?.current.load(audioURL);
-      setTimeout(() => {
+      wavesurfer?.current.on("ready", () => {
         wavesurfer?.current?.play();
-      }, 800);
+      });
+
+      wavesurfer?.current.on("error", (error: string) => {
+        toast(error, "error");
+      });
     } catch (e) {
       // error container element not found
     }
