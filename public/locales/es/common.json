@@ -109,5 +109,6 @@
   "genericErrorMessage": "Unable to perform this action.",
   "passwordRecoveryMessage": "Password recovery email sent successfully.",
   "backToLogin": "Back to login",
-  "noPrivilegesAccessTitle": "No privileges to access."
+  "noPrivilegesAccessTitle": "No privileges to access.",
+  "confirmCancelUpload": "Do you really want to cancel the upload?"
 }

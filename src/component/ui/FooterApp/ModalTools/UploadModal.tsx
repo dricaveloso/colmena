@@ -5,7 +5,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { putFile, getUniqueName } from "@/services/webdav/files";
+import { getUniqueName, chunkFileUpload } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 // import { useSelector, useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import {
   getRandomInt,
   removeFirstSlash,
 } from "@/utils/utils";
+import { v4 as uuid } from "uuid";
 // import { addLibraryFile } from "@/store/actions/library";
 // import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 // import { TimeDescriptionInterface } from "@/interfaces/index";
@@ -24,7 +25,6 @@ import {
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
-import { blobToArrayBuffer } from "blob-util";
 import { useRouter } from "next/router";
 import {
   convertPrivateToUsername,
@@ -32,6 +32,7 @@ import {
   getAudioPath,
   getRootPath,
 } from "@/utils/directory";
+import ActionConfirm from "@/components/ui/ActionConfirm";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -60,6 +61,17 @@ type Props = {
   handleClose: () => void;
 };
 
+enum FileStatusEnum {
+  PENDING = 0,
+  UPLOADING = 1,
+  DONE = 2,
+}
+interface FileInProgressInterface {
+  id: number | string;
+  file: File;
+  status: FileStatusEnum;
+}
+
 export default function Upload({ open, handleClose }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -70,26 +82,63 @@ export default function Upload({ open, handleClose }: Props) {
   const classes = useStyles();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
   const { t } = useTranslation("common");
+  const [filesInProgress, setFilesInProgress] = useState<FileInProgressInterface[]>([]);
   // const timeDescription: TimeDescriptionInterface
   // = t("timeDescription", { returnObjects: true });
   // const dispatch = useDispatch();
 
+  const handledPath = useCallback(() => {
+    const rootPath = getRootPath();
+
+    return !pathExists ||
+      !path ||
+      path === "/" ||
+      convertUsernameToPrivate(path, userId) === getAudioPath()
+      ? convertPrivateToUsername(rootPath, userId)
+      : path;
+  }, [path, pathExists, userId]);
+
   const handleUpload = (event: any) => {
-    processUploadFiles(event.target.files);
+    prepareFiles(event.target.files);
   };
 
-  const processUploadFiles = async (files: FileList) => {
+  const prepareFiles = (files: FileList) => {
+    setIsLoading(true);
+    const newFiles: Array<FileInProgressInterface> = [];
+    // eslint-disable-next-line no-plusplus
+    for (let index = 0; index < files.length; index++) {
+      newFiles.push({
+        id: uuid(),
+        file: files[index],
+        status: FileStatusEnum.PENDING,
+      });
+    }
+
+    setFilesInProgress([...filesInProgress, ...newFiles]);
+    processUploadFiles(newFiles);
+  };
+
+  const processUploadFiles = async (files: FileInProgressInterface[]) => {
     setIsLoading(true);
 
     // eslint-disable-next-line no-plusplus
     for (let index = 0; index < files.length; index++) {
-      const file: File = files[index];
+      const fileInProgress: FileInProgressInterface = files[index];
+      const { file } = fileInProgress;
       try {
         // eslint-disable-next-line no-await-in-loop
-        const content = await blobToArrayBuffer(file);
+        // const content = await blobToArrayBuffer(file);
+        updateFileInProgress(fileInProgress, {
+          status: FileStatusEnum.UPLOADING,
+        });
+
         // eslint-disable-next-line no-await-in-loop
-        await uploadFile(file.name, content);
+        await uploadFile(file);
+        updateFileInProgress(fileInProgress, {
+          status: FileStatusEnum.DONE,
+        });
       } catch (e) {
         let message = "";
         const fileName: string = file.name;
@@ -113,11 +162,11 @@ export default function Upload({ open, handleClose }: Props) {
     router.push(`/library/${removeFirstSlash(handledPath())}`);
   };
 
-  const uploadFile = async (name: string, data: ArrayBuffer) => {
-    const fileName = await handleFileName(name);
+  const uploadFile = async (file: File) => {
+    const fileName = await handleFileName(file.name);
     const finalPath = `${trailingSlash(handledPath())}${fileName}`;
 
-    const create = await putFile(userId, convertUsernameToPrivate(finalPath, userId), data);
+    const create = await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
     if (create) {
       // addFileIntoLibrary(fileName, finalPath);
     }
@@ -136,6 +185,22 @@ export default function Upload({ open, handleClose }: Props) {
     return getUniqueName(userId, convertUsernameToPrivate(handledPath(), userId), finalName);
   };
 
+  const updateFileInProgress = useCallback(
+    (file: FileInProgressInterface, data) => {
+      filesInProgress.map((item) => {
+        if (file.id === item.id) {
+          return {
+            ...file,
+            data,
+          };
+        }
+
+        return item;
+      });
+    },
+    [filesInProgress],
+  );
+
   // const addFileIntoLibrary = (name: string, finalPath: string) => {
   //   const date = new Date();
   //   const item: LibraryItemInterface = {
@@ -152,16 +217,13 @@ export default function Upload({ open, handleClose }: Props) {
   //   dispatch(addLibraryFile(item));
   // };
 
-  const handledPath = useCallback(() => {
-    const rootPath = getRootPath();
-
-    return !pathExists ||
-      !path ||
-      path === "/" ||
-      convertUsernameToPrivate(path, userId) === getAudioPath()
-      ? convertPrivateToUsername(rootPath, userId)
-      : path;
-  }, [path, pathExists, userId]);
+  const confirmClose = useCallback(() => {
+    if (isLoading) {
+      setShowConfirmCancel(true);
+    } else {
+      handleClose();
+    }
+  }, [handleClose, isLoading]);
 
   return (
     <>
@@ -170,7 +232,7 @@ export default function Upload({ open, handleClose }: Props) {
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
-        onClose={handleClose}
+        onClose={confirmClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -220,6 +282,13 @@ export default function Upload({ open, handleClose }: Props) {
           </div>
         </Fade>
       </Modal>
+      {showConfirmCancel && (
+        <ActionConfirm
+          title={t("confirmCancelUpload")}
+          onOk={handleClose}
+          onClose={() => setShowConfirmCancel(false)}
+        />
+      )}
     </>
   );
 }

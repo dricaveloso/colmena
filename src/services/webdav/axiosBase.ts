@@ -2,29 +2,23 @@
 import axios from "axios";
 import { initializeStore } from "@/store/index";
 import getConfig from "next/config";
-import { parseXML, RequestDataPayload } from "webdav";
+import { RequestDataPayload } from "webdav";
 import { removeCornerSlash } from "@/utils/utils";
 
 const { publicRuntimeConfig } = getConfig();
 
-export default async function axiosConnection(
+export default async function axiosBase(
   data: RequestDataPayload | null | {},
-  context = "systemtags",
+  path?: string,
   method = "PROPFIND",
   extraHeaders: {} = { "Content-Type": "application/xml" },
-  rootContext = false,
 ) {
   const { password, id: username } = initializeStore({}).getState().user.user;
-  let path = `${publicRuntimeConfig.api.baseUrl}/remote.php`;
-  if (!rootContext) {
-    path += "/dav";
-  }
 
   const config: any = {
     method,
-    url: `${path}/${removeCornerSlash(context)}`,
+    url: `${publicRuntimeConfig.api.baseUrl}/remote.php/${removeCornerSlash(path)}`,
     headers: {
-      "OCS-APIRequest": true,
       ...extraHeaders,
     },
     auth: {
@@ -34,7 +28,5 @@ export default async function axiosConnection(
     data,
   };
 
-  const resp = await axios(config);
-  const responseData: string = resp.data.toString();
-  return parseXML(responseData);
+  return axios(config);
 }

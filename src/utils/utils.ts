@@ -364,3 +364,7 @@ export function fancyTimeFormat(duration: number) {
   ret += `${secs}`;
   return ret;
 }
+
+export function uniqueId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
