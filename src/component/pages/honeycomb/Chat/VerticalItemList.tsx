@@ -9,7 +9,11 @@ import {
 } from "@/interfaces/talk";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import { getFirstLettersOfTwoFirstNames, getFormattedDistanceDateFromNow } from "@/utils/utils";
+import {
+  getFirstLettersOfTwoFirstNames,
+  getFormattedDistanceDateFromNow,
+  isAudioFile,
+} from "@/utils/utils";
 import theme from "@/styles/theme";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
@@ -17,6 +21,7 @@ import Text from "@/components/ui/Text";
 import { TextVariantEnum, TextColorEnum } from "@/enums/*";
 import { parseCookies, setCookie } from "nookies";
 import { v4 as uuid } from "uuid";
+import Audio from "@/components/pages/honeycomb/Chat/Files/Audio";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -29,7 +34,7 @@ const useStyles = makeStyles(() => ({
     paddingLeft: 12,
     paddingRight: 12,
     paddingTop: 8,
-    paddingBottom: 8,
+    paddingBottom: 5,
     backgroundColor: "#fff",
   },
   description: {
@@ -84,6 +89,30 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
     );
   }
 
+  const prepareCommentWithFile = (
+    message: string,
+    messageParameters: ChatMessageItemMessageParameterInterface | undefined,
+  ): string | React.ReactNode => {
+    if (message !== "{file}") return message;
+
+    const mimetype = messageParameters?.file?.mimetype;
+    if (mimetype && isAudioFile(mimetype)) {
+      if (messageParameters && messageParameters.file) {
+        const { path, size } = messageParameters.file;
+        return <Audio filename={path} size={size} />;
+      }
+    }
+
+    return message;
+  };
+
+  const verifyActorAndSystemMessage = (
+    prevItem: ChatMessageItemInterface | null,
+    actorId: string,
+  ) =>
+    (prevItem && prevItem.actorId !== actorId) ||
+    (prevItem && prevItem.actorId === actorId && prevItem.systemMessage !== "");
+
   if (systemMessage === "")
     return (
       <Box className={classes.card} key={uuid()}>
@@ -93,14 +122,13 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
           className={classes.description}
           primary={
             <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-              {((prevItem && prevItem.actorId !== actorId) ||
-                (prevItem && prevItem.actorId === actorId && prevItem.systemMessage !== "")) && (
+              {verifyActorAndSystemMessage(prevItem, actorId) && (
                 <Box marginRight={1}>{actorDisplayName}</Box>
               )}
               {getDistanceTimeComponent(timestamp)}
             </Box>
           }
-          secondary={message}
+          secondary={prepareCommentWithFile(message, messageParameters)}
           style={{ paddingTop: 0, marginTop: 0 }}
           primaryTypographyProps={{
             style: {

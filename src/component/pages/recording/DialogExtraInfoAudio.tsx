@@ -66,7 +66,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
-    tags: Yup.array(Yup.string()).min(1, t("tagsRequiredTitle")),
+    // tags: Yup.array(Yup.string()).min(1, t("tagsRequiredTitle")),
   });
 
   const initialValues: MyFormValues = {
@@ -90,6 +90,11 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
         console.log("erro ao consultar as tags", e);
       }
     })();
+
+    return () => {
+      setOptionsTag([]);
+      setUploadLocation("");
+    };
   }, []);
 
   function prepareUploadPath() {
@@ -105,8 +110,8 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
 
     if (/^[/]honeycomb/.test(urlOrigin)) {
       const url_ = urlOrigin.split("/");
-      if (urlOrigin.length > 2) {
-        url = url_[url_.length - 1];
+      if (url_.length > 3) {
+        url = decodeURI(url_[url_.length - 1]);
       }
     }
 

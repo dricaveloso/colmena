@@ -24,7 +24,6 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
 
   const _handleStop = () => {
     if (recordingRdx.activeRecordingState === "START") {
-      console.log("chega aqui 3 ?");
       handleStop();
     }
   };

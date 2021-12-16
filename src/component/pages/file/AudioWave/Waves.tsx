@@ -53,24 +53,26 @@ export default function Waves({ blob, config = undefined }: Props) {
         wavesurfer.current.destroy();
       }
     };
-  }, []);
+  }, [blob]);
 
   const create = async () => {
     try {
       const WaveSurfer = (await import("wavesurfer.js")).default;
+      if (blob) {
+        const options = formWaveSurferOptions(waveformRef.current);
+        wavesurfer.current = WaveSurfer.create(options);
+        wavesurfer?.current.loadBlob(blob);
 
-      const options = formWaveSurferOptions(waveformRef.current);
-      wavesurfer.current = WaveSurfer.create(options);
-      wavesurfer?.current.loadBlob(blob);
+        wavesurfer?.current.on("ready", () => {
+          wavesurfer?.current?.play();
+        });
 
-      wavesurfer?.current.on("ready", () => {
-        wavesurfer?.current?.play();
-      });
-
-      wavesurfer?.current.on("error", (error: string) => {
-        toast(error, "error");
-      });
+        wavesurfer?.current.on("error", (error: string) => {
+          toast(error, "error");
+        });
+      }
     } catch (e) {
+      console.log("flamengo", e);
       // error container element not found
     }
   };

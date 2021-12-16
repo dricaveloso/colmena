@@ -20,7 +20,14 @@ import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAu
 import Timer from "@/components/pages/recording/Timer";
 import Divider from "@/components/ui/Divider";
 import { useSelector, useDispatch } from "react-redux";
-import { PropsUserSelector, PropsAudioSave, PropsAudioData, SelectOptionItem } from "@/types/index";
+import {
+  PropsUserSelector,
+  PropsAudioSave,
+  PropsAudioData,
+  SelectOptionItem,
+  PropsConfigSelector,
+  PropsLibrarySelector,
+} from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
 import {
   createFile,
@@ -45,6 +52,7 @@ import Backdrop from "@/components/ui/Backdrop";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { parseCookies } from "nookies";
 import { removeSpecialCharacters } from "@/utils/utils";
+import { shareFileToChat } from "@/services/talk/chat";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -65,6 +73,8 @@ function Recording() {
   const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
   const cookies = parseCookies();
   const language = cookies.NEXT_LOCALE || "en";
+  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
+  const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -149,9 +159,9 @@ function Recording() {
           }
 
           await updateFileLocal(audioId, { nextcloudId: fileId });
+          await createChatMessageFileNotification(filename);
         }
       } catch (e) {
-        console.log("Nao uploadeou online", e);
         toast(c("genericErrorMessage"), "error");
       } finally {
         setShowBackdrop(false);
@@ -173,14 +183,54 @@ function Recording() {
     setOpenContinueRecording(false);
   };
 
-  const finishRecordingHandle = () => {
+  async function createChatMessageFileNotification(path: string) {
+    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    if (/^[/]honeycomb/.test(urlOrigin)) {
+      const url_ = urlOrigin.split("/");
+      if (url_.length === 4) {
+        const token = url_[url_.length - 2];
+        try {
+          await shareFileToChat(token, path);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+  }
+
+  const finishRecordingHandle = async () => {
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
     toast(t("audioSavedSuccessfully"), "success");
+
+    const urlBack = redirectToLastAccessedPage();
     if (amountAudiosRecorded === 1) {
-      router.push(`/file/${filename}`);
+      if (urlBack) router.push(urlBack);
+      else router.push(`/file/${filename}`);
+    } else if (amountAudiosRecorded > 1) {
+      if (urlBack) router.push(urlBack);
     }
   };
+
+  function redirectToLastAccessedPage(): string | null {
+    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+
+    if (/^[/]library/.test(urlOrigin)) {
+      if ((urlOrigin.match(/[/]/g) || []).length > 1) {
+        const path = libraryRdx.currentPath;
+        return convertPrivateToUsername(path, userRdx.user.id).replace(/[/]library[/]/, "");
+      }
+    }
+
+    if (/^[/]honeycomb/.test(urlOrigin)) {
+      const url_ = urlOrigin.split("/");
+      if (url_.length > 3) {
+        return urlOrigin;
+      }
+    }
+
+    return null;
+  }
 
   async function firstSaveAudioHandle(audioData: PropsAudioData) {
     const { blob } = audioData;
