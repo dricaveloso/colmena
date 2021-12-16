@@ -98,8 +98,8 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
     const mimetype = messageParameters?.file?.mimetype;
     if (mimetype && isAudioFile(mimetype)) {
       if (messageParameters && messageParameters.file) {
-        const { path, size } = messageParameters.file;
-        return <Audio filename={path} size={size} />;
+        const { path, name, size } = messageParameters.file;
+        return <Audio filename={path} name={name} size={size} />;
       }
     }
 

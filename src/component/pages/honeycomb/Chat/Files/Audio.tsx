@@ -5,13 +5,22 @@ import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import IconButton from "@/components/ui/IconButton";
 import getBlobDuration from "get-blob-duration";
-import { fancyTimeFormat, formatBytes } from "@/utils/utils";
+import { fancyTimeFormat, formatBytes, removeSpecialCharacters } from "@/utils/utils";
 import { createObjectURL, arrayBufferToBlob } from "blob-util";
 import { findByFilename } from "@/store/idb/models/files";
 import { toast } from "@/utils/notifications";
 import { v4 as uuid } from "uuid";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
+import {
+  createFile as createQuickBlob,
+  findByBasename as findQuickBlobByBasename,
+} from "@/store/idb/models/filesQuickBlob";
+import { listFile } from "@/services/webdav/files";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/*";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { useTranslation } from "next-i18next";
 
 type WaveProps = {
   waveColor?: string;
@@ -27,6 +36,7 @@ type WaveProps = {
 type Props = {
   filename: string;
   size: number;
+  name: string;
   config?: WaveProps | undefined;
 };
 
@@ -37,9 +47,12 @@ interface WavesurferInterface {
   };
 }
 
-export default function Audio({ filename, size, config }: Props) {
+export default function Audio({ filename, size, name, config }: Props) {
+  const { t } = useTranslation("honeycomb");
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState("");
+  const [loadingAudioFile, setLoadingAudioFile] = useState(false);
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
 
@@ -69,7 +82,12 @@ export default function Audio({ filename, size, config }: Props) {
     (async () => {
       try {
         const localFile = await findByFilename(filename);
-        await prepareAudioBlob(localFile?.arrayBufferBlob);
+        const localFileQuickFile = await findQuickBlobByBasename(
+          userRdx.user.id,
+          removeSpecialCharacters(filename),
+        );
+        if (localFile || localFileQuickFile)
+          await prepareAudioBlob(localFileQuickFile?.arrayBufferBlob || localFile?.arrayBufferBlob);
       } catch (e) {
         console.log("aquiiiiiii", e);
       }
@@ -92,10 +110,6 @@ export default function Audio({ filename, size, config }: Props) {
       wavesurfer.current = WaveSurfer.create(options);
       wavesurfer?.current.loadBlob(blob);
 
-      // wavesurfer?.current.on("ready", () => {
-      //   setDuration(fancyTimeFormat(wavesurfer?.current.getDuration()));
-      // });
-
       wavesurfer?.current.on("error", (error: string) => {
         toast(error, "error");
       });
@@ -107,8 +121,24 @@ export default function Audio({ filename, size, config }: Props) {
 
   const handlePlayPause = () => {
     setPlaying(!playing);
-    console.log(wavesurfer?.current.isPlaying());
     wavesurfer?.current.playPause();
+  };
+
+  const downloadAudioFile = async () => {
+    try {
+      setLoadingAudioFile(true);
+      const result: any = await listFile(userRdx.user.id, filename);
+      await createQuickBlob({
+        basename: removeSpecialCharacters(filename),
+        userId: userRdx.user.id,
+        arrayBufferBlob: result,
+      });
+      await prepareAudioBlob(result);
+    } catch (e) {
+      toast(t("downloadAudioFailed"), "error");
+    } finally {
+      setLoadingAudioFile(false);
+    }
   };
 
   return (
@@ -121,20 +151,47 @@ export default function Audio({ filename, size, config }: Props) {
       border={2}
       borderColor="#E0E0E0"
       alignContent="center"
+      minHeight={70}
     >
-      <IconButton
-        icon={playing ? "pause" : "play"}
-        iconStyle={{ fontSize: 36 }}
-        handleClick={handlePlayPause}
-        iconColor={theme.palette.primary.main}
-      />
+      {duration ? (
+        <IconButton
+          icon={playing ? "pause" : "play"}
+          iconStyle={{ fontSize: 36 }}
+          handleClick={handlePlayPause}
+          iconColor={theme.palette.primary.main}
+        />
+      ) : (
+        <IconButton
+          icon="music"
+          iconStyle={{ fontSize: 36 }}
+          iconColor={theme.palette.primary.main}
+        />
+      )}
       <Box display="flex" flex={1} flexDirection="column">
         <div style={{ width: "100%" }} id={`waveform-${uuid()}`} ref={waveformRef} />
-        <Box display="flex" flex={1} justifyContent="space-between">
-          <Text variant={TextVariantEnum.CAPTION}>{duration}</Text>
-          <Text variant={TextVariantEnum.CAPTION}>{formatBytes(size)}</Text>
-        </Box>
+        {duration ? (
+          <Box display="flex" flex={1} justifyContent="space-between">
+            <Text variant={TextVariantEnum.CAPTION}>{duration}</Text>
+            <Text variant={TextVariantEnum.CAPTION}>{formatBytes(size)}</Text>
+          </Box>
+        ) : (
+          <Box display="flex" flex={1} flexDirection="column" justifyContent="center">
+            <Text variant={TextVariantEnum.CAPTION}>{name}</Text>
+            <Text variant={TextVariantEnum.CAPTION}>{formatBytes(size)}</Text>
+          </Box>
+        )}
       </Box>
+      {!duration && !loadingAudioFile && (
+        <IconButton
+          icon="download"
+          iconStyle={{ fontSize: 20 }}
+          handleClick={downloadAudioFile}
+          iconColor={theme.palette.secondary.main}
+        />
+      )}
+      {!duration && loadingAudioFile && (
+        <CircularProgress style={{ marginTop: 10, marginRight: 16 }} size={20} />
+      )}
     </Box>
   );
 }

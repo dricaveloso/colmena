@@ -41,7 +41,11 @@ import { updateRecordingState } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import theme from "@/styles/theme";
-import { convertPrivateToUsername, convertUsernameToPrivate } from "@/utils/directory";
+import {
+  convertPrivateToUsername,
+  convertUsernameToPrivate,
+  exclusivePaths,
+} from "@/utils/directory";
 import {
   putFile as putFileOnline,
   getFileId as getFileOnlineId,
@@ -53,6 +57,7 @@ import { SystemTagsInterface } from "@/interfaces/tags";
 import { parseCookies } from "nookies";
 import { removeSpecialCharacters } from "@/utils/utils";
 import { shareFileToChat } from "@/services/talk/chat";
+import { getUsersConversationsAxios } from "@/services/talk/room";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -185,6 +190,8 @@ function Recording() {
 
   async function createChatMessageFileNotification(path: string) {
     const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    const arr = path.split("/");
+    const isHoneycombPath = arr.length === 2 && !exclusivePaths().includes(arr[0]);
     if (/^[/]honeycomb/.test(urlOrigin)) {
       const url_ = urlOrigin.split("/");
       if (url_.length === 4) {
@@ -194,6 +201,19 @@ function Recording() {
         } catch (e) {
           console.log(e);
         }
+      }
+    }
+    if (isHoneycombPath) {
+      const response = await getUsersConversationsAxios();
+      const rooms = response.data.ocs.data;
+      const token = rooms.find((item) => item.name === arr[0])?.token;
+
+      if (!token) return;
+
+      try {
+        await shareFileToChat(token, path);
+      } catch (e) {
+        console.log(e);
       }
     }
   }

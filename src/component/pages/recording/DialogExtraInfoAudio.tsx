@@ -70,7 +70,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
   });
 
   const initialValues: MyFormValues = {
-    name: "",
+    name: new Date().toISOString(),
     tags: [],
   };
 

@@ -135,7 +135,6 @@ function Honeycomb() {
       back
       title={displayName}
       subtitle={!data ? "..." : prepareParticipantsString(data.ocs.data.length)}
-      showFooter={!showInputMessage}
       drawer={false}
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >

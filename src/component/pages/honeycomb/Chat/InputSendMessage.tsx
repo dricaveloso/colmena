@@ -40,7 +40,7 @@ export default function InputSendMessage({ handleSendMessage }: Props) {
     <Box
       position="fixed"
       flexDirection="row"
-      bottom={0}
+      bottom={42}
       left={0}
       width="98%"
       marginTop={1}
