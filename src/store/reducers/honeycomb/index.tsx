@@ -22,14 +22,14 @@ type initialStateProps = {
   reloadChatLocalMessage: boolean;
 };
 
-const initialStateNew: initialStateProps = {
+const myInitialState: initialStateProps = {
   honeycombs: [],
   chatMessages: [],
   chatMessagesBlockLoad: [],
   reloadChatLocalMessage: false,
 };
 
-const reducer = (state = initialStateNew, action: any) => {
+const reducer = (state = myInitialState, action: any) => {
   switch (action.type) {
     case SET_HONEYCOMBS: {
       let result = action.honeycombs;
@@ -77,7 +77,7 @@ const reducer = (state = initialStateNew, action: any) => {
     case RELOAD_CHAT_LOCAL_MESSAGES:
       return {
         ...state,
-        reloadChatLocalMessage: action.reloadChatLocalMessage,
+        reloadChatLocalMessage: action.reload,
       };
     default:
       return state;

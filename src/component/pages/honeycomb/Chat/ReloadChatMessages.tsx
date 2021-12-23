@@ -20,6 +20,12 @@ export default function ReloadChatMessages({ token }: Props) {
 
   const { data, error } = receiveChatMessages(token, {
     // refreshInterval: 2000,
+    // revalidateIfStale: false,
+    // revalidateOnFocus: false,
+    // revalidateOnReconnect: false,
+    onError: (err: any) => {
+      console.log("onError", err);
+    },
     onSuccess: async (data: ChatMessagesListInterfaceCustom) => {
       const onlineMessages = data.ocs.data;
       if (Array.isArray(onlineMessages)) {
@@ -28,6 +34,10 @@ export default function ReloadChatMessages({ token }: Props) {
         //     item.messageParameters?.file?.name !== conversationName,
         // );
         const syncMessages = await getAllMessages(token);
+
+        console.log(syncMessages.length, onlineMessages.length);
+        console.log(syncMessages, onlineMessages);
+
         if (syncMessages.length === 0) {
           const blockBeginID = onlineMessages[0].id || 1;
           const blockEndID = onlineMessages[onlineMessages.length - 1].id || 1;

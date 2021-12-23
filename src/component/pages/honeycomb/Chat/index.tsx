@@ -6,7 +6,11 @@ import { MemoizedItemList } from "./ItemList";
 import { useSelector } from "react-redux";
 import { PropsHoneycombSelector } from "@/types/*";
 
-export function Chat() {
+type Props = {
+  token: string;
+};
+
+export function Chat({ token }: Props) {
   const honeycombRdx = useSelector(
     (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
   );
@@ -14,9 +18,11 @@ export function Chat() {
 
   return (
     <Box>
-      {chatMessagesBlockLoad.map((item, idx) => (
-        <MemoizedItemList {...item} idxElem={idx} />
-      ))}
+      {chatMessagesBlockLoad
+        .filter((item) => item.token === token)
+        .map((item, idx) => (
+          <MemoizedItemList {...item} idxElem={idx} />
+        ))}
     </Box>
   );
 }

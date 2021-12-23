@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 type Props = {
-  item: ChatMessageItemInterface;
+  item: ChatMessageItemInterface | undefined;
   prevItem: ChatMessageItemInterface | null | undefined;
 };
 
@@ -55,6 +55,8 @@ export const VerticalItemList = ({ item, prevItem }: Props) => {
   const cookies = parseCookies();
   const lang = cookies.NEXT_LOCALE || "en";
   const classes = useStyles();
+
+  if (!item) return null;
 
   const { message, timestamp, actorDisplayName, actorId, systemMessage, id, messageParameters } =
     item;

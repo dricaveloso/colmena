@@ -12,6 +12,10 @@ export function getAllLocalMessages(token) {
   return db.chatLocalMessages.where("token").equals(token).toArray();
 }
 
+export function deleteAllLocalMessages(token) {
+  return db.chatLocalMessages.where("token").equals(token).delete();
+}
+
 export function addAllMessages(file) {
   return db.chatMessages.bulkAdd(file);
 }
@@ -22,6 +26,13 @@ export function deleteAllMessages(token) {
 
 export function getAllMessages(token) {
   return db.chatMessages.where("token").equals(token).toArray();
+}
+
+export function getMessageByRefIDAndToken(token, referenceId) {
+  return db.chatMessages
+    .where({ referenceId })
+    .and((item) => item.token === token)
+    .first();
 }
 
 export function getMessageByIDAndToken(token, id) {

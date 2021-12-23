@@ -8,10 +8,11 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@/components/ui/IconButton";
 import theme from "@/styles/theme";
 import { useDispatch, useSelector } from "react-redux";
-import { ChatLocalMessageItemInterface } from "@/interfaces/talk";
+import { ChatMessageItemInterfaceCustom } from "@/interfaces/talk";
 import { PropsUserSelector } from "@/types/index";
-import { addSingleLocalMessage } from "@/store/idb/models/chat";
-import { reloadChatLocalMessages } from "@/store/actions/honeycomb";
+import { addSingleMessage } from "@/store/idb/models/chat";
+// import { reloadChatLocalMessages } from "@/store/actions/honeycomb";
+import { addBlockIDChatControl } from "@/store/actions/honeycomb/index";
 import { v4 as uuid } from "uuid";
 
 type MyFormValues = {
@@ -57,7 +58,7 @@ export default function InputSendMessage({ handleSendMessage, token }: Props) {
             setSubmitting(true);
             const referenceId = uuid();
             const { message } = values;
-            const messageObj: ChatLocalMessageItemInterface = {
+            const messageObj: ChatMessageItemInterfaceCustom = {
               token,
               actorType: "users",
               actorId: userRdx.user.id,
@@ -68,9 +69,13 @@ export default function InputSendMessage({ handleSendMessage, token }: Props) {
               messageType: "comment",
               referenceId,
             };
-            await addSingleLocalMessage(messageObj);
+            await addSingleMessage(messageObj);
+            // dispatch(addChatMessage(messageObj));
+            dispatch(
+              addBlockIDChatControl({ blockBeginID: referenceId, blockEndID: referenceId, token }),
+            );
             await handleSendMessage(message, referenceId);
-            dispatch(reloadChatLocalMessages(true));
+            // dispatch(reloadChatLocalMessages(true));
             setSubmitting(false);
           })();
           resetForm();
