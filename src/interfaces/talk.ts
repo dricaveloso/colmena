@@ -1,5 +1,10 @@
 import { OCSMetaDefaultInterface, SWRDefaultOptionsInterface } from "./ocs";
 
+export interface MessageBlockLoadInterface {
+  blockBeginID: number;
+  blockEndID: number;
+  token: string;
+}
 export interface RoomItemInterface {
   id: number;
   token: string;
@@ -150,7 +155,7 @@ export interface ChatMessageItemMessageParameterInterface {
 }
 
 export interface ChatMessageItemInterface {
-  id?: number;
+  id: number;
   token?: string;
   actorType: string;
   actorId: string;
@@ -163,12 +168,32 @@ export interface ChatMessageItemInterface {
   isReplyable?: boolean;
   referenceId?: string;
 }
+
+export interface ChatLocalMessageItemInterface {
+  id?: number;
+  token?: string;
+  actorType: string;
+  actorId: string;
+  actorDisplayName: string;
+  timestamp: number;
+  message: string;
+  systemMessage: string;
+  messageType: string;
+  referenceId?: string;
+}
+
 export interface ChatMessagesListInterface extends SWRDefaultOptionsInterface {
   data: {
     ocs: {
       meta: OCSMetaDefaultInterface;
       data: ChatMessageItemInterface[];
     };
+  };
+}
+export interface ChatMessagesListInterfaceCustom extends SWRDefaultOptionsInterface {
+  ocs: {
+    meta: OCSMetaDefaultInterface;
+    data: ChatMessageItemInterface[];
   };
 }
 export interface CreateNewConversationInterface extends SWRDefaultOptionsInterface {

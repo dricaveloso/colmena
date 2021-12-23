@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import IconButton from "@/components/ui/IconButton";
@@ -9,7 +9,6 @@ import { fancyTimeFormat, formatBytes, removeSpecialCharacters } from "@/utils/u
 import { createObjectURL, arrayBufferToBlob } from "blob-util";
 import { findByFilename } from "@/store/idb/models/files";
 import { toast } from "@/utils/notifications";
-import { v4 as uuid } from "uuid";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
 import {
@@ -47,7 +46,7 @@ interface WavesurferInterface {
   };
 }
 
-export default function Audio({ filename, size, name, config }: Props) {
+export function Audio({ filename, size, name, config }: Props) {
   const { t } = useTranslation("honeycomb");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [playing, setPlaying] = useState(false);
@@ -151,7 +150,7 @@ export default function Audio({ filename, size, name, config }: Props) {
       border={2}
       borderColor="#E0E0E0"
       alignContent="center"
-      minHeight={70}
+      height={70}
     >
       {duration ? (
         <IconButton
@@ -168,7 +167,7 @@ export default function Audio({ filename, size, name, config }: Props) {
         />
       )}
       <Box display="flex" flex={1} flexDirection="column">
-        <div style={{ width: "100%" }} id={`waveform-${uuid()}`} ref={waveformRef} />
+        <div style={{ width: "100%" }} id={`waveform-${btoa(filename)}`} ref={waveformRef} />
         {duration ? (
           <Box display="flex" flex={1} justifyContent="space-between">
             <Text variant={TextVariantEnum.CAPTION}>{duration}</Text>
@@ -195,3 +194,5 @@ export default function Audio({ filename, size, name, config }: Props) {
     </Box>
   );
 }
+
+export const MemoizedAudio = React.memo(Audio);

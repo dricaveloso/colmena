@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/jsx-no-bind */
 import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "next-i18next";
@@ -14,9 +16,10 @@ import theme from "@/styles/theme";
 import IconButton from "@/components/ui/IconButton";
 import AppBar from "@material-ui/core/AppBar";
 import InputSendMessage from "@/components/pages/honeycomb/Chat/InputSendMessage";
-import ChatMessage from "@/components/pages/honeycomb/Chat";
+import { MemoizedChat } from "@/components/pages/honeycomb/Chat";
+import ReloadChatMessages from "@/components/pages/honeycomb/Chat/ReloadChatMessages";
+import Subtitle from "@/components/pages/honeycomb/Subtitle";
 import { sendChatMessage } from "@/services/talk/chat";
-import { getRoomParticipants } from "@/services/talk/room";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
@@ -39,34 +42,8 @@ interface TabPanelProps {
 
 function Honeycomb() {
   const { t } = useTranslation("honeycomb");
-
   const router = useRouter();
   const { params } = router.query;
-  // const [scrollPosition, setScrollPosition] = useState(0);
-  // const [tabFixedHeader, setTabFixedHeader] = useState({});
-
-  // asljkd aslkdj slakdj slakdj laskdj slakdj
-
-  // function handleScroll() {
-  //   const position = window.pageYOffset;
-  //   if (position >= 100) {
-  //     setTabFixedHeader({
-  //       position: "fixed",
-  //       left: 0,
-  //       top: 100,
-  //     });
-  //   } else setTabFixedHeader({});
-
-  //   setScrollPosition(position);
-  // }
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll, { passive: true });
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
 
   const [value, setValue] = useState(0);
   const [showInputMessage, setShowInputMessage] = useState(true);
@@ -112,29 +89,15 @@ function Honeycomb() {
   const token = params[0];
   const displayName = params[1];
 
-  const { data } = getRoomParticipants(token, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
-
-  function prepareParticipantsString(qty: number) {
-    if (qty === 0) return t("noMemberTitle");
-
-    if (qty === 1) return `1 ${t("member")}`;
-
-    return `${qty} ${t("members")}`;
-  }
-
-  async function sendMessageAPI(message: string) {
-    await sendChatMessage(token, message);
+  async function sendMessageAPI(message: string, referenceId: string) {
+    await sendChatMessage(token, message, referenceId);
   }
 
   return (
     <LayoutApp
       back
       title={displayName}
-      subtitle={!data ? "..." : prepareParticipantsString(data.ocs.data.length)}
+      subtitle={<Subtitle token={token} />}
       drawer={false}
       extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
     >
@@ -186,12 +149,13 @@ function Honeycomb() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0}>
-              <ChatMessage conversationName={displayName} token={token} />
+              <ReloadChatMessages token={token} />
+              <MemoizedChat />
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>
           </SwipeableViews>
           {showInputMessage && (
-            <InputSendMessage handleSendMessage={(message: string) => sendMessageAPI(message)} />
+            <InputSendMessage token={token} handleSendMessage={sendMessageAPI} />
           )}
         </Box>
       </FlexBox>

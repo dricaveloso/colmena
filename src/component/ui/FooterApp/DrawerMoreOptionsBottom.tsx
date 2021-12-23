@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from "react";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { useRouter } from "next/router";
@@ -28,7 +29,10 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
   const [openNewHoneycombModal, setOpenNewHoneycombModal] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const group =
-    Array.isArray(userRdx.user.media?.groups) && userRdx.user.media?.groups[0]
+    userRdx.user &&
+    userRdx.user.media &&
+    Array.isArray(userRdx.user.media?.groups) &&
+    userRdx.user.media?.groups[0]
       ? userRdx.user.media?.groups[0]
       : "";
 

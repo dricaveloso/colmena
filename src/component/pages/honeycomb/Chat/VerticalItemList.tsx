@@ -1,6 +1,7 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import {
@@ -20,8 +21,7 @@ import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum, TextColorEnum } from "@/enums/*";
 import { parseCookies, setCookie } from "nookies";
-import { v4 as uuid } from "uuid";
-import Audio from "@/components/pages/honeycomb/Chat/Files/Audio";
+import { MemoizedAudio } from "@/components/pages/honeycomb/Chat/Files/Audio";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -48,14 +48,16 @@ const useStyles = makeStyles(() => ({
 
 type Props = {
   item: ChatMessageItemInterface;
-  prevItem: ChatMessageItemInterface | null;
+  prevItem: ChatMessageItemInterface | null | undefined;
 };
 
-const VerticalItemList = ({ item, prevItem }: Props) => {
+export const VerticalItemList = ({ item, prevItem }: Props) => {
   const cookies = parseCookies();
   const lang = cookies.NEXT_LOCALE || "en";
   const classes = useStyles();
-  const { message, timestamp, actorDisplayName, actorId, systemMessage, messageParameters } = item;
+
+  const { message, timestamp, actorDisplayName, actorId, systemMessage, id, messageParameters } =
+    item;
 
   function getAvatarComponent(actorDisplayName: string, justifyContent = "flex-start") {
     if (
@@ -63,19 +65,13 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
       prevItem?.systemMessage !== ""
     )
       return (
-        <ListItemAvatar
-          key={uuid()}
-          style={{ width: 30, height: 30, display: "flex", justifyContent }}
-        >
+        <ListItemAvatar key={id} style={{ width: 30, height: 30, display: "flex", justifyContent }}>
           <Avatar>{getFirstLettersOfTwoFirstNames(actorDisplayName)}</Avatar>
         </ListItemAvatar>
       );
 
     return (
-      <ListItemAvatar
-        key={uuid()}
-        style={{ width: 30, height: 30, display: "flex", justifyContent }}
-      >
+      <ListItemAvatar key={id} style={{ width: 30, height: 30, display: "flex", justifyContent }}>
         <span></span>
       </ListItemAvatar>
     );
@@ -99,7 +95,7 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
     if (mimetype && isAudioFile(mimetype)) {
       if (messageParameters && messageParameters.file) {
         const { path, name, size } = messageParameters.file;
-        return <Audio filename={path} name={name} size={size} />;
+        return <MemoizedAudio filename={path} name={name} size={size} />;
       }
     }
 
@@ -107,7 +103,7 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
   };
 
   const verifyActorAndSystemMessage = (
-    prevItem: ChatMessageItemInterface | null,
+    prevItem: ChatMessageItemInterface | null | undefined,
     actorId: string,
   ) =>
     (prevItem && prevItem.actorId !== actorId) ||
@@ -115,7 +111,7 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
 
   if (systemMessage === "")
     return (
-      <Box className={classes.card} key={uuid()}>
+      <Box className={classes.card} key={id}>
         {getAvatarComponent(actorDisplayName, "flex-start")}
         <ListItemText
           data-testid="title"
@@ -148,11 +144,11 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
   ) {
     const arr = message.split(" ");
     const messageArr: React.ReactNode[] = [];
-    arr.forEach((item) => {
+    arr.forEach((item, idx) => {
       if (item === "{user}" || item === "{actor}")
         messageArr.push(
           <Chip
-            key={uuid()}
+            key={`chip${id}`}
             size="small"
             style={{ fontSize: 12 }}
             avatar={
@@ -169,7 +165,7 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
         );
       else
         messageArr.push(
-          <span key={uuid()} style={{ marginLeft: 2, marginRight: 2, fontSize: 12 }}>
+          <span key={`span${id}${idx}`} style={{ marginLeft: 2, marginRight: 2, fontSize: 12 }}>
             {item}
           </span>,
         );
@@ -201,4 +197,4 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
   );
 };
 
-export default VerticalItemList;
+export const MemoizedVerticalItemList = React.memo(VerticalItemList);

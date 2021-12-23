@@ -5,8 +5,15 @@ import {
   REMOVE_HONEYCOMB,
   SET_CHAT_LIST,
   ADD_CHAT_MESSAGE,
+  ADD_BLOCK_ID_CHAT_CONTROL,
+  REMOVE_BLOCK_ID_CHAT_CONTROL_BY_TOKEN,
+  RELOAD_CHAT_LOCAL_MESSAGES,
 } from "@/store/actions/index";
-import { RoomItemInterface, ChatMessageItemInterface } from "@/interfaces/talk";
+import {
+  RoomItemInterface,
+  ChatMessageItemInterface,
+  MessageBlockLoadInterface,
+} from "@/interfaces/talk";
 
 export const setHoneycombs = (honeycombs: Array<RoomItemInterface>) => ({
   type: SET_HONEYCOMBS,
@@ -36,4 +43,19 @@ export const setChatList = (chatMessages: Array<ChatMessageItemInterface>) => ({
 export const addChatMessage = (message: ChatMessageItemInterface) => ({
   type: ADD_CHAT_MESSAGE,
   message,
+});
+
+export const addBlockIDChatControl = (blockIdControl: MessageBlockLoadInterface) => ({
+  type: ADD_BLOCK_ID_CHAT_CONTROL,
+  blockIdControl,
+});
+
+export const removeBlockIDChatControlByToken = (token: string) => ({
+  type: REMOVE_BLOCK_ID_CHAT_CONTROL_BY_TOKEN,
+  token,
+});
+
+export const reloadChatLocalMessages = (reload: boolean) => ({
+  type: RELOAD_CHAT_LOCAL_MESSAGES,
+  reload,
 });

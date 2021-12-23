@@ -14,9 +14,11 @@ export function receiveChatMessages(token: string, options?: {}): ChatMessagesLi
 export function sendChatMessage(
   token: string,
   message: string,
+  referenceId: string,
 ): Promise<ChatMessagesCreateInterface> {
   return talkInstance("v1").post(`chat/${token}${responseFormat}`, {
     message,
+    referenceId,
   });
 }
 

@@ -8,22 +8,22 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@/components/ui/IconButton";
 import theme from "@/styles/theme";
 import { useDispatch, useSelector } from "react-redux";
-import { addChatMessage } from "@/store/actions/honeycomb";
-import { ChatMessageItemInterface } from "@/interfaces/talk";
+import { ChatLocalMessageItemInterface } from "@/interfaces/talk";
 import { PropsUserSelector } from "@/types/index";
-// import NotificationContext from "@/store/context/notification-context";
-// import { NotificationStatusEnum } from "@/enums/*";
+import { addSingleLocalMessage } from "@/store/idb/models/chat";
+import { reloadChatLocalMessages } from "@/store/actions/honeycomb";
+import { v4 as uuid } from "uuid";
 
 type MyFormValues = {
   message: string;
 };
 
 type Props = {
-  handleSendMessage: (message: string) => void;
+  token: string;
+  handleSendMessage: (message: string, referenceId: string) => void;
 };
 
-export default function InputSendMessage({ handleSendMessage }: Props) {
-  // const notificationCtx = useContext(NotificationContext);
+export default function InputSendMessage({ handleSendMessage, token }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
@@ -53,28 +53,27 @@ export default function InputSendMessage({ handleSendMessage }: Props) {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting, resetForm }: any) => {
-          setSubmitting(true);
-          const { message } = values;
           (async () => {
-            try {
-              const messageObj: ChatMessageItemInterface = {
-                actorType: "users",
-                actorId: userRdx.user.id,
-                actorDisplayName: userRdx.user.name,
-                timestamp: new Date().getTime() / 1000,
-                message,
-                systemMessage: "",
-                messageType: "comment",
-              };
-              dispatch(addChatMessage(messageObj));
-              handleSendMessage(message);
-            } catch (e) {
-              console.log(e);
-            } finally {
-              setSubmitting(false);
-              resetForm();
-            }
+            setSubmitting(true);
+            const referenceId = uuid();
+            const { message } = values;
+            const messageObj: ChatLocalMessageItemInterface = {
+              token,
+              actorType: "users",
+              actorId: userRdx.user.id,
+              actorDisplayName: userRdx.user.name,
+              timestamp: new Date().getTime() / 1000,
+              message,
+              systemMessage: "",
+              messageType: "comment",
+              referenceId,
+            };
+            await addSingleLocalMessage(messageObj);
+            await handleSendMessage(message, referenceId);
+            dispatch(reloadChatLocalMessages(true));
+            setSubmitting(false);
           })();
+          resetForm();
         }}
       >
         {({ submitForm, isSubmitting }: any) => (
