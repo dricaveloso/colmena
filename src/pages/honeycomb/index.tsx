@@ -12,6 +12,7 @@ import FileListSkeleton from "@/components/ui/skeleton/FileList";
 import { setHoneycombs } from "@/store/actions/honeycomb/index";
 import { useDispatch } from "react-redux";
 import AlertInfoCenter from "@/components/ui/AlertInfoCenter";
+import { RoomItemInterface } from "@/interfaces/talk";
 // import Tabs from "@material-ui/core/Tabs";
 // import Tab from "@material-ui/core/Tab";
 // import SwipeableViews from "react-swipeable-views";
@@ -23,6 +24,14 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
     ...(await serverSideTranslations(locale, ["honeycomb"])),
   },
 });
+
+const filterHoneycombs = (honeycombs: RoomItemInterface[]) => {
+  if (!honeycombs) {
+    return honeycombs;
+  }
+
+  return honeycombs.filter((honeycomb: RoomItemInterface) => honeycomb.type !== 4);
+};
 
 export default function Honeycomb() {
   const dispatch = useDispatch();
@@ -46,7 +55,8 @@ export default function Honeycomb() {
       </LayoutWrapper>
     );
 
-  dispatch(setHoneycombs(data.ocs.data));
+  const honeycombs: RoomItemInterface[] = filterHoneycombs(data.ocs.data);
+  dispatch(setHoneycombs(honeycombs));
 
   return (
     <LayoutWrapper>

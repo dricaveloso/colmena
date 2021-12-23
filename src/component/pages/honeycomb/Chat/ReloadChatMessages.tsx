@@ -35,9 +35,6 @@ export default function ReloadChatMessages({ token }: Props) {
         // );
         const syncMessages = await getAllMessages(token);
 
-        console.log(syncMessages.length, onlineMessages.length);
-        console.log(syncMessages, onlineMessages);
-
         if (syncMessages.length === 0) {
           const blockBeginID = onlineMessages[0].id || 1;
           const blockEndID = onlineMessages[onlineMessages.length - 1].id || 1;
