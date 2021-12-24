@@ -6,6 +6,7 @@ import MuiDialogContent from "@material-ui/core/DialogContent";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
+import DialogActions from "@material-ui/core/DialogActions";
 
 const styles: any = (theme: any) => ({
   root: {
@@ -44,17 +45,25 @@ type Props = {
   open: boolean;
   handleClose: () => void;
   children: React.ReactNode;
+  actions?: React.ReactNode;
 };
 
-function Modal({ title, open, handleClose, children }: Props) {
+function Modal({ title, open, handleClose, children, actions }: Props) {
   return (
-    <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+    <Dialog
+      onClose={handleClose}
+      aria-labelledby="customized-dialog-title"
+      open={open}
+      fullWidth
+      maxWidth="xs"
+    >
       {title && (
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           {title}
         </DialogTitle>
       )}
       <DialogContent dividers>{children}</DialogContent>
+      {actions && <DialogActions>{actions}</DialogActions>}
     </Dialog>
   );
 }
