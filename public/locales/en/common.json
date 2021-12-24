@@ -71,7 +71,8 @@
       "name": "Name",
       "local": "Local",
       "create": "Create",
-      "upload": "Upload"
+      "upload": "Upload",
+      "location": "Location"
   },
   "messages": {
     "loginFailedTitle": "Incorrect username or password.",
@@ -115,6 +116,8 @@
   "genericErrorMessage": "Unable to perform this action.",
   "passwordRecoveryMessage": "Password recovery email sent successfully.",
   "backToLogin": "Back to login",
+  "changeLocationModalTitle": "Choose the new location",
+  "changeLocationButton": "Change",
   "noPrivilegesAccessTitle": "No privileges to access.",
   "confirmCancelUpload": "Do you really want to cancel the upload?"
 }
