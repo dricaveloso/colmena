@@ -2,15 +2,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import Box from "@material-ui/core/Box";
-import { MemoizedItemList } from "./ItemList";
+import { MemoizedChatList } from "./ChatList";
 import { useSelector } from "react-redux";
 import { PropsHoneycombSelector } from "@/types/*";
 
 type Props = {
   token: string;
+  conversationName: string;
 };
 
-export function Chat({ token }: Props) {
+export function Chat({ token, conversationName }: Props) {
   const honeycombRdx = useSelector(
     (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
   );
@@ -18,11 +19,12 @@ export function Chat({ token }: Props) {
 
   return (
     <Box>
-      {chatMessagesBlockLoad
-        .filter((item) => item.token === token)
-        .map((item, idx) => (
-          <MemoizedItemList {...item} idxElem={idx} />
-        ))}
+      {Array.isArray(chatMessagesBlockLoad) &&
+        chatMessagesBlockLoad
+          .filter((item) => item.token === token)
+          .map((item, idx) => (
+            <MemoizedChatList {...item} conversationName={conversationName} idxElem={idx} />
+          ))}
     </Box>
   );
 }

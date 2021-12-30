@@ -150,7 +150,7 @@ function Honeycomb() {
           >
             <TabPanel value={value} index={0}>
               <ReloadChatMessages token={token} />
-              <MemoizedChat token={token} />
+              <MemoizedChat token={token} conversationName={displayName} />
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>
           </SwipeableViews>

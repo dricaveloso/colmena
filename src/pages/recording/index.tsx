@@ -14,6 +14,7 @@ import {
   JustifyContentEnum,
   EnvironmentEnum,
   DefaultAudioTypeEnum,
+  DirectoryNamesNCEnum,
 } from "@/enums/index";
 import AudioRecorder from "@/components/pages/recording/AudioRecorder";
 import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAudio";
@@ -41,11 +42,7 @@ import { updateRecordingState } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import theme from "@/styles/theme";
-import {
-  convertPrivateToUsername,
-  convertUsernameToPrivate,
-  exclusivePaths,
-} from "@/utils/directory";
+import { convertPrivateToUsername, convertUsernameToPrivate } from "@/utils/directory";
 import {
   putFile as putFileOnline,
   getFileId as getFileOnlineId,
@@ -56,8 +53,8 @@ import Backdrop from "@/components/ui/Backdrop";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { parseCookies } from "nookies";
 import { removeSpecialCharacters } from "@/utils/utils";
-import { shareFileToChat } from "@/services/talk/chat";
-import { getUsersConversationsAxios } from "@/services/talk/room";
+import { createShare } from "@/services/share/share";
+import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -80,6 +77,7 @@ function Recording() {
   const language = cookies.NEXT_LOCALE || "en";
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -108,6 +106,7 @@ function Recording() {
         path,
         userRdx.user.id,
       )}/${removeSpecialCharacters(title)}.${defaultAudioType}`;
+      const pathVer = convertUsernameToPrivate(path, userRdx.user.id);
 
       const recording = {
         title,
@@ -126,12 +125,22 @@ function Recording() {
         setShowBackdrop(true);
 
         if (navigator.onLine) {
-          await putFileOnline(userRdx.user.id, filename, localFile.arrayBufferBlob);
-          const fileId = await getFileOnlineId(userRdx.user.id, filename);
+          const tokenChat = await findTokenChatByPath(pathVer);
+          let talkDir = "";
+          if (tokenChat && typeof tokenChat === "string") {
+            const canDelete = await verifyDeleteAccessFromUserOnChat(tokenChat);
+            if (!canDelete) {
+              talkDir = `${DirectoryNamesNCEnum.TALK}/`;
+            }
+          }
+          const filenameWithTalkDir = `${talkDir}${filename}`;
+
+          await putFileOnline(userRdx.user.id, `${filenameWithTalkDir}`, localFile.arrayBufferBlob);
+          const fileId = await getFileOnlineId(userRdx.user.id, `${filenameWithTalkDir}`);
 
           await setDataFile(
             { customtitle: title, language },
-            `${path}/${title}.${defaultAudioType}`,
+            `${talkDir}${path}/${title}.${defaultAudioType}`,
           );
 
           const res = await listTags();
@@ -160,13 +169,17 @@ function Recording() {
           if (!availableOffline) {
             await removeLocalFile(audioId, userRdx.user.id);
           } else {
-            await updateFileLocal(audioId, { environment: EnvironmentEnum.BOTH });
+            await updateFileLocal(audioId, {
+              filename: filenameWithTalkDir,
+              environment: EnvironmentEnum.BOTH,
+            });
           }
 
           await updateFileLocal(audioId, { nextcloudId: fileId });
-          await createChatMessageFileNotification(filename);
+          await createChatMessageFileNotification(filenameWithTalkDir, tokenChat);
         }
       } catch (e) {
+        console.log("opa", e);
         toast(c("genericErrorMessage"), "error");
       } finally {
         setShowBackdrop(false);
@@ -175,7 +188,7 @@ function Recording() {
       setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
       setOpenContinueRecording(true);
     } catch (e) {
-      console.log(e);
+      console.log("opa2", e);
       toast(t("errorStorageMessage"), "error");
     } finally {
       setOpenDialogAudioName(false);
@@ -188,33 +201,33 @@ function Recording() {
     setOpenContinueRecording(false);
   };
 
-  async function createChatMessageFileNotification(path: string) {
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+  async function findTokenChatByPath(path: string): Promise<string | boolean> {
     const arr = path.split("/");
-    const isHoneycombPath = arr.length === 2 && !exclusivePaths().includes(arr[0]);
-    if (/^[/]honeycomb/.test(urlOrigin)) {
-      const url_ = urlOrigin.split("/");
-      if (url_.length === 4) {
-        const token = url_[url_.length - 2];
-        try {
-          await shareFileToChat(token, path);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    }
-    if (isHoneycombPath) {
-      const response = await getUsersConversationsAxios();
-      const rooms = response.data.ocs.data;
-      const token = rooms.find((item) => item.name === arr[0])?.token;
+    const tokenName = arr[0];
+    const response = await getUsersConversationsAxios();
+    const rooms = response.data.ocs.data;
+    const token = rooms.find((item) => item.name === tokenName)?.token;
 
-      if (!token) return;
+    if (!token) return false;
 
-      try {
-        await shareFileToChat(token, path);
-      } catch (e) {
-        console.log(e);
-      }
+    return token;
+  }
+
+  async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
+    const response = await getSingleConversationAxios(token);
+    const { data } = response.data.ocs;
+
+    return data.canDeleteConversation;
+  }
+
+  async function createChatMessageFileNotification(path: string, token: boolean | string) {
+    if (!token || typeof token !== "string") return;
+
+    try {
+      await createShare(token, path);
+      return;
+    } catch (e) {
+      console.log("aqui 2", e);
     }
   }
 

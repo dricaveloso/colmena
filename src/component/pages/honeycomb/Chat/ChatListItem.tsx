@@ -51,7 +51,7 @@ type Props = {
   prevItem: ChatMessageItemInterface | null | undefined;
 };
 
-export const VerticalItemList = ({ item, prevItem }: Props) => {
+export const ChatListItem = ({ item, prevItem }: Props) => {
   const cookies = parseCookies();
   const lang = cookies.NEXT_LOCALE || "en";
   const classes = useStyles();
@@ -104,12 +104,12 @@ export const VerticalItemList = ({ item, prevItem }: Props) => {
     return message;
   };
 
-  const verifyActorAndSystemMessage = (
-    prevItem: ChatMessageItemInterface | null | undefined,
-    actorId: string,
-  ) =>
-    (prevItem && prevItem.actorId !== actorId) ||
-    (prevItem && prevItem.actorId === actorId && prevItem.systemMessage !== "");
+  // const verifyActorAndSystemMessage = (
+  //   prevItem: ChatMessageItemInterface | null | undefined,
+  //   actorId: string,
+  // ) =>
+  //   (prevItem && prevItem.actorId !== actorId) ||
+  //   (prevItem && prevItem.actorId === actorId && prevItem.systemMessage !== "");
 
   if (systemMessage === "")
     return (
@@ -120,9 +120,9 @@ export const VerticalItemList = ({ item, prevItem }: Props) => {
           className={classes.description}
           primary={
             <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-              {verifyActorAndSystemMessage(prevItem, actorId) && (
-                <Box marginRight={1}>{actorDisplayName}</Box>
-              )}
+              {/* {verifyActorAndSystemMessage(prevItem, actorId) && ( */}
+              <Box marginRight={1}>{actorDisplayName}</Box>
+              {/* )} */}
               {getDistanceTimeComponent(timestamp)}
             </Box>
           }
@@ -199,4 +199,4 @@ export const VerticalItemList = ({ item, prevItem }: Props) => {
   );
 };
 
-export const MemoizedVerticalItemList = React.memo(VerticalItemList);
+export const MemoizedChatListItem = React.memo(ChatListItem);

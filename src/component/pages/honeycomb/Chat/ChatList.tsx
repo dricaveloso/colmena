@@ -1,9 +1,11 @@
+/* eslint-disable indent */
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { ChatMessageItemInterface, ChatMessageItemInterfaceCustom } from "@/interfaces/talk";
-import { MemoizedVerticalItemList } from "./VerticalItemList";
+import { MemoizedChatListItem } from "./ChatListItem";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core";
@@ -33,10 +35,11 @@ type Props = {
   blockBeginID: number | string;
   blockEndID: number | string;
   token: string;
+  conversationName: string;
   idxElem: number;
 };
 
-export function ItemList({ blockBeginID, blockEndID, token, idxElem }: Props) {
+export function ChatList({ blockBeginID, blockEndID, token, idxElem, conversationName }: Props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const footerRef = useRef<HTMLDivElement | null>(null);
@@ -49,7 +52,6 @@ export function ItemList({ blockBeginID, blockEndID, token, idxElem }: Props) {
     chatMessagesBlockLoad.filter((item) => item.token === token).length - 1 === idxElem;
 
   const [data, setData] = useState([]);
-  // const [localData, setLocalData] = useState([]);
   const [allData, setAllData] = useState([]);
 
   const scrollDownAutomatically = useCallback(() => {
@@ -71,7 +73,9 @@ export function ItemList({ blockBeginID, blockEndID, token, idxElem }: Props) {
         data = [res];
       }
 
-      // data = data.concat(chatMessages);
+      data = data.filter(
+        (item: ChatMessageItemInterface) => item.messageParameters?.file?.name !== conversationName,
+      );
 
       const allData = await getAllMessages(token);
       if (idxElem !== 0 && blockBeginID !== blockEndID) {
@@ -87,28 +91,17 @@ export function ItemList({ blockBeginID, blockEndID, token, idxElem }: Props) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (reloadChatLocalMessage) {
-  //       console.log("entrou aqui");
-  //       const res = await getAllLocalMessages(token);
-  //       console.log(res);
-  //       dispatch(reloadChatLocalMessages(false));
-  //       setLocalData(res);
-  //     }
-  //   })();
-  // }, [reloadChatLocalMessage]);
-
   return (
     <List ref={listRef} className={classes.list}>
       {data.length > 0 &&
         data.map((item: ChatMessageItemInterface, idx: number) => (
           // eslint-disable-next-line react/no-array-index-key
           <ListItem key={idx} disableGutters className={classes.verticalList}>
-            <MemoizedVerticalItemList
-              // prevItem={allData.find(
-              //   (item2: ChatMessageItemInterfaceCustom) => item2.id === item.id - 1,
-              // )}
+            <MemoizedChatListItem
+              // prevItem={allData[allData.findIndex(
+              //   (item2: ChatMessageItemInterfaceCustom) =>
+              //     item2.id === item.id || item2.referenceId === item.referenceId,
+              // ) - 1] || null}
               prevItem={null}
               item={item}
             />
@@ -123,4 +116,4 @@ export function ItemList({ blockBeginID, blockEndID, token, idxElem }: Props) {
   );
 }
 
-export const MemoizedItemList = React.memo(ItemList);
+export const MemoizedChatList = React.memo(ChatList);

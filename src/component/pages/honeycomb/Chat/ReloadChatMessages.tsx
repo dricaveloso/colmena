@@ -28,13 +28,8 @@ export default function ReloadChatMessages({ token }: Props) {
     },
     onSuccess: async (data: ChatMessagesListInterfaceCustom) => {
       const onlineMessages = data.ocs.data;
-      if (Array.isArray(onlineMessages)) {
-        // const messages = data?.ocs?.data.filter(
-        //   (item: ChatMessageItemInterface) =>
-        //     item.messageParameters?.file?.name !== conversationName,
-        // );
+      if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
         const syncMessages = await getAllMessages(token);
-
         if (syncMessages.length === 0) {
           const blockBeginID = onlineMessages[0].id || 1;
           const blockEndID = onlineMessages[onlineMessages.length - 1].id || 1;
@@ -45,6 +40,7 @@ export default function ReloadChatMessages({ token }: Props) {
           const difference = onlineMessages.length - syncMessages.length;
 
           const arrDiffMessages = onlineMessages.slice(-difference);
+          console.log(arrDiffMessages);
           await addAllMessages(arrDiffMessages);
 
           const blockBeginID = arrDiffMessages[0].id || 1;

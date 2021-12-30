@@ -34,6 +34,10 @@ export function getSingleConversation(token: string): RoomInterface {
   return useTalkFetch(version)(`/room/${token + responseFormat}`);
 }
 
+export function getSingleConversationAxios(token: string): Promise<RoomInterface> {
+  return talkInstance(version).get(`/room/${token + responseFormat}`);
+}
+
 export function getRoomParticipants(token: string, options?: {}): RoomParticipantsInterface {
   return useTalkFetch(version)(`/room/${token}/participants${responseFormat}`, {}, options);
 }

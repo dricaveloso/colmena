@@ -26,7 +26,7 @@ import { createDirectory, existDirectory } from "@/services/webdav/directories";
 import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { dateDescription } from "@/utils/utils";
-import { createNewShare } from "@/services/share/share";
+import { createShare } from "@/services/share/share";
 import Text from "@/components/ui/Text";
 
 const useStyles = makeStyles((theme) => ({
@@ -154,7 +154,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                         createdAtDescription: dateDescription(date, timeDescription),
                       };
                       dispatch(addLibraryFile(item));
-                      await createNewShare(folderName, token);
+                      await createShare(token, folderName);
                     }
 
                     handleClose();

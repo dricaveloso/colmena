@@ -4,11 +4,14 @@ import shareInstance from "@/services/share";
 
 const responseFormat = "?format=json";
 
-export function createNewShare(
-  folderName: string,
-  tokenConversation: string,
+export function createShare(
+  shareWith: string,
+  path: string,
+  shareType = 10,
 ): Promise<ShareCreateInterface> {
-  return shareInstance("v1").post(
-    `shares${responseFormat}&path=${folderName}&shareType=10&shareWith=${tokenConversation}&publicUpload=false&permissions=31`,
-  );
+  return shareInstance("v1").post(`shares${responseFormat}`, {
+    shareType,
+    shareWith,
+    path,
+  });
 }

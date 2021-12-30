@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import useTalkFetch from "@/hooks/useTalkFetch";
 import { ChatMessagesListInterface, ChatMessagesCreateInterface } from "@/interfaces/talk";
-import { ShareCreateInterface } from "@/interfaces/share";
 import talkInstance from "@/services/talk";
-import shareInstance from "@/services/share";
 
 const responseFormat = "?format=json";
 
@@ -19,13 +17,5 @@ export function sendChatMessage(
   return talkInstance("v1").post(`chat/${token}${responseFormat}`, {
     message,
     referenceId,
-  });
-}
-
-export function shareFileToChat(token: string, path: string): Promise<ShareCreateInterface> {
-  return shareInstance("v1").post(`shares${responseFormat}`, {
-    shareType: 10,
-    shareWith: token,
-    path,
   });
 }
