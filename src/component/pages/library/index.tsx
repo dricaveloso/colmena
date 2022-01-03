@@ -41,6 +41,35 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+let currentItem: LibraryItemInterface | null = null;
+
+function setCurrentItem(
+  directory: FileStat,
+  filename: string,
+  aliasFilename: string,
+  date: Date,
+  timeDescription: TimeDescriptionInterface,
+) {
+  currentItem = {
+    basename: directory.basename,
+    id: directory.filename,
+    filename,
+    aliasFilename,
+    type: directory.type,
+    environment: EnvironmentEnum.REMOTE,
+    extension: getExtensionFilename(filename),
+    createdAt: date,
+    createdAtDescription: dateDescription(date, timeDescription),
+    mime: directory.mime,
+    size: directory.size,
+  };
+}
+
+export function getCurrentItem(): null | LibraryItemInterface {
+  console.log(currentItem);
+  return currentItem;
+}
+
 export async function getWebDavDirectories(
   userId: string,
   currentDirectory: string,
@@ -56,11 +85,14 @@ export async function getWebDavDirectories(
       let { basename } = directory;
       const aliasFilename = convertPrivateToUsername(filename, userId);
       const date = new Date(directory.lastmod);
-      if (
-        filename !== "" &&
-        filename !== removeCornerSlash(currentDirectory) &&
-        aliasFilename !== removeCornerSlash(currentDirectory)
+      if (filename === "") {
+        currentItem = null;
+      } else if (
+        filename === removeCornerSlash(currentDirectory) ||
+        aliasFilename === removeCornerSlash(currentDirectory)
       ) {
+        setCurrentItem(directory, filename, aliasFilename, date, timeDescription);
+      } else {
         if (filename === getPrivatePath()) {
           basename = userId;
         }
