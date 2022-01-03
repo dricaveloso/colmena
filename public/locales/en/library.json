@@ -40,7 +40,9 @@
     "fileAlreadyExists": "There is already a file with that name.",
     "cannotDownloadFile": "Cannot download this file.",
     "unidentifiedEnvironment": "Unidentified environment.",
-    "unableToCompleteRequest": "Unable to complete request."
+    "unableToCompleteRequest": "Unable to complete request.",
+    "directoryCopiedSuccessfully": "Directory copied successfully!",
+    "fileCopiedSuccessfully": "File copied successfully!"
   },
   "renameTitle": "Rename",
   "saveButton": "Save",
@@ -64,5 +66,6 @@
     "description": "Description"
   },
   "downloading": "Downloading",
-  "synchronizing": "Synchronizing"
+  "synchronizing": "Synchronizing",
+  "cancel": "Cancel"
 }

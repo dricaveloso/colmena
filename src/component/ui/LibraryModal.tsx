@@ -260,7 +260,7 @@ export default function LibraryModal({
                 variant={ButtonVariantEnum.TEXT}
                 handleClick={handleClose}
                 disabled={isDisabled}
-                title="Cancel"
+                title={l("cancel")}
                 size={ButtonSizeEnum.SMALL}
               />
 

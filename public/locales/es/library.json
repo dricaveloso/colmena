@@ -64,5 +64,6 @@
     "description": "Description"
   },
   "downloading": "Downloading",
-  "synchronizing": "Synchronizing"
+  "synchronizing": "Synchronizing",
+  "cancel": "Cancel"
 }

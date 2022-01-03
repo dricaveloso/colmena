@@ -86,7 +86,15 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
           }
 
           if (copy) {
-            router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
+            if (item.type === "directory") {
+              toast(t("messages.directoryCopiedSuccessfully"), "success", { timer: 5000 });
+            } else {
+              toast(t("messages.fileCopiedSuccessfully"), "success", { timer: 5000 });
+            }
+
+            setTimeout(() => {
+              router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
+            }, 5000);
           }
         }
       } catch (e) {
