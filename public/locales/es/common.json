@@ -77,7 +77,9 @@
     "fileTooLarge": "El archivo {{fileName}} es demasiado grande para cargarlo.",
     "unableToProcessFile": "No se puede procesar el archivo {{fileName}}.",
     "unableToUpdatePassword": "No fue possible actualizar su contraseña.",
-    "passwordUpdatedSuccessfully": "Contraseña actualizada con éxito."
+    "passwordUpdatedSuccessfully": "Contraseña actualizada con éxito.",
+    "directoryCreatedSuccessfully": "Directory created successfully.",
+    "fileUploadedSuccessfully": "File uploaded successfully."
   },
   "timeDescription": {
     "singularYear": "año",
