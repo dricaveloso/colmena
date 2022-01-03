@@ -49,9 +49,10 @@ const useStyles = makeStyles(() => ({
 type Props = {
   item: ChatMessageItemInterface | undefined;
   prevItem: ChatMessageItemInterface | null | undefined;
+  canDeleteConversation: number;
 };
 
-export const ChatListItem = ({ item, prevItem }: Props) => {
+export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) => {
   const cookies = parseCookies();
   const lang = cookies.NEXT_LOCALE || "en";
   const classes = useStyles();
@@ -97,7 +98,14 @@ export const ChatListItem = ({ item, prevItem }: Props) => {
     if (mimetype && isAudioFile(mimetype)) {
       if (messageParameters && messageParameters.file) {
         const { path, name, size } = messageParameters.file;
-        return <MemoizedAudio filename={path} name={name} size={size} />;
+        return (
+          <MemoizedAudio
+            filename={path}
+            name={name}
+            size={size}
+            canDeleteConversation={canDeleteConversation}
+          />
+        );
       }
     }
 

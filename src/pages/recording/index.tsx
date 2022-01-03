@@ -257,7 +257,7 @@ function Recording() {
 
     if (/^[/]honeycomb/.test(urlOrigin)) {
       const url_ = urlOrigin.split("/");
-      if (url_.length > 3) {
+      if (url_.length > 4) {
         return urlOrigin;
       }
     }

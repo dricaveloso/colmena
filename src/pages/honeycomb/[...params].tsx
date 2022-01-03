@@ -88,6 +88,7 @@ function Honeycomb() {
 
   const token = params[0];
   const displayName = params[1];
+  const canDeleteConversation = Number(params[2]);
 
   async function sendMessageAPI(message: string, referenceId: string) {
     await sendChatMessage(token, message, referenceId);
@@ -150,7 +151,11 @@ function Honeycomb() {
           >
             <TabPanel value={value} index={0}>
               <ReloadChatMessages token={token} />
-              <MemoizedChat token={token} conversationName={displayName} />
+              <MemoizedChat
+                token={token}
+                conversationName={displayName}
+                canDeleteConversation={canDeleteConversation}
+              />
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>
           </SwipeableViews>

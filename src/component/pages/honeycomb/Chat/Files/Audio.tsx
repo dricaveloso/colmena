@@ -10,7 +10,7 @@ import { createObjectURL, arrayBufferToBlob } from "blob-util";
 import { findByFilename } from "@/store/idb/models/files";
 import { toast } from "@/utils/notifications";
 import Text from "@/components/ui/Text";
-import { TextVariantEnum } from "@/enums/*";
+import { TextVariantEnum, DirectoryNamesNCEnum } from "@/enums/*";
 import {
   createFile as createQuickBlob,
   findByBasename as findQuickBlobByBasename,
@@ -37,6 +37,7 @@ type Props = {
   size: number;
   name: string;
   config?: WaveProps | undefined;
+  canDeleteConversation: number;
 };
 
 interface WavesurferInterface {
@@ -46,7 +47,7 @@ interface WavesurferInterface {
   };
 }
 
-export function Audio({ filename, size, name, config }: Props) {
+export function Audio({ filename, size, name, config, canDeleteConversation }: Props) {
   const { t } = useTranslation("honeycomb");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [playing, setPlaying] = useState(false);
@@ -126,9 +127,11 @@ export function Audio({ filename, size, name, config }: Props) {
   const downloadAudioFile = async () => {
     try {
       setLoadingAudioFile(true);
-      const result: any = await listFile(userRdx.user.id, filename);
+      let fileN = filename.replace(`${DirectoryNamesNCEnum.TALK}/`, "");
+      fileN = canDeleteConversation === 1 ? fileN : `${DirectoryNamesNCEnum.TALK}/${fileN}`;
+      const result: any = await listFile(userRdx.user.id, fileN);
       await createQuickBlob({
-        basename: removeSpecialCharacters(filename),
+        basename: removeSpecialCharacters(fileN),
         userId: userRdx.user.id,
         arrayBufferBlob: result,
       });

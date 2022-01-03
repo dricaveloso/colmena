@@ -40,7 +40,6 @@ export default function ReloadChatMessages({ token }: Props) {
           const difference = onlineMessages.length - syncMessages.length;
 
           const arrDiffMessages = onlineMessages.slice(-difference);
-          console.log(arrDiffMessages);
           await addAllMessages(arrDiffMessages);
 
           const blockBeginID = arrDiffMessages[0].id || 1;

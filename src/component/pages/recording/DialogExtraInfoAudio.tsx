@@ -110,8 +110,8 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
 
     if (/^[/]honeycomb/.test(urlOrigin)) {
       const url_ = urlOrigin.split("/");
-      if (url_.length > 3) {
-        url = decodeURI(url_[url_.length - 1]);
+      if (url_.length > 4) {
+        url = decodeURI(url_[url_.length - 2]);
       }
     }
 

@@ -9,9 +9,10 @@ import { PropsHoneycombSelector } from "@/types/*";
 type Props = {
   token: string;
   conversationName: string;
+  canDeleteConversation: number;
 };
 
-export function Chat({ token, conversationName }: Props) {
+export function Chat({ token, conversationName, canDeleteConversation }: Props) {
   const honeycombRdx = useSelector(
     (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
   );
@@ -23,7 +24,12 @@ export function Chat({ token, conversationName }: Props) {
         chatMessagesBlockLoad
           .filter((item) => item.token === token)
           .map((item, idx) => (
-            <MemoizedChatList {...item} conversationName={conversationName} idxElem={idx} />
+            <MemoizedChatList
+              {...item}
+              canDeleteConversation={canDeleteConversation}
+              conversationName={conversationName}
+              idxElem={idx}
+            />
           ))}
     </Box>
   );

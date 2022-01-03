@@ -36,10 +36,19 @@ type Props = {
   blockEndID: number | string;
   token: string;
   conversationName: string;
+  canDeleteConversation: number;
   idxElem: number;
 };
 
-export function ChatList({ blockBeginID, blockEndID, token, idxElem, conversationName }: Props) {
+// eslint-disable-next-line max-len
+export function ChatList({
+  blockBeginID,
+  blockEndID,
+  token,
+  idxElem,
+  conversationName,
+  canDeleteConversation,
+}: Props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const footerRef = useRef<HTMLDivElement | null>(null);
@@ -103,6 +112,7 @@ export function ChatList({ blockBeginID, blockEndID, token, idxElem, conversatio
               //     item2.id === item.id || item2.referenceId === item.referenceId,
               // ) - 1] || null}
               prevItem={null}
+              canDeleteConversation={canDeleteConversation}
               item={item}
             />
           </ListItem>
