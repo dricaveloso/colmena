@@ -79,7 +79,12 @@ export default function NewFolderModal({ open, handleClose }: Props) {
 
         const create = await createDirectory(userId, realPath);
         if (create) {
-          router.push(`/library/${removeFirstSlash(finalPath)}`);
+          const timer = 5000;
+
+          toast(t("messages.directoryCreatedSuccessfully"), "success", { timer });
+          setTimeout(() => {
+            router.push(`/library/${removeFirstSlash(finalPath)}`);
+          }, timer);
         }
       } catch (e) {
         toast(e.message, "error");
@@ -116,6 +121,14 @@ export default function NewFolderModal({ open, handleClose }: Props) {
 
     return null;
   };
+
+  const footerActions = (item: LibraryItemInterface) => (
+    <Button
+      handleClick={() => handleChangeLocation(item.aliasFilename)}
+      title={t("changeLocationButton")}
+      size={ButtonSizeEnum.SMALL}
+    />
+  );
 
   const defineFinalPath = useCallback(() => {
     setFinalPath(removeLastSlash(trailingSlash(definePath()) + folderName));
@@ -212,6 +225,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
         handleClose={() => setOpenLibrary(false)}
         open={openLibrary}
         options={libraryOptions}
+        footerActions={footerActions}
       />
     </>
   );
