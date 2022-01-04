@@ -3,35 +3,22 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import { getUniqueName, chunkFileUpload } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
-// import { useSelector, useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Divider from "@/components/ui/Divider";
-import {
-  // dateDescription,
-  trailingSlash,
-  getExtensionFilename,
-  getRandomInt,
-  removeFirstSlash,
-} from "@/utils/utils";
+import Button from "@/components/ui/Button";
+import { trailingSlash, getExtensionFilename, getRandomInt, removeFirstSlash } from "@/utils/utils";
 import { v4 as uuid } from "uuid";
-// import { addLibraryFile } from "@/store/actions/library";
-// import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
-// import { TimeDescriptionInterface } from "@/interfaces/index";
-// import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import {
-  convertPrivateToUsername,
-  convertUsernameToPrivate,
-  getAudioPath,
-  getRootPath,
-} from "@/utils/directory";
+import LibraryModal from "@/components/ui/LibraryModal";
+import { LibraryItemInterface } from "@/interfaces/index";
+import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
+import { Box } from "@material-ui/core";
+import Text from "@/components/ui/Text";
+import { convertPrivateToUsername, convertUsernameToPrivate, getRootPath } from "@/utils/directory";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(4),
+    minWidth: "80%",
   },
   form: {
     "& .MuiTextField-root": {
@@ -77,28 +65,16 @@ export default function Upload({ open, handleClose }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const userId = userRdx.user.id;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  const path = library.currentPath;
+  const currentLibraryPath = library.currentPath;
   const pathExists = library.currentPathExists;
   const classes = useStyles();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [openLibrary, setOpenLibrary] = useState(false);
+  const [path, setPath] = useState(currentLibraryPath);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
-  const { t } = useTranslation("common");
   const [filesInProgress, setFilesInProgress] = useState<FileInProgressInterface[]>([]);
-  // const timeDescription: TimeDescriptionInterface
-  // = t("timeDescription", { returnObjects: true });
-  // const dispatch = useDispatch();
-
-  const handledPath = useCallback(() => {
-    const rootPath = getRootPath();
-
-    return !pathExists ||
-      !path ||
-      path === "/" ||
-      convertUsernameToPrivate(path, userId) === getAudioPath()
-      ? convertPrivateToUsername(rootPath, userId)
-      : path;
-  }, [path, pathExists, userId]);
+  const { t } = useTranslation("common");
 
   const handleUpload = (event: any) => {
     prepareFiles(event.target.files);
@@ -157,8 +133,6 @@ export default function Upload({ open, handleClose }: Props) {
       formRef.current.reset();
     }
 
-    // handleClose();
-
     router.push(`/library/${removeFirstSlash(handledPath())}`);
   };
 
@@ -166,10 +140,7 @@ export default function Upload({ open, handleClose }: Props) {
     const fileName = await handleFileName(file.name);
     const finalPath = `${trailingSlash(handledPath())}${fileName}`;
 
-    const create = await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
-    if (create) {
-      // addFileIntoLibrary(fileName, finalPath);
-    }
+    await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
   };
 
   const handleFileName = (name: string) => {
@@ -184,6 +155,12 @@ export default function Upload({ open, handleClose }: Props) {
 
     return getUniqueName(userId, convertUsernameToPrivate(handledPath(), userId), finalName);
   };
+
+  const handledPath = useCallback(() => {
+    const rootPath = getRootPath();
+
+    return !pathExists || !path || path === "/" ? convertPrivateToUsername(rootPath, userId) : path;
+  }, [path, pathExists, userId]);
 
   const updateFileInProgress = useCallback(
     (file: FileInProgressInterface, data) => {
@@ -201,22 +178,6 @@ export default function Upload({ open, handleClose }: Props) {
     [filesInProgress],
   );
 
-  // const addFileIntoLibrary = (name: string, finalPath: string) => {
-  //   const date = new Date();
-  //   const item: LibraryItemInterface = {
-  //     basename: name,
-  //     id: finalPath,
-  //     filename: finalPath,
-  //     type: "file",
-  //     environment: EnvironmentEnum.REMOTE,
-  //     createdAt: date,
-  //     createdAtDescription: dateDescription(date, timeDescription),
-  //     extension: getExtensionFilename(name),
-  //   };
-
-  //   dispatch(addLibraryFile(item));
-  // };
-
   const confirmClose = useCallback(() => {
     if (isLoading) {
       setShowConfirmCancel(true);
@@ -224,6 +185,25 @@ export default function Upload({ open, handleClose }: Props) {
       handleClose();
     }
   }, [handleClose, isLoading]);
+
+  const libraryOptions = (item: LibraryItemInterface) => {
+    if (item.type === "directory") {
+      return (
+        <Button
+          handleClick={() => handleChangeLocation(item.aliasFilename)}
+          title={t("changeLocationButton")}
+          size={ButtonSizeEnum.SMALL}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  const handleChangeLocation = (path: string) => {
+    setPath(path);
+    setOpenLibrary(false);
+  };
 
   return (
     <>
@@ -252,36 +232,47 @@ export default function Upload({ open, handleClose }: Props) {
                 multiple
                 onChange={handleUpload}
               />
-              <TextField
-                id="outlined-search"
-                label={t("form.local")}
-                variant="outlined"
-                value={handledPath()}
-                disabled
-              />
+              <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Box display="flex" flexDirection="column">
+                  <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold" }}>
+                    {t("form.local")}
+                  </Text>
+                  <Text variant={TextVariantEnum.BODY2}>{`/${handledPath()}`}</Text>
+                </Box>
+                <Button
+                  handleClick={() => setOpenLibrary(true)}
+                  style={{ margin: 8 }}
+                  variant={ButtonVariantEnum.TEXT}
+                  color={ButtonColorEnum.PRIMARY}
+                  title={t("changeLocationButton")}
+                  size={ButtonSizeEnum.SMALL}
+                />
+              </Box>
               <Divider marginTop={20} />
               <label htmlFor="upload-file">
                 <Button
                   component="span"
-                  variant="contained"
-                  color="primary"
+                  title={t("form.upload")}
                   className={classes.submit}
                   disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} />
-                      {t("loading")}..
-                    </>
-                  ) : (
-                    t("form.upload")
-                  )}
-                </Button>
+                  isLoading={isLoading}
+                />
               </label>
             </form>
           </div>
         </Fade>
       </Modal>
+      <LibraryModal
+        title={t("changeLocationModalTitle")}
+        handleClose={() => setOpenLibrary(false)}
+        open={openLibrary}
+        options={libraryOptions}
+      />
       {showConfirmCancel && (
         <ActionConfirm
           title={t("confirmCancelUpload")}

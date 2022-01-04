@@ -4,32 +4,30 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import Button from "@/components/ui/Button";
 import { createDirectory, existDirectory } from "@/services/webdav/directories";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
-// import { useSelector, useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-// import { dateDescription, removeFirstSlash, trailingSlash } from "@/utils/utils";
-import { removeFirstSlash, trailingSlash } from "@/utils/utils";
+import { removeFirstSlash, removeLastSlash, trailingSlash } from "@/utils/utils";
 import {
-  getAudioPath,
   hasLocalPath,
   getRootPath,
   handleDirectoryName,
   convertUsernameToPrivate,
   convertPrivateToUsername,
 } from "@/utils/directory";
-// import { addLibraryFile } from "@/store/actions/library";
-// import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
-// import { EnvironmentEnum, NotificationStatusEnum } from "@/enums/*";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { toast } from "@/utils/notifications";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import { Box } from "@material-ui/core";
+import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
+import LibraryModal from "@/components/ui/LibraryModal";
+import { LibraryItemInterface } from "@/interfaces/index";
+import Text from "@/components/ui/Text";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -63,18 +61,17 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const userId = userRdx.user.id;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  const path = library.currentPath;
+  const currentLibraryPath = library.currentPath;
   const pathExists = library.currentPathExists;
   const classes = useStyles();
   const router = useRouter();
+  const [path, setPath] = useState(currentLibraryPath);
+  const [folderName, setFolderName] = useState("");
   const [finalPath, setFinalPath] = useState(path);
   const [isLoading, setIsLoading] = useState(false);
-  // const timeDescription: TimeDescriptionInterface =
-  // t("timeDescription", { returnObjects: true });
-  // const dispatch = useDispatch();
+  const [openLibrary, setOpenLibrary] = useState(false);
   const initialValues = {
-    name: "",
-    path,
+    folderName: "",
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -95,18 +92,6 @@ export default function NewFolderModal({ open, handleClose }: Props) {
 
         const create = await createDirectory(userId, realPath);
         if (create) {
-          // const date = new Date();
-          // const item: LibraryItemInterface = {
-          //   basename: values.folderName,
-          //   id: handledPath,
-          //   filename: handledPath,
-          //   type: "directory",
-          //   environment: EnvironmentEnum.REMOTE,
-          //   createdAt: date,
-          //   createdAtDescription: dateDescription(date, timeDescription),
-          // };
-          // dispatch(addLibraryFile(item));
-          // handleClose();
           router.push(`/library/${removeFirstSlash(finalPath)}`);
         }
       } catch (e) {
@@ -120,33 +105,48 @@ export default function NewFolderModal({ open, handleClose }: Props) {
     folderName: Yup.string().required(t("form.requiredTitle")),
   });
 
-  const defineFinalPath = (name: any) => {
-    setFinalPath(`${trailingSlash(definePath(path))}${treatName(name.trim())}`);
-  };
-
   const treatName = (name: string) => handleDirectoryName(name);
 
-  const definePath = useCallback(
-    (path) => {
-      const rootPath = getRootPath();
-      return !pathExists ||
-        !path ||
-        path === "/" ||
-        convertUsernameToPrivate(path, userId) === getAudioPath()
-        ? convertPrivateToUsername(rootPath, userId)
-        : path;
-    },
-    [pathExists, userId],
-  );
+  const handleName = (name: string) => {
+    setFolderName(treatName(name.trim()));
+  };
+
+  const definePath = useCallback(() => {
+    const rootPath = getRootPath();
+    return !pathExists || !path || path === "/" ? convertPrivateToUsername(rootPath, userId) : path;
+  }, [path, pathExists, userId]);
+
+  const libraryOptions = (item: LibraryItemInterface) => {
+    if (item.type === "directory") {
+      return (
+        <Button
+          handleClick={() => handleChangeLocation(item.aliasFilename)}
+          title={t("changeLocationButton")}
+          size={ButtonSizeEnum.SMALL}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  const defineFinalPath = useCallback(() => {
+    setFinalPath(removeLastSlash(trailingSlash(definePath()) + folderName));
+  }, [definePath, folderName]);
+
+  const handleChangeLocation = (path: string) => {
+    setPath(path);
+    setOpenLibrary(false);
+  };
 
   useEffect(() => {
-    setFinalPath(definePath(path));
+    defineFinalPath();
 
     return () => {
       setFinalPath("");
       setIsLoading(false);
     };
-  }, [path, definePath]);
+  }, [path, definePath, defineFinalPath]);
 
   return (
     <>
@@ -172,8 +172,15 @@ export default function NewFolderModal({ open, handleClose }: Props) {
               validationSchema={NewFolderSchema}
               onSubmit={handleSubmit}
             >
-              {({ setFieldValue }: any) => (
-                <Form className={classes.form}>
+              {({ setFieldValue, submitForm }: any) => (
+                <Form
+                  className={classes.form}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      submitForm();
+                    }
+                  }}
+                >
                   <Field name="folderName" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
@@ -186,7 +193,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                         onChange={(
                           event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
                         ) => setFieldValue("folderName", treatName(event.target.value))}
-                        onKeyUp={(event: any) => defineFinalPath(event.target.value)}
+                        onKeyUp={(event: any) => handleName(event.target.value)}
                       />
                     )}
                   </Field>
@@ -194,36 +201,49 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     {(msg) => <ErrorMessageForm message={msg} />}
                   </ErrorMessage>
                   <Divider marginTop={20} />
-                  <TextField
-                    id="outlined-search"
-                    label={t("form.local")}
-                    variant="outlined"
-                    value={finalPath}
-                    disabled
-                  />
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    paddingLeft={1}
+                    paddingTop={1}
+                  >
+                    <Box display="flex" flexDirection="column">
+                      <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold" }}>
+                        {t("form.location")}
+                      </Text>
+                      <Text variant={TextVariantEnum.BODY2}>{`/${finalPath}`}</Text>
+                    </Box>
+                    <Button
+                      handleClick={() => setOpenLibrary(true)}
+                      style={{ margin: 8 }}
+                      variant={ButtonVariantEnum.TEXT}
+                      color={ButtonColorEnum.PRIMARY}
+                      title={t("changeLocationButton")}
+                      size={ButtonSizeEnum.SMALL}
+                    />
+                  </Box>
                   <Divider marginTop={20} />
                   <Button
+                    title={t("form.create")}
                     type="submit"
-                    variant="contained"
-                    color="primary"
                     className={classes.submit}
                     disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} />{" "}
-                        {t("loading")}..
-                      </>
-                    ) : (
-                      t("form.create")
-                    )}
-                  </Button>
+                    isLoading={isLoading}
+                  />
                 </Form>
               )}
             </Formik>
           </div>
         </Fade>
       </Modal>
+      <LibraryModal
+        title={t("changeLocationModalTitle")}
+        handleClose={() => setOpenLibrary(false)}
+        open={openLibrary}
+        options={libraryOptions}
+      />
     </>
   );
 }

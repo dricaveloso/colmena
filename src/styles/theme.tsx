@@ -11,7 +11,7 @@ declare module "@material-ui/core/styles/createPalette" {
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Open Sans, sans-serif",
+    fontFamily: "Nunito, Nunito Sans, Open Sans, sans-serif",
   },
   palette: {
     primary: {

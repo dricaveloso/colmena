@@ -205,7 +205,7 @@ function DrawerAux({ open, onClose }: Props) {
         backUrl={router.asPath}
       />
       <Backdrop open={showBackdrop} />
-      <Drawer anchor="left" open={open} onClose={onClose}>
+      <Drawer anchor="right" open={open} onClose={onClose}>
         <div style={{ flex: 1, backgroundColor: "white" }}>{drawerMenu()}</div>
       </Drawer>
     </div>
