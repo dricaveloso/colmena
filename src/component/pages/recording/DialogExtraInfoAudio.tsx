@@ -36,6 +36,7 @@ import { useSelector } from "react-redux";
 import { toast } from "@/utils/notifications";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { listTags } from "@/services/webdav/tags";
+import { removeSpecialCharacters } from "@/utils/utils";
 
 type Props = {
   open: boolean;
@@ -138,7 +139,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
             }
             const tagsFiltered = values.tags.map((item: string) => item.toLocaleLowerCase());
             handleSubmit({
-              ...values,
+              name: removeSpecialCharacters(values.name),
               tags: tagsFiltered,
               path: convertUsernameToPrivate(uploadLocation, userRdx.user.id),
               availableOffline,

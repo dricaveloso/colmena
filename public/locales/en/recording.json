@@ -17,6 +17,6 @@
   "audioConfirmationToKeep": "Would you like to record another audio ?",
   "uploadLocationTitle": "Upload location",
   "changeUploadLocationTitle": "change",
-  "availableWithoutInternetTitle": "Available without internet connection",
+  "availableWithoutInternetTitle": "Available offline",
   "tagsRequiredTitle": "At least one tag is required"
 }

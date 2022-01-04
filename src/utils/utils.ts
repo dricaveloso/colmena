@@ -20,8 +20,9 @@ export function formatBytes(bytes: number, decimals = 2) {
 }
 
 export function removeSpecialCharacters(str: string) {
-  const parsed = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return parsed;
+  const withoutAccent = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const withoutSpecial = withoutAccent.replace(/[^\w\s]/gi, "");
+  return withoutSpecial;
 }
 
 export function capitalizeFirstLetter(string: string) {
