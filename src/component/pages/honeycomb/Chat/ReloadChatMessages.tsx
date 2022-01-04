@@ -27,7 +27,7 @@ export default function ReloadChatMessages({ token }: Props) {
       console.log("onError", err);
     },
     onSuccess: async (data: ChatMessagesListInterfaceCustom) => {
-      const onlineMessages = data.ocs.data;
+      const onlineMessages = data.ocs.data.reverse();
       if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
         const syncMessages = await getAllMessages(token);
         if (syncMessages.length === 0) {

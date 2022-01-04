@@ -6,7 +6,11 @@ import talkInstance from "@/services/talk";
 const responseFormat = "?format=json";
 
 export function receiveChatMessages(token: string, options?: {}): ChatMessagesListInterface {
-  return useTalkFetch("v1")(`/chat/${token}${responseFormat}&lookIntoFuture=1`, {}, options);
+  return useTalkFetch("v1")(
+    `/chat/${token}${responseFormat}&limit=200&lookIntoFuture=0`,
+    {},
+    options,
+  );
 }
 
 export function sendChatMessage(
