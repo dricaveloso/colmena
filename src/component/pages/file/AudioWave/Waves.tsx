@@ -48,7 +48,7 @@ export default function Waves({ blob, config = undefined, play = false }: Props)
   });
 
   useEffect(() => {
-    create(play);
+    create();
     return () => {
       if (wavesurfer.current) {
         wavesurfer.current.destroy();
@@ -61,7 +61,7 @@ export default function Waves({ blob, config = undefined, play = false }: Props)
     else wavesurfer?.current?.pause();
   }, [play]);
 
-  const create = async (play: boolean) => {
+  const create = async () => {
     try {
       const WaveSurfer = (await import("wavesurfer.js")).default;
       if (blob) {
@@ -70,7 +70,7 @@ export default function Waves({ blob, config = undefined, play = false }: Props)
         wavesurfer?.current.loadBlob(blob);
 
         wavesurfer?.current.on("ready", () => {
-          if (play) wavesurfer?.current?.play();
+          wavesurfer?.current?.play();
         });
 
         wavesurfer?.current.on("error", (error: string) => {

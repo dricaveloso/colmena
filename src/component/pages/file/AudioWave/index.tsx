@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import getBlobDuration from "get-blob-duration";
 import { fancyTimeFormat } from "@/utils/utils";
 import { createObjectURL } from "blob-util";
+import AudioWaveSkeleton from "./skeleton";
 
 type Props = {
   blob: Blob | null;
@@ -35,6 +36,8 @@ export default function AudioWave({ blob, data, playingAs = false }: Props) {
   const handlePlayPause = () => {
     setPlaying(!playing);
   };
+
+  if (!blob) return <AudioWaveSkeleton />;
 
   return (
     <Box display="flex" flex={1} flexDirection="row" justifyContent="center" alignItems="center">
