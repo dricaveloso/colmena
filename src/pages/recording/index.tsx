@@ -97,7 +97,7 @@ function Recording() {
       const filename = `${convertUsernameToPrivate(
         path,
         userRdx.user.id,
-      )}/${title}.${defaultAudioType}`;
+      )}/${removeSpecialCharacters(title)}.${defaultAudioType}`;
       const aliasFilename = `${convertPrivateToUsername(
         path,
         userRdx.user.id,

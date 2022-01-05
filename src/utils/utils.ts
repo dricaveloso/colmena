@@ -21,7 +21,7 @@ export function formatBytes(bytes: number, decimals = 2) {
 
 export function removeSpecialCharacters(str: string) {
   const withoutAccent = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  const withoutSpecial = withoutAccent.replace(/[^\w\s]/gi, "");
+  const withoutSpecial = withoutAccent.replace(/[#,+()$~%'"*!?<>{}]/g, "");
   return withoutSpecial;
 }
 

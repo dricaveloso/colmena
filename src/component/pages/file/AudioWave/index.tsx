@@ -12,9 +12,10 @@ import { createObjectURL } from "blob-util";
 type Props = {
   blob: Blob | null;
   data: any;
+  playingAs: boolean;
 };
-export default function AudioWave({ blob, data }: Props) {
-  const [playing, setPlaying] = useState(false);
+export default function AudioWave({ blob, data, playingAs = false }: Props) {
+  const [playing, setPlaying] = useState(playingAs);
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
@@ -36,24 +37,22 @@ export default function AudioWave({ blob, data }: Props) {
   };
 
   return (
-    <Box display="flex" flex={1} flexDirection="row">
+    <Box display="flex" flex={1} flexDirection="row" justifyContent="center" alignItems="center">
       <IconButton
         icon={playing ? "pause" : "play"}
         iconStyle={{ fontSize: 55 }}
         handleClick={handlePlayPause}
         iconColor={theme.palette.primary.main}
       />
-      {playing ? (
-        <Waves blob={blob} />
-      ) : (
-        <Box display="flex" marginLeft={1} style={{ display: playing ? "none" : "block" }} flex={1}>
-          <ListItemText
-            data-testid="title"
-            primary={data?.customtitle}
-            secondary={fancyTimeFormat(duration)}
-          />
-        </Box>
-      )}
+      <Box display="flex" marginLeft={1} flexDirection="column" flex={1}>
+        <ListItemText
+          data-testid="title"
+          primary={data?.customtitle}
+          secondary={fancyTimeFormat(duration)}
+          secondaryTypographyProps={{ style: { fontSize: 10 } }}
+        />
+        <Waves blob={blob} config={{ height: 20 }} play={playing} />
+      </Box>
     </Box>
   );
 }
