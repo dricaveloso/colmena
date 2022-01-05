@@ -80,6 +80,7 @@ export async function getWebDavDirectories(
   const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
 
   if (nxDirectories?.data.length > 0) {
+    console.log(nxDirectories);
     nxDirectories.data.forEach((directory: FileStat) => {
       const filename = removeCornerSlash(directory.filename.replace(/^.+?(\/|$)/, ""));
       let { basename } = directory;
@@ -110,7 +111,6 @@ export async function getWebDavDirectories(
           mime: directory.mime,
           size: directory.size,
         };
-
         if (item.basename && item.basename[0] !== ".") {
           items.push(item);
         }
