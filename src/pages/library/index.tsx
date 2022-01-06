@@ -13,9 +13,9 @@ import { useSelector, useDispatch } from "react-redux";
 import FlexBox from "@/components/ui/FlexBox";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { JustifyContentEnum, ListTypeEnum, OrderEnum } from "@/enums/index";
+import { JustifyContentEnum, ListTypeEnum, OrderEnum, LanguageEnum } from "@/enums/index";
 import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
-import Library, { filterItems, getItems, orderItems } from "@/components/pages/library";
+import Library, { generalFilter, getItems, orderItems } from "@/components/pages/library";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { toast } from "@/utils/notifications";
@@ -49,6 +49,7 @@ function MyLibrary() {
   const [currentPath, setCurrentPath] = useState("");
   const [order, setOrder] = useState(OrderEnum.LATEST_FIRST);
   const [filter, setFilter] = useState("");
+  const [language, setLanguage] = useState("");
   const { t } = useTranslation("common");
   const { t: l } = useTranslation("library");
   const dispatch = useDispatch();
@@ -166,18 +167,33 @@ function MyLibrary() {
       setOrder(currentOrder);
     }
 
-    setItems(orderItems(currentOrder, filterItems(filter, rawItems)));
+    (async () => {
+      const filteredItems = await generalFilter(rawItems, { type: filter, language });
+      setItems(orderItems(currentOrder, filteredItems));
+    })();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawItems]);
 
-  const handleOrder = (order: OrderEnum) => {
+  const handleOrder = async (order: OrderEnum) => {
     setOrder(order);
-    setItems(orderItems(order, filterItems(filter, rawItems)));
+
+    const filteredItems = await generalFilter(rawItems, { type: filter, language });
+    setItems(orderItems(order, filteredItems));
   };
 
-  const handleFilter = (filter: OrderEnum) => {
+  const handleFilter = async (filter: OrderEnum) => {
     setFilter(filter);
-    setItems(orderItems(order, filterItems(filter, rawItems)));
+
+    const filteredItems = await generalFilter(rawItems, { type: filter, language });
+    setItems(orderItems(order, filteredItems));
+  };
+
+  const handleLanguage = async (language: LanguageEnum) => {
+    setLanguage(filter);
+
+    const filteredItems = await generalFilter(rawItems, { type: filter, language });
+    setItems(orderItems(order, filteredItems));
   };
 
   const handleItemClick = ({ type, aliasFilename, filename, mime }: LibraryCardItemInterface) => {
@@ -209,8 +225,10 @@ function MyLibrary() {
           setListType={setListType}
           setOrder={handleOrder}
           setFilter={handleFilter}
+          setLanguage={handleLanguage}
           order={order}
           filter={filter}
+          language={language}
           pathExists={!notFoundDir}
           handleNavigate={handleBreadcrumbNavigate}
           firstBreadcrumbItem={firstBreadrcrumbMenu}

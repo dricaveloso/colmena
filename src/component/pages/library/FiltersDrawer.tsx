@@ -5,22 +5,23 @@ import { v4 as uuid } from "uuid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { FilterEnum, OrderEnum } from "@/enums/index";
+import { FilterEnum, OrderEnum, LanguageEnum } from "@/enums/index";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useTranslation } from "react-i18next";
-import { toast } from "@/utils/notifications";
 
 type Props = {
   open: boolean;
   handleClose: () => void;
   filterItems: (filter: string | FilterEnum) => void;
   orderItems: (order: OrderEnum) => void;
+  filterItemsByLanguage: (language: string | LanguageEnum) => void;
   order: OrderEnum;
   filter: string | FilterEnum;
+  language: string | LanguageEnum;
   isRootPath: boolean;
 };
 
@@ -43,15 +44,16 @@ export default function TemporaryFiltersDrawer({
   open,
   filterItems,
   orderItems,
+  filterItemsByLanguage,
   handleClose,
   order,
   filter,
+  language,
   isRootPath,
 }: Props) {
   const [expanded, setExpanded] = React.useState<string | boolean>("order");
   const classes = useStyles();
   const { t } = useTranslation("library");
-  const { t: c } = useTranslation("common");
 
   const handleChange = (panel: string) => (event: any, newExpanded: string | boolean) => {
     setExpanded(newExpanded ? panel : false);
@@ -61,9 +63,21 @@ export default function TemporaryFiltersDrawer({
     (currentFilter: string | FilterEnum) => (filter === currentFilter ? classes.active : ""),
     [classes.active, filter],
   );
+
   const orderActive = useCallback(
     (currentOrder: string | OrderEnum) => (order === currentOrder ? classes.active : ""),
     [classes.active, order],
+  );
+
+  const filterLanguageActive = useCallback(
+    (currentLanguage: string | LanguageEnum) => {
+      if (language === currentLanguage) {
+        return classes.active;
+      }
+
+      return "";
+    },
+    [classes.active, language],
   );
 
   return (
@@ -166,14 +180,26 @@ export default function TemporaryFiltersDrawer({
         </AccordionSummary>
         <AccordionDetails>
           <List>
-            <ListItem button key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
-              <ListItemText primary={t("language.english")} />
+            <ListItem button key={uuid()} onClick={() => filterItemsByLanguage("")}>
+              <ListItemText primary={t("filter.all")} className={filterLanguageActive("")} />
             </ListItem>
-            <ListItem button key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
-              <ListItemText primary={t("language.spanish")} />
+            <ListItem button key={uuid()} onClick={() => filterItemsByLanguage(LanguageEnum.EN)}>
+              <ListItemText
+                primary={t("language.english")}
+                className={filterLanguageActive(LanguageEnum.EN)}
+              />
             </ListItem>
-            <ListItem button key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
-              <ListItemText primary={t("language.french")} />
+            <ListItem button key={uuid()} onClick={() => filterItemsByLanguage(LanguageEnum.ES)}>
+              <ListItemText
+                primary={t("language.spanish")}
+                className={filterLanguageActive(LanguageEnum.ES)}
+              />
+            </ListItem>
+            <ListItem button key={uuid()} onClick={() => filterItemsByLanguage(LanguageEnum.FR)}>
+              <ListItemText
+                primary={t("language.french")}
+                className={filterLanguageActive(LanguageEnum.FR)}
+              />
             </ListItem>
           </List>
         </AccordionDetails>

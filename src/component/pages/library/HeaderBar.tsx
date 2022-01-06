@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Box, makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@/components/ui/SvgIcon";
-import { FilterEnum, JustifyContentEnum, ListTypeEnum, OrderEnum } from "@/enums/index";
+import {
+  FilterEnum,
+  JustifyContentEnum,
+  ListTypeEnum,
+  OrderEnum,
+  LanguageEnum,
+} from "@/enums/index";
 import { generateBreadcrumb } from "@/utils/utils";
 import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
@@ -35,8 +41,10 @@ type Props = {
   setListType: React.Dispatch<React.SetStateAction<ListTypeEnum>>;
   setFilter: React.Dispatch<React.SetStateAction<string | FilterEnum>>;
   setOrder: React.Dispatch<React.SetStateAction<OrderEnum>>;
+  setLanguage: React.Dispatch<React.SetStateAction<LanguageEnum>>;
   order: OrderEnum;
   filter: string | FilterEnum;
+  language: string | LanguageEnum;
   pathExists: boolean;
   handleNavigate: (dir: BreadcrumbItemInterface) => void;
   hasFilter?: boolean;
@@ -54,8 +62,10 @@ function HeaderBar({
   setListType,
   setFilter,
   setOrder,
+  setLanguage,
   order,
   filter,
+  language,
   pathExists,
   handleNavigate,
   hasFilter = true,
@@ -97,6 +107,11 @@ function HeaderBar({
 
   const filterItems = (filter: FilterEnum) => {
     setFilter(filter);
+    handleCloseFilterDrawer();
+  };
+
+  const filterItemsByLanguage = (language: LanguageEnum) => {
+    setLanguage(language);
     handleCloseFilterDrawer();
   };
 
@@ -160,10 +175,12 @@ function HeaderBar({
       <TemporaryFiltersDrawer
         filterItems={filterItems}
         orderItems={orderItems}
+        filterItemsByLanguage={filterItemsByLanguage}
         open={openFilterDrawer}
         handleClose={handleCloseFilterDrawer}
         filter={filter}
         order={order}
+        language={language}
         isRootPath={isRootPath(currentPath)}
       />
     </Box>

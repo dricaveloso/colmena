@@ -24,6 +24,7 @@ import {
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 import { setCurrentAudioPlaying } from "@/store/actions/library";
+// import { getDataFile } from "@/services/webdav/files";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -80,7 +81,6 @@ export async function getWebDavDirectories(
   const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
 
   if (nxDirectories?.data.length > 0) {
-    console.log(nxDirectories);
     nxDirectories.data.forEach((directory: FileStat) => {
       const filename = removeCornerSlash(directory.filename.replace(/^.+?(\/|$)/, ""));
       let { basename } = directory;
@@ -149,6 +149,23 @@ export async function getLocalFiles(
 
   return items;
 }
+export interface FilterInterface {
+  type?: string;
+  language?: string;
+}
+
+export async function generalFilter(items: Array<LibraryItemInterface>, filters: FilterInterface) {
+  let filteredItems = items;
+  if (filters.type) {
+    filteredItems = filterItems(filters.type, items);
+  }
+
+  if (filters.language) {
+    filteredItems = await filterLanguage(filters.language, items);
+  }
+
+  return filteredItems;
+}
 
 export function filterItems(filter: string, items: Array<LibraryItemInterface>) {
   if (items.length === 0 || filter === "") {
@@ -166,7 +183,7 @@ export function filterItems(filter: string, items: Array<LibraryItemInterface>) 
       case FilterEnum.OFFLINE:
         return item.environment === EnvironmentEnum.LOCAL;
       case FilterEnum.SYNC:
-        return item.environment === EnvironmentEnum.REMOTE;
+        return item.environment === EnvironmentEnum.BOTH;
       case FilterEnum.AUDIO:
         return item.type === "audio" || audioExtensions.includes(extension);
       case FilterEnum.IMAGE:
@@ -177,6 +194,21 @@ export function filterItems(filter: string, items: Array<LibraryItemInterface>) 
         return true;
     }
   });
+}
+
+export async function filterLanguage(language: string, items: Array<LibraryItemInterface>) {
+  if (items.length === 0 || language === "") {
+    return items;
+  }
+
+  /* try {
+    const result: any = await getDataFile(convertUsernameToPrivate(currentPath));
+    console.log(currentPath, result);
+  } catch (e) {
+    console.log(e);
+  } */
+
+  return items.filter((item: LibraryItemInterface) => item.language === language);
 }
 
 export function orderItems(order: string, items: Array<LibraryItemInterface>) {
