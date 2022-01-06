@@ -185,7 +185,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     {({ field }: FieldProps) => (
                       <TextField
                         id="outlined-search"
-                        autoComplete="new-folderName"
+                        autoComplete="off"
                         label={t("form.fields.name")}
                         variant="outlined"
                         inputProps={{ maxLength: 60 }}

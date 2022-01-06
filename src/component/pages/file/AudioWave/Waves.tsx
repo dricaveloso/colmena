@@ -80,7 +80,7 @@ export default function Waves({ blob, config = undefined, play = false }: Props)
         });
       }
     } catch (e) {
-      console.log("flamengo", e);
+      // console.log(e);
       // error container element not found
     }
   };

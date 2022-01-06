@@ -44,6 +44,7 @@ function PasswordField({ label, placeholder, handleChangePassword, required = fa
         value={values.password}
         onChange={handleChange("password")}
         fullWidth
+        autoComplete="off"
         required={required}
         label={label}
         placeholder={placeholder}

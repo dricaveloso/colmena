@@ -71,6 +71,7 @@ function Recording() {
   const [openContinueRecording, setOpenContinueRecording] = useState(false);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [audioId, setAudioId] = useState();
+  const [pathLocationSave, setPathLocationSave] = useState("");
   const [filename, setFilename] = useState("");
   const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
   const cookies = parseCookies();
@@ -92,12 +93,13 @@ function Recording() {
 
   const saveAudioHandle = async (values: PropsAudioSave) => {
     const { name: title, tags, path, availableOffline } = values;
+    setPathLocationSave(path);
     const defaultAudioType = DefaultAudioTypeEnum.type;
     try {
       const filename = `${convertUsernameToPrivate(
         path,
         userRdx.user.id,
-      )}/${removeSpecialCharacters(title)}.${defaultAudioType}`;
+      )}/${title}.${defaultAudioType}`;
       const aliasFilename = `${convertPrivateToUsername(
         path,
         userRdx.user.id,
@@ -138,10 +140,7 @@ function Recording() {
           await putFileOnline(userRdx.user.id, `${filenameWithTalkDir}`, localFile.arrayBufferBlob);
           const fileId = await getFileOnlineId(userRdx.user.id, `${filenameWithTalkDir}`);
 
-          await setDataFile(
-            { customtitle: title, language },
-            `${talkDir}${path}/${title}.${defaultAudioType}`,
-          );
+          await setDataFile({ customtitle: title, language }, `${filenameWithTalkDir}`);
 
           const res = await listTags();
           const optionsTag: SelectOptionItem[] = res
@@ -298,6 +297,7 @@ function Recording() {
             open={openDialogAudioName}
             handleClose={handleCloseExtraInfo}
             handleSubmit={saveAudioHandle}
+            pathLocationSave={pathLocationSave}
           />
         )}
         <Backdrop open={showBackdrop} />

@@ -11,11 +11,11 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from "@/components/ui/IconButton";
 import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
-import { FontSizeIconProps, PropsUserSelector } from "@/types/index";
+import { FontSizeIconProps } from "@/types/index";
 import { toast } from "@/utils/notifications";
+import { isSubadminProfile } from "@/utils/permissions";
 import { ButtonColorEnum, ButtonVariantEnum } from "@/enums/index";
 import Button from "@/components/ui/Button";
-import { useSelector } from "react-redux";
 
 type Props = {
   open: boolean;
@@ -27,14 +27,6 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
   const [openNewFolderModal, setOpenNewFolderModal] = useState(false);
   const [openUploadModal, setOpenUploadModal] = useState(false);
   const [openNewHoneycombModal, setOpenNewHoneycombModal] = useState(false);
-  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const group =
-    userRdx.user &&
-    userRdx.user.media &&
-    Array.isArray(userRdx.user.media?.groups) &&
-    userRdx.user.media?.groups[0]
-      ? userRdx.user.media?.groups[0]
-      : "";
 
   const { t } = useTranslation("common");
   const router = useRouter();
@@ -61,7 +53,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
   };
 
   const handleOpenNewHoneycombModal = () => {
-    if (userRdx.user.subadmin.includes(group)) setOpenNewHoneycombModal(true);
+    if (isSubadminProfile()) setOpenNewHoneycombModal(true);
     else toast(t("noPrivilegesAccessTitle"), "error");
   };
 

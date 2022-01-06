@@ -2,8 +2,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: Nunito, Nunito Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
-    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Nunito, Nunito Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background-color: #fff;
 }
 
@@ -109,4 +109,9 @@ body {
 
 .my-swal {
   z-index: 9999999999 !important;
+}
+
+input:-webkit-autofill,
+.my-class:-webkit-autofill {
+  -webkit-transition-delay: 9999999s;
 }

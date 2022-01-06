@@ -156,6 +156,7 @@ export default function WrapperForm() {
                 <TextField
                   id="email"
                   label={c("form.placeholderEmail")}
+                  autoComplete="off"
                   variant={SelectVariantEnum.OUTLINED}
                   fullWidth
                   {...field}

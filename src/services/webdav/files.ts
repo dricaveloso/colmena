@@ -266,7 +266,7 @@ export async function setDataFile(data: FileDataNCInterface, path: string) {
     body,
     `files/${removeCornerSlash(path)}`,
     "PROPPATCH",
-    { "Content-Type": "application/xml" },
+    { "Content-Type": "application/xml; charset=utf-8" },
     true,
   );
   if (typeof result.multistatus.response[0].propstat.prop === "object") {

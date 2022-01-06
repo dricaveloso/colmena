@@ -36,12 +36,12 @@ import { useSelector } from "react-redux";
 import { toast } from "@/utils/notifications";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { listTags } from "@/services/webdav/tags";
-import { removeSpecialCharacters } from "@/utils/utils";
 
 type Props = {
   open: boolean;
   handleClose: () => void;
   handleSubmit: (values: PropsAudioSave) => void;
+  pathLocationSave: string;
 };
 
 type MyFormValues = {
@@ -49,7 +49,12 @@ type MyFormValues = {
   tags: string[];
 };
 
-export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }: Props) {
+export default function DialogExtraInfoAudio({
+  open,
+  handleClose,
+  handleSubmit,
+  pathLocationSave = "",
+}: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -57,7 +62,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
   const [changeLocationModal, setChangeLocationModal] = useState(false);
   const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const [availableOffline, setAvailableOffline] = useState(true);
-  const [uploadLocation, setUploadLocation] = useState("");
+  const [uploadLocation, setUploadLocation] = useState(pathLocationSave);
   const { t: c } = useTranslation("common");
 
   const chooseUploadLocationHandle = useCallback((path: string) => {
@@ -139,7 +144,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
             }
             const tagsFiltered = values.tags.map((item: string) => item.toLocaleLowerCase());
             handleSubmit({
-              name: removeSpecialCharacters(values.name),
+              ...values,
               tags: tagsFiltered,
               path: convertUsernameToPrivate(uploadLocation, userRdx.user.id),
               availableOffline,
@@ -167,7 +172,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
                       autoFocus
                       margin="dense"
                       variant="outlined"
-                      autoComplete="new-name"
+                      autoComplete="off"
                       id="name"
                       label={t("recordingFinishLabelForm")}
                       inputProps={{ maxLength: 60 }}

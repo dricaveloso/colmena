@@ -131,7 +131,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                     }
 
                     const conversation = await createNewConversation(room);
-                    const { token } = conversation.data.ocs.data;
+                    const { token, canDeleteConversation } = conversation.data.ocs.data;
 
                     participants.forEach(async (item) => {
                       await addParticipantToConversation(token, item);
@@ -159,7 +159,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
 
                     handleClose();
                     toast(c("honeycombModal.chatRoomSuccess"), "success");
-                    router.push(`/honeycomb/${token}/${room}`);
+                    router.push(`/honeycomb/${token}/${room}/${!canDeleteConversation ? 0 : 1}`);
                   } catch (e) {
                     const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
                     setErrorMessageValidation(msg);
@@ -177,7 +177,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                         {({ field }: FieldProps) => (
                           <TextField
                             id="room"
-                            autoComplete="new-room"
+                            autoComplete="off"
                             label={c("form.fields.name")}
                             variant="outlined"
                             inputProps={{ maxLength: 60 }}

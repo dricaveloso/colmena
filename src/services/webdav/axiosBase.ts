@@ -11,7 +11,7 @@ export default async function axiosBase(
   data: RequestDataPayload | null | {},
   path?: string,
   method = "PROPFIND",
-  extraHeaders: {} = { "Content-Type": "application/xml" },
+  extraHeaders: {} = { "Content-Type": "application/xml; charset=utf-8" },
 ) {
   const { password, id: username } = initializeStore({}).getState().user.user;
 

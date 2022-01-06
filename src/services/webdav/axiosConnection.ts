@@ -11,7 +11,7 @@ export default async function axiosConnection(
   data: RequestDataPayload | null | {},
   context = "systemtags",
   method = "PROPFIND",
-  extraHeaders: {} = { "Content-Type": "application/xml" },
+  extraHeaders: {} = { "Content-Type": "application/xml; charset=utf-8" },
   rootContext = false,
 ) {
   const { password, id: username } = initializeStore({}).getState().user.user;
