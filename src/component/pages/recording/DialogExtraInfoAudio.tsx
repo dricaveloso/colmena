@@ -42,6 +42,7 @@ type Props = {
   handleClose: () => void;
   handleSubmit: (values: PropsAudioSave) => void;
   pathLocationSave: string;
+  discardAudioHandle: () => void;
 };
 
 type MyFormValues = {
@@ -54,6 +55,7 @@ export default function DialogExtraInfoAudio({
   handleClose,
   handleSubmit,
   pathLocationSave = "",
+  discardAudioHandle,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
@@ -104,6 +106,8 @@ export default function DialogExtraInfoAudio({
   }, []);
 
   function prepareUploadPath() {
+    if (pathLocationSave) return pathLocationSave;
+
     const urlOrigin = configRdx.lastTwoPagesAccessed[1];
     let url = "";
 
@@ -253,13 +257,22 @@ export default function DialogExtraInfoAudio({
               </Form>
             </DialogContent>
             <DialogActions>
-              <Button
-                handleClick={submitForm}
-                style={{ margin: 8 }}
-                variant={ButtonVariantEnum.CONTAINED}
-                color={ButtonColorEnum.PRIMARY}
-                title={t("submitButton")}
-              />
+              <Box display="flex" flex="1" flexDirection="row" justifyContent="space-between">
+                <Button
+                  handleClick={discardAudioHandle}
+                  style={{ margin: 8 }}
+                  variant={ButtonVariantEnum.OUTLINED}
+                  color={ButtonColorEnum.SECONDARY}
+                  title={t("discardButton")}
+                />
+                <Button
+                  handleClick={submitForm}
+                  style={{ margin: 8 }}
+                  variant={ButtonVariantEnum.CONTAINED}
+                  color={ButtonColorEnum.PRIMARY}
+                  title={t("submitButton")}
+                />
+              </Box>
             </DialogActions>
           </Dialog>
         )}

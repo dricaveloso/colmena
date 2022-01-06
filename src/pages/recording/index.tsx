@@ -91,9 +91,16 @@ function Recording() {
     dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
   };
 
+  const discardAudio = async () => {
+    await removeLocalFile(audioId, userRdx.user.id);
+    setOpenDialogAudioName(false);
+    setOpenContinueRecording(false);
+    toast(t("audioDiscardedSuccessfully"), "success");
+    dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
+  };
+
   const saveAudioHandle = async (values: PropsAudioSave) => {
     const { name: title, tags, path, availableOffline } = values;
-    setPathLocationSave(path);
     const defaultAudioType = DefaultAudioTypeEnum.type;
     try {
       const filename = `${convertUsernameToPrivate(
@@ -183,6 +190,7 @@ function Recording() {
       } finally {
         setShowBackdrop(false);
       }
+      setPathLocationSave(path);
       setFilename(btoa(filename));
       setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
       setOpenContinueRecording(true);
@@ -298,6 +306,7 @@ function Recording() {
             handleClose={handleCloseExtraInfo}
             handleSubmit={saveAudioHandle}
             pathLocationSave={pathLocationSave}
+            discardAudioHandle={discardAudio}
           />
         )}
         <Backdrop open={showBackdrop} />
