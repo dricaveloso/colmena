@@ -70,7 +70,9 @@ export default function Waves({ blob, config = undefined, play = false }: Props)
         wavesurfer?.current.loadBlob(blob);
 
         wavesurfer?.current.on("ready", () => {
-          wavesurfer?.current?.play();
+          if (play) {
+            wavesurfer?.current?.play();
+          }
         });
 
         wavesurfer?.current.on("error", (error: string) => {
