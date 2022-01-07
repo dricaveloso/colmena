@@ -143,7 +143,7 @@ export default function FormProfile() {
               {({ field }: FieldProps) => (
                 <TextField
                   id="email"
-                  autoComplete="off"
+                  autoComplete="nope"
                   label={t("emailField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required

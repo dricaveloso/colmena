@@ -152,7 +152,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                         label={c("form.placeholderCurrentPassword")}
                         variant="outlined"
                         type="password"
-                        autoComplete="off"
+                        autoComplete="nope"
                         {...field}
                       />
                     )}
@@ -168,7 +168,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                         type="password"
                         label={c("form.placeholderNewPassword")}
                         variant="outlined"
-                        autoComplete="off"
+                        autoComplete="nope"
                         {...field}
                       />
                     )}
