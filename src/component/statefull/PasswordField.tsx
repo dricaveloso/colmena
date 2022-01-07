@@ -51,7 +51,12 @@ function PasswordField({
         value={values.password}
         onChange={handleChange("password")}
         fullWidth
-        autoComplete={`new-${name}`}
+        inputProps={{
+          autocomplete: "off",
+          form: {
+            autocomplete: "off",
+          },
+        }}
         required={required}
         label={label}
         placeholder={placeholder}

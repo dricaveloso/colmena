@@ -18,6 +18,7 @@ import { userUpdate } from "@/store/actions/users/index";
 import { UserInfoInterface, MediaInfoInterface, UserProfileInterface } from "@/interfaces/index";
 import Box from "@material-ui/core/Box";
 import { listFile } from "@/services/webdav/files";
+import { v4 as uuid } from "uuid";
 
 type MyFormValues = {
   emlLogin: string;
@@ -155,9 +156,14 @@ export default function WrapperForm() {
             <Field name="emlLogin" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
-                  id="emlLogin"
+                  id={uuid()}
                   label={c("form.placeholderEmail")}
-                  autoComplete="off"
+                  inputProps={{
+                    autocomplete: "off",
+                    form: {
+                      autocomplete: "off",
+                    },
+                  }}
                   variant={SelectVariantEnum.OUTLINED}
                   fullWidth
                   {...field}

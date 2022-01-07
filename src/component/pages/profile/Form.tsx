@@ -109,7 +109,12 @@ export default function FormProfile() {
               {({ field }: FieldProps) => (
                 <TextField
                   id="user_name"
-                  autoComplete="off"
+                  inputProps={{
+                    autocomplete: "off",
+                    form: {
+                      autocomplete: "off",
+                    },
+                  }}
                   label={t("nameField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
@@ -126,7 +131,12 @@ export default function FormProfile() {
               {({ field }: FieldProps) => (
                 <TextField
                   id="lastname"
-                  autoComplete="off"
+                  inputProps={{
+                    autocomplete: "off",
+                    form: {
+                      autocomplete: "off",
+                    },
+                  }}
                   label={t("lastnameField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
@@ -144,16 +154,23 @@ export default function FormProfile() {
                 <TextField
                   id="emlUser"
                   type="email"
-                  autoComplete="new-emlUser"
                   label={t("emailField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
+                  inputProps={{
+                    autocomplete: "off",
+                    form: {
+                      autocomplete: "off",
+                    },
+                  }}
                   fullWidth
                   {...field}
                 />
               )}
             </Field>
-            {errors.email && touched.email ? <ErrorMessageForm message={errors.email} /> : null}
+            {errors.emlUser && touched.emlUser ? (
+              <ErrorMessageForm message={errors.emlUser} />
+            ) : null}
             <Divider marginTop={20} />
             <div className={classes.marginInputDivs}>
               <div className="marginTop15">
