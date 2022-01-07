@@ -17,6 +17,10 @@ export function remove(id, userId) {
   return db.files.where({ id, userId }).delete();
 }
 
+export function removeByNextCloudId(nextCloudId, userId) {
+  return db.files.where({ nextCloudId, userId }).delete();
+}
+
 export function updateFile(id, data) {
   return db.files.update(id, data);
 }

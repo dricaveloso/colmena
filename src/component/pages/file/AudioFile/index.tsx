@@ -24,27 +24,29 @@ export default function AudioFile({ filename, data }: Props) {
   const [blob, setBlob] = useState<Blob | null>(null);
   const { t } = useTranslation("file");
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const blobResult: any = await listFile(userRdx.user.id, filename);
-        const blob = arrayBufferToBlob(blobResult);
-        setBlob(blob);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setLoading(false);
-      }
+  const getListFile = async () => {
+    try {
+      setLoading(true);
+      const blobResult: any = await listFile(userRdx.user.id, filename);
+      const blob = arrayBufferToBlob(blobResult);
+      setBlob(blob);
+      console.log(blob);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      return () => {
-        setBlob(null);
-        setLoading(false);
-      };
-    })();
+  useEffect(() => {
+    getListFile();
   }, []);
+
   return (
-    <Section title={t("audioTitle")} secondaryAction={<ContextMenuFile blob={blob} data={data} />}>
+    <Section
+      title={t("audioTitle")}
+      secondaryAction={<ContextMenuFile filename={filename} blob={blob} data={data} />}
+    >
       {loading ? (
         <Box display="flex" flex={1} flexDirection="row" justifyContent="space-between">
           <Skeleton variant="circle" style={{ marginRight: 10 }} width={60} height={60} />
