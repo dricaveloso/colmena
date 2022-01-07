@@ -113,7 +113,12 @@ export default function InputSendMessage({ handleSendMessage, token }: Props) {
                     variant="outlined"
                     placeholder={c("typeYourMessage")}
                     type="text"
-                    autoComplete="off"
+                    inputProps={{
+                      autocomplete: "off",
+                      form: {
+                        autocomplete: "off",
+                      },
+                    }}
                     style={{ fontSize: 12 }}
                     fullWidth
                     {...field}

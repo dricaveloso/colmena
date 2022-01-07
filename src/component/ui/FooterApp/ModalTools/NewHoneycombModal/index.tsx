@@ -177,10 +177,15 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                         {({ field }: FieldProps) => (
                           <TextField
                             id="room"
-                            autoComplete="off"
+                            inputProps={{
+                              maxLength: 60,
+                              autocomplete: "off",
+                              form: {
+                                autocomplete: "off",
+                              },
+                            }}
                             label={c("form.fields.name")}
                             variant="outlined"
-                            inputProps={{ maxLength: 60 }}
                             {...field}
                           />
                         )}
