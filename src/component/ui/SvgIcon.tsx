@@ -1110,6 +1110,32 @@ function SvgIconAux({
       ),
     });
 
+    items.set("html_tag", {
+      viewBox: "0 0 18 10",
+      path: () => (
+        <g fill="none">
+          <path
+            d="M11.34 8.83333L15.48 5L11.34 1.16667L12.6 0L18 5L12.6 10L11.34 8.83333ZM6.66 8.83333L2.52 5L6.66 1.16667L5.4 0L0 5L5.4 10L6.66 8.83333Z"
+            fill={htmlColor}
+          />
+        </g>
+      ),
+    });
+
+    items.set("trash", {
+      viewBox: "0 0 13 15",
+      path: () => (
+        <g fill="none">
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M9.25 2.375H12.625V3.5H11.5V13.625L10.375 14.75H2.5L1.375 13.625V3.5H0.25V2.375H3.625V1.25C3.625 0.951631 3.74353 0.665483 3.9545 0.454505C4.16548 0.243526 4.45163 0.125 4.75 0.125H8.125C8.42337 0.125 8.70952 0.243526 8.9205 0.454505C9.13147 0.665483 9.25 0.951631 9.25 1.25V2.375ZM8.125 1.25H4.75V2.375H8.125V1.25ZM2.5 13.625H10.375V3.5H2.5V13.625ZM4.75 4.625H3.625V12.5H4.75V4.625ZM5.875 4.625H7V12.5H5.875V4.625ZM8.125 4.625H9.25V12.5H8.125V4.625Z"
+            fill={htmlColor}
+          />
+        </g>
+      ),
+    });
+
     if (!items.has(icon)) return undefined;
 
     return items.get(icon);
@@ -1130,4 +1156,5 @@ function SvgIconAux({
     </SvgIcon>
   );
 }
+
 export default SvgIconAux;

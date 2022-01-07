@@ -222,3 +222,8 @@ export interface VerticalItemListInterface {
   environment: Environment;
   size?: number;
 }
+
+export interface TagInterface {
+  id: number;
+  tag: string;
+}
