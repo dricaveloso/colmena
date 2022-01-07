@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import Modal from "@/components/ui/Modal";
 import TextField from "@material-ui/core/TextField";
 import Button from "@/components/ui/Button";
 import { createDirectory, existDirectory } from "@/services/webdav/directories";
@@ -29,18 +27,7 @@ import LibraryModal from "@/components/ui/LibraryModal";
 import { LibraryItemInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: { margin: theme.spacing(0, 0, 4, 0) },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(4),
-  },
+const useStyles = makeStyles(() => ({
   form: {
     "& .MuiTextField-root": {
       width: "100%",
@@ -150,93 +137,75 @@ export default function NewFolderModal({ open, handleClose }: Props) {
 
   return (
     <>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h4 id="transition-modal-title" className={classes.title}>
-              {t("addFolderTitle")}
-            </h4>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={NewFolderSchema}
-              onSubmit={handleSubmit}
+      <Modal title={t("addFolderTitle")} handleClose={handleClose} open={open}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={NewFolderSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ setFieldValue, submitForm }: any) => (
+            <Form
+              className={classes.form}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  submitForm();
+                }
+              }}
             >
-              {({ setFieldValue, submitForm }: any) => (
-                <Form
-                  className={classes.form}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      submitForm();
+              <Field name="folderName" InputProps={{ notched: true }}>
+                {({ field }: FieldProps) => (
+                  <TextField
+                    id="outlined-search"
+                    autoComplete="new-folderName"
+                    label={t("form.fields.name")}
+                    variant="outlined"
+                    inputProps={{ maxLength: 60 }}
+                    {...field}
+                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+                      setFieldValue("folderName", treatName(event.target.value))
                     }
-                  }}
-                >
-                  <Field name="folderName" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <TextField
-                        id="outlined-search"
-                        autoComplete="new-folderName"
-                        label={t("form.fields.name")}
-                        variant="outlined"
-                        inputProps={{ maxLength: 60 }}
-                        {...field}
-                        onChange={(
-                          event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-                        ) => setFieldValue("folderName", treatName(event.target.value))}
-                        onKeyUp={(event: any) => handleName(event.target.value)}
-                      />
-                    )}
-                  </Field>
-                  <ErrorMessage name="folderName">
-                    {(msg) => <ErrorMessageForm message={msg} />}
-                  </ErrorMessage>
-                  <Divider marginTop={20} />
-                  <Box
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    paddingLeft={1}
-                    paddingTop={1}
-                  >
-                    <Box display="flex" flexDirection="column">
-                      <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold" }}>
-                        {t("form.location")}
-                      </Text>
-                      <Text variant={TextVariantEnum.BODY2}>{`/${finalPath}`}</Text>
-                    </Box>
-                    <Button
-                      handleClick={() => setOpenLibrary(true)}
-                      style={{ margin: 8 }}
-                      variant={ButtonVariantEnum.TEXT}
-                      color={ButtonColorEnum.PRIMARY}
-                      title={t("changeLocationButton")}
-                      size={ButtonSizeEnum.SMALL}
-                    />
-                  </Box>
-                  <Divider marginTop={20} />
-                  <Button
-                    title={t("form.create")}
-                    type="submit"
-                    className={classes.submit}
-                    disabled={isLoading}
-                    isLoading={isLoading}
+                    onKeyUp={(event: any) => handleName(event.target.value)}
                   />
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </Fade>
+                )}
+              </Field>
+              <ErrorMessage name="folderName">
+                {(msg) => <ErrorMessageForm message={msg} />}
+              </ErrorMessage>
+              <Divider marginTop={20} />
+              <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+                paddingLeft={1}
+                paddingTop={1}
+              >
+                <Box display="flex" flexDirection="column">
+                  <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold" }}>
+                    {t("form.location")}
+                  </Text>
+                  <Text variant={TextVariantEnum.BODY2}>{`/${finalPath}`}</Text>
+                </Box>
+                <Button
+                  handleClick={() => setOpenLibrary(true)}
+                  style={{ margin: 8 }}
+                  variant={ButtonVariantEnum.TEXT}
+                  color={ButtonColorEnum.PRIMARY}
+                  title={t("changeLocationButton")}
+                  size={ButtonSizeEnum.SMALL}
+                />
+              </Box>
+              <Divider marginTop={20} />
+              <Button
+                title={t("form.create")}
+                type="submit"
+                className={classes.submit}
+                disabled={isLoading}
+                isLoading={isLoading}
+              />
+            </Form>
+          )}
+        </Formik>
       </Modal>
       <LibraryModal
         title={t("changeLocationModalTitle")}
