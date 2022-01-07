@@ -80,3 +80,15 @@ export function addParticipantToConversation(
     source: "users",
   });
 }
+
+export async function findTokenChatByPath(path: string): Promise<string | false> {
+  const arr = path.split("/");
+  const tokenName = arr[0];
+  const response = await getUsersConversationsAxios();
+  const rooms = response.data.ocs.data;
+  const token = rooms.find((item) => item.name === tokenName)?.token;
+
+  if (!token) return false;
+
+  return token;
+}

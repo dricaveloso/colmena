@@ -24,6 +24,14 @@ export function localPaths(): Array<string> {
   return [getAudioPath()];
 }
 
+export function isPanal(path: string): boolean {
+  const pathSplited = removeFirstSlash(path).split("/");
+  const initialFolder = pathSplited[0];
+  const ignorePaths = [PRIVATE_PATH, PUBLIC_PATH];
+
+  return !ignorePaths.includes(initialFolder);
+}
+
 export function hasLocalPath(path: string | undefined | null): boolean {
   if (localPaths().includes(removeFirstSlash(path))) {
     return true;
