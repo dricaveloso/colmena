@@ -109,7 +109,7 @@ export default function FormProfile() {
               {({ field }: FieldProps) => (
                 <TextField
                   id="user_name"
-                  autoComplete="new-user_name"
+                  autoComplete="off"
                   label={t("nameField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
@@ -126,7 +126,7 @@ export default function FormProfile() {
               {({ field }: FieldProps) => (
                 <TextField
                   id="lastname"
-                  autoComplete="new-lastname"
+                  autoComplete="off"
                   label={t("lastnameField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
@@ -143,7 +143,7 @@ export default function FormProfile() {
               {({ field }: FieldProps) => (
                 <TextField
                   id="email"
-                  autoComplete="new-email"
+                  autoComplete="off"
                   label={t("emailField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
