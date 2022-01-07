@@ -138,6 +138,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
             >
               {({ submitForm, isSubmitting, errors, touched }: any) => (
                 <Form
+                  autoComplete="off"
                   className={classes.form}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -152,7 +153,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                         label={c("form.placeholderCurrentPassword")}
                         variant="outlined"
                         type="password"
-                        autoComplete="nope"
+                        autoComplete="new-currentPassword"
                         {...field}
                       />
                     )}
@@ -168,7 +169,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                         type="password"
                         label={c("form.placeholderNewPassword")}
                         variant="outlined"
-                        autoComplete="nope"
+                        autoComplete="new-newPassword"
                         {...field}
                       />
                     )}
