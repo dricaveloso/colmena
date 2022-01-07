@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-cycle
 import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
 import React from "react";
-import { ListTypeEnum } from "../enums";
+import { LanguageEnum, ListTypeEnum } from "../enums";
 
 export interface I18nInterface {
   locale: string;
@@ -174,6 +174,7 @@ export interface LibraryItemInterface {
   image?: string;
   mime?: string;
   size?: number;
+  language?: LanguageEnum;
 }
 
 export interface LibraryCardItemInterface extends LibraryItemInterface {

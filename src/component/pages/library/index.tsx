@@ -8,7 +8,7 @@ import {
   LibraryItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { listLibraryDirectories } from "@/services/webdav/directories";
+import { listDirectoriesWithTags, listLibraryDirectories } from "@/services/webdav/directories";
 import { FileStat } from "webdav";
 import { getFilesByPath } from "@/store/idb/models/files";
 import { makeStyles } from "@material-ui/core";
@@ -24,7 +24,6 @@ import {
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 import { setCurrentAudioPlaying } from "@/store/actions/library";
-// import { getDataFile } from "@/services/webdav/files";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -67,7 +66,6 @@ function setCurrentItem(
 }
 
 export function getCurrentItem(): null | LibraryItemInterface {
-  console.log(currentItem);
   return currentItem;
 }
 
@@ -201,12 +199,15 @@ export async function filterLanguage(language: string, items: Array<LibraryItemI
     return items;
   }
 
-  /* try {
-    const result: any = await getDataFile(convertUsernameToPrivate(currentPath));
-    console.log(currentPath, result);
-  } catch (e) {
-    console.log(e);
-  } */
+  const currentItem = getCurrentItem();
+  if (currentItem) {
+    try {
+      const result: any = await listDirectoriesWithTags(currentItem.id);
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return items.filter((item: LibraryItemInterface) => item.language === language);
 }
