@@ -174,6 +174,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
             >
               {({ setFieldValue, submitForm }: any) => (
                 <Form
+                  autoComplete="off"
                   className={classes.form}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {

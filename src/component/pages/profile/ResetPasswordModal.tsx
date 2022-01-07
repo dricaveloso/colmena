@@ -19,7 +19,6 @@ import { userInfoUpdate } from "@/store/actions/users";
 import BackdropModal from "@/components/ui/Backdrop";
 import { signOut } from "next-auth/client";
 import { useRouter } from "next/router";
-import { v4 as uuid } from "uuid";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -138,6 +137,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
             >
               {({ submitForm, isSubmitting, errors, touched }: any) => (
                 <Form
+                  autoComplete="off"
                   className={classes.form}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -148,11 +148,11 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                   <Field name="currentPassword" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
-                        id={uuid()}
+                        id="currentPassword"
                         label={c("form.placeholderCurrentPassword")}
                         variant="outlined"
                         type="password"
-                        autoComplete="nope"
+                        autoComplete="new-currentPassword"
                         {...field}
                       />
                     )}
@@ -164,11 +164,11 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                   <Field name="newPassword" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
-                        id={uuid()}
+                        id="newPassword"
                         type="password"
                         label={c("form.placeholderNewPassword")}
                         variant="outlined"
-                        autoComplete="nope"
+                        autoComplete="new-newPassword"
                         {...field}
                       />
                     )}

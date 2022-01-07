@@ -170,7 +170,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
               }}
             >
               {({ submitForm, isSubmitting, errors, touched, values }: any) => (
-                <Form className={classes.form}>
+                <Form className={classes.form} autoComplete="off">
                   {step === 1 && (
                     <>
                       <Field name="room" InputProps={{ notched: true }}>

@@ -122,7 +122,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
             <>
               <DialogContent>
                 <DialogContentText>{t("descriptionModalDialogInvite")}</DialogContentText>
-                <Form>
+                <Form autoComplete="off">
                   <Field name="name" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
@@ -142,7 +142,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                     {({ field }: FieldProps) => (
                       <TextField
                         margin="dense"
-                        autoComplete="nope"
+                        autoComplete="off"
                         id="emailCol"
                         label={t("placeholderEmail")}
                         type="email"
