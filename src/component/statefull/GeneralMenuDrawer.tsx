@@ -109,6 +109,12 @@ function DrawerAux({ open, onClose }: Props) {
     },
     {
       id: uuid(),
+      icon: <SvgIcon icon="html_tag" fontSize={iconSize} htmlColor={iconColor} />,
+      title: t("tagsTitle"),
+      url: "/tags",
+    },
+    {
+      id: uuid(),
       icon: <SvgIcon icon="user" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("userProfileTitle"),
       url: "/profile",
