@@ -110,6 +110,12 @@ export default function RenameItemModal({
           throw new Error(l("messages.unableToCompleteRequest"));
         }
 
+        if (type === "directory") {
+          toast(l("messages.directorySuccessfullyRenamed"), "success");
+        } else {
+          toast(l("messages.fileSuccessfullyRenamed"), "success");
+        }
+
         dispatch(editLibraryFile({ id, filename: finalPath, basename: name }));
         setIsLoading(false);
         handleOpen(false);

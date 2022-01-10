@@ -119,7 +119,11 @@ export default function Upload({ open, handleClose }: Props) {
       formRef.current.reset();
     }
 
-    router.push(`/library/${removeFirstSlash(handledPath())}`);
+    const timer = 5000;
+    toast(t("messages.fileUploadedSuccessfully"), "success", { timer });
+    setTimeout(() => {
+      router.push(`/library/${removeFirstSlash(handledPath())}`);
+    }, timer);
   };
 
   const uploadFile = async (file: File) => {
@@ -186,6 +190,14 @@ export default function Upload({ open, handleClose }: Props) {
     return null;
   };
 
+  const footerActions = (item: LibraryItemInterface) => (
+    <Button
+      handleClick={() => handleChangeLocation(item.aliasFilename)}
+      title={t("changeLocationButton")}
+      size={ButtonSizeEnum.SMALL}
+    />
+  );
+
   const handleChangeLocation = (path: string) => {
     setPath(path);
     setOpenLibrary(false);
@@ -240,6 +252,7 @@ export default function Upload({ open, handleClose }: Props) {
         handleClose={() => setOpenLibrary(false)}
         open={openLibrary}
         options={libraryOptions}
+        footerActions={footerActions}
       />
       {showConfirmCancel && (
         <ActionConfirm
