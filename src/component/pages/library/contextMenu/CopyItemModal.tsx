@@ -3,7 +3,12 @@ import LibraryModal from "@/components/ui/LibraryModal";
 import Button from "@/components/ui/Button";
 import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
 import { ButtonSizeEnum, EnvironmentEnum } from "@/enums/*";
-import { convertPrivateToUsername, getPrivatePath, pathIsInFilename } from "@/utils/directory";
+import {
+  convertPrivateToUsername,
+  getPrivatePath,
+  isPanal,
+  pathIsInFilename,
+} from "@/utils/directory";
 import { copyFile, getUniqueName } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
@@ -12,6 +17,7 @@ import { useRouter } from "next/router";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "react-i18next";
 import { createFile, getFile } from "@/store/idb/models/files";
+import { share } from "@/services/share/share";
 
 type Props = {
   open: boolean;
@@ -77,6 +83,11 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
           }
 
           if (copy) {
+            console.log(item.filename, cardItem.filename);
+            if (isPanal(item.filename)) {
+              await share(item.filename, cardItem.filename);
+            }
+
             router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
           }
         }
