@@ -1,4 +1,8 @@
-import { RoomItemInterface, ChatMessageItemInterface } from "@/interfaces/talk";
+import {
+  RoomItemInterface,
+  ChatMessageItemInterface,
+  MessageBlockLoadInterface,
+} from "@/interfaces/talk";
 import {
   SET_HONEYCOMBS,
   ADD_HONEYCOMB,
@@ -6,19 +10,26 @@ import {
   REMOVE_HONEYCOMB,
   SET_CHAT_LIST,
   ADD_CHAT_MESSAGE,
+  ADD_BLOCK_ID_CHAT_CONTROL,
+  REMOVE_BLOCK_ID_CHAT_CONTROL_BY_TOKEN,
+  RELOAD_CHAT_LOCAL_MESSAGES,
 } from "@/store/actions/index";
 
 type initialStateProps = {
   honeycombs: RoomItemInterface[];
   chatMessages: ChatMessageItemInterface[];
+  chatMessagesBlockLoad: MessageBlockLoadInterface[];
+  reloadChatLocalMessage: boolean;
 };
 
-const initialState: initialStateProps = {
+const myInitialState: initialStateProps = {
   honeycombs: [],
   chatMessages: [],
+  chatMessagesBlockLoad: [],
+  reloadChatLocalMessage: false,
 };
 
-const reducer = (state = initialState, action: any) => {
+const reducer = (state = myInitialState, action: any) => {
   switch (action.type) {
     case SET_HONEYCOMBS: {
       let result = action.honeycombs;
@@ -50,6 +61,23 @@ const reducer = (state = initialState, action: any) => {
         honeycombs: state.honeycombs.filter(
           (item: RoomItemInterface) => item.id !== action.honeycomb.id,
         ),
+      };
+    case REMOVE_BLOCK_ID_CHAT_CONTROL_BY_TOKEN:
+      return {
+        ...state,
+        chatMessagesBlockLoad: state.chatMessagesBlockLoad.filter(
+          (item: MessageBlockLoadInterface) => item.token !== action.token,
+        ),
+      };
+    case ADD_BLOCK_ID_CHAT_CONTROL:
+      return {
+        ...state,
+        chatMessagesBlockLoad: state.chatMessagesBlockLoad.concat(action.blockIdControl),
+      };
+    case RELOAD_CHAT_LOCAL_MESSAGES:
+      return {
+        ...state,
+        reloadChatLocalMessage: action.reload,
       };
     default:
       return state;

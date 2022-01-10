@@ -26,9 +26,10 @@ type WaveProps = {
 type Props = {
   blob: Blob | null;
   config?: WaveProps | undefined;
+  play?: boolean;
 };
 
-export default function Waves({ blob, config = undefined }: Props) {
+export default function Waves({ blob, config = undefined, play = false }: Props) {
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
 
@@ -53,24 +54,33 @@ export default function Waves({ blob, config = undefined }: Props) {
         wavesurfer.current.destroy();
       }
     };
-  }, []);
+  }, [blob]);
+
+  useEffect(() => {
+    if (play) wavesurfer?.current?.play();
+    else wavesurfer?.current?.pause();
+  }, [play]);
 
   const create = async () => {
     try {
       const WaveSurfer = (await import("wavesurfer.js")).default;
+      if (blob) {
+        const options = formWaveSurferOptions(waveformRef.current);
+        wavesurfer.current = WaveSurfer.create(options);
+        wavesurfer?.current.loadBlob(blob);
 
-      const options = formWaveSurferOptions(waveformRef.current);
-      wavesurfer.current = WaveSurfer.create(options);
-      wavesurfer?.current.loadBlob(blob);
+        wavesurfer?.current.on("ready", () => {
+          if (play) {
+            wavesurfer?.current?.play();
+          }
+        });
 
-      wavesurfer?.current.on("ready", () => {
-        wavesurfer?.current?.play();
-      });
-
-      wavesurfer?.current.on("error", (error: string) => {
-        toast(error, "error");
-      });
+        wavesurfer?.current.on("error", (error: string) => {
+          toast(error, "error");
+        });
+      }
     } catch (e) {
+      // console.log(e);
       // error container element not found
     }
   };

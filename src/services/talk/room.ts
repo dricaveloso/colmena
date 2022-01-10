@@ -22,12 +22,20 @@ export function getUsersConversations(options?: {}): RoomListInterface {
   return useTalkFetch(version)(`/room${responseFormat}`, {}, options);
 }
 
+export function getUsersConversationsAxios(): Promise<RoomListInterface> {
+  return talkInstance(version).get(`room${responseFormat}`);
+}
+
 export function getOpenConversations(): RoomListInterface {
   return useTalkFetch(version)(`/listed-room${responseFormat}`);
 }
 
 export function getSingleConversation(token: string): RoomInterface {
   return useTalkFetch(version)(`/room/${token + responseFormat}`);
+}
+
+export function getSingleConversationAxios(token: string): Promise<RoomInterface> {
+  return talkInstance(version).get(`/room/${token + responseFormat}`);
 }
 
 export function getRoomParticipants(token: string, options?: {}): RoomParticipantsInterface {

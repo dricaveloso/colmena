@@ -255,7 +255,7 @@ export async function setDataFile(data: FileDataNCInterface, path: string) {
         <d:prop>`;
 
   Object.keys(data).forEach((item: CustomFieldsFileDataProps) => {
-    body += `<oc:${item}>${data[item]}</oc:${item}>`;
+    body += `<oc:${item}>${encodeURIComponent(String(data[item]))}</oc:${item}>`;
   });
 
   body += `<oc:created-at>${new Date().toISOString()}</oc:created-at></d:prop>
@@ -266,7 +266,7 @@ export async function setDataFile(data: FileDataNCInterface, path: string) {
     body,
     `files/${removeCornerSlash(path)}`,
     "PROPPATCH",
-    { "Content-Type": "application/xml" },
+    { "Content-Type": "application/xml; charset=utf-8" },
     true,
   );
   if (typeof result.multistatus.response[0].propstat.prop === "object") {

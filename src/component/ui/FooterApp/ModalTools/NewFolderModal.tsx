@@ -156,10 +156,15 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                 {({ field }: FieldProps) => (
                   <TextField
                     id="outlined-search"
-                    autoComplete="new-folderName"
+                    inputProps={{
+                      maxLength: 60,
+                      autocomplete: "off",
+                      form: {
+                        autocomplete: "off",
+                      },
+                    }}
                     label={t("form.fields.name")}
                     variant="outlined"
-                    inputProps={{ maxLength: 60 }}
                     {...field}
                     onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
                       setFieldValue("folderName", treatName(event.target.value))

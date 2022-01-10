@@ -8,22 +8,23 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@/components/ui/IconButton";
 import theme from "@/styles/theme";
 import { useDispatch, useSelector } from "react-redux";
-import { addChatMessage } from "@/store/actions/honeycomb";
-import { ChatMessageItemInterface } from "@/interfaces/talk";
+import { ChatMessageItemInterfaceCustom } from "@/interfaces/talk";
 import { PropsUserSelector } from "@/types/index";
-// import NotificationContext from "@/store/context/notification-context";
-// import { NotificationStatusEnum } from "@/enums/*";
+import { addSingleMessage } from "@/store/idb/models/chat";
+// import { reloadChatLocalMessages } from "@/store/actions/honeycomb";
+import { addBlockIDChatControl } from "@/store/actions/honeycomb/index";
+import { v4 as uuid } from "uuid";
 
 type MyFormValues = {
   message: string;
 };
 
 type Props = {
-  handleSendMessage: (message: string) => void;
+  token: string;
+  handleSendMessage: (message: string, referenceId: string) => void;
 };
 
-export default function InputSendMessage({ handleSendMessage }: Props) {
-  // const notificationCtx = useContext(NotificationContext);
+export default function InputSendMessage({ handleSendMessage, token }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
@@ -40,7 +41,7 @@ export default function InputSendMessage({ handleSendMessage }: Props) {
     <Box
       position="fixed"
       flexDirection="row"
-      bottom={0}
+      bottom={42}
       left={0}
       width="98%"
       marginTop={1}
@@ -53,28 +54,31 @@ export default function InputSendMessage({ handleSendMessage }: Props) {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting, resetForm }: any) => {
-          setSubmitting(true);
-          const { message } = values;
           (async () => {
-            try {
-              const messageObj: ChatMessageItemInterface = {
-                actorType: "users",
-                actorId: userRdx.user.id,
-                actorDisplayName: userRdx.user.name,
-                timestamp: new Date().getTime() / 1000,
-                message,
-                systemMessage: "",
-                messageType: "comment",
-              };
-              dispatch(addChatMessage(messageObj));
-              handleSendMessage(message);
-            } catch (e) {
-              console.log(e);
-            } finally {
-              setSubmitting(false);
-              resetForm();
-            }
+            setSubmitting(true);
+            const referenceId = uuid();
+            const { message } = values;
+            const messageObj: ChatMessageItemInterfaceCustom = {
+              token,
+              actorType: "users",
+              actorId: userRdx.user.id,
+              actorDisplayName: userRdx.user.name,
+              timestamp: new Date().getTime() / 1000,
+              message,
+              systemMessage: "",
+              messageType: "comment",
+              referenceId,
+            };
+            await addSingleMessage(messageObj);
+            // dispatch(addChatMessage(messageObj));
+            dispatch(
+              addBlockIDChatControl({ blockBeginID: referenceId, blockEndID: referenceId, token }),
+            );
+            await handleSendMessage(message, referenceId);
+            // dispatch(reloadChatLocalMessages(true));
+            setSubmitting(false);
           })();
+          resetForm();
         }}
       >
         {({ submitForm, isSubmitting }: any) => (
@@ -109,6 +113,12 @@ export default function InputSendMessage({ handleSendMessage }: Props) {
                     variant="outlined"
                     placeholder={c("typeYourMessage")}
                     type="text"
+                    inputProps={{
+                      autocomplete: "off",
+                      form: {
+                        autocomplete: "off",
+                      },
+                    }}
                     style={{ fontSize: 12 }}
                     fullWidth
                     {...field}

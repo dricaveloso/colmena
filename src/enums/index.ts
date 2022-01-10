@@ -179,3 +179,7 @@ export enum BadgeVariantEnum {
   WARNING = "warning",
   INFO = "info",
 }
+
+export enum DirectoryNamesNCEnum {
+  TALK = "Talk",
+}

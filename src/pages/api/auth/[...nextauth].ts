@@ -7,29 +7,12 @@ import Providers from "next-auth/providers";
 import axios from "axios";
 import constants from "../../../constants";
 import { searchByTerm } from "../../../utils/utils";
-import {
-  // AppPasswordInterface,
-  UserInfoInterface,
-  // CapabilitiesInfoInterface,
-} from "../../../interfaces/ocs";
-// import { ErrorAuthEnum } from "../../../enums";
+import { UserInfoInterface } from "../../../interfaces/ocs";
 import getConfig from "next/config";
 
 const { serverRuntimeConfig } = getConfig();
 
 const baseUrl = `${serverRuntimeConfig.api.baseUrl}/ocs/v2.php`;
-
-// function getAppPassword(email: string, password: string): Promise<AppPasswordInterface> {
-//   return axios.get(`${baseUrl}/core/getapppassword`, {
-//     auth: {
-//       username: email,
-//       password,
-//     },
-//     headers: {
-//       "OCS-APIRequest": true,
-//     },
-//   });
-// }
 
 function getUserInfo(email: string, password: string): Promise<UserInfoInterface> {
   return axios.get(`${baseUrl}/cloud/user?format=json`, {
@@ -105,7 +88,6 @@ export default NextAuth({
     // Note: This option is ignored if using JSON Web Tokens
     // updateAge: 24 * 60 * 60, // 24 hours
   },
-
   callbacks: {
     // async signIn(user, account, profile) {
     //   console.log("EEI", user, account, profile);

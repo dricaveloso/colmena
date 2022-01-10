@@ -18,10 +18,11 @@ import { userUpdate } from "@/store/actions/users/index";
 import { UserInfoInterface, MediaInfoInterface, UserProfileInterface } from "@/interfaces/index";
 import Box from "@material-ui/core/Box";
 import { listFile } from "@/services/webdav/files";
+import { v4 as uuid } from "uuid";
 
 type MyFormValues = {
-  email: string;
-  password: string;
+  emlLogin: string;
+  psdLogin: string;
 };
 
 export default function WrapperForm() {
@@ -41,19 +42,19 @@ export default function WrapperForm() {
   }
 
   const ValidationSchema = Yup.object().shape({
-    email: Yup.string()
+    emlLogin: Yup.string()
       .transform(trimEmail)
       .email(c("form.invalidEmailTitle"))
       .required(c("form.requiredTitle")),
-    password: Yup.string()
+    psdLogin: Yup.string()
       .min(6, c("form.passwordMinLengthTitle", { size: 6 }))
       .max(30, c("form.passwordMaxLengthTitle", { size: 30 }))
       .required(c("form.requiredTitle")),
   });
 
   const initialValues: MyFormValues = {
-    email: "",
-    password: "",
+    emlLogin: "",
+    psdLogin: "",
   };
 
   const navigateToForgotPassword = () => {
@@ -66,7 +67,7 @@ export default function WrapperForm() {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          const { password, email: emailv } = values;
+          const { psdLogin: password, emlLogin: emailv } = values;
           const email = emailv.trim();
           setSubmitting(true);
           (async () => {
@@ -144,6 +145,7 @@ export default function WrapperForm() {
       >
         {({ submitForm, isSubmitting, setFieldValue, errors, touched }: any) => (
           <Form
+            autoComplete="off"
             style={{ width: "100%" }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -151,34 +153,42 @@ export default function WrapperForm() {
               }
             }}
           >
-            <Field name="email" InputProps={{ notched: true }}>
+            <Field name="emlLogin" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
-                  id="email"
+                  id={uuid()}
                   label={c("form.placeholderEmail")}
+                  inputProps={{
+                    autoComplete: "off",
+                    form: {
+                      autoComplete: "off",
+                    },
+                  }}
                   variant={SelectVariantEnum.OUTLINED}
                   fullWidth
                   {...field}
                 />
               )}
             </Field>
-            {errors.email && touched.email ? <ErrorMessageForm message={errors.email} /> : null}
+            {errors.emlLogin && touched.emlLogin ? (
+              <ErrorMessageForm message={errors.emlLogin} />
+            ) : null}
             <Divider marginTop={20} />
-            <Field name="password" InputProps={{ notched: true }}>
+            <Field name="psdLogin" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <PasswordField
                   label={c("form.placeholderPassword")}
                   placeholder={c("form.placeholderPassword")}
                   handleChangePassword={(value: string) => {
-                    setFieldValue("password", value);
+                    setFieldValue("psdLogin", value);
                   }}
                   required
                   {...field}
                 />
               )}
             </Field>
-            {errors.password && touched.password ? (
-              <ErrorMessageForm message={errors.password} />
+            {errors.psdLogin && touched.psdLogin ? (
+              <ErrorMessageForm message={errors.psdLogin} />
             ) : null}
             <Divider marginTop={20} />
             {isSubmitting && <LinearProgress />}

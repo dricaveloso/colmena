@@ -34,7 +34,7 @@ type Props = {
 
 type MyFormValues = {
   name: string;
-  email: string;
+  emailCol: string;
   group: string;
   permission: string;
 };
@@ -47,14 +47,14 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
-    email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
+    emailCol: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
     group: Yup.string().required(c("form.requiredTitle")),
     permission: Yup.string().required(c("form.requiredTitle")),
   });
 
   const initialValues: MyFormValues = {
     name: "",
-    email: "",
+    emailCol: "",
     group: "",
     permission: "",
   };
@@ -81,7 +81,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
           onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
             setShowBackdrop(true);
             setSubmitting(false);
-            const { name, email, group, permission } = values;
+            const { name, emailCol: email, group, permission } = values;
 
             (async () => {
               try {
@@ -122,14 +122,19 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
             <>
               <DialogContent>
                 <DialogContentText>{t("descriptionModalDialogInvite")}</DialogContentText>
-                <Form>
+                <Form autoComplete="off">
                   <Field name="name" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
                         autoFocus
                         margin="dense"
                         id="name"
-                        autoComplete="new-name"
+                        inputProps={{
+                          autocomplete: "off",
+                          form: {
+                            autocomplete: "off",
+                          },
+                        }}
                         label={t("placeholderName")}
                         type="text"
                         fullWidth
@@ -138,12 +143,17 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                     )}
                   </Field>
                   {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
-                  <Field name="email" InputProps={{ notched: true }}>
+                  <Field name="emailCol" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
                         margin="dense"
-                        autoComplete="new-email"
-                        id="email"
+                        inputProps={{
+                          autocomplete: "off",
+                          form: {
+                            autocomplete: "off",
+                          },
+                        }}
+                        id="emailCol"
                         label={t("placeholderEmail")}
                         type="email"
                         fullWidth
@@ -151,8 +161,8 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                       />
                     )}
                   </Field>
-                  {errors.email && touched.email ? (
-                    <ErrorMessageForm message={errors.email} />
+                  {errors.emailCol && touched.emailCol ? (
+                    <ErrorMessageForm message={errors.emailCol} />
                   ) : null}
                   <Field name="group" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (

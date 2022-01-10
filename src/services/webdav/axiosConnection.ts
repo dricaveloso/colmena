@@ -3,7 +3,7 @@ import axios from "axios";
 import { initializeStore } from "@/store/index";
 import getConfig from "next/config";
 import { parseXML, RequestDataPayload } from "webdav";
-import { removeCornerSlash } from "@/utils/utils";
+import { encodeURLAxios } from "@/utils/utils";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -11,7 +11,7 @@ export default async function axiosConnection(
   data: RequestDataPayload | null | {},
   context = "systemtags",
   method = "PROPFIND",
-  extraHeaders: {} = { "Content-Type": "application/xml" },
+  extraHeaders: {} = { "Content-Type": "application/xml; charset=utf-8" },
   rootContext = false,
 ) {
   const { password, id: username } = initializeStore({}).getState().user.user;
@@ -22,7 +22,7 @@ export default async function axiosConnection(
 
   const config: any = {
     method,
-    url: `${path}/${removeCornerSlash(context)}`,
+    url: `${path}/${encodeURLAxios(context)}`,
     headers: {
       "OCS-APIRequest": true,
       ...extraHeaders,

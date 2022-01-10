@@ -26,7 +26,7 @@ import { createDirectory, existDirectory } from "@/services/webdav/directories";
 import { addLibraryFile } from "@/store/actions/library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { dateDescription } from "@/utils/utils";
-import { createNewShare } from "@/services/share/share";
+import { createShare } from "@/services/share/share";
 import Text from "@/components/ui/Text";
 
 const useStyles = makeStyles((theme) => ({
@@ -131,7 +131,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                     }
 
                     const conversation = await createNewConversation(room);
-                    const { token } = conversation.data.ocs.data;
+                    const { token, canDeleteConversation } = conversation.data.ocs.data;
 
                     participants.forEach(async (item) => {
                       await addParticipantToConversation(token, item);
@@ -154,12 +154,12 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                         createdAtDescription: dateDescription(date, timeDescription),
                       };
                       dispatch(addLibraryFile(item));
-                      await createNewShare(folderName, token);
+                      await createShare(token, folderName);
                     }
 
                     handleClose();
                     toast(c("honeycombModal.chatRoomSuccess"), "success");
-                    router.push(`/honeycomb/${token}/${room}`);
+                    router.push(`/honeycomb/${token}/${room}/${!canDeleteConversation ? 0 : 1}`);
                   } catch (e) {
                     const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
                     setErrorMessageValidation(msg);
@@ -170,17 +170,22 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
               }}
             >
               {({ submitForm, isSubmitting, errors, touched, values }: any) => (
-                <Form className={classes.form}>
+                <Form className={classes.form} autoComplete="off">
                   {step === 1 && (
                     <>
                       <Field name="room" InputProps={{ notched: true }}>
                         {({ field }: FieldProps) => (
                           <TextField
                             id="room"
-                            autoComplete="new-room"
+                            inputProps={{
+                              maxLength: 60,
+                              autocomplete: "off",
+                              form: {
+                                autocomplete: "off",
+                              },
+                            }}
                             label={c("form.fields.name")}
                             variant="outlined"
-                            inputProps={{ maxLength: 60 }}
                             {...field}
                           />
                         )}

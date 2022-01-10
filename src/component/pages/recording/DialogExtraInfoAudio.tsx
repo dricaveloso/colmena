@@ -2,7 +2,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from "react";
 import TextField from "@material-ui/core/TextField";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
 import { Formik, Form, Field, FieldProps } from "formik";
@@ -38,6 +37,8 @@ type Props = {
   open: boolean;
   handleClose: () => void;
   handleSubmit: (values: PropsAudioSave) => void;
+  pathLocationSave: string;
+  discardAudioHandle: () => void;
 };
 
 type MyFormValues = {
@@ -45,7 +46,13 @@ type MyFormValues = {
   tags: string[];
 };
 
-export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }: Props) {
+export default function DialogExtraInfoAudio({
+  open,
+  handleClose,
+  handleSubmit,
+  pathLocationSave = "",
+  discardAudioHandle,
+}: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -53,7 +60,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
   const [changeLocationModal, setChangeLocationModal] = useState(false);
   const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const [availableOffline, setAvailableOffline] = useState(true);
-  const [uploadLocation, setUploadLocation] = useState("");
+  const [uploadLocation, setUploadLocation] = useState(pathLocationSave);
   const { t: c } = useTranslation("common");
 
   const chooseUploadLocationHandle = useCallback((path: string) => {
@@ -63,11 +70,11 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
-    tags: Yup.array(Yup.string()).min(1, t("tagsRequiredTitle")),
+    // tags: Yup.array(Yup.string()).min(1, t("tagsRequiredTitle")),
   });
 
   const initialValues: MyFormValues = {
-    name: "",
+    name: new Date().toISOString(),
     tags: [],
   };
 
@@ -87,9 +94,16 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
         console.log("erro ao consultar as tags", e);
       }
     })();
+
+    return () => {
+      setOptionsTag([]);
+      setUploadLocation("");
+    };
   }, []);
 
   function prepareUploadPath() {
+    if (pathLocationSave) return pathLocationSave;
+
     const urlOrigin = configRdx.lastTwoPagesAccessed[1];
     let url = "";
 
@@ -102,8 +116,8 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
 
     if (/^[/]honeycomb/.test(urlOrigin)) {
       const url_ = urlOrigin.split("/");
-      if (urlOrigin.length > 2) {
-        url = url_[url_.length - 1];
+      if (url_.length > 4) {
+        url = decodeURI(url_[url_.length - 2]);
       }
     }
 
@@ -142,20 +156,29 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
       >
         {({ submitForm, errors, touched, setFieldValue, values }: any) => (
           <Modal
-            title={t("recordingFinishTitle")}
+            title={t("recordingFinishDescription")}
             handleClose={handleClose}
             open={open}
+            aria-labelledby="form-dialog-title"
             actions={
-              <Button
-                handleClick={submitForm}
-                style={{ margin: 8 }}
-                variant={ButtonVariantEnum.CONTAINED}
-                color={ButtonColorEnum.PRIMARY}
-                title={t("submitButton")}
-              />
+              <Box display="flex" flex="1" flexDirection="row" justifyContent="space-between">
+                <Button
+                  handleClick={discardAudioHandle}
+                  style={{ margin: 8 }}
+                  variant={ButtonVariantEnum.OUTLINED}
+                  color={ButtonColorEnum.SECONDARY}
+                  title={t("discardButton")}
+                />
+                <Button
+                  handleClick={submitForm}
+                  style={{ margin: 8 }}
+                  variant={ButtonVariantEnum.CONTAINED}
+                  color={ButtonColorEnum.PRIMARY}
+                  title={t("submitButton")}
+                />
+              </Box>
             }
           >
-            <DialogContentText>{t("recordingFinishDescription")}</DialogContentText>
             <Form>
               <Field name="name" InputProps={{ notched: true }}>
                 {({ field }: FieldProps) => (
@@ -163,7 +186,7 @@ export default function DialogExtraInfoAudio({ open, handleClose, handleSubmit }
                     autoFocus
                     margin="dense"
                     variant="outlined"
-                    autoComplete="new-name"
+                    autoComplete="off"
                     id="name"
                     label={t("recordingFinishLabelForm")}
                     inputProps={{ maxLength: 60 }}
