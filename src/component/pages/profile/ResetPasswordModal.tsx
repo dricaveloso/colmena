@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import TextField from "@material-ui/core/TextField";
 import Button from "@/components/ui/Button";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
@@ -19,6 +18,7 @@ import { userInfoUpdate } from "@/store/actions/users";
 import BackdropModal from "@/components/ui/Backdrop";
 import { signOut } from "next-auth/client";
 import { useRouter } from "next/router";
+import PasswordField from "@/components/statefull/PasswordField";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -135,7 +135,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                 })();
               }}
             >
-              {({ submitForm, isSubmitting, errors, touched }: any) => (
+              {({ submitForm, isSubmitting, errors, touched, setFieldValue }: any) => (
                 <Form
                   autoComplete="off"
                   className={classes.form}
@@ -147,17 +147,13 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                 >
                   <Field name="currentPassword" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
-                      <TextField
-                        id="currentPassword"
+                      <PasswordField
                         label={c("form.placeholderCurrentPassword")}
-                        variant="outlined"
-                        type="password"
-                        inputProps={{
-                          autocomplete: "off",
-                          form: {
-                            autocomplete: "off",
-                          },
+                        handleChangePassword={(value: string) => {
+                          setFieldValue("currentPassword", value);
                         }}
+                        placeholder=""
+                        required
                         {...field}
                       />
                     )}
@@ -168,17 +164,13 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                   <Divider marginTop={20} />
                   <Field name="newPassword" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
-                      <TextField
-                        id="newPassword"
-                        type="password"
+                      <PasswordField
                         label={c("form.placeholderNewPassword")}
-                        variant="outlined"
-                        inputProps={{
-                          autocomplete: "off",
-                          form: {
-                            autocomplete: "off",
-                          },
+                        handleChangePassword={(value: string) => {
+                          setFieldValue("newPassword", value);
                         }}
+                        placeholder=""
+                        required
                         {...field}
                       />
                     )}

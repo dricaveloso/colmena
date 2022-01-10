@@ -3,9 +3,11 @@ import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
 declare module "@material-ui/core/styles/createPalette" {
   interface Palette {
     icon: Palette["primary"];
+    danger: Palette["primary"];
   }
   interface PaletteOptions {
     icon: PaletteOptions["primary"];
+    danger: PaletteOptions["primary"];
   }
 }
 
@@ -40,6 +42,11 @@ const theme = createTheme({
       light: "#a4a4a4",
       main: "#757575",
       dark: "#494949",
+    },
+    danger: {
+      light: "#f94d4d",
+      main: "#d10000",
+      dark: "#ad0000",
     },
   },
 });

@@ -269,6 +269,8 @@ export type AllIconProps =
   | "play"
   | "pause"
   | "play_flat"
-  | "pause_flat";
+  | "pause_flat"
+  | "trash"
+  | "html_tag";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

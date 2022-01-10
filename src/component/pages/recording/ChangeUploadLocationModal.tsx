@@ -32,5 +32,21 @@ export default function ChangeUploadLocationModal({
     return null;
   };
 
-  return <LibraryModal title={title} handleClose={handleClose} open={open} options={options} />;
+  const footerActions = (item: LibraryItemInterface) => (
+    <Button
+      handleClick={() => handleClick(item.aliasFilename)}
+      title={t("chooseButton")}
+      size={ButtonSizeEnum.SMALL}
+    />
+  );
+
+  return (
+    <LibraryModal
+      title={title}
+      handleClose={handleClose}
+      open={open}
+      options={options}
+      footerActions={footerActions}
+    />
+  );
 }

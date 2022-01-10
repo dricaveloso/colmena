@@ -23,6 +23,23 @@ export async function createTag(name: string) {
   });
 }
 
+export async function updateTag(tagId: number, name: string) {
+  const body = `<?xml version="1.0" encoding="utf-8" ?>
+  <d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+    <d:set>
+       <d:prop>
+             <oc:display-name>${name}</oc:display-name>
+       </d:prop>
+    </d:set>
+  </d:propertyupdate>`;
+
+  return davAxiosConnection(body, `/systemtags/${tagId}`, "proppatch");
+}
+
+export async function deleteTag(tagId: number) {
+  return webdavAxios().delete(`/systemtags/${tagId}`);
+}
+
 export async function assignTagFile(fileId: number, tagId: number) {
   return webdavAxios().put(`/systemtags-relations/files/${fileId}/${tagId}`);
 }

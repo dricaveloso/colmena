@@ -129,7 +129,12 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                         autoFocus
                         margin="dense"
                         id="name"
-                        autoComplete="off"
+                        inputProps={{
+                          autocomplete: "off",
+                          form: {
+                            autocomplete: "off",
+                          },
+                        }}
                         label={t("placeholderName")}
                         type="text"
                         fullWidth
@@ -142,7 +147,12 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                     {({ field }: FieldProps) => (
                       <TextField
                         margin="dense"
-                        autoComplete="off"
+                        inputProps={{
+                          autocomplete: "off",
+                          form: {
+                            autocomplete: "off",
+                          },
+                        }}
                         id="emailCol"
                         label={t("placeholderEmail")}
                         type="email"

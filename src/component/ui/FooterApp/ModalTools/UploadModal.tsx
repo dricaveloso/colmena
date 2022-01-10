@@ -1,8 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import Modal from "@/components/ui/Modal";
 import { getUniqueName, chunkFileUpload } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
@@ -27,19 +25,7 @@ import {
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import { share } from "@/services/share/share";
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: { margin: theme.spacing(0, 0, 4, 0) },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(4),
-    minWidth: "80%",
-  },
+const useStyles = makeStyles(() => ({
   form: {
     "& .MuiTextField-root": {
       width: "100%",
@@ -139,7 +125,11 @@ export default function Upload({ open, handleClose }: Props) {
       formRef.current.reset();
     }
 
-    router.push(`/library/${removeFirstSlash(handledPath())}`);
+    const timer = 5000;
+    toast(t("messages.fileUploadedSuccessfully"), "success", { timer });
+    setTimeout(() => {
+      router.push(`/library/${removeFirstSlash(handledPath())}`);
+    }, timer);
   };
 
   const uploadFile = async (file: File) => {
@@ -210,6 +200,14 @@ export default function Upload({ open, handleClose }: Props) {
     return null;
   };
 
+  const footerActions = (item: LibraryItemInterface) => (
+    <Button
+      handleClick={() => handleChangeLocation(item.aliasFilename)}
+      title={t("changeLocationButton")}
+      size={ButtonSizeEnum.SMALL}
+    />
+  );
+
   const handleChangeLocation = (path: string) => {
     setPath(path);
     setOpenLibrary(false);
@@ -217,71 +215,54 @@ export default function Upload({ open, handleClose }: Props) {
 
   return (
     <>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={confirmClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h4 id="transition-modal-title" className={classes.title}>
-              {t("uploadTitle")}
-            </h4>
-            <form ref={formRef}>
-              <input
-                type="file"
-                style={{ display: "none" }}
-                id="upload-file"
-                multiple
-                onChange={handleUpload}
-              />
-              <Box
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Box display="flex" flexDirection="column">
-                  <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold" }}>
-                    {t("form.local")}
-                  </Text>
-                  <Text variant={TextVariantEnum.BODY2}>{`/${handledPath()}`}</Text>
-                </Box>
-                <Button
-                  handleClick={() => setOpenLibrary(true)}
-                  style={{ margin: 8 }}
-                  variant={ButtonVariantEnum.TEXT}
-                  color={ButtonColorEnum.PRIMARY}
-                  title={t("changeLocationButton")}
-                  size={ButtonSizeEnum.SMALL}
-                />
-              </Box>
-              <Divider marginTop={20} />
-              <label htmlFor="upload-file">
-                <Button
-                  component="span"
-                  title={t("form.upload")}
-                  className={classes.submit}
-                  disabled={isLoading}
-                  isLoading={isLoading}
-                />
-              </label>
-            </form>
-          </div>
-        </Fade>
+      <Modal title={t("uploadTitle")} handleClose={confirmClose} open={open}>
+        <form ref={formRef}>
+          <input
+            type="file"
+            style={{ display: "none" }}
+            id="upload-file"
+            multiple
+            onChange={handleUpload}
+          />
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box display="flex" flexDirection="column">
+              <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold" }}>
+                {t("form.local")}
+              </Text>
+              <Text variant={TextVariantEnum.BODY2}>{`/${handledPath()}`}</Text>
+            </Box>
+            <Button
+              handleClick={() => setOpenLibrary(true)}
+              style={{ margin: 8 }}
+              variant={ButtonVariantEnum.TEXT}
+              color={ButtonColorEnum.PRIMARY}
+              title={t("changeLocationButton")}
+              size={ButtonSizeEnum.SMALL}
+            />
+          </Box>
+          <Divider marginTop={20} />
+          <label htmlFor="upload-file">
+            <Button
+              component="span"
+              title={t("form.upload")}
+              className={classes.submit}
+              disabled={isLoading}
+              isLoading={isLoading}
+            />
+          </label>
+        </form>
       </Modal>
       <LibraryModal
         title={t("changeLocationModalTitle")}
         handleClose={() => setOpenLibrary(false)}
         open={openLibrary}
         options={libraryOptions}
+        footerActions={footerActions}
       />
       {showConfirmCancel && (
         <ActionConfirm

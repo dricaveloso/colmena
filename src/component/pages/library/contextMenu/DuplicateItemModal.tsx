@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import Modal from "@/components/ui/Modal";
 import TextField from "@material-ui/core/TextField";
 import Button from "@/components/ui/Button";
 import { copyFile, existFile } from "@/services/webdav/files";
@@ -38,18 +36,7 @@ import {
 } from "@/interfaces/index";
 import { createFile, getFile } from "@/store/idb/models/files";
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: { margin: theme.spacing(0, 0, 4, 0) },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(4),
-  },
+const useStyles = makeStyles(() => ({
   form: {
     "& .MuiTextField-root": {
       width: "100%",
@@ -153,6 +140,12 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
             };
           }
 
+          if (cardItem.type === "directory") {
+            toast(l("messages.directorySuccessfullyDuplicated"), "success");
+          } else {
+            toast(l("messages.fileSuccessfullyDuplicated"), "success");
+          }
+
           dispatch(addLibraryFile(item));
           setIsLoading(false);
           handleOpen(false);
@@ -238,71 +231,49 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
   }, [path, definePath, filename]);
 
   return (
-    <>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={() => handleOpen(false)}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+    <Modal title={l("duplicateTitle")} handleClose={() => handleOpen(false)} open={open}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={DuplicateItemSchema}
+        onSubmit={(values) => handleSubmit(values)}
       >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h4 id="transition-modal-title" className={classes.title}>
-              {l("duplicateTitle")}
-            </h4>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={DuplicateItemSchema}
-              onSubmit={(values) => handleSubmit(values)}
-            >
-              {({ setFieldValue }: any) => (
-                <Form className={classes.form}>
-                  <Field name="name" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <TextField
-                        id="outlined-search"
-                        label={t("form.fields.name")}
-                        variant="outlined"
-                        inputProps={{ maxLength: 60 }}
-                        {...field}
-                        onChange={(
-                          event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-                        ) => setFieldValue("name", treatName(event.target.value))}
-                        onKeyUp={(event: any) => defineFinalPath(event.target.value)}
-                      />
-                    )}
-                  </Field>
-                  <ErrorMessage name="name">
-                    {(msg) => <ErrorMessageForm message={msg} />}
-                  </ErrorMessage>
-                  <Divider marginTop={20} />
-                  <TextField
-                    id="outlined-search"
-                    label={t("form.local")}
-                    variant="outlined"
-                    value={aliasPath}
-                    disabled
-                  />
-                  <Divider marginTop={20} />
-                  <Button
-                    title={l("duplicateButton")}
-                    type="submit"
-                    className={classes.submit}
-                    disabled={isLoading}
-                    isLoading={isLoading}
-                  />
-                </Form>
+        {({ setFieldValue }: any) => (
+          <Form className={classes.form}>
+            <Field name="name" InputProps={{ notched: true }}>
+              {({ field }: FieldProps) => (
+                <TextField
+                  id="outlined-search"
+                  label={t("form.fields.name")}
+                  variant="outlined"
+                  inputProps={{ maxLength: 60 }}
+                  {...field}
+                  onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+                    setFieldValue("name", treatName(event.target.value))
+                  }
+                  onKeyUp={(event: any) => defineFinalPath(event.target.value)}
+                />
               )}
-            </Formik>
-          </div>
-        </Fade>
-      </Modal>
-    </>
+            </Field>
+            <ErrorMessage name="name">{(msg) => <ErrorMessageForm message={msg} />}</ErrorMessage>
+            <Divider marginTop={20} />
+            <TextField
+              id="outlined-search"
+              label={t("form.local")}
+              variant="outlined"
+              value={aliasPath}
+              disabled
+            />
+            <Divider marginTop={20} />
+            <Button
+              title={l("duplicateButton")}
+              type="submit"
+              className={classes.submit}
+              disabled={isLoading}
+              isLoading={isLoading}
+            />
+          </Form>
+        )}
+      </Formik>
+    </Modal>
   );
 }

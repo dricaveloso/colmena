@@ -50,7 +50,7 @@ export default function AudioWave({ blob, data, playingAs = false }: Props) {
       <Box display="flex" marginLeft={1} flexDirection="column" flex={1}>
         <ListItemText
           data-testid="title"
-          primary={data?.customtitle}
+          primary={decodeURIComponent(data?.customtitle)}
           secondary={fancyTimeFormat(duration)}
           secondaryTypographyProps={{ style: { fontSize: 10 } }}
         />

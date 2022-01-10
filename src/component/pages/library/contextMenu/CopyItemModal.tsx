@@ -3,12 +3,7 @@ import LibraryModal from "@/components/ui/LibraryModal";
 import Button from "@/components/ui/Button";
 import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
 import { ButtonSizeEnum, EnvironmentEnum } from "@/enums/*";
-import {
-  convertPrivateToUsername,
-  getPrivatePath,
-  isPanal,
-  pathIsInFilename,
-} from "@/utils/directory";
+import { convertPrivateToUsername, isPanal, pathIsInFilename } from "@/utils/directory";
 import { copyFile, getUniqueName } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
@@ -34,8 +29,7 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
     if (
       (cardItem.type !== "directory" ||
         (cardItem.type === "directory" && !pathIsInFilename(cardItem.filename, item.filename))) &&
-      item.type === "directory" &&
-      pathIsInFilename(getPrivatePath(), item.filename)
+      item.type === "directory"
     ) {
       return (
         <Button
@@ -50,6 +44,16 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
 
     return null;
   };
+
+  const footerActions = (item: LibraryItemInterface) => (
+    <Button
+      handleClick={() => handleClick(item)}
+      disabled={isDisabled}
+      isLoading={itemIsLoading.id === item.id}
+      title={t("pasteButton")}
+      size={ButtonSizeEnum.SMALL}
+    />
+  );
 
   const closeModal = () => {
     handleOpen(false);
@@ -83,12 +87,20 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
           }
 
           if (copy) {
-            console.log(item.filename, cardItem.filename);
             if (isPanal(item.filename)) {
               await share(item.filename, cardItem.filename);
             }
 
-            router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
+            const timer = 5000;
+            if (cardItem.type === "directory") {
+              toast(t("messages.directorySuccessfullyCopied"), "success", { timer });
+            } else {
+              toast(t("messages.fileSuccessfullyCopied"), "success", { timer });
+            }
+
+            setTimeout(() => {
+              router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
+            }, timer);
           }
         }
       } catch (e) {
@@ -130,6 +142,7 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
       open={open}
       options={options}
       isDisabled={isDisabled}
+      footerActions={footerActions}
     />
   );
 }

@@ -159,9 +159,9 @@ export default function WrapperForm() {
                   id={uuid()}
                   label={c("form.placeholderEmail")}
                   inputProps={{
-                    autocomplete: "off",
+                    autoComplete: "off",
                     form: {
-                      autocomplete: "off",
+                      autoComplete: "off",
                     },
                   }}
                   variant={SelectVariantEnum.OUTLINED}

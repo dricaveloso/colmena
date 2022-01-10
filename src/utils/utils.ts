@@ -29,6 +29,14 @@ export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+export function encodeURLAxios(path: string) {
+  const contextEncodedArray = path.split("/");
+  let filename = contextEncodedArray.pop();
+  filename = encodeURIComponent(String(filename));
+  contextEncodedArray.push(filename);
+  return removeCornerSlash(contextEncodedArray.join("/"));
+}
+
 export const isAudioFile = (mime: string | undefined) => {
   if (!mime) return false;
 

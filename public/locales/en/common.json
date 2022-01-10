@@ -83,7 +83,9 @@
     "fileTooLarg": "The {{fileName}} file is too large to upload.",
     "unableToProcessFile": "Unable to process file {{fileName}}.",
     "unableToUpdatePassword": "Unable to update your password.",
-    "passwordUpdatedSuccessfully": "Password updated successfully."
+    "passwordUpdatedSuccessfully": "Password updated successfully.",
+    "directoryCreatedSuccessfully": "Directory created successfully.",
+    "fileUploadedSuccessfully": "File uploaded successfully."
   },
   "timeDescription": {
     "singularYear": "year",
