@@ -14,6 +14,7 @@ import Divider from "@/components/ui/Divider";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
+import { isSubadminProfile } from "@/utils/permissions";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -23,10 +24,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 
 function MediaProfile() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const group =
-    Array.isArray(userRdx.user.media?.groups) && userRdx.user.media?.groups[0]
-      ? userRdx.user.media?.groups[0]
-      : "";
   return (
     <LayoutApp
       title={userRdx.user.media?.name || ""}
@@ -41,10 +38,10 @@ function MediaProfile() {
           extraStyle={{ paddingTop: 8, marginTop: 0 }}
         >
           <LatestPosts />
-          {userRdx.user.subadmin.includes(group) && (
+          {isSubadminProfile() && (
             <>
               <Divider marginTop={8} />
-              <Members group={group} />
+              <Members />
             </>
           )}
           <Divider marginTop={8} />

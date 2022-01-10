@@ -91,7 +91,7 @@ export default function AudioItemVertical({ filename, environment, primary, size
       <Text variant={TextVariantEnum.BODY2} style={{ fontSize: 10, color: "gray" }}>
         {`${duration} - ${formatBytes(size)}`}
       </Text>
-      {blob && <Waves blob={blob} config={{ height: 20 }} />}
+      {blob && <Waves blob={blob} config={{ height: 20 }} play />}
     </Box>
   );
 }

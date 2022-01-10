@@ -14,13 +14,21 @@ import {
   JustifyContentEnum,
   EnvironmentEnum,
   DefaultAudioTypeEnum,
+  DirectoryNamesNCEnum,
 } from "@/enums/index";
 import AudioRecorder from "@/components/pages/recording/AudioRecorder";
 import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAudio";
 import Timer from "@/components/pages/recording/Timer";
 import Divider from "@/components/ui/Divider";
 import { useSelector, useDispatch } from "react-redux";
-import { PropsUserSelector, PropsAudioSave, PropsAudioData, SelectOptionItem } from "@/types/index";
+import {
+  PropsUserSelector,
+  PropsAudioSave,
+  PropsAudioData,
+  SelectOptionItem,
+  PropsConfigSelector,
+  PropsLibrarySelector,
+} from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
 import {
   createFile,
@@ -45,6 +53,8 @@ import Backdrop from "@/components/ui/Backdrop";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { parseCookies } from "nookies";
 import { removeSpecialCharacters } from "@/utils/utils";
+import { createShare } from "@/services/share/share";
+import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -61,10 +71,14 @@ function Recording() {
   const [openContinueRecording, setOpenContinueRecording] = useState(false);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [audioId, setAudioId] = useState();
+  const [pathLocationSave, setPathLocationSave] = useState("");
   const [filename, setFilename] = useState("");
   const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
   const cookies = parseCookies();
   const language = cookies.NEXT_LOCALE || "en";
+  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
+  const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -74,6 +88,14 @@ function Recording() {
   const handleCloseExtraInfo = () => {
     toast(t("audioSavedSuccessfully"), "success");
     setOpenDialogAudioName(false);
+    dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
+  };
+
+  const discardAudio = async () => {
+    await removeLocalFile(audioId, userRdx.user.id);
+    setOpenDialogAudioName(false);
+    setOpenContinueRecording(false);
+    toast(t("audioDiscardedSuccessfully"), "success");
     dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
   };
 
@@ -93,6 +115,7 @@ function Recording() {
         path,
         userRdx.user.id,
       )}/${removeSpecialCharacters(title)}.${defaultAudioType}`;
+      const pathVer = convertUsernameToPrivate(path, userRdx.user.id);
 
       const recording = {
         title,
@@ -111,13 +134,20 @@ function Recording() {
         setShowBackdrop(true);
 
         if (navigator.onLine) {
-          await putFileOnline(userRdx.user.id, filename, localFile.arrayBufferBlob);
-          const fileId = await getFileOnlineId(userRdx.user.id, filename);
+          const tokenChat = await findTokenChatByPath(pathVer);
+          let talkDir = "";
+          if (tokenChat && typeof tokenChat === "string") {
+            const canDelete = await verifyDeleteAccessFromUserOnChat(tokenChat);
+            if (!canDelete) {
+              talkDir = `${DirectoryNamesNCEnum.TALK}/`;
+            }
+          }
+          const filenameWithTalkDir = `${talkDir}${filename}`;
 
-          await setDataFile(
-            { customtitle: title, language },
-            `${path}/${title}.${defaultAudioType}`,
-          );
+          await putFileOnline(userRdx.user.id, `${filenameWithTalkDir}`, localFile.arrayBufferBlob);
+          const fileId = await getFileOnlineId(userRdx.user.id, `${filenameWithTalkDir}`);
+
+          await setDataFile({ customtitle: title, language }, `${filenameWithTalkDir}`);
 
           const res = await listTags();
           const optionsTag: SelectOptionItem[] = res
@@ -145,22 +175,27 @@ function Recording() {
           if (!availableOffline) {
             await removeLocalFile(audioId, userRdx.user.id);
           } else {
-            await updateFileLocal(audioId, { environment: EnvironmentEnum.BOTH });
+            await updateFileLocal(audioId, {
+              filename: filenameWithTalkDir,
+              environment: EnvironmentEnum.BOTH,
+            });
           }
 
           await updateFileLocal(audioId, { nextcloudId: fileId });
+          await createChatMessageFileNotification(filenameWithTalkDir, tokenChat);
         }
       } catch (e) {
-        console.log("Nao uploadeou online", e);
+        console.log("opa", e);
         toast(c("genericErrorMessage"), "error");
       } finally {
         setShowBackdrop(false);
       }
+      setPathLocationSave(path);
       setFilename(btoa(filename));
       setAmountAudiosRecorded((amountAudiosRecorded) => amountAudiosRecorded + 1);
       setOpenContinueRecording(true);
     } catch (e) {
-      console.log(e);
+      console.log("opa2", e);
       toast(t("errorStorageMessage"), "error");
     } finally {
       setOpenDialogAudioName(false);
@@ -173,14 +208,69 @@ function Recording() {
     setOpenContinueRecording(false);
   };
 
-  const finishRecordingHandle = () => {
+  async function findTokenChatByPath(path: string): Promise<string | boolean> {
+    const arr = path.split("/");
+    const tokenName = arr[0];
+    const response = await getUsersConversationsAxios();
+    const rooms = response.data.ocs.data;
+    const token = rooms.find((item) => item.name === tokenName)?.token;
+
+    if (!token) return false;
+
+    return token;
+  }
+
+  async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
+    const response = await getSingleConversationAxios(token);
+    const { data } = response.data.ocs;
+
+    return data.canDeleteConversation;
+  }
+
+  async function createChatMessageFileNotification(path: string, token: boolean | string) {
+    if (!token || typeof token !== "string") return;
+
+    try {
+      await createShare(token, path);
+      return;
+    } catch (e) {
+      console.log("aqui 2", e);
+    }
+  }
+
+  const finishRecordingHandle = async () => {
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
     toast(t("audioSavedSuccessfully"), "success");
+
+    const urlBack = redirectToLastAccessedPage();
     if (amountAudiosRecorded === 1) {
-      router.push(`/file/${filename}`);
+      if (urlBack) router.push(urlBack);
+      else router.push(`/file/${filename}`);
+    } else if (amountAudiosRecorded > 1) {
+      if (urlBack) router.push(urlBack);
     }
   };
+
+  function redirectToLastAccessedPage(): string | null {
+    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+
+    if (/^[/]library/.test(urlOrigin)) {
+      if ((urlOrigin.match(/[/]/g) || []).length > 1) {
+        const path = libraryRdx.currentPath;
+        return convertPrivateToUsername(path, userRdx.user.id).replace(/[/]library[/]/, "");
+      }
+    }
+
+    if (/^[/]honeycomb/.test(urlOrigin)) {
+      const url_ = urlOrigin.split("/");
+      if (url_.length > 4) {
+        return urlOrigin;
+      }
+    }
+
+    return null;
+  }
 
   async function firstSaveAudioHandle(audioData: PropsAudioData) {
     const { blob } = audioData;
@@ -215,6 +305,8 @@ function Recording() {
             open={openDialogAudioName}
             handleClose={handleCloseExtraInfo}
             handleSubmit={saveAudioHandle}
+            pathLocationSave={pathLocationSave}
+            discardAudioHandle={discardAudio}
           />
         )}
         <Backdrop open={showBackdrop} />

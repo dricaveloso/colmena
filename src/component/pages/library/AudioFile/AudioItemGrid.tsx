@@ -94,7 +94,7 @@ export default function AudioItemGrid({ filename, environment, primary, size }: 
       >
         {`${duration} - ${formatBytes(size)}`}
       </Text>
-      {blob && <Waves blob={blob} config={{ height: 20 }} />}
+      {blob && <Waves blob={blob} config={{ height: 20 }} play />}
     </Box>
   );
 }

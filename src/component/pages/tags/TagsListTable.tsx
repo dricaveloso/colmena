@@ -31,14 +31,13 @@ type Props = {
 
 export default function TagsListTable({ tags, isLoading, editTag }: Props) {
   const { t } = useTranslation("tags");
-
   const columns: TableColumn<TagInterface>[] = [
     {
       name: t("table.tagTitle"),
       grow: 1,
       sortable: true,
       sortFunction: caseInsensitiveSort,
-      selector: (row) => row.tag,
+      selector: (row: any) => row.tag,
     },
     {
       name: "",

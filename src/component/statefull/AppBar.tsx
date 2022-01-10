@@ -14,7 +14,7 @@ import theme from "@/styles/theme";
 
 type Props = {
   title: string;
-  subtitle?: string;
+  subtitle?: string | React.ReactNode;
   headerPosition?: PositionProps | undefined;
   drawer?: boolean;
   back?: boolean;

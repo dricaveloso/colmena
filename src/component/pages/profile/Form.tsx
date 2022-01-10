@@ -19,7 +19,7 @@ import BackdropModal from "@/components/ui/Backdrop";
 
 type MyFormValues = {
   user_name: string;
-  email: string;
+  emlUser: string;
   lastname: string;
 };
 
@@ -42,13 +42,13 @@ export default function FormProfile() {
 
   const ValidationSchema = Yup.object().shape({
     user_name: Yup.string().required(c("form.requiredTitle")),
-    email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
+    emlUser: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
     lastname: Yup.string().required(c("form.requiredTitle")),
   });
 
   const initialValues: MyFormValues = {
     user_name: userRdx.user.name.split(" ")[0],
-    email: userRdx.user.email,
+    emlUser: userRdx.user.email,
     lastname: userRdx.user.name
       .split(" ")
       .filter((_, idx) => idx !== 0)
@@ -70,7 +70,7 @@ export default function FormProfile() {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          const { user_name, lastname, email } = values;
+          const { user_name, lastname, emlUser: email } = values;
           const fullnameRdx = userRdx.user.name;
           const emailRdx = userRdx.user.email;
           const fullname = `${user_name} ${lastname}`;
@@ -104,12 +104,17 @@ export default function FormProfile() {
         }}
       >
         {({ submitForm, isSubmitting, errors, touched }: any) => (
-          <Form>
+          <Form autoComplete="off">
             <Field name="user_name" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="user_name"
-                  autoComplete="new-user_name"
+                  inputProps={{
+                    autocomplete: "off",
+                    form: {
+                      autocomplete: "off",
+                    },
+                  }}
                   label={t("nameField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
@@ -126,7 +131,12 @@ export default function FormProfile() {
               {({ field }: FieldProps) => (
                 <TextField
                   id="lastname"
-                  autoComplete="new-lastname"
+                  inputProps={{
+                    autocomplete: "off",
+                    form: {
+                      autocomplete: "off",
+                    },
+                  }}
                   label={t("lastnameField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
@@ -139,20 +149,28 @@ export default function FormProfile() {
               <ErrorMessageForm message={errors.lastname} />
             ) : null}
             <Divider marginTop={20} />
-            <Field name="email" InputProps={{ notched: true }}>
+            <Field name="emlUser" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
-                  id="email"
-                  autoComplete="new-email"
+                  id="emlUser"
+                  type="email"
                   label={t("emailField")}
                   variant={SelectVariantEnum.OUTLINED}
                   required
+                  inputProps={{
+                    autocomplete: "off",
+                    form: {
+                      autocomplete: "off",
+                    },
+                  }}
                   fullWidth
                   {...field}
                 />
               )}
             </Field>
-            {errors.email && touched.email ? <ErrorMessageForm message={errors.email} /> : null}
+            {errors.emlUser && touched.emlUser ? (
+              <ErrorMessageForm message={errors.emlUser} />
+            ) : null}
             <Divider marginTop={20} />
             <div className={classes.marginInputDivs}>
               <div className="marginTop15">

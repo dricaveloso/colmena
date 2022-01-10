@@ -5,5 +5,6 @@
   "noMemberTitle": "Aucun membre",
   "tab1Title": "Chat",
   "tab2Title": "Library",
-  "emptyTalkDescription": "Click on the plus icon below to create a honeycomb"
+  "emptyTalkDescription": "Click on the plus icon below to create a honeycomb",
+  "downloadAudioFailed": "Unable to download audio"
 }

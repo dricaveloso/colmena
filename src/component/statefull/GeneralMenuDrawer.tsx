@@ -14,7 +14,7 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal";
 import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
-import LogoSvg from "../../../public/images/svg/colmena_logo.svg";
+import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
 
 type ListItemProps = {
   id: string;
@@ -174,7 +174,9 @@ function DrawerAux({ open, onClose }: Props) {
           alignItems: "center",
         }}
       >
-        <LogoSvg />
+        <div style={{ width: 200 }}>
+          <LogoSvg />
+        </div>
       </div>
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
       <List component="nav">

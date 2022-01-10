@@ -20,12 +20,21 @@ export function formatBytes(bytes: number, decimals = 2) {
 }
 
 export function removeSpecialCharacters(str: string) {
-  const parsed = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return parsed;
+  const withoutAccent = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const withoutSpecial = withoutAccent.replace(/[#,+()$~%'"*!?<>{}]/g, "");
+  return withoutSpecial;
 }
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function encodeURLAxios(path: string) {
+  const contextEncodedArray = path.split("/");
+  let filename = contextEncodedArray.pop();
+  filename = encodeURIComponent(String(filename));
+  contextEncodedArray.push(filename);
+  return removeCornerSlash(contextEncodedArray.join("/"));
 }
 
 export const isAudioFile = (mime: string | undefined) => {
@@ -90,7 +99,7 @@ export function isJWTValidInvitation(tkn: string | string[] | undefined) {
 export function getFirstLettersOfTwoFirstNames(word: string | undefined): string {
   if (!word) return "";
 
-  const arr = word.split(" ");
+  const arr = String(word).split(" ");
   let result = arr[0][0];
 
   if (arr.length > 2) {
@@ -106,7 +115,7 @@ export function getFirstLettersOfTwoFirstNames(word: string | undefined): string
 export function getFirstname(word: string | undefined): string {
   if (!word) return "";
 
-  const arr = word.split(" ");
+  const arr = String(word).split(" ");
 
   if (arr.length > 1) return capitalizeFirstLetter(arr[0]);
 
@@ -295,6 +304,9 @@ export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en"
       lce = enUS;
       break;
   }
+
+  if (!timestamp) return "";
+
   return formatDistanceToNow(new Date(timestamp * 1000), {
     locale: lce,
   });

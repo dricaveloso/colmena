@@ -14,7 +14,7 @@ import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 
 type Props = {
   title: string;
-  subtitle?: string;
+  subtitle?: string | React.ReactNode;
   drawer?: boolean;
   back?: boolean;
   headerPosition?: PositionProps | undefined;

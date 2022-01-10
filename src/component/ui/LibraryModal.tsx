@@ -55,6 +55,7 @@ type Props = {
   rootIcon?: AllIconProps | undefined;
   rootDescription?: string | null;
   isDisabled?: boolean;
+  onlyDirectories?: boolean;
 };
 
 export default function LibraryModal({

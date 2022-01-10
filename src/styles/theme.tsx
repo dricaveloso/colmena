@@ -15,6 +15,16 @@ const theme = createTheme({
   typography: {
     fontFamily: "Nunito, Nunito Sans, Open Sans, sans-serif",
   },
+  // overrides: {
+  //   MuiInputBase: {
+  //     input: {
+  //       "&:-webkit-autofill": {
+  //         transitionDelay: "9999s",
+  //         transitionProperty: "background-color, color",
+  //       },
+  //     },
+  //   },
+  // },
   palette: {
     primary: {
       light: "#6865B7",
