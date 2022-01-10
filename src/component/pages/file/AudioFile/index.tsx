@@ -27,48 +27,54 @@ type Props = {
 export default function AudioFile({ filename, data }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [blob, setBlob] = useState<Blob | null>(null);
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation("file");
   const { t: c } = useTranslation("common");
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const localFile = await findByFilename(filename);
-        const localFileQuickFile = await findQuickBlobByBasename(
-          userRdx.user.id,
-          removeSpecialCharacters(filename),
+  const getListFile = async () => {
+    try {
+      setLoading(true);
+      const localFile = await findByFilename(filename);
+      const localFileQuickFile = await findQuickBlobByBasename(
+        userRdx.user.id,
+        removeSpecialCharacters(filename),
+      );
+      let blob: Blob;
+      if (localFile || localFileQuickFile) {
+        blob = arrayBufferToBlob(
+          localFile ? localFile.arrayBufferBlob : localFileQuickFile?.arrayBufferBlob,
         );
-        let blob: Blob;
-        if (localFile || localFileQuickFile) {
-          blob = arrayBufferToBlob(
-            localFile ? localFile.arrayBufferBlob : localFileQuickFile?.arrayBufferBlob,
-          );
-        } else {
-          const blobRes: any = await listFile(userRdx.user.id, filename);
-          if (!localFileQuickFile) {
-            await createQuickBlob({
-              basename: removeSpecialCharacters(filename),
-              userId: userRdx.user.id,
-              arrayBufferBlob: blobRes,
-            });
-          }
-          blob = arrayBufferToBlob(blobRes);
+      } else {
+        const blobRes: any = await listFile(userRdx.user.id, filename);
+        if (!localFileQuickFile) {
+          await createQuickBlob({
+            basename: removeSpecialCharacters(filename),
+            userId: userRdx.user.id,
+            arrayBufferBlob: blobRes,
+          });
         }
-        setBlob(blob);
-      } catch (e) {
-        console.log(e);
-        setBlob(null);
-        toast(c("genericErrorMessage"), "error");
+        blob = arrayBufferToBlob(blobRes);
       }
-    })();
-
-    return () => {
+      setBlob(blob);
+    } catch (e) {
+      console.log(e);
       setBlob(null);
-    };
+      toast(c("genericErrorMessage"), "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getListFile();
   }, []);
+
   return (
-    <Section title={t("audioTitle")} secondaryAction={<ContextMenuFile blob={blob} data={data} />}>
-      {!data ? <AudioFileSkeleton /> : <AudioWave blob={blob} data={data} playingAs={false} />}
+    <Section
+      title={t("audioTitle")}
+      secondaryAction={<ContextMenuFile filename={filename} blob={blob} data={data} />}
+    >
+      {loading ? <AudioFileSkeleton /> : <AudioWave blob={blob} data={data} playingAs={false} />}
     </Section>
   );
 }
