@@ -22,7 +22,7 @@ import IconButton from "@/components/ui/IconButton";
 import { toast } from "@/utils/notifications";
 import Section from "@/components/pages/file/Section";
 import Skeleton from "@material-ui/lab/Skeleton";
-import AudioFile from "@/components/pages/file/AudioFile";
+import { MemoizedAudioFile } from "@/components/pages/file/AudioFile";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -85,7 +85,7 @@ function File() {
     >
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <Box width="100%">
-          <AudioFile filename={filename} data={data} />
+          <MemoizedAudioFile filename={filename} data={data} />
           <Section
             title={t("descriptionTitle")}
             secondaryAction={

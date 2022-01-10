@@ -1,6 +1,7 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import {
@@ -9,14 +10,18 @@ import {
 } from "@/interfaces/talk";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import { getFirstLettersOfTwoFirstNames, getFormattedDistanceDateFromNow } from "@/utils/utils";
+import {
+  getFirstLettersOfTwoFirstNames,
+  getFormattedDistanceDateFromNow,
+  isAudioFile,
+} from "@/utils/utils";
 import theme from "@/styles/theme";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum, TextColorEnum } from "@/enums/*";
 import { parseCookies, setCookie } from "nookies";
-import { v4 as uuid } from "uuid";
+import { MemoizedAudio } from "@/components/pages/honeycomb/Chat/Files/Audio";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -29,7 +34,7 @@ const useStyles = makeStyles(() => ({
     paddingLeft: 12,
     paddingRight: 12,
     paddingTop: 8,
-    paddingBottom: 8,
+    paddingBottom: 5,
     backgroundColor: "#fff",
   },
   description: {
@@ -42,15 +47,20 @@ const useStyles = makeStyles(() => ({
 }));
 
 type Props = {
-  item: ChatMessageItemInterface;
-  prevItem: ChatMessageItemInterface | null;
+  item: ChatMessageItemInterface | undefined;
+  prevItem: ChatMessageItemInterface | null | undefined;
+  canDeleteConversation: number;
 };
 
-const VerticalItemList = ({ item, prevItem }: Props) => {
+export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) => {
   const cookies = parseCookies();
   const lang = cookies.NEXT_LOCALE || "en";
   const classes = useStyles();
-  const { message, timestamp, actorDisplayName, actorId, systemMessage, messageParameters } = item;
+
+  if (!item) return null;
+
+  const { message, timestamp, actorDisplayName, actorId, systemMessage, id, messageParameters } =
+    item;
 
   function getAvatarComponent(actorDisplayName: string, justifyContent = "flex-start") {
     if (
@@ -58,19 +68,13 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
       prevItem?.systemMessage !== ""
     )
       return (
-        <ListItemAvatar
-          key={uuid()}
-          style={{ width: 30, height: 30, display: "flex", justifyContent }}
-        >
+        <ListItemAvatar key={id} style={{ width: 30, height: 30, display: "flex", justifyContent }}>
           <Avatar>{getFirstLettersOfTwoFirstNames(actorDisplayName)}</Avatar>
         </ListItemAvatar>
       );
 
     return (
-      <ListItemAvatar
-        key={uuid()}
-        style={{ width: 30, height: 30, display: "flex", justifyContent }}
-      >
+      <ListItemAvatar key={id} style={{ width: 30, height: 30, display: "flex", justifyContent }}>
         <span></span>
       </ListItemAvatar>
     );
@@ -84,23 +88,53 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
     );
   }
 
+  const prepareCommentWithFile = (
+    message: string,
+    messageParameters: ChatMessageItemMessageParameterInterface | undefined,
+  ): string | React.ReactNode => {
+    if (message !== "{file}") return message;
+
+    const mimetype = messageParameters?.file?.mimetype;
+    if (mimetype && isAudioFile(mimetype)) {
+      if (messageParameters && messageParameters.file) {
+        const { path, name, size } = messageParameters.file;
+        return (
+          <MemoizedAudio
+            filename={path}
+            name={name}
+            size={size}
+            canDeleteConversation={canDeleteConversation}
+          />
+        );
+      }
+    }
+
+    return message;
+  };
+
+  // const verifyActorAndSystemMessage = (
+  //   prevItem: ChatMessageItemInterface | null | undefined,
+  //   actorId: string,
+  // ) =>
+  //   (prevItem && prevItem.actorId !== actorId) ||
+  //   (prevItem && prevItem.actorId === actorId && prevItem.systemMessage !== "");
+
   if (systemMessage === "")
     return (
-      <Box className={classes.card} key={uuid()}>
+      <Box className={classes.card} key={id}>
         {getAvatarComponent(actorDisplayName, "flex-start")}
         <ListItemText
           data-testid="title"
           className={classes.description}
           primary={
             <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-              {((prevItem && prevItem.actorId !== actorId) ||
-                (prevItem && prevItem.actorId === actorId && prevItem.systemMessage !== "")) && (
-                <Box marginRight={1}>{actorDisplayName}</Box>
-              )}
+              {/* {verifyActorAndSystemMessage(prevItem, actorId) && ( */}
+              <Box marginRight={1}>{actorDisplayName}</Box>
+              {/* )} */}
               {getDistanceTimeComponent(timestamp)}
             </Box>
           }
-          secondary={message}
+          secondary={prepareCommentWithFile(message, messageParameters)}
           style={{ paddingTop: 0, marginTop: 0 }}
           primaryTypographyProps={{
             style: {
@@ -120,11 +154,11 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
   ) {
     const arr = message.split(" ");
     const messageArr: React.ReactNode[] = [];
-    arr.forEach((item) => {
+    arr.forEach((item, idx) => {
       if (item === "{user}" || item === "{actor}")
         messageArr.push(
           <Chip
-            key={uuid()}
+            key={`chip${id}`}
             size="small"
             style={{ fontSize: 12 }}
             avatar={
@@ -141,7 +175,7 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
         );
       else
         messageArr.push(
-          <span key={uuid()} style={{ marginLeft: 2, marginRight: 2, fontSize: 12 }}>
+          <span key={`span${id}${idx}`} style={{ marginLeft: 2, marginRight: 2, fontSize: 12 }}>
             {item}
           </span>,
         );
@@ -173,4 +207,4 @@ const VerticalItemList = ({ item, prevItem }: Props) => {
   );
 };
 
-export default VerticalItemList;
+export const MemoizedChatListItem = React.memo(ChatListItem);

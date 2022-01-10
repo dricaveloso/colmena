@@ -14,8 +14,8 @@ import Box from "@material-ui/core/Box";
 import * as Yup from "yup";
 
 type MyFormValues = {
-  password: string;
-  password_confirmation: string;
+  psdUserReset: string;
+  psdUserResetConfirmation: string;
 };
 
 type Props = {
@@ -29,19 +29,19 @@ export default function WrapperForm({ userId }: Props) {
   const router = useRouter();
 
   const ValidationSchema = Yup.object().shape({
-    password: Yup.string()
+    psdUserReset: Yup.string()
       .min(6, c("form.passwordMinLengthTitle", { size: 6 }))
       .max(30, c("form.passwordMaxLengthTitle", { size: 30 }))
       .required(c("form.requiredTitle")),
-    password_confirmation: Yup.string()
+    psdUserResetConfirmation: Yup.string()
       .min(6, c("form.passwordMinLengthTitle", { size: 6 }))
       .max(30, c("form.passwordMaxLengthTitle", { size: 30 }))
       .required(c("form.requiredTitle")),
   });
 
   const initialValues: MyFormValues = {
-    password_confirmation: "",
-    password: "",
+    psdUserResetConfirmation: "",
+    psdUserReset: "",
   };
 
   return (
@@ -50,7 +50,8 @@ export default function WrapperForm({ userId }: Props) {
         initialValues={initialValues}
         validationSchema={ValidationSchema}
         onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          const { password, password_confirmation } = values;
+          const { psdUserReset: password, psdUserResetConfirmation: password_confirmation } =
+            values;
 
           (async () => {
             try {
@@ -80,6 +81,7 @@ export default function WrapperForm({ userId }: Props) {
       >
         {({ submitForm, isSubmitting, setFieldValue, errors, touched }: any) => (
           <Form
+            autoComplete="off"
             style={{ width: "100%" }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -87,38 +89,38 @@ export default function WrapperForm({ userId }: Props) {
               }
             }}
           >
-            <Field name="password" InputProps={{ notched: true }}>
+            <Field name="psdUserReset" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <PasswordField
                   label={c("form.placeholderPassword")}
                   placeholder={c("form.placeholderPassword")}
                   handleChangePassword={(value: string) => {
-                    setFieldValue("password", value);
+                    setFieldValue("psdUserReset", value);
                   }}
                   required
                   {...field}
                 />
               )}
             </Field>
-            {errors.password && touched.password ? (
-              <ErrorMessageForm message={errors.password} />
+            {errors.psdUserReset && touched.psdUserReset ? (
+              <ErrorMessageForm message={errors.psdUserReset} />
             ) : null}
             <Divider marginTop={20} />
-            <Field name="password_confirmation" InputProps={{ notched: true }}>
+            <Field name="psdUserResetConfirmation" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <PasswordField
                   label={c("form.placeholderPasswordConfirmation")}
                   placeholder={c("form.placeholderPasswordConfirmation")}
                   handleChangePassword={(value: string) => {
-                    setFieldValue("password_confirmation", value);
+                    setFieldValue("psdUserResetConfirmation", value);
                   }}
                   required
                   {...field}
                 />
               )}
             </Field>
-            {errors.password_confirmation && touched.password_confirmation ? (
-              <ErrorMessageForm message={errors.password_confirmation} />
+            {errors.psdUserResetConfirmation && touched.psdUserResetConfirmation ? (
+              <ErrorMessageForm message={errors.psdUserResetConfirmation} />
             ) : null}
             <Divider marginTop={20} />
             {isSubmitting && <LinearProgress />}

@@ -13,25 +13,18 @@ import { getSpecificGroup } from "@/services/ocs/groups";
 import Member from "@/components/pages/media-profile/Members/Member";
 import { v4 as uuid } from "uuid";
 import MembersSkeleton from "@/components/ui/skeleton/MembersList";
-// import { listAutocompleteUsersAndGroups } from "@/services/core/autocomplete";
+import { getUserGroup } from "@/utils/permissions";
 
-type Props = {
-  group: string;
-};
-
-export default function Members({ group }: Props) {
+export default function Members() {
   const { t } = useTranslation("common");
   const [openInvite, setOpenInvite] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const group = getUserGroup();
   const { data, error } = getSpecificGroup(group);
 
   return (
     <Box width="100%">
-      <ToolbarSection
-        seeAllTitle={t("manageTitle")}
-        title={t("membersTitle")}
-        link="/algum-lugar"
-      />
+      <ToolbarSection seeAllTitle={t("manageTitle")} title={t("membersTitle")} />
       <Divider marginTop={10} />
       <Box
         width="100%"

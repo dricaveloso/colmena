@@ -1,0 +1,21 @@
+{
+  "title": "Tags",
+  "editTagTitle": "Edit tag",
+  "createTagTitle": "Create tag",
+  "saveButton": "Save",
+  "form": {
+    "fields": {
+      "name": "Tag name"
+    }
+  },
+  "messages": {
+    "tagCreatedSuccessfully": "Tag created successfully!",
+    "tagRemovedSuccessfully": "Tag removed successfully!",
+    "tagUpdatedSuccessfully": "Tag updated successfully!",
+    "forbidden": "This action is forbidden",
+    "tagAlreadyExists": "Tag already exists"
+  },
+  "table": {
+    "tagTitle": "Tag"
+  }
+}

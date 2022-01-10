@@ -28,6 +28,7 @@ type Props = {
 };
 
 function UsersList({ users, participants, updateParticipants }: Props) {
+  console.log(users, participants);
   const classes = useStyles();
   const [usersComp, setUsersComp] = useState(users);
   const [usersSelected, setUsersSelected] = useState<string[]>(participants);

@@ -47,7 +47,7 @@ type Props = {
 const VerticalItemList = ({ data, backgroundColor }: Props) => {
   const classes = useStyles();
   const router = useRouter();
-  const { id, displayName, token, description } = data;
+  const { id, displayName, token, canDeleteConversation, description } = data;
 
   return (
     <Box className={classes.card} style={{ backgroundColor }}>
@@ -58,7 +58,9 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
         data-testid="title"
         className={classes.description}
         primary={displayName}
-        onClick={() => router.push(`/honeycomb/${token}/${displayName}`)}
+        onClick={() =>
+          router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`)
+        }
         primaryTypographyProps={{ style: { color: theme.palette.primary.dark } }}
         secondary={
           <>

@@ -12,11 +12,18 @@ import {
 type Props = {
   placeholder: string;
   label: string;
+  name: string;
   required?: boolean;
   handleChangePassword: (value: string) => void;
 };
 
-function PasswordField({ label, placeholder, handleChangePassword, required = false }: Props) {
+function PasswordField({
+  label,
+  name,
+  placeholder,
+  handleChangePassword,
+  required = false,
+}: Props) {
   const [values, setValues] = useState({
     password: "",
     showPassword: false,
@@ -39,11 +46,17 @@ function PasswordField({ label, placeholder, handleChangePassword, required = fa
     <FormControl style={{ width: "100%" }} variant="outlined">
       <InputLabel htmlFor={`outlined-adornment-${label}`}>{label}</InputLabel>
       <OutlinedInput
-        id={label}
+        id={name}
         type={values.showPassword ? "text" : "password"}
         value={values.password}
         onChange={handleChange("password")}
         fullWidth
+        inputProps={{
+          autoComplete: `new-${name}`,
+          form: {
+            autoComplete: "off",
+          },
+        }}
         required={required}
         label={label}
         placeholder={placeholder}
