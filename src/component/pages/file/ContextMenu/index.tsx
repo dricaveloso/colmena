@@ -52,17 +52,18 @@ const ContextMenuOptions = ({ blob, data, filename }: Props) => {
   };
 
   const handleOpenDeleteItemConfirm = async () => {
+    handleCloseContextMenu();
     setLoading(true);
     try {
       await deleteFile(userRdx.user.id, filename);
-      removeByNextCloudId(data.fileid, userRdx.user.id);
-      setLoading(false);
-      router.push("/library");
+      await removeByNextCloudId(data.fileid, userRdx.user.id);
     } catch (error) {
       console.log(error);
       toast(error.message, "error");
+    } finally {
+      setLoading(false);
+      router.back();
     }
-    handleCloseContextMenu();
     setOpenDeleteItemConfirm(!openDeleteItemConfirm);
   };
 
