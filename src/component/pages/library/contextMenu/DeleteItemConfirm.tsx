@@ -48,6 +48,12 @@ export default function DeleteItemConfirm({ handleOpen, cardItem }: Props) {
         throw new Error(t("messages.couldNotRemove"));
       }
 
+      if (cardItem.type === "directory") {
+        toast(t("messages.directorySuccessfullyRemoved"), "success");
+      } else {
+        toast(t("messages.fileSuccessfullyRemoved"), "success");
+      }
+
       dispatch(removeLibraryFile(id));
       handleClose();
     } catch (e) {

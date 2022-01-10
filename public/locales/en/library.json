@@ -40,7 +40,17 @@
     "fileAlreadyExists": "There is already a file with that name.",
     "cannotDownloadFile": "Cannot download this file.",
     "unidentifiedEnvironment": "Unidentified environment.",
-    "unableToCompleteRequest": "Unable to complete request."
+    "unableToCompleteRequest": "Unable to complete request.",
+    "directorySuccessfullyCopied": "Directory successfully copied.",
+    "fileSuccessfullyCopied": "File successfully copied.",
+    "directorySuccessfullyMoved": "Directory successfully moved.",
+    "fileSuccessfullyMoved": "File successfully moved.",
+    "directorySuccessfullyDuplicated": "Directory successfully duplicated.",
+    "fileSuccessfullyDuplicated": "File successfully duplicated.",
+    "directorySuccessfullyRenamed": "Directory successfully renamed.",
+    "fileSuccessfullyRenamed": "File successfully renamed.",
+    "directorySuccessfullyRemoved": "Directory successfully removed.",
+    "fileSuccessfullyRemoved": "File successfully removed."
   },
   "renameTitle": "Rename",
   "saveButton": "Save",
@@ -64,5 +74,6 @@
     "description": "Description"
   },
   "downloading": "Downloading",
-  "synchronizing": "Synchronizing"
+  "synchronizing": "Synchronizing",
+  "cancel": "Cancel"
 }

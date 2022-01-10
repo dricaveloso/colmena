@@ -135,6 +135,7 @@ function MyLibrary() {
         dispatch(setLibraryFiles(items));
         dispatch(setLibraryPath(path));
       } catch (e) {
+        console.log(e);
         dispatch(setLibraryFiles([]));
         dispatch(setLibraryPathExists(false));
       }
