@@ -115,6 +115,7 @@ function Recording() {
         path,
         userRdx.user.id,
       )}/${removeSpecialCharacters(title)}.${defaultAudioType}`;
+
       const pathVer = convertUsernameToPrivate(path, userRdx.user.id);
 
       const recording = {
@@ -137,8 +138,9 @@ function Recording() {
           const tokenChat = await findTokenChatByPath(pathVer);
           let talkDir = "";
           if (tokenChat && typeof tokenChat === "string") {
+            const isGroupFolder = await findGroupFolderByPath(pathVer);
             const canDelete = await verifyDeleteAccessFromUserOnChat(tokenChat);
-            if (!canDelete) {
+            if (!canDelete && !isGroupFolder) {
               talkDir = `${DirectoryNamesNCEnum.TALK}/`;
             }
           }
@@ -210,14 +212,24 @@ function Recording() {
 
   async function findTokenChatByPath(path: string): Promise<string | boolean> {
     const arr = path.split("/");
-    const tokenName = arr[0];
+    const honeycombName = arr[0];
     const response = await getUsersConversationsAxios();
     const rooms = response.data.ocs.data;
-    const token = rooms.find((item) => item.name === tokenName)?.token;
+    const token = rooms.find((item) => item.name === honeycombName)?.token;
 
     if (!token) return false;
 
     return token;
+  }
+
+  async function findGroupFolderByPath(path: string): Promise<boolean> {
+    const arr = path.split("/");
+    const honeycombName = arr[0];
+    const response = await fetch("/api/list-group-folder");
+    const groupFolders = await response.json();
+    return groupFolders.data
+      .map((item: string) => item.toLowerCase().trim())
+      .includes(honeycombName.toLowerCase().trim());
   }
 
   async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
