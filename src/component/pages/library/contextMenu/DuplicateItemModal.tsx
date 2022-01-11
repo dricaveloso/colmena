@@ -140,6 +140,12 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
             };
           }
 
+          if (cardItem.type === "directory") {
+            toast(l("messages.directorySuccessfullyDuplicated"), "success");
+          } else {
+            toast(l("messages.fileSuccessfullyDuplicated"), "success");
+          }
+
           dispatch(addLibraryFile(item));
           setIsLoading(false);
           handleOpen(false);
