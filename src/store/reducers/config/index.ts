@@ -10,22 +10,22 @@ const initialState: initialStateProps = {
   lastTwoPagesAccessed: [],
 };
 
+function onlyUnique(value: string, index: number, self: any) {
+  return self.indexOf(value) === index;
+}
+
 const reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case SET_CURRENT_PAGE: {
       let ltpa = state.lastTwoPagesAccessed || [];
-      if (ltpa.length > 0 && action.currentPage !== ltpa[0]) {
-        ltpa.unshift(action.currentPage);
-        ltpa = ltpa.slice(0, 2);
-        return {
-          ...state,
-          currentPage: action.currentPage,
-          lastTwoPagesAccessed: ltpa,
-        };
-      }
+      ltpa.unshift(action.currentPage);
+      ltpa = ltpa.filter(onlyUnique);
+      ltpa = ltpa.slice(0, 2);
 
       return {
-        state,
+        ...state,
+        currentPage: action.currentPage,
+        lastTwoPagesAccessed: ltpa,
       };
     }
     default:
