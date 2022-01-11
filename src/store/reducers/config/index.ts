@@ -14,12 +14,18 @@ const reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case SET_CURRENT_PAGE: {
       let ltpa = state.lastTwoPagesAccessed || [];
-      ltpa.unshift(action.currentPage);
-      ltpa = ltpa.slice(0, 2);
+      if (ltpa.length > 0 && action.currentPage !== ltpa[0]) {
+        ltpa.unshift(action.currentPage);
+        ltpa = ltpa.slice(0, 2);
+        return {
+          ...state,
+          currentPage: action.currentPage,
+          lastTwoPagesAccessed: ltpa,
+        };
+      }
+
       return {
-        ...state,
-        currentPage: action.currentPage,
-        lastTwoPagesAccessed: ltpa,
+        state,
       };
     }
     default:
