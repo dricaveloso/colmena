@@ -171,9 +171,9 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     id="outlined-search"
                     inputProps={{
                       maxLength: 60,
-                      autocomplete: "off",
+                      autoComplete: "off",
                       form: {
-                        autocomplete: "off",
+                        autoComplete: "off",
                       },
                     }}
                     label={t("form.fields.name")}

@@ -59,8 +59,16 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
 
   if (!item) return null;
 
-  const { message, timestamp, actorDisplayName, actorId, systemMessage, id, messageParameters } =
-    item;
+  const {
+    message,
+    timestamp,
+    actorDisplayName,
+    actorId,
+    systemMessage,
+    id,
+    messageParameters,
+    referenceId,
+  } = item;
 
   function getAvatarComponent(actorDisplayName: string, justifyContent = "flex-start") {
     if (
@@ -158,7 +166,7 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
       if (item === "{user}" || item === "{actor}")
         messageArr.push(
           <Chip
-            key={`chip${id}`}
+            key={`chip${id}-${actorId}-${referenceId}`}
             size="small"
             style={{ fontSize: 12 }}
             avatar={

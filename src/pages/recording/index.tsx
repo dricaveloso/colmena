@@ -52,7 +52,7 @@ import { assignTagFile, createAndAssignTagFile, listTags } from "@/services/webd
 import Backdrop from "@/components/ui/Backdrop";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { parseCookies } from "nookies";
-import { removeSpecialCharacters } from "@/utils/utils";
+import { removeSpecialCharacters, findGroupFolderByPath } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
 
@@ -115,6 +115,7 @@ function Recording() {
         path,
         userRdx.user.id,
       )}/${removeSpecialCharacters(title)}.${defaultAudioType}`;
+
       const pathVer = convertUsernameToPrivate(path, userRdx.user.id);
 
       const recording = {
@@ -137,8 +138,9 @@ function Recording() {
           const tokenChat = await findTokenChatByPath(pathVer);
           let talkDir = "";
           if (tokenChat && typeof tokenChat === "string") {
+            const isGroupFolder = await findGroupFolderByPath(pathVer);
             const canDelete = await verifyDeleteAccessFromUserOnChat(tokenChat);
-            if (!canDelete) {
+            if (!canDelete && !isGroupFolder) {
               talkDir = `${DirectoryNamesNCEnum.TALK}/`;
             }
           }
@@ -210,10 +212,10 @@ function Recording() {
 
   async function findTokenChatByPath(path: string): Promise<string | boolean> {
     const arr = path.split("/");
-    const tokenName = arr[0];
+    const honeycombName = arr[0];
     const response = await getUsersConversationsAxios();
     const rooms = response.data.ocs.data;
-    const token = rooms.find((item) => item.name === tokenName)?.token;
+    const token = rooms.find((item) => item.name === honeycombName)?.token;
 
     if (!token) return false;
 
@@ -253,12 +255,15 @@ function Recording() {
   };
 
   function redirectToLastAccessedPage(): string | null {
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    const urlOrigin = configRdx.lastTwoPagesAccessed[1] || "home";
 
     if (/^[/]library/.test(urlOrigin)) {
       if ((urlOrigin.match(/[/]/g) || []).length > 1) {
         const path = libraryRdx.currentPath;
-        return convertPrivateToUsername(path, userRdx.user.id).replace(/[/]library[/]/, "");
+        return `library/${convertPrivateToUsername(path, userRdx.user.id).replace(
+          /[/]library[/]/,
+          "",
+        )}`;
       }
     }
 

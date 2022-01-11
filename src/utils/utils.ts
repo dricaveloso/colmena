@@ -380,3 +380,13 @@ export function fancyTimeFormat(duration: number) {
 export function uniqueId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
+
+export async function findGroupFolderByPath(path: string): Promise<boolean> {
+  const arr = path.split("/");
+  const honeycombName = arr[0];
+  const response = await fetch("/api/list-group-folder");
+  const groupFolders = await response.json();
+  return groupFolders.data
+    .map((item: string) => item.toLowerCase().trim())
+    .includes(honeycombName.toLowerCase().trim());
+}

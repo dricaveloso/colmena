@@ -4,10 +4,17 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
 import IconButton from "@/components/ui/IconButton";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
+import { useRouter } from "next/router";
+
 import { v4 as uuid } from "uuid";
 import { toast } from "@/utils/notifications";
 import { downloadFile } from "@/utils/utils";
 import { DefaultAudioTypeEnum } from "@/enums/*";
+import ActionConfirm from "@/components/ui/ActionConfirm";
+import { deleteFile } from "@/services/webdav/files";
+import { removeByNextCloudId } from "@/store/idb/models/files";
 
 type PositionProps = {
   mouseX: null | number;
@@ -17,17 +24,21 @@ type PositionProps = {
 type Props = {
   data: any | undefined;
   blob: Blob | null;
+  filename: string;
 };
 
-const ContextMenuOptions = ({ blob, data }: Props) => {
+const ContextMenuOptions = ({ blob, data, filename }: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("file");
   const { t: c } = useTranslation("common");
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
   const [position, setPosition] = useState<PositionProps>({
     mouseX: null,
     mouseY: null,
   });
-
+  const [openDeleteItemConfirm, setOpenDeleteItemConfirm] = useState(false);
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
     setPosition({
@@ -38,6 +49,25 @@ const ContextMenuOptions = ({ blob, data }: Props) => {
 
   const handleCloseContextMenu = () => {
     setAnchorEl(null);
+  };
+
+  const handleOpenDeleteItemConfirm = async () => {
+    setLoading(true);
+    try {
+      await deleteFile(userRdx.user.id, filename);
+      removeByNextCloudId(data.fileid, userRdx.user.id);
+      setLoading(false);
+      router.push("/library");
+    } catch (error) {
+      console.log(error);
+      toast(error.message, "error");
+    }
+    handleCloseContextMenu();
+    setOpenDeleteItemConfirm(!openDeleteItemConfirm);
+  };
+
+  const handleOpenCloseModal = () => {
+    setOpenDeleteItemConfirm(!openDeleteItemConfirm);
   };
 
   return (
@@ -78,14 +108,17 @@ const ContextMenuOptions = ({ blob, data }: Props) => {
         <MenuItem key="edit" onClick={() => toast(c("featureUnavailable"), "warning")}>
           {t("contextMenuOptions.editAudio")}
         </MenuItem>
-        <MenuItem
-          key="remove"
-          onClick={() => toast(c("featureUnavailable"), "warning")}
-          style={{ color: "tomato" }}
-        >
+        <MenuItem key="remove" onClick={() => handleOpenCloseModal()} style={{ color: "tomato" }}>
           {t("contextMenuOptions.deleteAudio")}
         </MenuItem>
       </Menu>
+      {openDeleteItemConfirm && (
+        <ActionConfirm
+          onOk={handleOpenDeleteItemConfirm}
+          onClose={handleOpenCloseModal}
+          isLoading={loading}
+        />
+      )}
     </Box>
   );
 };

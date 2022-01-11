@@ -179,9 +179,9 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                             id="room"
                             inputProps={{
                               maxLength: 60,
-                              autocomplete: "off",
+                              autoComplete: "off",
                               form: {
-                                autocomplete: "off",
+                                autoComplete: "off",
                               },
                             }}
                             label={c("form.fields.name")}

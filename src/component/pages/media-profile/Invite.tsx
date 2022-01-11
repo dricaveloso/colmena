@@ -130,9 +130,9 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                         margin="dense"
                         id="name"
                         inputProps={{
-                          autocomplete: "off",
+                          autoComplete: "off",
                           form: {
-                            autocomplete: "off",
+                            autoComplete: "off",
                           },
                         }}
                         label={t("placeholderName")}
@@ -148,9 +148,9 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                       <TextField
                         margin="dense"
                         inputProps={{
-                          autocomplete: "off",
+                          autoComplete: "off",
                           form: {
-                            autocomplete: "off",
+                            autoComplete: "off",
                           },
                         }}
                         id="emailCol"
