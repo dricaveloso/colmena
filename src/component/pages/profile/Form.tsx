@@ -110,9 +110,9 @@ export default function FormProfile() {
                 <TextField
                   id="user_name"
                   inputProps={{
-                    autocomplete: "off",
+                    autoComplete: "off",
                     form: {
-                      autocomplete: "off",
+                      autoComplete: "off",
                     },
                   }}
                   label={t("nameField")}
@@ -132,9 +132,9 @@ export default function FormProfile() {
                 <TextField
                   id="lastname"
                   inputProps={{
-                    autocomplete: "off",
+                    autoComplete: "off",
                     form: {
-                      autocomplete: "off",
+                      autoComplete: "off",
                     },
                   }}
                   label={t("lastnameField")}
@@ -158,9 +158,9 @@ export default function FormProfile() {
                   variant={SelectVariantEnum.OUTLINED}
                   required
                   inputProps={{
-                    autocomplete: "off",
+                    autoComplete: "off",
                     form: {
-                      autocomplete: "off",
+                      autoComplete: "off",
                     },
                   }}
                   fullWidth

@@ -270,7 +270,10 @@ function Recording() {
     if (/^[/]library/.test(urlOrigin)) {
       if ((urlOrigin.match(/[/]/g) || []).length > 1) {
         const path = libraryRdx.currentPath;
-        return convertPrivateToUsername(path, userRdx.user.id).replace(/[/]library[/]/, "");
+        return `library/${convertPrivateToUsername(path, userRdx.user.id).replace(
+          /[/]library[/]/,
+          "",
+        )}`;
       }
     }
 
