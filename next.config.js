@@ -34,6 +34,7 @@ module.exports = withImages(
       dest: "public",
       disable: process.env.NODE_ENV === "development",
       cacheOnFrontEndNav: true,
+      scope: '/app',
       swSrc: "/sw.js",
       fallbacks: {
         document: "/fallback",
