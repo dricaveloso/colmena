@@ -5,7 +5,12 @@ import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import IconButton from "@/components/ui/IconButton";
 import getBlobDuration from "get-blob-duration";
-import { fancyTimeFormat, formatBytes, removeSpecialCharacters } from "@/utils/utils";
+import {
+  fancyTimeFormat,
+  formatBytes,
+  removeSpecialCharacters,
+  findGroupFolderByPath,
+} from "@/utils/utils";
 import { createObjectURL, arrayBufferToBlob } from "blob-util";
 import { findByFilename } from "@/store/idb/models/files";
 import { toast } from "@/utils/notifications";
@@ -114,7 +119,7 @@ export function Audio({ filename, size, name, config, canDeleteConversation }: P
         toast(error, "error");
       });
     } catch (e) {
-      console.log("flamengo", e);
+      console.log("error 2", e);
       // error container element not found
     }
   }
@@ -128,7 +133,12 @@ export function Audio({ filename, size, name, config, canDeleteConversation }: P
     try {
       setLoadingAudioFile(true);
       let fileN = filename.replace(`${DirectoryNamesNCEnum.TALK}/`, "");
-      fileN = canDeleteConversation === 1 ? fileN : `${DirectoryNamesNCEnum.TALK}/${fileN}`;
+
+      const isGroupFolder = await findGroupFolderByPath(fileN);
+
+      if (!isGroupFolder)
+        fileN = canDeleteConversation === 1 ? fileN : `${DirectoryNamesNCEnum.TALK}/${fileN}`;
+
       const result: any = await listFile(userRdx.user.id, fileN);
       await createQuickBlob({
         basename: removeSpecialCharacters(fileN),

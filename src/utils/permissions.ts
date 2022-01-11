@@ -11,3 +11,8 @@ export function getUserGroup() {
   const group = Array.isArray(media?.groups) && media?.groups[0] ? media?.groups[0] : "";
   return group;
 }
+
+export function getAllUserGroup() {
+  const { media } = initializeStore({}).getState().user.user;
+  return media?.groups || [];
+}

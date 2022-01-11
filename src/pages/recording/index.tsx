@@ -52,7 +52,7 @@ import { assignTagFile, createAndAssignTagFile, listTags } from "@/services/webd
 import Backdrop from "@/components/ui/Backdrop";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { parseCookies } from "nookies";
-import { removeSpecialCharacters } from "@/utils/utils";
+import { removeSpecialCharacters, findGroupFolderByPath } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
 
@@ -222,16 +222,6 @@ function Recording() {
     return token;
   }
 
-  async function findGroupFolderByPath(path: string): Promise<boolean> {
-    const arr = path.split("/");
-    const honeycombName = arr[0];
-    const response = await fetch("/api/list-group-folder");
-    const groupFolders = await response.json();
-    return groupFolders.data
-      .map((item: string) => item.toLowerCase().trim())
-      .includes(honeycombName.toLowerCase().trim());
-  }
-
   async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
     const response = await getSingleConversationAxios(token);
     const { data } = response.data.ocs;
@@ -265,7 +255,7 @@ function Recording() {
   };
 
   function redirectToLastAccessedPage(): string | null {
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    const urlOrigin = configRdx.lastTwoPagesAccessed[1] || "home";
 
     if (/^[/]library/.test(urlOrigin)) {
       if ((urlOrigin.match(/[/]/g) || []).length > 1) {
