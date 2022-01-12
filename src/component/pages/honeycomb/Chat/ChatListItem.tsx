@@ -22,6 +22,7 @@ import Text from "@/components/ui/Text";
 import { TextVariantEnum, TextColorEnum } from "@/enums/*";
 import { parseCookies, setCookie } from "nookies";
 import { MemoizedAudio } from "@/components/pages/honeycomb/Chat/Files/Audio";
+import Default from "./Files/Default";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -94,22 +95,44 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
   ): string | React.ReactNode => {
     if (message !== "{file}") return message;
 
-    const mimetype = messageParameters?.file?.mimetype;
-    if (mimetype && isAudioFile(mimetype)) {
-      if (messageParameters && messageParameters.file) {
-        const { path, name, size } = messageParameters.file;
-        return (
-          <MemoizedAudio
-            filename={path}
-            name={name}
-            size={size}
-            canDeleteConversation={canDeleteConversation}
-          />
-        );
+    if (messageParameters) {
+      const messageFile = renderMessageFile(messageParameters);
+      if (message) {
+        return messageFile;
       }
     }
 
     return message;
+  };
+
+  const renderMessageFile = (messageParameters: ChatMessageItemMessageParameterInterface) => {
+    const { file } = messageParameters;
+    if (!file) return false;
+
+    const { path, name, size } = file;
+    const mimetype = file?.mimetype;
+    if (mimetype && isAudioFile(mimetype)) {
+      return (
+        <MemoizedAudio
+          key={`${path}-audio`}
+          filename={path}
+          name={name}
+          size={size}
+          canDeleteConversation={canDeleteConversation}
+        />
+      );
+    }
+
+    return (
+      <Default
+        key={`${path}-file`}
+        mimetype={mimetype}
+        filename={path}
+        name={name}
+        size={size}
+        canDeleteConversation={canDeleteConversation}
+      />
+    );
   };
 
   // const verifyActorAndSystemMessage = (

@@ -26,6 +26,8 @@ export function Chat({ token, conversationName, canDeleteConversation }: Props) 
           .map((item, idx) => (
             <MemoizedChatList
               {...item}
+              // eslint-disable-next-line react/no-array-index-key
+              key={idx}
               canDeleteConversation={canDeleteConversation}
               conversationName={conversationName}
               idxElem={idx}
