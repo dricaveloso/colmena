@@ -62,6 +62,8 @@ const ContextMenuOptions = ({ blob, data, filename }: Props) => {
       toast(error.message, "error");
     } finally {
       setLoading(false);
+      toast(t("messages.fileDeletedSuccessfully"), "success");
+
       router.back();
     }
     setOpenDeleteItemConfirm(!openDeleteItemConfirm);
