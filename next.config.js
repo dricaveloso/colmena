@@ -32,7 +32,8 @@ module.exports = withImages(
     },
     pwa: {
       dest: "public",
-      disable: process.env.NODE_ENV === "development",
+      // disable: process.env.NODE_ENV === "development",
+      disable: false,
       cacheOnFrontEndNav: true,
       // swSrc: "/sw.js",
       fallbacks: {

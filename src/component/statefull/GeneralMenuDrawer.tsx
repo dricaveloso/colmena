@@ -4,7 +4,6 @@ import { ListItemIcon, List, ListItem, ListItemText } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import { toast } from "@/utils/notifications";
 import Divider from "@material-ui/core/Divider";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
@@ -15,6 +14,7 @@ import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal"
 import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
+import { useReactPWAInstall } from "react-pwa-install";
 
 type ListItemProps = {
   id: string;
@@ -55,6 +55,29 @@ function DrawerAux({ open, onClose }: Props) {
   const [showBackdrop, setShowBackdrop] = useState(false);
   const cookies = parseCookies();
   const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
+  const { pwaInstall, supported, isInstalled } = useReactPWAInstall();
+
+  const handleInstallPWA = () => {
+    pwaInstall({
+      title: "Install Web App",
+      logo: "public/images/svg/colmena_logo_1612.svg",
+      features: (
+        <ul>
+          <li>Cool feature 1</li>
+          <li>Cool feature 2</li>
+          <li>Even cooler feature</li>
+          <li>Works offline</li>
+        </ul>
+      ),
+      description: "This is a very good app that does a lot of useful stuff. ",
+    })
+      .then(() => {
+        console.log("App installed successfully or instructions for install shown");
+      })
+      .catch((e) => {
+        console.log(e, "User opted out from installing");
+      });
+  };
 
   const switchLanguageHandle = () => {
     setOpenChangeLanguage(true);
@@ -65,7 +88,7 @@ function DrawerAux({ open, onClose }: Props) {
   };
 
   const { t } = useTranslation("drawer");
-  const { t: c } = useTranslation("common");
+  // const { t: c } = useTranslation("common");
 
   const logoutHandler = async () => {
     if (navigator.onLine) {
@@ -83,12 +106,6 @@ function DrawerAux({ open, onClose }: Props) {
   const iconSize = "medium";
 
   const menuArray = [
-    {
-      id: uuid(),
-      icon: <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />,
-      title: t("downloadTitle"),
-      handleClick: () => toast(c("featureUnavailable"), "warning"),
-    },
     {
       id: uuid(),
       icon: <SvgIcon icon="global" fontSize={iconSize} htmlColor={iconColor} />,
@@ -180,6 +197,17 @@ function DrawerAux({ open, onClose }: Props) {
       </div>
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
       <List component="nav">
+        {supported() && !isInstalled() && (
+          <ListItem button onClick={handleInstallPWA} key={uuid()}>
+            <ListItemIcon className={classes.icon}>
+              <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />
+            </ListItemIcon>
+            <ListItemText
+              primary={t("downloadTitle")}
+              primaryTypographyProps={{ style: { fontSize: 14 } }}
+            />
+          </ListItem>
+        )}
         {menuArray.map((item: ListItemProps) => {
           const { id, icon, color, title, url, handleClick } = item;
           if (url)

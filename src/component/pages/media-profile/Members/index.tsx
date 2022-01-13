@@ -14,6 +14,7 @@ import Member from "@/components/pages/media-profile/Members/Member";
 import { v4 as uuid } from "uuid";
 import MembersSkeleton from "@/components/ui/skeleton/MembersList";
 import { getUserGroup } from "@/utils/permissions";
+import { toast } from "@/utils/notifications";
 
 export default function Members() {
   const { t } = useTranslation("common");
@@ -39,7 +40,8 @@ export default function Members() {
             iconColor={theme.palette.secondary.main}
             iconStyle={{ fontSize: 64 }}
             fontSizeIcon="large"
-            handleClick={() => setOpenInvite(true)}
+            // handleClick={() => setOpenInvite(true)}
+            handleClick={() => toast(t("featureUnavailable"), "warning")}
             style={{ marginRight: 8, marginBottom: 25 }}
             textStyle={{
               color: theme.palette.primary.dark,
