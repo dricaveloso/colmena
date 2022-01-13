@@ -28,6 +28,7 @@ import {
   SelectOptionItem,
   PropsConfigSelector,
   PropsLibrarySelector,
+  PropsRecordingSelector,
 } from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
 import {
@@ -38,7 +39,7 @@ import {
 } from "@/store/idb/models/files";
 import { useRouter } from "next/router";
 import { toast } from "@/utils/notifications";
-import { updateRecordingState } from "@/store/actions/recordings/index";
+import { updateRecordingState, updateBackDuringRecording } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import theme from "@/styles/theme";
@@ -78,17 +79,20 @@ function Recording() {
   const language = cookies.NEXT_LOCALE || "en";
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+  const recordingRdx = useSelector(
+    (state: { recording: PropsRecordingSelector }) => state.recording,
+  );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
+    dispatch(updateRecordingState("NONE"));
   }, []);
 
   const handleCloseExtraInfo = () => {
     toast(t("audioSavedSuccessfully"), "success");
     setOpenDialogAudioName(false);
-    dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
+    dispatch(updateRecordingState("NONE"));
   };
 
   const discardAudio = async () => {
@@ -96,7 +100,11 @@ function Recording() {
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
     toast(t("audioDiscardedSuccessfully"), "success");
-    dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
+    dispatch(updateRecordingState("NONE"));
+    if (recordingRdx.backAfterFinishRecording) {
+      dispatch(updateBackDuringRecording(false));
+      router.back();
+    }
   };
 
   const saveAudioHandle = async (values: PropsAudioSave) => {
@@ -245,12 +253,17 @@ function Recording() {
     setOpenContinueRecording(false);
     toast(t("audioSavedSuccessfully"), "success");
 
-    const urlBack = redirectToLastAccessedPage();
-    if (amountAudiosRecorded === 1) {
-      if (urlBack) router.push(urlBack);
-      else router.push(`/file/${filename}`);
-    } else if (amountAudiosRecorded > 1) {
-      if (urlBack) router.push(urlBack);
+    if (recordingRdx.backAfterFinishRecording) {
+      dispatch(updateBackDuringRecording(false));
+      router.back();
+    } else {
+      const urlBack = redirectToLastAccessedPage();
+      if (amountAudiosRecorded === 1) {
+        if (urlBack) router.push(urlBack);
+        else router.push(`/file/${filename}`);
+      } else if (amountAudiosRecorded > 1) {
+        if (urlBack) router.push(urlBack);
+      }
     }
   };
 
@@ -291,7 +304,7 @@ function Recording() {
     };
     const audioId = await createFile(recording);
     setAudioId(audioId);
-    dispatch(updateRecordingState({ activeRecordingState: "NONE" }));
+    dispatch(updateRecordingState("NONE"));
   }
 
   async function onStopRecording(audioData: PropsAudioData) {

@@ -14,16 +14,16 @@ export default function Timer() {
 
   const handleStart = () => {
     start();
-    dispatch(updateRecordingState({ activeRecordingState: "START" }));
+    dispatch(updateRecordingState("START"));
   };
 
   const handlePause = () => {
     pause();
-    dispatch(updateRecordingState({ activeRecordingState: "PAUSE" }));
+    dispatch(updateRecordingState("PAUSE"));
   };
 
   const handleStop = () => {
-    dispatch(updateRecordingState({ activeRecordingState: "STOP" }));
+    dispatch(updateRecordingState("STOP"));
     reset(0, false);
   };
 

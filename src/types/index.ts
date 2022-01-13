@@ -74,6 +74,8 @@ export type SelectOptionItem = {
 export type PropsRecordingSelector = {
   recordings: RecordingInterface[];
   activeRecordingState: string;
+  allowBrowserRecording: boolean;
+  backAfterFinishRecording: boolean;
 };
 
 export type NotificationStatusProps =
