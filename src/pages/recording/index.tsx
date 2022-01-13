@@ -38,7 +38,7 @@ import {
 } from "@/store/idb/models/files";
 import { useRouter } from "next/router";
 import { toast } from "@/utils/notifications";
-import { updateRecordingState, updateBackDuringRecording } from "@/store/actions/recordings/index";
+import { updateRecordingState } from "@/store/actions/recordings/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import theme from "@/styles/theme";
@@ -55,7 +55,8 @@ import { parseCookies } from "nookies";
 import {
   removeSpecialCharacters,
   findGroupFolderByPath,
-  redirectToPreviousPageAfterBackPressed,
+  getBackAfterFinishRecording,
+  setBackAfterFinishRecording,
 } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
@@ -70,9 +71,6 @@ function Recording() {
   const { t } = useTranslation("recording");
   const { t: c } = useTranslation("common");
   const router = useRouter();
-  // const recordingRdx = useSelector(
-  //   (state: { recording: PropsRecordingSelector }) => state.recording,
-  // );
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [openDialogAudioName, setOpenDialogAudioName] = useState(false);
   const [openContinueRecording, setOpenContinueRecording] = useState(false);
@@ -89,14 +87,14 @@ function Recording() {
 
   useEffect(() => {
     dispatch(updateRecordingState("NONE"));
-    dispatch(updateBackDuringRecording(false));
+    setBackAfterFinishRecording("no");
   }, []);
 
   const handleCloseExtraInfo = () => {
     toast(t("audioSavedSuccessfully"), "success");
     setOpenDialogAudioName(false);
     dispatch(updateRecordingState("NONE"));
-    if (redirectToPreviousPageAfterBackPressed()) {
+    if (getBackAfterFinishRecording() === "yes") {
       router.back();
     }
   };
@@ -107,7 +105,7 @@ function Recording() {
     setOpenContinueRecording(false);
     toast(t("audioDiscardedSuccessfully"), "success");
     dispatch(updateRecordingState("NONE"));
-    if (redirectToPreviousPageAfterBackPressed()) {
+    if (getBackAfterFinishRecording() === "yes") {
       router.back();
     }
   };
@@ -219,7 +217,7 @@ function Recording() {
 
   const keepRecordingHandle = () => {
     toast(t("audioSavedSuccessfully"), "success");
-    dispatch(updateBackDuringRecording(false));
+    setBackAfterFinishRecording("no");
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
   };
@@ -259,7 +257,7 @@ function Recording() {
     setOpenContinueRecording(false);
     toast(t("audioSavedSuccessfully"), "success");
 
-    if (redirectToPreviousPageAfterBackPressed()) {
+    if (getBackAfterFinishRecording() === "yes") {
       router.back();
     } else {
       const urlBack = redirectToLastAccessedPage();

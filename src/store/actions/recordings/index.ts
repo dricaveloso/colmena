@@ -4,7 +4,6 @@ import {
   CLEAR_RECORDINGS,
   SET_ACTIVE_RECORDING_STATE,
   SET_ALLOW_BROWSER_RECORDING,
-  SET_BACK_DURING_RECORDING,
 } from "@/store/actions/index";
 import { RecordingInterface } from "@/interfaces/index";
 
@@ -22,11 +21,6 @@ export const recordingUpdate = (id: string, recording: RecordingInterface) => ({
 export const updateRecordingState = (activeRecordingState: string) => ({
   type: SET_ACTIVE_RECORDING_STATE,
   activeRecordingState,
-});
-
-export const updateBackDuringRecording = (backAfterFinishRecording: boolean) => ({
-  type: SET_BACK_DURING_RECORDING,
-  backAfterFinishRecording,
 });
 
 export const updatePermissionBrowserRecording = ({

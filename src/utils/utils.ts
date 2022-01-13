@@ -6,7 +6,6 @@ import {
   BreadcrumbItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { initializeStore } from "@/store/index";
 
 export function formatBytes(bytes: number, decimals = 2) {
   if (bytes === 0) return "0 Bytes";
@@ -392,7 +391,10 @@ export async function findGroupFolderByPath(path: string): Promise<boolean> {
     .includes(honeycombName.toLowerCase().trim());
 }
 
-export function redirectToPreviousPageAfterBackPressed() {
-  const { backAfterFinishRecording } = initializeStore({}).getState().recording;
-  return backAfterFinishRecording;
+export function setBackAfterFinishRecording(flag: string) {
+  localStorage.setItem("backAfterFinishRecording", flag);
+}
+
+export function getBackAfterFinishRecording() {
+  return localStorage.getItem("backAfterFinishRecording");
 }

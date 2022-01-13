@@ -11,7 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Drawer from "./GeneralMenuDrawer";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
-import { updateBackDuringRecording, updateRecordingState } from "@/store/actions/recordings/index";
+import { updateRecordingState } from "@/store/actions/recordings/index";
+import { setBackAfterFinishRecording } from "@/utils/utils";
 
 export interface AppBarInterface {
   title: string;
@@ -42,7 +43,6 @@ function AppBarSys({
   templateHeader = "variation2",
   extraElement = undefined,
 }: AppBarInterface) {
-  // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const recordingRdx = useSelector(
@@ -56,7 +56,7 @@ function AppBarSys({
     if (router.pathname === "/profile") router.push(configRdx.currentPage);
     else if (router.pathname === "/recording") {
       if (recordingRdx.activeRecordingState === "START") {
-        dispatch(updateBackDuringRecording(true));
+        setBackAfterFinishRecording("yes");
         dispatch(updateRecordingState("STOP"));
       } else router.back();
     } else router.back();
