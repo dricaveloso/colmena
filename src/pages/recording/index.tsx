@@ -89,7 +89,7 @@ function Recording() {
 
   useEffect(() => {
     dispatch(updateRecordingState("NONE"));
-    updateBackDuringRecording(false);
+    dispatch(updateBackDuringRecording(false));
   }, []);
 
   const handleCloseExtraInfo = () => {
