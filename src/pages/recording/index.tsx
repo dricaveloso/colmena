@@ -98,7 +98,6 @@ function Recording() {
     dispatch(updateRecordingState("NONE"));
     if (redirectToPreviousPageAfterBackPressed()) {
       router.back();
-      dispatch(updateBackDuringRecording(false));
     }
   };
 
@@ -109,9 +108,7 @@ function Recording() {
     toast(t("audioDiscardedSuccessfully"), "success");
     dispatch(updateRecordingState("NONE"));
     if (redirectToPreviousPageAfterBackPressed()) {
-      console.log("aqui?");
       router.back();
-      dispatch(updateBackDuringRecording(false));
     }
   };
 
@@ -264,7 +261,6 @@ function Recording() {
 
     if (redirectToPreviousPageAfterBackPressed()) {
       router.back();
-      dispatch(updateBackDuringRecording(false));
     } else {
       const urlBack = redirectToLastAccessedPage();
       if (amountAudiosRecorded === 1) {
