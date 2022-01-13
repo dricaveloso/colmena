@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ListItemIcon, List, ListItem, ListItemText } from "@material-ui/core";
@@ -14,7 +15,7 @@ import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal"
 import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
-import { useReactPWAInstall } from "react-pwa-install";
+import { usePWAInstall } from "react-use-pwa-install";
 
 type ListItemProps = {
   id: string;
@@ -55,29 +56,8 @@ function DrawerAux({ open, onClose }: Props) {
   const [showBackdrop, setShowBackdrop] = useState(false);
   const cookies = parseCookies();
   const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
-  const { pwaInstall, supported, isInstalled } = useReactPWAInstall();
-
-  const handleInstallPWA = () => {
-    pwaInstall({
-      title: "Install Web App",
-      logo: "public/images/svg/colmena_logo_1612.svg",
-      features: (
-        <ul>
-          <li>Cool feature 1</li>
-          <li>Cool feature 2</li>
-          <li>Even cooler feature</li>
-          <li>Works offline</li>
-        </ul>
-      ),
-      description: "This is a very good app that does a lot of useful stuff. ",
-    })
-      .then(() => {
-        console.log("App installed successfully or instructions for install shown");
-      })
-      .catch((e) => {
-        console.log(e, "User opted out from installing");
-      });
-  };
+  const install = usePWAInstall();
+  console.log(install);
 
   const switchLanguageHandle = () => {
     setOpenChangeLanguage(true);
@@ -197,8 +177,8 @@ function DrawerAux({ open, onClose }: Props) {
       </div>
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
       <List component="nav">
-        {supported() && !isInstalled() && (
-          <ListItem button onClick={handleInstallPWA} key={uuid()}>
+        {install && (
+          <ListItem button onClick={install} key={uuid()}>
             <ListItemIcon className={classes.icon}>
               <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />
             </ListItemIcon>

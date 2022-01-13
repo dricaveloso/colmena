@@ -13,7 +13,6 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as NextAuthProvider } from "next-auth/client";
 import CenterProgress from "@/components/ui/CenterProgress";
-import ReactPWAInstallProvider from "react-pwa-install";
 import "@/styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -52,9 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ThemeProvider theme={theme}>
             <GlobalLayout>
               <CssBaseline />
-              <ReactPWAInstallProvider enableLogging>
-                <Component {...pageProps} />
-              </ReactPWAInstallProvider>
+              <Component {...pageProps} />
             </GlobalLayout>
           </ThemeProvider>
         </PersistGate>
