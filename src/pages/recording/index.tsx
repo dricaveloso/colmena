@@ -89,12 +89,17 @@ function Recording() {
 
   useEffect(() => {
     dispatch(updateRecordingState("NONE"));
+    updateBackDuringRecording(false);
   }, []);
 
   const handleCloseExtraInfo = () => {
     toast(t("audioSavedSuccessfully"), "success");
     setOpenDialogAudioName(false);
     dispatch(updateRecordingState("NONE"));
+    if (redirectToPreviousPageAfterBackPressed()) {
+      router.back();
+      dispatch(updateBackDuringRecording(false));
+    }
   };
 
   const discardAudio = async () => {
@@ -104,6 +109,7 @@ function Recording() {
     toast(t("audioDiscardedSuccessfully"), "success");
     dispatch(updateRecordingState("NONE"));
     if (redirectToPreviousPageAfterBackPressed()) {
+      console.log("aqui?");
       router.back();
       dispatch(updateBackDuringRecording(false));
     }
