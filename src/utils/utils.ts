@@ -6,6 +6,7 @@ import {
   BreadcrumbItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
+import { initializeStore } from "@/store/index";
 
 export function formatBytes(bytes: number, decimals = 2) {
   if (bytes === 0) return "0 Bytes";
@@ -389,4 +390,9 @@ export async function findGroupFolderByPath(path: string): Promise<boolean> {
   return groupFolders.data
     .map((item: string) => item.toLowerCase().trim())
     .includes(honeycombName.toLowerCase().trim());
+}
+
+export function redirectToPreviousPageAfterBackPressed() {
+  const { backAfterFinishRecording } = initializeStore({}).getState().recording;
+  return backAfterFinishRecording;
 }

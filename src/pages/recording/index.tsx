@@ -28,7 +28,6 @@ import {
   SelectOptionItem,
   PropsConfigSelector,
   PropsLibrarySelector,
-  PropsRecordingSelector,
 } from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
 import {
@@ -53,7 +52,11 @@ import { assignTagFile, createAndAssignTagFile, listTags } from "@/services/webd
 import Backdrop from "@/components/ui/Backdrop";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { parseCookies } from "nookies";
-import { removeSpecialCharacters, findGroupFolderByPath } from "@/utils/utils";
+import {
+  removeSpecialCharacters,
+  findGroupFolderByPath,
+  redirectToPreviousPageAfterBackPressed,
+} from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
 
@@ -67,6 +70,9 @@ function Recording() {
   const { t } = useTranslation("recording");
   const { t: c } = useTranslation("common");
   const router = useRouter();
+  // const recordingRdx = useSelector(
+  //   (state: { recording: PropsRecordingSelector }) => state.recording,
+  // );
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [openDialogAudioName, setOpenDialogAudioName] = useState(false);
   const [openContinueRecording, setOpenContinueRecording] = useState(false);
@@ -79,10 +85,6 @@ function Recording() {
   const language = cookies.NEXT_LOCALE || "en";
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  const recordingRdx = useSelector(
-    (state: { recording: PropsRecordingSelector }) => state.recording,
-  );
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -101,9 +103,9 @@ function Recording() {
     setOpenContinueRecording(false);
     toast(t("audioDiscardedSuccessfully"), "success");
     dispatch(updateRecordingState("NONE"));
-    if (recordingRdx.backAfterFinishRecording) {
-      dispatch(updateBackDuringRecording(false));
+    if (redirectToPreviousPageAfterBackPressed()) {
       router.back();
+      dispatch(updateBackDuringRecording(false));
     }
   };
 
@@ -214,6 +216,7 @@ function Recording() {
 
   const keepRecordingHandle = () => {
     toast(t("audioSavedSuccessfully"), "success");
+    dispatch(updateBackDuringRecording(false));
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
   };
@@ -253,9 +256,9 @@ function Recording() {
     setOpenContinueRecording(false);
     toast(t("audioSavedSuccessfully"), "success");
 
-    if (recordingRdx.backAfterFinishRecording) {
-      dispatch(updateBackDuringRecording(false));
+    if (redirectToPreviousPageAfterBackPressed()) {
       router.back();
+      dispatch(updateBackDuringRecording(false));
     } else {
       const urlBack = redirectToLastAccessedPage();
       if (amountAudiosRecorded === 1) {
