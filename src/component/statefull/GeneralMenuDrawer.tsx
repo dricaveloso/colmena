@@ -14,7 +14,7 @@ import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal"
 import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
-// import { useA2HS } from "react-use-a2hs";
+import { useA2HS } from "react-use-a2hs";
 import { toast } from "@/utils/notifications";
 
 type ListItemProps = {
@@ -56,7 +56,8 @@ function DrawerAux({ open, onClose }: Props) {
   const [showBackdrop, setShowBackdrop] = useState(false);
   const cookies = parseCookies();
   const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
-  // const [promptEvent, promptToInstall] = useA2HS();
+  const [promptEvent, promptToInstall] = useA2HS();
+  console.log(promptEvent, promptToInstall);
 
   const switchLanguageHandle = () => {
     setOpenChangeLanguage(true);
@@ -177,17 +178,17 @@ function DrawerAux({ open, onClose }: Props) {
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
 
       <List component="nav">
-        {/* {promptEvent && ( */}
-        <ListItem key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
-          <ListItemIcon className={classes.icon}>
-            <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />
-          </ListItemIcon>
-          <ListItemText
-            primary={t("downloadTitle")}
-            primaryTypographyProps={{ style: { fontSize: 14 } }}
-          />
-        </ListItem>
-        {/* )} */}
+        {promptEvent && (
+          <ListItem key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
+            <ListItemIcon className={classes.icon}>
+              <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />
+            </ListItemIcon>
+            <ListItemText
+              primary={t("downloadTitle")}
+              primaryTypographyProps={{ style: { fontSize: 14 } }}
+            />
+          </ListItem>
+        )}
         {menuArray.map((item: ListItemProps) => {
           const { id, icon, color, title, url, handleClick } = item;
           if (url)
