@@ -7296,6 +7296,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+pwa-install-handler@^2.1.4:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/pwa-install-handler/-/pwa-install-handler-2.1.6.tgz#1f6f7b0d1c0c900c9878e00d36f94e1305e458b6"
+  integrity sha512-D85m1K6O8Cx/hyVyUbxuntMqlYNr2V4XrRi3K3PI4T9nohkT4+ZheZUvkUcuj937tzrhPmjV4Y19Xxq+KSMdzg==
+
 qs@^6.10.1:
   version "6.10.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.1.tgz#4931482fa8d647a5aab799c5271d2133b981fb6a"
@@ -7486,10 +7491,19 @@ react-transition-group@^4.4.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+<<<<<<< HEAD
 react-use-a2hs@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/react-use-a2hs/-/react-use-a2hs-0.0.2.tgz#ebb8021c3fc5f5f251fe6a10710c8894ff7cf2dd"
   integrity sha512-OAwAJvyC0B6HjszT4VTwNJlj5RBDZSsECYh1HWpHMBJDFTLmyoW+YPMmejnIOxpEPrYVEEmTXCOc5hqBCUY65g==
+=======
+react-use-pwa-install@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-use-pwa-install/-/react-use-pwa-install-0.1.2.tgz#c2443fae0d739e837a38429ceb6744ad5729c40e"
+  integrity sha512-F3GY1ZtY7FkCfArVXnU6cdMV3sNcR/xvljprJ6+QRa54VpUwlNHXfaEfaU/PlLKi5f4SZMEhC9HeetjBLhvyaA==
+  dependencies:
+    pwa-install-handler "^2.1.4"
+>>>>>>> ad0fcd302983766e7c15dcb3171a4e2d60d2501b
 
 react-wavesurfer@^0.8.6:
   version "0.8.6"

@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ListItemIcon, List, ListItem, ListItemText } from "@material-ui/core";
@@ -15,7 +16,6 @@ import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
 import { useA2HS } from "react-use-a2hs";
-import { toast } from "@/utils/notifications";
 
 type ListItemProps = {
   id: string;
@@ -68,7 +68,7 @@ function DrawerAux({ open, onClose }: Props) {
   };
 
   const { t } = useTranslation("drawer");
-  const { t: c } = useTranslation("common");
+  // const { t: c } = useTranslation("common");
 
   const logoutHandler = async () => {
     if (navigator.onLine) {
@@ -179,7 +179,7 @@ function DrawerAux({ open, onClose }: Props) {
 
       <List component="nav">
         {promptEvent && (
-          <ListItem key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
+          <ListItem key={uuid()} onClick={promptToInstall}>
             <ListItemIcon className={classes.icon}>
               <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />
             </ListItemIcon>
