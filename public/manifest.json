@@ -8,6 +8,12 @@
   "start_url": "/login",
   "icons": [
     {
+      "src": "/icons/pwa/maskable_icon_x196.png",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "/icons/pwa/android-icon-36x36.png",
       "sizes": "36x36",
       "type": "image/png",
@@ -40,6 +46,12 @@
     {
       "src": "/icons/pwa/android-icon-192x192.png",
       "sizes": "192x192",
+      "type": "image/png",
+      "density": "4.0"
+    },
+    {
+      "src": "/icons/pwa/android-icon-512x512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "density": "4.0"
     },

@@ -46,6 +46,42 @@ export default class MyDocument extends Document {
           <meta name="msapplication-TileColor" content={theme.palette.primary.main} />
           <meta name="msapplication-TileImage" content="ms-icon-150x150.png" />
           <meta name="theme-color" content={theme.palette.primary.main} />
+
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_2048.png"
+            sizes="2048x2732"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_1668.png"
+            sizes="1668x2224"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_1536.png"
+            sizes="1536x2048"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_1125.png"
+            sizes="1125x2436"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_1242.png"
+            sizes="1242x2208"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_750.png"
+            sizes="750x1334"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_640.png"
+            sizes="640x1136"
+          />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
           <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
