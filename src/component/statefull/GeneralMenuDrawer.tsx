@@ -57,7 +57,6 @@ function DrawerAux({ open, onClose }: Props) {
   const cookies = parseCookies();
   const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
   const [promptEvent, promptToInstall] = useA2HS();
-  console.log(promptEvent, promptToInstall);
 
   const switchLanguageHandle = () => {
     setOpenChangeLanguage(true);
