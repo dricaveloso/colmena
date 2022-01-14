@@ -43,7 +43,7 @@ const DialogContent = withStyles((theme) => ({
 type Props = {
   title?: string;
   open: boolean;
-  handleClose: () => void;
+  handleClose: (event: any, reason: string) => void;
   children: React.ReactNode;
   actions?: React.ReactNode;
 };

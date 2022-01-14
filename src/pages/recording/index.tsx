@@ -90,7 +90,12 @@ function Recording() {
     setBackAfterFinishRecording("no");
   }, []);
 
-  const handleCloseExtraInfo = () => {
+  const handleCloseExtraInfo = async (event: any, reason: string) => {
+    if (!reason) {
+      await discardAudio();
+      return;
+    }
+
     toast(t("audioSavedSuccessfully"), "success");
     setOpenDialogAudioName(false);
     dispatch(updateRecordingState("NONE"));

@@ -35,7 +35,7 @@ import Modal from "@/components/ui/Modal";
 
 type Props = {
   open: boolean;
-  handleClose: () => void;
+  handleClose: (event: any, reason: string) => void;
   handleSubmit: (values: PropsAudioSave) => void;
   pathLocationSave: string;
   discardAudioHandle: () => void;
