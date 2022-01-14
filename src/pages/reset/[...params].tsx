@@ -27,7 +27,15 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 export default function UpdatePassword() {
   const { t } = useTranslation("reset");
   const router = useRouter();
-  const { userId } = router.query;
+  const { params } = router.query;
+
+  if (!Array.isArray(params)) {
+    router.replace("/login");
+    return null;
+  }
+
+  const userId = params[0];
+  const type = params[1];
 
   if (!userId) {
     router.replace("/login");
@@ -45,10 +53,10 @@ export default function UpdatePassword() {
       >
         <ExternalVerticalLogo />
         <Text variant={TextVariantEnum.BODY2} style={{ marginTop: 20, textAlign: "center" }}>
-          {t("title")}
+          {t(`${type === "create" ? "titleCreated" : "titleUpdated"}`)}
         </Text>
         <Divider />
-        <Form userId={Array.isArray(userId) ? userId[0] : userId} />
+        <Form userId={Array.isArray(userId) ? userId[0] : userId} type={type} />
       </Box>
       <FooterDW />
     </Container>
