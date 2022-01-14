@@ -390,3 +390,11 @@ export async function findGroupFolderByPath(path: string): Promise<boolean> {
     .map((item: string) => item.toLowerCase().trim())
     .includes(honeycombName.toLowerCase().trim());
 }
+
+export function setBackAfterFinishRecording(flag: string) {
+  localStorage.setItem("backAfterFinishRecording", flag);
+}
+
+export function getBackAfterFinishRecording() {
+  return localStorage.getItem("backAfterFinishRecording");
+}

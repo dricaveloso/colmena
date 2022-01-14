@@ -18,11 +18,7 @@ export const recordingUpdate = (id: string, recording: RecordingInterface) => ({
   recording,
 });
 
-export const updateRecordingState = ({
-  activeRecordingState,
-}: {
-  activeRecordingState: string;
-}) => ({
+export const updateRecordingState = (activeRecordingState: string) => ({
   type: SET_ACTIVE_RECORDING_STATE,
   activeRecordingState,
 });

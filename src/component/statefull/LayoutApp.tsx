@@ -3,26 +3,20 @@ import React, { useEffect } from "react";
 import { getSession, signOut } from "next-auth/client";
 import Container from "@/components/ui/Container";
 import FlexBox from "@/components/ui/FlexBox";
-import AppBar from "@/components/statefull/AppBar";
+import AppBar, { AppBarInterface } from "@/components/statefull/AppBar";
 import FooterApp from "@/components/ui/FooterApp";
-import { PositionProps, PropsUserSelector } from "@/types/index";
+import { PropsUserSelector } from "@/types/index";
 import { PositionEnum } from "@/enums/index";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentPage } from "@/store/actions/config/index";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
+import { updateRecordingState } from "@/store/actions/recordings/index";
 
-type Props = {
-  title: string;
-  subtitle?: string | React.ReactNode;
-  drawer?: boolean;
-  back?: boolean;
-  headerPosition?: PositionProps | undefined;
-  children: React.ReactNode;
+interface LayoutInterface extends AppBarInterface {
   showFooter?: boolean;
-  templateHeader?: "variation1" | "variation2";
-  extraElement?: React.ReactNode | undefined;
-};
+  children: React.ReactNode;
+}
 
 function LayoutApp({
   title,
@@ -34,12 +28,13 @@ function LayoutApp({
   showFooter = true,
   extraElement = undefined,
   children,
-}: Props) {
+}: LayoutInterface) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
     dispatch(setCurrentAudioPlaying(""));
+    dispatch(updateRecordingState("NONE"));
     if (router.asPath !== "/profile") dispatch(setCurrentPage(router.asPath));
     if (navigator.onLine) {
       (async () => {

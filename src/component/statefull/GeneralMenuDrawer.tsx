@@ -4,7 +4,6 @@ import { ListItemIcon, List, ListItem, ListItemText } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import { toast } from "@/utils/notifications";
 import Divider from "@material-ui/core/Divider";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
@@ -15,6 +14,8 @@ import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal"
 import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
+// import { useA2HS } from "react-use-a2hs";
+import { toast } from "@/utils/notifications";
 
 type ListItemProps = {
   id: string;
@@ -55,6 +56,7 @@ function DrawerAux({ open, onClose }: Props) {
   const [showBackdrop, setShowBackdrop] = useState(false);
   const cookies = parseCookies();
   const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
+  // const [promptEvent, promptToInstall] = useA2HS();
 
   const switchLanguageHandle = () => {
     setOpenChangeLanguage(true);
@@ -83,12 +85,6 @@ function DrawerAux({ open, onClose }: Props) {
   const iconSize = "medium";
 
   const menuArray = [
-    {
-      id: uuid(),
-      icon: <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />,
-      title: t("downloadTitle"),
-      handleClick: () => toast(c("featureUnavailable"), "warning"),
-    },
     {
       id: uuid(),
       icon: <SvgIcon icon="global" fontSize={iconSize} htmlColor={iconColor} />,
@@ -179,7 +175,19 @@ function DrawerAux({ open, onClose }: Props) {
         </div>
       </div>
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
+
       <List component="nav">
+        {/* {promptEvent && ( */}
+        <ListItem key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
+          <ListItemIcon className={classes.icon}>
+            <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />
+          </ListItemIcon>
+          <ListItemText
+            primary={t("downloadTitle")}
+            primaryTypographyProps={{ style: { fontSize: 14 } }}
+          />
+        </ListItem>
+        {/* )} */}
         {menuArray.map((item: ListItemProps) => {
           const { id, icon, color, title, url, handleClick } = item;
           if (url)

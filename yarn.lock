@@ -7486,6 +7486,11 @@ react-transition-group@^4.4.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-use-a2hs@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-use-a2hs/-/react-use-a2hs-0.0.2.tgz#ebb8021c3fc5f5f251fe6a10710c8894ff7cf2dd"
+  integrity sha512-OAwAJvyC0B6HjszT4VTwNJlj5RBDZSsECYh1HWpHMBJDFTLmyoW+YPMmejnIOxpEPrYVEEmTXCOc5hqBCUY65g==
+
 react-wavesurfer@^0.8.6:
   version "0.8.6"
   resolved "https://registry.yarnpkg.com/react-wavesurfer/-/react-wavesurfer-0.8.6.tgz#da05f3f501e566a63853f9babec45a5251111538"

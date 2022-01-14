@@ -4,23 +4,25 @@ import Box from "@material-ui/core/Box";
 import Toolbar from "@material-ui/core/Toolbar";
 import SvgIcon from "@/components/ui/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
-import { PositionProps, PropsConfigSelector } from "@/types/index";
+import { PositionProps, PropsConfigSelector, PropsRecordingSelector } from "@/types/index";
 import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Drawer from "./GeneralMenuDrawer";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
+import { updateRecordingState } from "@/store/actions/recordings/index";
+import { setBackAfterFinishRecording } from "@/utils/utils";
 
-type Props = {
+export interface AppBarInterface {
   title: string;
   subtitle?: string | React.ReactNode;
-  headerPosition?: PositionProps | undefined;
   drawer?: boolean;
   back?: boolean;
+  headerPosition?: PositionProps | undefined;
   templateHeader?: "variation1" | "variation2";
   extraElement?: React.ReactNode | undefined;
-};
+}
 
 export const tplHeader = new Map();
 tplHeader.set("variation1", {
@@ -40,16 +42,24 @@ function AppBarSys({
   back = false,
   templateHeader = "variation2",
   extraElement = undefined,
-}: Props) {
-  // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+}: AppBarInterface) {
   const router = useRouter();
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
+  const recordingRdx = useSelector(
+    (state: { recording: PropsRecordingSelector }) => state.recording,
+  );
+  const dispatch = useDispatch();
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const handleBack = () => {
     if (router.pathname === "/profile") router.push(configRdx.currentPage);
-    else router.back();
+    else if (router.pathname === "/recording") {
+      if (recordingRdx.activeRecordingState === "START") {
+        setBackAfterFinishRecording("yes");
+        dispatch(updateRecordingState("STOP"));
+      } else router.back();
+    } else router.back();
   };
 
   return (
