@@ -23,7 +23,7 @@ import {
   isPanal,
 } from "@/utils/directory";
 import ActionConfirm from "@/components/ui/ActionConfirm";
-import { share } from "@/services/share/share";
+import { shareInChat } from "@/services/share/share";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -139,7 +139,7 @@ export default function Upload({ open, handleClose }: Props) {
 
     await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
     if (isPanal(realPath)) {
-      await share(realPath, finalPath);
+      await shareInChat(realPath, finalPath);
     }
   };
 

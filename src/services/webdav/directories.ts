@@ -9,21 +9,39 @@ export function listDirectories(userId: string | number, path?: string): any {
 
 export async function listLibraryDirectories(userId: string | number, path?: string): Promise<any> {
   const directories = await listDirectories(userId, path);
-  if (directories && (path === "/" || path === "")) {
-    directories.data = directories.data.filter((item: FileStat) => {
+  if (!directories?.data) return false;
+
+  const items: Array<FileStat> = directories.data;
+  const isRoot = path === "/" || path === "";
+
+  if (isRoot) {
+    return items.filter((item: FileStat) => {
       if (item.basename[0] === ".") return false;
       if (item.type !== "directory") return false;
-
-      const blacklistNames = ["talk"];
-      if (blacklistNames.includes(item.basename.toLowerCase())) {
-        return false;
-      }
 
       return true;
     });
   }
 
-  return directories;
+  /*
+  Adiciona panals que está dentro de talk na raiz
+  if (directories) {
+    // eslint-disable-next-line no-plusplus
+    for (let index = 0; index < directories.data.length; index++) {
+      const item: FileStat = directories.data[index];
+      if (isRoot && item.basename.toLocaleLowerCase() === "talk") {
+        // eslint-disable-next-line no-await-in-loop
+        const talkItems = await listDirectories(userId, `${removeCornerSlash(path)}/Talk`);
+        if (talkItems?.data) {
+          items.join(talkItems.data);
+        }
+      } else {
+        items.push(item);
+      }
+    }
+  } */
+
+  return items;
 }
 
 export function existDirectory(userId: string | number, remotePath: string): Promise<boolean> {

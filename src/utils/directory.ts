@@ -3,6 +3,7 @@ import { removeFirstSlash, removeCornerSlash, trailingSlash } from "./utils";
 const PRIVATE_PATH = "private";
 const PUBLIC_PATH = "public";
 const AUDIO_PATH = "private/audios";
+const TALK_PATH = "Talk";
 
 export function getPrivatePath(): string {
   return PRIVATE_PATH;
@@ -18,6 +19,10 @@ export function getRootPath(): string {
 
 export function getAudioPath(): string {
   return AUDIO_PATH;
+}
+
+export function getTalkPath(): string {
+  return TALK_PATH;
 }
 
 export function localPaths(): Array<string> {

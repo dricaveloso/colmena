@@ -16,6 +16,7 @@ import {
   getPrivatePath,
   getAudioPath,
   isRootPath,
+  getTalkPath,
 } from "@/utils/directory";
 import FileIcon from "@/components/ui/FileIcon";
 import { AllIconProps, PropsLibrarySelector } from "@/types/index";
@@ -88,6 +89,9 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           break;
         case getAudioPath():
           folderSecondIcon = "microphone";
+          break;
+        case getTalkPath():
+          folderSecondIcon = "share";
           break;
         default:
           if (filename && filename.indexOf("/") < 0) {

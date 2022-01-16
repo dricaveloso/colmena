@@ -27,7 +27,7 @@ import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } f
 import LibraryModal from "@/components/ui/LibraryModal";
 import { LibraryItemInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
-import { share } from "@/services/share/share";
+import { shareInChat } from "@/services/share/share";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -82,7 +82,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
         const create = await createDirectory(userId, realPath);
         if (create) {
           if (isPanal(realPath)) {
-            await share(realPath, realPath);
+            await shareInChat(realPath, realPath);
           }
 
           const timer = 5000;
@@ -177,9 +177,9 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                     id="outlined-search"
                     inputProps={{
                       maxLength: 60,
-                      autocomplete: "off",
+                      autoComplete: "off",
                       form: {
-                        autocomplete: "off",
+                        autoComplete: "off",
                       },
                     }}
                     label={t("form.fields.name")}

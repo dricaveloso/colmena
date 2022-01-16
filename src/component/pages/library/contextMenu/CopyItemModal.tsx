@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "react-i18next";
 import { createFile, getFile } from "@/store/idb/models/files";
-import { share } from "@/services/share/share";
+import { shareInChat } from "@/services/share/share";
 
 type Props = {
   open: boolean;
@@ -88,7 +88,7 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
 
           if (copy) {
             if (isPanal(item.filename)) {
-              await share(item.filename, cardItem.filename);
+              await shareInChat(item.filename, cardItem.filename);
             }
 
             const timer = 5000;

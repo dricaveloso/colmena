@@ -17,7 +17,7 @@ export function createShare(
   });
 }
 
-export async function share(
+export async function shareInChat(
   path: string,
   pathToShare: string,
 ): Promise<ShareCreateInterface | false> {
