@@ -30,15 +30,15 @@ export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
         (cardItem.type === "directory" && !pathIsInFilename(cardItem.filename, item.filename))) &&
       item.type === "directory"
     ) {
-      return (
-        <Button
-          handleClick={() => handleClick(item)}
-          disabled={isDisabled}
-          isLoading={itemIsLoading.id === item.id}
-          title={t("chooseButton")}
-          size={ButtonSizeEnum.SMALL}
-        />
-      );
+      // return (
+      //   <Button
+      //     handleClick={() => handleClick(item)}
+      //     disabled={isDisabled}
+      //     isLoading={itemIsLoading.id === item.id}
+      //     title={t("moveButton")}
+      //     size={ButtonSizeEnum.SMALL}
+      //   />
+      // );
     }
 
     return null;
@@ -49,7 +49,7 @@ export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
       handleClick={() => handleClick(item)}
       disabled={isDisabled}
       isLoading={itemIsLoading.id === item.id}
-      title={t("chooseButton")}
+      title={t("moveButton")}
       size={ButtonSizeEnum.SMALL}
     />
   );

@@ -30,15 +30,15 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
         (cardItem.type === "directory" && !pathIsInFilename(cardItem.filename, item.filename))) &&
       item.type === "directory"
     ) {
-      return (
-        <Button
-          handleClick={() => handleClick(item)}
-          disabled={isDisabled}
-          isLoading={itemIsLoading.id === item.id}
-          title={t("pasteButton")}
-          size={ButtonSizeEnum.SMALL}
-        />
-      );
+      // return (
+      //   <Button
+      //     handleClick={() => handleClick(item)}
+      //     disabled={isDisabled}
+      //     isLoading={itemIsLoading.id === item.id}
+      //     title={t("pasteButton")}
+      //     size={ButtonSizeEnum.SMALL}
+      //   />
+      // );
     }
 
     return null;
