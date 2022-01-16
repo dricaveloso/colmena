@@ -30,7 +30,6 @@ export default function AudioFile({ filename, data }: Props) {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation("file");
   const { t: c } = useTranslation("common");
-
   const getListFile = async () => {
     try {
       setLoading(true);
@@ -46,6 +45,7 @@ export default function AudioFile({ filename, data }: Props) {
         );
       } else {
         const blobRes: any = await listFile(userRdx.user.id, filename);
+
         if (!localFileQuickFile) {
           await createQuickBlob({
             basename: removeSpecialCharacters(filename),
@@ -67,6 +67,10 @@ export default function AudioFile({ filename, data }: Props) {
 
   useEffect(() => {
     getListFile();
+    return () => {
+      setLoading(false);
+      setBlob(null);
+    };
   }, []);
 
   return (
@@ -74,7 +78,18 @@ export default function AudioFile({ filename, data }: Props) {
       title={t("audioTitle")}
       secondaryAction={<ContextMenuFile filename={filename} blob={blob} data={data} />}
     >
-      {loading ? <AudioFileSkeleton /> : <AudioWave blob={blob} data={data} playingAs={false} />}
+      {loading ? (
+        <AudioFileSkeleton />
+      ) : (
+        <AudioWave
+          blob={blob}
+          data={{
+            ...data,
+            filename,
+          }}
+          playingAs={false}
+        />
+      )}
     </Section>
   );
 }
