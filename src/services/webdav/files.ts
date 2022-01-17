@@ -221,6 +221,7 @@ export async function getDataFile(path: string) {
 
                     <oc:created-at />
                     <oc:customtitle />
+                    <oc:customdescription />
                     <oc:description />
                     <oc:language />
 
@@ -241,12 +242,13 @@ export async function getDataFile(path: string) {
 }
 
 interface FileDataNCInterface {
-  customtitle: string;
+  customtitle?: string;
   description?: string;
+  customdescription?: string;
   language: string;
 }
 
-type CustomFieldsFileDataProps = "customtitle" | "description" | "language";
+type CustomFieldsFileDataProps = "customtitle" | "customdescription" | "description" | "language";
 
 export async function setDataFile(data: FileDataNCInterface, path: string) {
   let body = `<?xml version="1.0" encoding="utf-8" ?>

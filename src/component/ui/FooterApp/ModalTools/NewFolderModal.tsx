@@ -82,9 +82,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           const timer = 5000;
 
           toast(t("messages.directoryCreatedSuccessfully"), "success", { timer });
-          setTimeout(() => {
-            router.push(`/library/${removeFirstSlash(finalPath)}`);
-          }, timer);
+          router.push(`/library/${removeFirstSlash(finalPath)}`);
         }
       } catch (e) {
         toast(e.message, "error");
