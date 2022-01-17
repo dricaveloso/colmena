@@ -94,9 +94,7 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
               toast(t("messages.fileSuccessfullyCopied"), "success", { timer });
             }
 
-            setTimeout(() => {
-              router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
-            }, timer);
+            router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
           }
         }
       } catch (e) {
