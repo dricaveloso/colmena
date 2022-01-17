@@ -9,6 +9,7 @@ import getBlobDuration from "get-blob-duration";
 import { fancyTimeFormat } from "@/utils/utils";
 import { createObjectURL } from "blob-util";
 import AudioWaveSkeleton from "./skeleton";
+import { getFilename } from "@/utils/directory";
 
 type Props = {
   blob: Blob | null;
@@ -18,19 +19,20 @@ type Props = {
 export default function AudioWave({ blob, data, playingAs = false }: Props) {
   const [playing, setPlaying] = useState(playingAs);
   const [duration, setDuration] = useState(0);
+  const getAudio = async () => {
+    try {
+      if (blob) {
+        const audioURL = createObjectURL(blob);
+        const duration = await getBlobDuration(audioURL);
+        setDuration(duration);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      try {
-        if (blob) {
-          const audioURL = createObjectURL(blob);
-          const duration = await getBlobDuration(audioURL);
-          setDuration(duration);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
+    getAudio();
   }, [blob]);
 
   const handlePlayPause = () => {
@@ -50,7 +52,7 @@ export default function AudioWave({ blob, data, playingAs = false }: Props) {
       <Box display="flex" marginLeft={1} flexDirection="column" flex={1}>
         <ListItemText
           data-testid="title"
-          primary={decodeURIComponent(data?.customtitle)}
+          primary={getFilename(decodeURIComponent(data?.filename))}
           secondary={fancyTimeFormat(duration)}
           secondaryTypographyProps={{ style: { fontSize: 10 } }}
         />
