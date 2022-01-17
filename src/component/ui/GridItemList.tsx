@@ -57,6 +57,11 @@ const useStyles = makeStyles(() => ({
     left: 4,
     bottom: 11,
   },
+  avatar: {
+    minHeight: 50,
+    display: "flex",
+    alignItems: "flex-end",
+  },
 }));
 
 interface GridItemListInterface {
@@ -91,7 +96,7 @@ const GridItemList = ({
   return (
     <Box className={classes.card}>
       <Box className={[classes.options, classes.topOptions].join(" ")}>{topOptions}</Box>
-      {avatar && <ListItemAvatar>{avatar}</ListItemAvatar>}
+      {avatar && <ListItemAvatar className={classes.avatar}>{avatar}</ListItemAvatar>}
       {isPlaying ? (
         <ListItemText
           data-testid="title"
