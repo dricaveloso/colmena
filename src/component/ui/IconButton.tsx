@@ -24,7 +24,7 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   style?: object;
   className?: string;
-  direction?: string;
+  direction?: "vertical" | "horizontal";
   disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/ban-types
   textStyle?: object;
@@ -53,76 +53,39 @@ function IconButtonCtr({
   component = "button",
   handleClick,
 }: Props) {
-  // const [colorActive, setColorActive] = useState(color);
-  // const changeColorHandler = (status: boolean) => {
-  //   setColorActive(status ? theme.palette.primary.light : color);
-  // };
+  const svgIcon = (
+    <SvgIcon icon={icon} htmlColor={iconColor} fontSize={fontSizeIcon} style={{ ...iconStyle }} />
+  );
+
+  const commonProperties = {
+    className,
+    variant,
+    disabled,
+    size,
+    background: "none",
+    style: { background: "none", ...style },
+  };
 
   function showButtonWithConditions() {
     if (url !== "no-navigation" && !download)
       return (
         <Link href={url}>
-          <Button
-            component="a"
-            style={{ background: "none", ...style }}
-            // onMouseOver={() => changeColorHandler(true)}
-            // onMouseOut={() => changeColorHandler(false)}
-            className={className}
-            variant={variant}
-            disabled={disabled}
-            size={size}
-          >
-            <SvgIcon
-              icon={icon}
-              htmlColor={iconColor}
-              fontSize={fontSizeIcon}
-              style={{ ...iconStyle }}
-            />
+          <Button component="a" {...commonProperties}>
+            {svgIcon}
           </Button>
         </Link>
       );
 
     if (download)
       return (
-        <Button
-          component="a"
-          download={download}
-          href={url}
-          style={{ background: "none", ...style }}
-          // onMouseOver={() => changeColorHandler(true)}
-          // onMouseOut={() => changeColorHandler(false)}
-          className={className}
-          variant={variant}
-          disabled={disabled}
-          size={size}
-        >
-          <SvgIcon
-            icon={icon}
-            htmlColor={iconColor}
-            fontSize={fontSizeIcon}
-            style={{ ...iconStyle }}
-          />
+        <Button component="a" download={download} href={url} {...commonProperties}>
+          {svgIcon}
         </Button>
       );
 
     return (
-      <Button
-        style={{ background: "none", ...style }}
-        // onMouseOver={() => changeColorHandler(true)}
-        // onMouseOut={() => changeColorHandler(false)}
-        onClick={handleClick}
-        className={className}
-        component={component}
-        variant={variant}
-        size={size}
-        disabled={disabled}
-      >
-        <SvgIcon
-          icon={icon}
-          htmlColor={iconColor}
-          fontSize={fontSizeIcon}
-          style={{ ...iconStyle }}
-        />
+      <Button onClick={handleClick} component={component} {...commonProperties}>
+        {svgIcon}
       </Button>
     );
   }

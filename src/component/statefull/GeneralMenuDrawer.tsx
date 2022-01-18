@@ -15,7 +15,6 @@ import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal"
 import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
-import { useA2HS } from "react-use-a2hs";
 
 type ListItemProps = {
   id: string;
@@ -56,7 +55,11 @@ function DrawerAux({ open, onClose }: Props) {
   const [showBackdrop, setShowBackdrop] = useState(false);
   const cookies = parseCookies();
   const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
-  const [promptEvent, promptToInstall] = useA2HS();
+
+  const langCookies = cookies.NEXT_LOCALE;
+  const defaultLangRouter = router.defaultLocale;
+
+  const installRoute = defaultLangRouter === langCookies ? "/install" : `/${langCookies}/install`;
 
   const switchLanguageHandle = () => {
     setOpenChangeLanguage(true);
@@ -67,7 +70,6 @@ function DrawerAux({ open, onClose }: Props) {
   };
 
   const { t } = useTranslation("drawer");
-  // const { t: c } = useTranslation("common");
 
   const logoutHandler = async () => {
     if (navigator.onLine) {
@@ -153,7 +155,7 @@ function DrawerAux({ open, onClose }: Props) {
     color?: string | undefined,
     title?: string,
   ): React.ReactNode => (
-    <ListItem key={id}>
+    <ListItem key={id} button>
       <ListItemIcon className={classes.icon}>{icon}</ListItemIcon>
       <ListItemText primary={title} primaryTypographyProps={{ style: { fontSize: 14 } }} />
     </ListItem>
@@ -175,19 +177,22 @@ function DrawerAux({ open, onClose }: Props) {
         </div>
       </div>
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
-
       <List component="nav">
-        {promptEvent && (
-          <ListItem key={uuid()} onClick={promptToInstall}>
-            <ListItemIcon className={classes.icon}>
-              <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />
-            </ListItemIcon>
-            <ListItemText
-              primary={t("downloadTitle")}
-              primaryTypographyProps={{ style: { fontSize: 14 } }}
-            />
-          </ListItem>
-        )}
+        <ListItem
+          key={uuid()}
+          onClick={() => {
+            window.location.href = installRoute;
+          }}
+          button
+        >
+          <ListItemIcon className={classes.icon}>
+            <SvgIcon icon="download" fontSize={iconSize} htmlColor={iconColor} />
+          </ListItemIcon>
+          <ListItemText
+            primary={t("downloadTitle")}
+            primaryTypographyProps={{ style: { fontSize: 14 } }}
+          />
+        </ListItem>
         {menuArray.map((item: ListItemProps) => {
           const { id, icon, color, title, url, handleClick } = item;
           if (url)

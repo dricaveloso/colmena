@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { getSession, signOut } from "next-auth/client";
@@ -12,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCurrentPage } from "@/store/actions/config/index";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 import { updateRecordingState } from "@/store/actions/recordings/index";
+// import DownloadPWA from "@/components/ui/InstallPWA";
 
 interface LayoutInterface extends AppBarInterface {
   showFooter?: boolean;
@@ -32,6 +34,7 @@ function LayoutApp({
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
+
   useEffect(() => {
     dispatch(setCurrentAudioPlaying(""));
     dispatch(updateRecordingState("NONE"));
@@ -54,6 +57,7 @@ function LayoutApp({
   return (
     <Container extraStyle={{ padding: 0, backgroundColor: "#F9F9F9" }}>
       <FlexBox extraStyle={{ margin: 0, padding: 0 }}>
+        {/* <DownloadPWA /> */}
         <AppBar
           title={title}
           subtitle={subtitle}
