@@ -77,10 +77,10 @@ export async function getWebDavDirectories(
 ) {
   const items: LibraryItemInterface[] = [];
 
-  const nxDirectories = await listLibraryDirectories(userId, currentDirectory);
+  const ncItems = await listLibraryDirectories(userId, currentDirectory);
 
-  if (nxDirectories?.data.length > 0) {
-    nxDirectories.data.forEach((directory: FileStat) => {
+  if (ncItems) {
+    ncItems.forEach((directory: FileStat) => {
       const filename = removeCornerSlash(directory.filename.replace(/^.+?(\/|$)/, ""));
       let { basename } = directory;
       const aliasFilename = convertPrivateToUsername(filename, userId);
@@ -111,9 +111,7 @@ export async function getWebDavDirectories(
           size: directory.size,
         };
 
-        if (item.basename && item.basename[0] !== ".") {
-          items.push(item);
-        }
+        items.push(item);
       }
     });
   }

@@ -6,5 +6,6 @@
   "tab1Title": "Chat",
   "tab2Title": "Library",
   "emptyTalkDescription": "Click on the plus icon below to create a honeycomb",
-  "downloadAudioFailed": "Unable to download audio"
+  "downloadAudioFailed": "Unable to download audio",
+  "downloadFileFailed": "Unable to download file"
 }

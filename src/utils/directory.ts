@@ -3,6 +3,7 @@ import { removeFirstSlash, removeCornerSlash, trailingSlash } from "./utils";
 const PRIVATE_PATH = "private";
 const PUBLIC_PATH = "public";
 const AUDIO_PATH = "private/audios";
+const TALK_PATH = "Talk";
 
 export function getPrivatePath(): string {
   return PRIVATE_PATH;
@@ -20,8 +21,20 @@ export function getAudioPath(): string {
   return AUDIO_PATH;
 }
 
+export function getTalkPath(): string {
+  return TALK_PATH;
+}
+
 export function localPaths(): Array<string> {
   return [getAudioPath()];
+}
+
+export function isPanal(path: string): boolean {
+  const pathSplited = removeFirstSlash(path).split("/");
+  const initialFolder = pathSplited[0];
+  const ignorePaths = [PRIVATE_PATH, PUBLIC_PATH];
+
+  return !ignorePaths.includes(initialFolder);
 }
 
 export function hasLocalPath(path: string | undefined | null): boolean {
