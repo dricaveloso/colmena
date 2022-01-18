@@ -16,6 +16,7 @@ import Button from "@/components/ui/Button";
 import SvgIcon from "@/components/ui/SvgIcon";
 import FormModal from "@/components/pages/tags/FormModal";
 import { toast } from "@/utils/notifications";
+import { treatTagName } from "@/utils/utils";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -124,11 +125,12 @@ function Tags() {
     async (values: any) => {
       try {
         setFormLoading(true);
+        const tagName = treatTagName(values.name.trim());
         if (tag) {
-          await updateTag(tag.id, values.name);
+          await updateTag(tag.id, tagName);
           const newRawTags = rawTags.map((item) => {
             if (item.id === tag.id) {
-              return { ...item, tag: values.name };
+              return { ...item, tag: tagName };
             }
 
             return item;
@@ -137,7 +139,7 @@ function Tags() {
           setRawTags(newRawTags);
           toast(t("messages.tagUpdatedSuccessfully"), "success");
         } else {
-          await createTag(values.name);
+          await createTag(tagName);
           const tagsList = await listAndPrepareTags();
           if (tagsList) {
             setRawTags(tagsList);
