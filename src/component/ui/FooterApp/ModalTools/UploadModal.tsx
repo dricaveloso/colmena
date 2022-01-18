@@ -178,13 +178,13 @@ export default function Upload({ open, handleClose }: Props) {
 
   const libraryOptions = (item: LibraryItemInterface) => {
     if (item.type === "directory") {
-      return (
-        <Button
-          handleClick={() => handleChangeLocation(item.aliasFilename)}
-          title={t("changeLocationButton")}
-          size={ButtonSizeEnum.SMALL}
-        />
-      );
+      // return (
+      //   <Button
+      //     handleClick={() => handleChangeLocation(item.aliasFilename)}
+      //     title={t("changeLocationButton")}
+      //     size={ButtonSizeEnum.SMALL}
+      //   />
+      // );
     }
 
     return null;
