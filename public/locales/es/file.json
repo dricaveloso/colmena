@@ -9,6 +9,7 @@
     "deleteAudio": "Delete audio"
   },
   "messages": {
-    "fileDeletedSuccessfully": "File deleted successfully"
-  }
+    "descriptionSuccessfullyUpdated": "Description successfully updated"
+  },
+  "editDescription": "Editar Descripción"
 }

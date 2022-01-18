@@ -30,6 +30,11 @@ const useStyles = makeStyles(() => ({
     flexDirection: "row",
     flexWrap: "nowrap",
   },
+  avatar: {
+    minHeight: 50,
+    display: "flex",
+    alignItems: "flex-end",
+  },
 }));
 
 const VerticalItemList = ({
@@ -47,7 +52,7 @@ const VerticalItemList = ({
 
   return (
     <Box className={classes.card}>
-      {avatar && <ListItemAvatar>{avatar}</ListItemAvatar>}
+      {avatar && <ListItemAvatar className={classes.avatar}>{avatar}</ListItemAvatar>}
       {isPlaying ? (
         <ListItemText
           data-testid="title"

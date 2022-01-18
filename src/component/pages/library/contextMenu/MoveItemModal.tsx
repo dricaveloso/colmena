@@ -95,9 +95,7 @@ export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
               toast(t("messages.fileSuccessfullyMoved"), "success", { timer });
             }
 
-            setTimeout(() => {
-              router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
-            }, timer);
+            router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
           }
         }
       } catch (e) {
