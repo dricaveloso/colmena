@@ -81,27 +81,22 @@ export function ChatList({
       data = [res];
     }
 
-    // data = data.filter(
-    //   (item: ChatMessageItemInterface) =>
-    //      item.messageParameters?.file?.name !== conversationName,
-    // );
-
     const allData = await getAllMessages(token);
     if (idxElem !== 0 && blockBeginID !== blockEndID) {
       const firstElement = data.shift();
     }
     setData(data);
     setAllData(allData);
-  };
-
-  useEffect(() => {
-    init();
 
     if (renderFooter) {
       setTimeout(() => {
         scrollDownAutomatically();
       }, 500);
     }
+  };
+
+  useEffect(() => {
+    init();
   }, []);
 
   return (
