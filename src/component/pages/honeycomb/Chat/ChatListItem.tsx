@@ -200,6 +200,7 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
       justifyContent="space-between"
       alignItems="center"
       style={{ marginTop: 6, marginBottom: 6, marginLeft: 10, marginRight: 10 }}
+      key={id}
     >
       <Text
         variant={TextVariantEnum.CAPTION}

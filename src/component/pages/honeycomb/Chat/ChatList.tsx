@@ -67,32 +67,36 @@ export function ChatList({
     footerRef?.current?.scrollIntoView();
   }, []);
 
+  const init = async () => {
+    let data = [];
+    if (blockBeginID !== blockEndID)
+      data = await getMessagesByTokenAndBetweenIDs(token, blockBeginID, blockEndID);
+    else {
+      let res;
+      if (typeof blockBeginID === "string")
+        res = await getMessageByRefIDAndToken(token, blockBeginID);
+      else if (typeof blockBeginID === "number")
+        res = await getMessageByIDAndToken(token, blockBeginID);
+
+      data = [res];
+    }
+
+    // data = data.filter(
+    //   (item: ChatMessageItemInterface) =>
+    //      item.messageParameters?.file?.name !== conversationName,
+    // );
+
+    const allData = await getAllMessages(token);
+    if (idxElem !== 0 && blockBeginID !== blockEndID) {
+      const firstElement = data.shift();
+    }
+    setData(data);
+    setAllData(allData);
+  };
+
   useEffect(() => {
-    (async () => {
-      let data = [];
-      if (blockBeginID !== blockEndID)
-        data = await getMessagesByTokenAndBetweenIDs(token, blockBeginID, blockEndID);
-      else {
-        let res;
-        if (typeof blockBeginID === "string")
-          res = await getMessageByRefIDAndToken(token, blockBeginID);
-        else if (typeof blockBeginID === "number")
-          res = await getMessageByIDAndToken(token, blockBeginID);
+    init();
 
-        data = [res];
-      }
-
-      data = data.filter(
-        (item: ChatMessageItemInterface) => item.messageParameters?.file?.name !== conversationName,
-      );
-
-      const allData = await getAllMessages(token);
-      if (idxElem !== 0 && blockBeginID !== blockEndID) {
-        const firstElement = data.shift();
-      }
-      setData(data);
-      setAllData(allData);
-    })();
     if (renderFooter) {
       setTimeout(() => {
         scrollDownAutomatically();

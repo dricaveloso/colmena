@@ -33,7 +33,8 @@
     "chatRoomSuccess": "Salon de discussion créé avec succès",
     "chatRoomFailed": "Impossible de créer un salon de discussion",
     "buttonStep1": "Créer",
-    "buttonStep2": "Ajouter"
+    "buttonStep2": "Ajouter",
+    "searchUserPlaceholder": "Search user"
   },
   "form": {
     "fields": {

@@ -6,14 +6,13 @@ import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { JustifyContentEnum } from "@/enums/index";
+import { JustifyContentEnum, TextVariantEnum } from "@/enums/index";
 import FlexBox from "@/components/ui/FlexBox";
 import { useRouter } from "next/router";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import SwipeableViews from "react-swipeable-views";
 import theme from "@/styles/theme";
-import IconButton from "@/components/ui/IconButton";
 import AppBar from "@material-ui/core/AppBar";
 import InputSendMessage from "@/components/pages/honeycomb/Chat/InputSendMessage";
 import { MemoizedChat } from "@/components/pages/honeycomb/Chat";
@@ -21,6 +20,11 @@ import ReloadChatMessages from "@/components/pages/honeycomb/Chat/ReloadChatMess
 import Subtitle from "@/components/pages/honeycomb/Subtitle";
 import { sendChatMessage } from "@/services/talk/chat";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
+import SvgIcon from "@/components/ui/SvgIcon";
+import Text from "@/components/ui/Text";
+import { AllIconProps } from "@/types/*";
+import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
+import { v4 as uuid } from "uuid";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -44,6 +48,7 @@ function Honeycomb() {
   const { t } = useTranslation("honeycomb");
   const router = useRouter();
   const { params } = router.query;
+  const [tokenUuid, setTokenUuid] = useState(uuid());
 
   const [value, setValue] = useState(0);
   const [showInputMessage, setShowInputMessage] = useState(true);
@@ -94,13 +99,22 @@ function Honeycomb() {
     await sendChatMessage(token, message, referenceId);
   }
 
+  const getTabOption = (title: string, icon: AllIconProps) => (
+    <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center">
+      <SvgIcon icon={icon} htmlColor="#727272" fontSize="small" />
+      <Text variant={TextVariantEnum.CAPTION} style={{ marginLeft: 6 }}>
+        {title}
+      </Text>
+    </Box>
+  );
+
   return (
     <LayoutApp
       back
       title={displayName}
       subtitle={<Subtitle token={token} />}
       drawer={false}
-      extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
+      extraElement={<ContextMenu token={token} reloadChatList={() => setTokenUuid(uuid())} />}
     >
       <FlexBox
         justifyContent={JustifyContentEnum.FLEXSTART}
@@ -115,32 +129,8 @@ function Honeycomb() {
               style={{ backgroundColor: "#fff", width: "100vw", color: theme.palette.icon.main }}
               variant="fullWidth"
             >
-              <Tab
-                label={
-                  <IconButton
-                    icon="chat"
-                    iconStyle={{ fontSize: 20 }}
-                    direction="horizontal"
-                    color={theme.palette.icon.main}
-                    textStyle={{ fontSize: 14 }}
-                    title={t("tab1Title")}
-                  />
-                }
-                {...a11yProps(0)}
-              />
-              <Tab
-                label={
-                  <IconButton
-                    icon="library"
-                    iconStyle={{ fontSize: 20 }}
-                    direction="horizontal"
-                    color={theme.palette.icon.main}
-                    textStyle={{ fontSize: 14 }}
-                    title={t("tab2Title")}
-                  />
-                }
-                {...a11yProps(1)}
-              />
+              <Tab label={getTabOption(t("tab1Title"), "chat")} {...a11yProps(0)} />
+              <Tab label={getTabOption(t("tab2Title"), "library")} {...a11yProps(1)} />
             </Tabs>
           </AppBar>
 
@@ -150,7 +140,7 @@ function Honeycomb() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0}>
-              <ReloadChatMessages token={token} />
+              <ReloadChatMessages token={token} uuid={tokenUuid} />
               <MemoizedChat
                 token={token}
                 conversationName={displayName}

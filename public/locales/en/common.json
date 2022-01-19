@@ -34,7 +34,8 @@
     "chatRoomFailed": "Unable to create chat room",
     "buttonStep1": "Create",
     "buttonStep2": "Add",
-    "errorCreatePanal": "There is already a honeycomb with this name"
+    "errorCreatePanal": "There is already a honeycomb with this name",
+    "searchUserPlaceholder": "Search user"
   },
   "newFolderTitle": "New folder",
   "uploadTitle": "Upload",

@@ -45,7 +45,7 @@ export function getMessageByIDAndToken(token, id) {
 export function getMessagesByTokenAndBetweenIDs(token, beginID, endID) {
   return db.chatMessages
     .where("id")
-    .between(beginID, endID, true, true)
+    .between(beginID - 1, endID, true, true)
     .and((item) => item.token === token)
     .toArray();
 }
