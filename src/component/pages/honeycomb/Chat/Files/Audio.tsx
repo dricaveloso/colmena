@@ -160,8 +160,7 @@ export function Audio({ filename, size, name, config, canDeleteConversation }: P
       flexDirection="row"
       padding={1}
       borderRadius={4}
-      border={2}
-      borderColor="#E0E0E0"
+      bgcolor="#f5f5f5"
       alignContent="center"
       height={70}
     >

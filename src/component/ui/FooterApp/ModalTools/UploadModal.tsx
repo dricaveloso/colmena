@@ -16,8 +16,14 @@ import { LibraryItemInterface } from "@/interfaces/index";
 import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import { Box } from "@material-ui/core";
 import Text from "@/components/ui/Text";
-import { convertPrivateToUsername, convertUsernameToPrivate, getRootPath } from "@/utils/directory";
+import {
+  convertPrivateToUsername,
+  convertUsernameToPrivate,
+  getRootPath,
+  isPanal,
+} from "@/utils/directory";
 import ActionConfirm from "@/components/ui/ActionConfirm";
+import { shareInChat } from "@/services/share/share";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -129,8 +135,12 @@ export default function Upload({ open, handleClose }: Props) {
   const uploadFile = async (file: File) => {
     const fileName = await handleFileName(file.name);
     const finalPath = `${trailingSlash(handledPath())}${fileName}`;
+    const realPath = convertUsernameToPrivate(handledPath(), userId);
 
     await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
+    if (isPanal(realPath)) {
+      await shareInChat(realPath, finalPath);
+    }
   };
 
   const handleFileName = (name: string) => {
@@ -178,13 +188,13 @@ export default function Upload({ open, handleClose }: Props) {
 
   const libraryOptions = (item: LibraryItemInterface) => {
     if (item.type === "directory") {
-      return (
-        <Button
-          handleClick={() => handleChangeLocation(item.aliasFilename)}
-          title={t("changeLocationButton")}
-          size={ButtonSizeEnum.SMALL}
-        />
-      );
+      // return (
+      //   <Button
+      //     handleClick={() => handleChangeLocation(item.aliasFilename)}
+      //     title={t("changeLocationButton")}
+      //     size={ButtonSizeEnum.SMALL}
+      //   />
+      // );
     }
 
     return null;

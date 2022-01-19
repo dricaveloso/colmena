@@ -14,6 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Button from "@/components/ui/Button";
 import { TagInterface } from "@/interfaces/index";
+import { treatTagName } from "@/utils/utils";
 
 const styles: any = (theme: any) => ({
   root: {
@@ -84,7 +85,7 @@ export default function FormModal({ tag, handleClose, handleSubmit, isLoading }:
                     inputProps={{ maxLength: 60 }}
                     {...field}
                     onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
-                      setFieldValue("name", event.target.value)
+                      setFieldValue("name", treatTagName(event.target.value))
                     }
                   />
                 )}

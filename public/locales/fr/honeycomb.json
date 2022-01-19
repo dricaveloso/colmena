@@ -10,5 +10,6 @@
   "contextMenuOptions": {
     "addParticipantContextTitle": "Add",
     "addParticipantModalTitle": "Add participant"
-  }
+  },
+  "downloadFileFailed": "Unable to download file"
 }

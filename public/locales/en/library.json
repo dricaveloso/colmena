@@ -57,9 +57,9 @@
   "duplicateTitle": "Duplicate",
   "duplicateButton": "Duplicate",
   "copyModalTitle": "Choose the destination",
-  "pasteButton": "Paste",
+  "pasteButton": "Paste here",
   "moveModalTitle": "Choose the destination",
-  "chooseButton": "Choose",
+  "chooseButton": "Choose here",
   "detailsTitle": "Details",
   "detailsModal": {
     "name": "Name",
@@ -75,5 +75,6 @@
   },
   "downloading": "Downloading",
   "synchronizing": "Synchronizing",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "moveButton": "Move here"
 }

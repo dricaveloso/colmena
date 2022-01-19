@@ -398,3 +398,7 @@ export function setBackAfterFinishRecording(flag: string) {
 export function getBackAfterFinishRecording() {
   return localStorage.getItem("backAfterFinishRecording");
 }
+
+export function treatTagName(value: string) {
+  return value.toLowerCase();
+}

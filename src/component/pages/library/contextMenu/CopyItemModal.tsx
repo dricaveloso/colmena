@@ -3,7 +3,7 @@ import LibraryModal from "@/components/ui/LibraryModal";
 import Button from "@/components/ui/Button";
 import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
 import { ButtonSizeEnum, EnvironmentEnum } from "@/enums/*";
-import { convertPrivateToUsername, pathIsInFilename } from "@/utils/directory";
+import { convertPrivateToUsername, isPanal, pathIsInFilename } from "@/utils/directory";
 import { copyFile, getUniqueName } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "react-i18next";
 import { createFile, getFile } from "@/store/idb/models/files";
+import { shareInChat } from "@/services/share/share";
 
 type Props = {
   open: boolean;
@@ -30,15 +31,15 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
         (cardItem.type === "directory" && !pathIsInFilename(cardItem.filename, item.filename))) &&
       item.type === "directory"
     ) {
-      return (
-        <Button
-          handleClick={() => handleClick(item)}
-          disabled={isDisabled}
-          isLoading={itemIsLoading.id === item.id}
-          title={t("pasteButton")}
-          size={ButtonSizeEnum.SMALL}
-        />
-      );
+      // return (
+      //   <Button
+      //     handleClick={() => handleClick(item)}
+      //     disabled={isDisabled}
+      //     isLoading={itemIsLoading.id === item.id}
+      //     title={t("pasteButton")}
+      //     size={ButtonSizeEnum.SMALL}
+      //   />
+      // );
     }
 
     return null;
@@ -86,8 +87,11 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
           }
 
           if (copy) {
-            const timer = 5000;
+            if (isPanal(item.filename)) {
+              await shareInChat(item.filename, cardItem.filename);
+            }
 
+            const timer = 5000;
             if (cardItem.type === "directory") {
               toast(t("messages.directorySuccessfullyCopied"), "success", { timer });
             } else {
