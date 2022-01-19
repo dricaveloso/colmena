@@ -82,9 +82,9 @@ export function ChatList({
     }
 
     const allData = await getAllMessages(token);
-    if (idxElem !== 0 && blockBeginID !== blockEndID) {
-      const firstElement = data.shift();
-    }
+    // if (idxElem !== 0 && blockBeginID !== blockEndID) {
+    //   const firstElement = data.shift();
+    // }
     setData(data);
     setAllData(allData);
 
