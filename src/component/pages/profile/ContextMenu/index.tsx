@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { toast } from "@/utils/notifications";
 // import { signOut } from "next-auth/client";
 // import BackdropModal from "@/components/ui/Backdrop";
+import ContextMenuItem from "@/components/ui/ContextMenuItem";
 
 type PositionProps = {
   mouseX: null | number;
@@ -167,13 +168,17 @@ const ContextMenuOptions = () => {
         onClose={handleCloseContextMenu}
       >
         <MenuItem key="settings" onClick={() => router.push("/settings")}>
-          {t("contextMenuOptions.settings")}
+          <ContextMenuItem icon="settings" title={t("contextMenuOptions.settings")} />
         </MenuItem>
         <MenuItem key="suspend" onClick={featureUnavailable}>
-          {t("contextMenuOptions.deactivate")}
+          <ContextMenuItem icon="disabled" title={t("contextMenuOptions.deactivate")} />
         </MenuItem>
-        <MenuItem key="remove" onClick={featureUnavailable} style={{ color: "tomato" }}>
-          {t("contextMenuOptions.remove")}
+        <MenuItem key="remove" onClick={featureUnavailable} style={{ color: "#ff6347" }}>
+          <ContextMenuItem
+            icon="trash"
+            iconColor="#ff6347"
+            title={t("contextMenuOptions.remove")}
+          />
         </MenuItem>
       </Menu>
     </Box>

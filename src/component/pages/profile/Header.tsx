@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import theme from "@/styles/theme";
-import UserAvatar from "@/components/ui/Avatar";
+import AvatarChangePicture from "@/components/ui/AvatarChangePicture";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import Text from "@/components/ui/Text";
@@ -27,7 +27,7 @@ export default function HeaderProfile() {
       flexDirection="row"
       style={{ backgroundColor: theme.palette.primary.main, width: "100%" }}
     >
-      <UserAvatar size={10} name={userRdx?.user.name} />
+      <AvatarChangePicture size={10} name={userRdx?.user.name} />
       <Box
         display="flex"
         flexDirection="column"
