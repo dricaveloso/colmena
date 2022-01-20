@@ -187,10 +187,10 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                         label={t("placeholderPermission")}
                         variant={SelectVariantEnum.STANDARD}
                         options={[
-                          {
-                            id: RoleUserEnum.COLLABORATOR,
-                            value: t("inviteCollaboratorTitle"),
-                          },
+                          // {
+                          //   id: RoleUserEnum.COLLABORATOR,
+                          //   value: t("inviteCollaboratorTitle"),
+                          // },
                           {
                             id: RoleUserEnum.ADMIN,
                             value: t("inviteAdministratorTitle"),

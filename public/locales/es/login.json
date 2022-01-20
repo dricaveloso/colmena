@@ -3,6 +3,7 @@
   "loginInvalid": "Usuario o contraseña incorrectos",
   "permissionDenied": "No se permite el acceso al perfil de usuario.",
   "userDeactivated": "Your user is disabled.",
-  "mediaNotFound": "Your media was not found",
+  "mediaNotFound": "Error fetching your media",
+  "profileNotFound": "Error accessing your user file",
   "loginSuccesfully": "Successfully logged in"
 }
