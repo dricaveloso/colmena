@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import Text from "@/components/ui/Text";
 import Box from "@material-ui/core/Box";
@@ -7,6 +7,9 @@ import { TextVariantEnum } from "@/enums/index";
 import Button from "@material-ui/core/Button";
 import theme from "@/styles/theme";
 import SvgIcon from "@/components/ui/SvgIcon";
+import Loading from "@/components/ui/Loading";
+import BrowserDetected from "@/components/pages/install/BrowserDetected";
+import BrowserCompabilities from "@/components/pages/install/BrowserCompabilities";
 
 type Props = {
   appinstalled: boolean;
@@ -22,6 +25,15 @@ export default function ActionToInstallOrUpdate({
   showInstallPrompt,
 }: Props) {
   const { t } = useTranslation("install");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (loading) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+    }
+  }, [loading]);
 
   const messagePwaTitle = () => {
     if (!enabledPwa) return t("notCompatibleInstallationTitle");
@@ -46,6 +58,13 @@ export default function ActionToInstallOrUpdate({
     );
   };
 
+  if (loading)
+    return (
+      <Box>
+        <Loading />
+      </Box>
+    );
+
   return (
     <Box>
       <Text
@@ -55,16 +74,8 @@ export default function ActionToInstallOrUpdate({
         {messagePwaTitle()}
       </Text>
       {buttonInstallPwa()}
-      {/* {enabledUpdate && isPwa && (
-        <Button
-          variant="contained"
-          onClick={updatePwa}
-          style={{ backgroundColor: theme.palette.primary.light, color: "#fff" }}
-          startIcon={<SvgIcon icon="update" htmlColor="#fff" />}
-        >
-          {t("buttonUpdate")}
-        </Button>
-      )} */}
+      <BrowserDetected />
+      {!enabledPwa && <BrowserCompabilities />}
     </Box>
   );
 }
