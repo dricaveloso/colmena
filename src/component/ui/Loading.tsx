@@ -27,7 +27,7 @@ const Loading = ({ description }: Props) => {
   return (
     <div className={classes.loading}>
       <CircularProgress color="secondary" />
-      {description && <Typography className={classes.description}>description</Typography>}
+      {description && <Typography className={classes.description}>{description}</Typography>}
     </div>
   );
 };

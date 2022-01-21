@@ -69,6 +69,7 @@ export type NXTagsProps = {
 export type SelectOptionItem = {
   id: number | string;
   value: string;
+  disabled?: boolean;
 };
 
 export type PropsRecordingSelector = {
@@ -273,6 +274,7 @@ export type AllIconProps =
   | "play_flat"
   | "pause_flat"
   | "trash"
-  | "html_tag";
+  | "html_tag"
+  | "update";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

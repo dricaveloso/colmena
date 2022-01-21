@@ -9,6 +9,7 @@ export function toast(message: string, type: PropsTypeToast = "info", customConf
     showConfirmButton: false,
     timer: 5000,
     timerProgressBar: true,
+    showCloseButton: true,
     didOpen: (toast) => {
       toast.addEventListener("mouseenter", Swal.stopTimer);
       toast.addEventListener("mouseleave", Swal.resumeTimer);

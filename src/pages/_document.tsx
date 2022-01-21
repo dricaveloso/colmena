@@ -27,14 +27,11 @@ export default class MyDocument extends Document {
           <meta name="msapplication-TileColor" content={theme.palette.primary.main} />
           <meta name="msapplication-tap-highlight" content="no" />
 
-          <link rel="apple-touch-icon" sizes="57x57" href="/icons/pwa/apple-icon-57x57.png" />
           <link rel="apple-touch-icon" sizes="60x60" href="/icons/pwa/apple-icon-60x60.png" />
-          <link rel="apple-touch-icon" sizes="72x72" href="/icons/pwa/apple-icon-72x72.png" />
           <link rel="apple-touch-icon" sizes="76x76" href="/icons/pwa/apple-icon-76x76.png" />
-          <link rel="apple-touch-icon" sizes="114x114" href="/icons/pwa/apple-icon-114x114.png" />
           <link rel="apple-touch-icon" sizes="120x120" href="/icons/pwa/apple-icon-120x120.png" />
-          <link rel="apple-touch-icon" sizes="144x144" href="/icons/pwa/apple-icon-144x144.png" />
           <link rel="apple-touch-icon" sizes="152x152" href="/icons/pwa/apple-icon-152x152.png" />
+          <link rel="apple-touch-icon" sizes="167x167" href="/icons/pwa/apple-icon-167x167.png" />
           <link rel="apple-touch-icon" sizes="180x180" href="/icons/pwa/apple-icon-180x180.png" />
           <link
             rel="icon"
@@ -47,8 +44,44 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="16x16" href="/icons/pwa/favicon-16x16.png" />
           <link rel="manifest" href="/manifest.json" />
           <meta name="msapplication-TileColor" content={theme.palette.primary.main} />
-          <meta name="msapplication-TileImage" content="ms-icon-144x144.png" />
+          <meta name="msapplication-TileImage" content="ms-icon-150x150.png" />
           <meta name="theme-color" content={theme.palette.primary.main} />
+
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_2048.png"
+            sizes="2048x2732"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_1668.png"
+            sizes="1668x2224"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_1536.png"
+            sizes="1536x2048"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_1125.png"
+            sizes="1125x2436"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_1242.png"
+            sizes="1242x2208"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_750.png"
+            sizes="750x1334"
+          />
+          <link
+            rel="apple-touch-startup-image"
+            href="/splashscreen/apple_splash_640.png"
+            sizes="640x1136"
+          />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
           <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"

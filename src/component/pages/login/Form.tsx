@@ -84,6 +84,7 @@ export default function WrapperForm() {
               const { user }: { user: UserInfoInterface } = session;
 
               let mediaOrg;
+              let mediaName = "";
               try {
                 const userProfileFile = await listFile(
                   user.id,
@@ -95,8 +96,16 @@ export default function WrapperForm() {
                   true,
                 );
                 const file: UserProfileInterface = JSON.parse(String(userProfileFile));
-                const mediaName = file.medias[0];
+                // eslint-disable-next-line prefer-destructuring
+                mediaName = file.medias[0];
+              } catch (e) {
+                console.log(e.message);
+                toast(t("profileNotFound"), "error");
+                setSubmitting(false);
+                return;
+              }
 
+              try {
                 const mediaFile = await listFile(
                   user.id,
                   `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE}`,
@@ -108,13 +117,13 @@ export default function WrapperForm() {
                 );
                 const mediaObj: MediaInfoInterface = JSON.parse(String(mediaFile));
                 mediaOrg = mediaObj;
+                user.media = mediaOrg;
               } catch (e) {
+                console.log(e.message);
                 toast(t("mediaNotFound"), "error");
                 setSubmitting(false);
                 return;
               }
-
-              user.media = mediaOrg;
 
               dispatch(
                 userUpdate({

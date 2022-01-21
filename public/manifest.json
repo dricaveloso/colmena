@@ -2,11 +2,17 @@
   "name": "Colmena - Create, Collaborate and Share ",
   "short_name": "Colmena",
   "theme_color": "#fafafa",
-  "background_color": "#ff9029",
+  "background_color": "#534BAE",
   "display": "fullscreen",
   "scope": "/",
   "start_url": "/login",
   "icons": [
+    {
+      "src": "/icons/pwa/maskable_icon_x196.png",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
     {
       "src": "/icons/pwa/android-icon-36x36.png",
       "sizes": "36x36",
@@ -44,16 +50,16 @@
       "density": "4.0"
     },
     {
+      "src": "/icons/pwa/android-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "density": "4.0"
+    },
+    {
       "src": "/icons/pwa/ms-icon-70x70.png",
       "sizes": "70x70",
       "type": "image/png",
       "density": "1.5"
-    },
-    {
-      "src": "/icons/pwa/ms-icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "density": "3.0"
     },
     {
       "src": "/icons/pwa/ms-icon-150x150.png",
@@ -65,7 +71,7 @@
       "src": "/icons/pwa/ms-icon-310x310.png",
       "sizes": "310x310",
       "type": "image/png",
-      "density": "5.0"
+      "density": "4.0"
     }
   ]
 }

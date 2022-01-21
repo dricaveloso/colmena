@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Container from "@/components/ui/Container";
 import Box from "@material-ui/core/Box";
@@ -20,7 +21,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 
 export default function Login() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!navigator.onLine) {
@@ -34,8 +35,7 @@ export default function Login() {
         setIsLoading(false);
       }
     });
-  }, [router]);
-
+  }, []);
   if (isLoading) return <CenterProgress />;
 
   return (

@@ -20,9 +20,10 @@ type MyFormValues = {
 
 type Props = {
   userId: string;
+  type: string;
 };
 
-export default function WrapperForm({ userId }: Props) {
+export default function WrapperForm({ userId, type }: Props) {
   const [openTerms, setOpenTerms] = useState(false);
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("reset");
@@ -67,8 +68,14 @@ export default function WrapperForm({ userId }: Props) {
               });
               const result = await response.json();
 
-              if (!result.success) throw new Error(t("errorUpdatingPassword"));
-              toast(t("successUpdatingPassword"), "success");
+              if (!result.success)
+                throw new Error(
+                  t(`${type === "create" ? "errorCreatingPassword" : "errorUpdatingPassword"}`),
+                );
+              toast(
+                t(`${type === "create" ? "successCreatingPassword" : "successUpdatingPassword"}`),
+                "success",
+              );
               router.replace("/login");
             } catch (e) {
               console.log(e);
