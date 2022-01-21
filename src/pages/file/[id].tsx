@@ -34,7 +34,7 @@ import { Grid } from "@material-ui/core";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["file"])),
+    ...(await serverSideTranslations(locale, ["file", "library"])),
   },
 });
 
