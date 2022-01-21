@@ -33,7 +33,8 @@
     "chatRoomSuccess": "Llamada creada con éxito",
     "chatRoomFailed": "No fue posible crear la llamada",
     "buttonStep1": "Crear",
-    "buttonStep2": "Añadir"
+    "buttonStep2": "Añadir",
+    "searchUserPlaceholder": "Search user"
   },
   "form": {
     "fields": {

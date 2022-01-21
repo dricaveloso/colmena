@@ -9,7 +9,7 @@ type Props = {
   title: string | React.ReactNode;
   color?: ButtonColorProps | undefined;
   variant?: ButtonVariantProps | undefined;
-  handleClick?: () => void | undefined;
+  handleClick?: (() => void) | Promise<() => void> | undefined;
   // eslint-disable-next-line @typescript-eslint/ban-types
   style?: Object;
   size?: ButtonSizeProps | undefined;

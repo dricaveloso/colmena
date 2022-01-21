@@ -183,3 +183,12 @@ export enum BadgeVariantEnum {
 export enum DirectoryNamesNCEnum {
   TALK = "Talk",
 }
+
+export enum PermissionTalkMemberEnum {
+  OWNER = 1,
+  MODERATOR = 2,
+  USER = 3,
+  GUEST = 4,
+  USER_PUBLIC_LINK = 5,
+  GUEST_WITH_MODERATOR_PERMISSIONS = 6,
+}

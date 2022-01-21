@@ -13,9 +13,10 @@ import { ChatMessagesListInterfaceCustom } from "@/interfaces/talk";
 
 type Props = {
   token: string;
+  uuid: string;
 };
 
-export default function ReloadChatMessages({ token }: Props) {
+export default function ReloadChatMessages({ token, uuid }: Props) {
   const dispatch = useDispatch();
 
   const { data, error } = receiveChatMessages(token, {
@@ -28,6 +29,7 @@ export default function ReloadChatMessages({ token }: Props) {
     },
     onSuccess: async (data: ChatMessagesListInterfaceCustom) => {
       const onlineMessages = data.ocs.data.reverse();
+
       if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
         const syncMessages = await getAllMessages(token);
         if (syncMessages.length === 0) {
@@ -40,6 +42,7 @@ export default function ReloadChatMessages({ token }: Props) {
           const difference = onlineMessages.length - syncMessages.length;
 
           const arrDiffMessages = onlineMessages.slice(-difference);
+          console.log(arrDiffMessages);
           await addAllMessages(arrDiffMessages);
 
           const blockBeginID = arrDiffMessages[0].id || 1;
@@ -57,6 +60,7 @@ export default function ReloadChatMessages({ token }: Props) {
         }
       }
     },
+    uuid,
   });
 
   if (!data && !error) return <ChatListSkeleton />;

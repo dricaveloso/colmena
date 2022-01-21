@@ -4,11 +4,13 @@ import UsersListItem from "./UsersListItem";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core";
-// import EmptyInfo from "@/components/ui/EmptyInfo";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import { v4 as uuid } from "uuid";
+import { useTranslation } from "next-i18next";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SvgIcon from "@/components/ui/SvgIcon";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -28,7 +30,7 @@ type Props = {
 };
 
 function UsersList({ users, participants, updateParticipants }: Props) {
-  console.log(users, participants);
+  const { t: c } = useTranslation("common");
   const classes = useStyles();
   const [usersComp, setUsersComp] = useState(users);
   const [usersSelected, setUsersSelected] = useState<string[]>(participants);
@@ -40,13 +42,10 @@ function UsersList({ users, participants, updateParticipants }: Props) {
 
   useEffect(() => {
     if (search) {
-      const regex = new RegExp(search, "ig");
-      const aux = usersComp.filter((item) => regex.test(item));
+      const aux = usersComp.filter((item) => item.indexOf(search) !== -1);
       setUsersComp(aux);
     } else setUsersComp(users);
   }, [search]);
-
-  // if (usersComp.length === 0) return <EmptyInfo description="Nenhum usuário encontrado" />;
 
   function selectUser(user: string) {
     const find = usersSelected.find((item) => item === user);
@@ -64,10 +63,18 @@ function UsersList({ users, participants, updateParticipants }: Props) {
   return (
     <Box>
       <TextField
-        label="Pesquisar um usuario"
+        label={c("honeycombModal.searchUserPlaceholder")}
         variant="outlined"
         onChange={(event) => setSearch(event.target.value)}
         value={search}
+        fullWidth
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SvgIcon icon="search" fontSize="small" htmlColor="#777777" />
+            </InputAdornment>
+          ),
+        }}
         size="small"
       />
       {usersSelected.length > 0 && (

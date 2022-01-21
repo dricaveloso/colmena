@@ -7,5 +7,9 @@
   "tab2Title": "Library",
   "emptyTalkDescription": "Click on the plus icon below to create a honeycomb",
   "downloadAudioFailed": "Unable to download audio",
+  "contextMenuOptions": {
+    "addParticipantContextTitle": "Add participant",
+    "participantsAddedSuccessfully": "Participants added successfully"
+  },
   "downloadFileFailed": "Unable to download file"
 }

@@ -8,8 +8,12 @@ export function isSubadminProfile() {
 
 export function getUserGroup() {
   const { media } = initializeStore({}).getState().user.user;
-  const group = Array.isArray(media?.groups) && media?.groups[0] ? media?.groups[0] : "";
-  return group;
+
+  if (!Array.isArray(media?.groups)) return "";
+
+  if (media.groups[0] === "admin") return media.groups[1] ? media.groups[1] : "";
+
+  return media.groups[0];
 }
 
 export function getAllUserGroup() {
