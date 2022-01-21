@@ -183,7 +183,7 @@ const ContextMenuOptions = ({ blob, data, filename }: Props) => {
               <Divider marginTop={20} />
               <Grid container justifyContent="flex-end">
                 <Button
-                  title={t("saveButton")}
+                  title={c("form.submitSaveTitle")}
                   type="submit"
                   disabled={loading}
                   isLoading={loading}

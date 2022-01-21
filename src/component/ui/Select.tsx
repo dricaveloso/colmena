@@ -50,7 +50,7 @@ function Slt({
         fullWidth
       >
         {options.map((item) => (
-          <MenuItem key={uuid()} value={item.id}>
+          <MenuItem key={uuid()} value={item.id} disabled={item.disabled ? item.disabled : false}>
             {item.value}
           </MenuItem>
         ))}

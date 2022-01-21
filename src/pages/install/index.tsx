@@ -10,10 +10,7 @@ import FlexBox from "@/components/ui/FlexBox";
 import Box from "@material-ui/core/Box";
 import { AlignItemsEnum, JustifyContentEnum } from "@/enums/index";
 import usePwa from "use-pwa";
-import BrowserDetected from "@/components/pages/install/BrowserDetected";
-import BrowserCompabilities from "@/components/pages/install/BrowserCompabilities";
 import ActionToInstallOrUpdate from "@/components/pages/install/ActionToInstallOrUpdate";
-import Loading from "@/components/ui/Loading";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -23,7 +20,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 
 function Install() {
   const { t } = useTranslation("install");
-  const { appinstalled, canInstallprompt, enabledPwa, isLoading, showInstallPrompt } = usePwa();
+  const { appinstalled, canInstallprompt, enabledPwa, showInstallPrompt } = usePwa();
 
   // const handleClick = useCallback(async () => {
   //   const result = await unregister();
@@ -55,20 +52,12 @@ function Install() {
           flexDirection="column"
           paddingTop={4}
         >
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              <ActionToInstallOrUpdate
-                appinstalled={appinstalled}
-                canInstallprompt={canInstallprompt}
-                enabledPwa={enabledPwa}
-                showInstallPrompt={showInstallPrompt}
-              />
-              <BrowserDetected />
-              {!enabledPwa && <BrowserCompabilities />}
-            </>
-          )}
+          <ActionToInstallOrUpdate
+            appinstalled={appinstalled}
+            canInstallprompt={canInstallprompt}
+            enabledPwa={enabledPwa}
+            showInstallPrompt={showInstallPrompt}
+          />
         </Box>
       </FlexBox>
     </LayoutApp>
