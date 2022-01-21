@@ -69,6 +69,7 @@ export type NXTagsProps = {
 export type SelectOptionItem = {
   id: number | string;
   value: string;
+  disabled?: boolean;
 };
 
 export type PropsRecordingSelector = {
