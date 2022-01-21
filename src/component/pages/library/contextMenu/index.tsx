@@ -14,6 +14,8 @@ import DeleteItemConfirm from "./DeleteItemConfirm";
 import SyncModal from "./SyncModal";
 import { toast } from "@/utils/notifications";
 import { EnvironmentEnum } from "@/enums/*";
+import Switch from "@material-ui/core/Switch";
+import { Box } from "@material-ui/core";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename, arrayBufferBlob, mime } =
@@ -21,6 +23,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
+  const [availableOffline, setAvailableOffline] = useState(environment === EnvironmentEnum.BOTH);
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
   const [openSyncModal, setOpenSyncModal] = useState(false);
   const [openRenameItemModal, setOpenRenameItemModal] = useState(false);
@@ -82,6 +85,11 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     handleCloseContextMenu();
   };
 
+  const handleAvailableOffline = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAvailableOffline(event.target.checked);
+    handleOpenSyncModal(true);
+  };
+
   return (
     <>
       <IconButton
@@ -119,9 +127,12 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
             {t("contextMenuOptions.download")}
           </MenuItem>
         )}
-        {type === "file" && environment === EnvironmentEnum.REMOTE && (
-          <MenuItem key="sync" onClick={() => handleOpenSyncModal(true)}>
-            {t("contextMenuOptions.synchronize")}
+        {type === "file" && environment !== EnvironmentEnum.LOCAL && (
+          <MenuItem key="sync">
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <div>{t("contextMenuOptions.availableOffline")}</div>
+              <Switch checked={availableOffline} onChange={handleAvailableOffline} />
+            </Box>
           </MenuItem>
         )}
         <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
@@ -202,6 +213,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
 
       {openSyncModal && (
         <SyncModal
+          availableOffline={availableOffline}
           key={`${basename}-sync-modal`}
           open={openSyncModal}
           handleOpen={() => handleOpenDownloadModal(false)}

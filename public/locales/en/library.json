@@ -33,7 +33,8 @@
     "details": "Details",
     "synchronize": "Synchronize",
     "publish": "Publish",
-    "delete": "Delete"
+    "delete": "Delete",
+    "availableOffline": "Available Offline"
   },
   "messages": {
     "couldNotRemove": "Could not remove.",
