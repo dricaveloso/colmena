@@ -148,6 +148,7 @@ const ContextMenuOptions = () => {
       <IconButton
         key={uuid()}
         icon="more_vertical"
+        data-testid="open-context-profile-menu"
         iconColor="#fff"
         style={{ padding: 0, margin: 0, minWidth: 30 }}
         fontSizeIcon="small"
@@ -167,13 +168,26 @@ const ContextMenuOptions = () => {
         }
         onClose={handleCloseContextMenu}
       >
-        <MenuItem key="settings" onClick={() => router.push("/settings")}>
+        <MenuItem
+          key="settings"
+          data-testid="profile-settings-menu-option"
+          onClick={() => router.push("/settings")}
+        >
           <ContextMenuItem icon="settings" title={t("contextMenuOptions.settings")} />
         </MenuItem>
-        <MenuItem key="suspend" onClick={featureUnavailable}>
+        <MenuItem
+          key="suspend"
+          data-testid="profile-suspend-menu-option"
+          onClick={featureUnavailable}
+        >
           <ContextMenuItem icon="disabled" title={t("contextMenuOptions.deactivate")} />
         </MenuItem>
-        <MenuItem key="remove" onClick={featureUnavailable} style={{ color: "#ff6347" }}>
+        <MenuItem
+          key="remove"
+          data-testid="profile-remove-menu-option"
+          onClick={featureUnavailable}
+          style={{ color: "#ff6347" }}
+        >
           <ContextMenuItem
             icon="trash"
             iconColor="#ff6347"

@@ -168,7 +168,11 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
     <>
       <Backdrop open={showBackdrop} />
       <input type="file" ref={inputFileRef} onChange={onSelectFile} style={{ display: "none" }} />
-      <Box onClick={handleOpenContextMenu} style={{ cursor: "pointer" }}>
+      <Box
+        onClick={handleOpenContextMenu}
+        data-testid="avatar-open-context"
+        style={{ cursor: "pointer" }}
+      >
         {reloadAvatar ? <Loading /> : <Avatar size={size} showEditImage={showEditImage} />}
       </Box>
       <Box display="flex" justifyContent="flex-end">
@@ -186,10 +190,15 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
           }
           onClose={handleCloseContextMenu}
         >
-          <MenuItem key="settings" onClick={onBtnClick}>
+          <MenuItem key="upload" data-testid="upload-menu-option" onClick={onBtnClick}>
             <ContextMenuItem icon="camera" title={c("contextMenuUserAvatar.upload")} />
           </MenuItem>
-          <MenuItem key="remove" onClick={featureUnavailable} style={{ color: "#ff6347" }}>
+          <MenuItem
+            key="remove"
+            data-testid="remove-menu-option"
+            onClick={featureUnavailable}
+            style={{ color: "#ff6347" }}
+          >
             <ContextMenuItem
               icon="trash"
               iconColor="#ff6347"
@@ -210,6 +219,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
               variant={ButtonVariantEnum.OUTLINED}
               color={ButtonColorEnum.SECONDARY}
               title={c("form.cancelButton")}
+              data-testid="close-modal-crop"
             />
             <Button
               handleClick={submitCrop}
@@ -217,6 +227,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
               variant={ButtonVariantEnum.CONTAINED}
               color={ButtonColorEnum.PRIMARY}
               title={c("form.submitSaveTitle")}
+              data-testid="submit-modal-crop"
             />
           </Box>
         }
@@ -244,6 +255,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
           </Box>
           <Box height={30}>
             <Slider
+              data-testid="slider-modal-crop"
               value={zoom}
               min={1}
               max={3}
