@@ -129,10 +129,15 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
     body.append("y", String(croppedAreaPixels.y));
     try {
       setShowBackdrop(true);
-      await fetch(`/api/create-avatar/${userRdx.user.id}`, {
+      const response = await fetch(`/api/create-avatar/${userRdx.user.id}`, {
         method: "POST",
         body,
       });
+      const result = await response.json();
+      if (!result.status) {
+        throw new Error("error");
+      }
+
       handleReloadAvatar();
       toast(c("uploadUserAvatarSuccessfully"), "success");
     } catch (e) {
