@@ -43,6 +43,18 @@ export const isAudioFile = (mime: string | undefined) => {
   return /^audio/.test(mime);
 };
 
+export const isPNGImage = (mime: string | undefined) => {
+  if (!mime) return false;
+
+  return mime === "image/png";
+};
+
+export const isJPGImage = (mime: string | undefined) => {
+  if (!mime) return false;
+
+  return mime === "image/jpeg" || mime === "image/jpg";
+};
+
 export const isValidUrl = (url: string) => {
   try {
     // eslint-disable-next-line no-new

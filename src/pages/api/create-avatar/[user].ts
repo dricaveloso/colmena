@@ -28,8 +28,21 @@ type ResponseDataAvatar = {
   body: string;
 };
 
+function doRequest(url: any): Promise<ResponseDataAvatar> {
+  return new Promise((resolve, reject) => {
+    request(url, (error: any, res: any) => {
+      if (!error && res.statusCode === 200) {
+        resolve(res);
+      } else {
+        reject(error);
+      }
+    });
+  });
+}
+
 handler.post(async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const { user, password, extension } = req.body;
+  const { user, password, extension, width, height, x, y } = req.body;
+  const filename = `${process.cwd()}/public/tmp/avatar-${user}.${extension}`;
   try {
     const response = await axios.get(`${serverRuntimeConfig.api.baseUrl}/login`);
 
@@ -41,8 +54,6 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const requesttoken = String(root.querySelector("head").getAttribute("data-requesttoken"));
 
     const basicAuth = btoa(`${user}:${password}`);
-
-    const filename = `${process.cwd()}/public/tmp/avatar-${user}.${extension}`;
 
     const optionsAvatar = {
       method: "POST",
@@ -68,43 +79,41 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       },
     };
 
-    request(optionsAvatar, (error: string, response: ResponseDataAvatar) => {
-      if (error) throw new Error(error);
+    const responseAvatar = await doRequest(optionsAvatar);
 
-      cookies = formatCookies(response.headers["set-cookie"], cookies);
+    cookies = formatCookies(responseAvatar.headers["set-cookie"], cookies);
 
-      const optionsCropped = {
-        method: "POST",
-        url: `${serverRuntimeConfig.api.baseUrl}/avatar/cropped`,
-        headers: {
-          "OCS-APIRequest": true,
-          requesttoken,
-          Authorization: `Basic ${basicAuth}`,
-          "X-Requested-With": "XMLHttpRequest",
-          Cookie: cookies,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        form: {
-          "crop[x]": "0",
-          "crop[y]": "0",
-          "crop[w]": "270",
-          "crop[h]": "270",
-        },
-      };
+    const optionsCropped = {
+      method: "POST",
+      url: `${serverRuntimeConfig.api.baseUrl}/avatar/cropped`,
+      headers: {
+        "OCS-APIRequest": true,
+        requesttoken,
+        Authorization: `Basic ${basicAuth}`,
+        "X-Requested-With": "XMLHttpRequest",
+        Cookie: cookies,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      form: {
+        "crop[x]": x,
+        "crop[y]": y,
+        "crop[w]": width,
+        "crop[h]": height,
+      },
+    };
 
-      request(optionsCropped, (error: string, response: ResponseDataAvatar) => {
-        if (error) throw new Error(error);
+    const responseAvatarCropped = await doRequest(optionsCropped);
 
-        const result = JSON.parse(response.body.trim());
-        if (result.status !== "success") throw new Error("Error");
+    const result = JSON.parse(responseAvatarCropped.body.trim());
+    if (result.status !== "success") throw new Error("Error");
 
-        fs.unlinkSync(filename);
+    fs.unlinkSync(filename);
 
-        res.status(200).json({ success: true });
-      });
-    });
+    res.status(200).json({ success: true });
   } catch (e) {
     console.log(e);
+
+    fs.unlinkSync(filename);
     res.status(400).json({ success: false, error: e });
   }
 });

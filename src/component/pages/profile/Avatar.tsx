@@ -9,6 +9,7 @@ import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
 import SvgIcon from "@/components/ui/SvgIcon";
 import getConfig from "next/config";
+import { v4 as uuid } from "uuid";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -19,7 +20,7 @@ type Props = {
   showEditImage?: boolean;
 };
 
-function AvatarAux({ size, showEditImage = true, userId = "", userName = "" }: Props) {
+function AvatarAux({ size, showEditImage = false, userId = "", userName = "" }: Props) {
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       size: {
@@ -50,7 +51,7 @@ function AvatarAux({ size, showEditImage = true, userId = "", userName = "" }: P
       ) : (
         <Avatar
           alt={`Avatar ${usrName}`}
-          src={`${publicRuntimeConfig.api.baseUrl}/avatar/${usrId}/100`}
+          src={`${publicRuntimeConfig.api.baseUrl}/avatar/${usrId}/100?uuid=${uuid()}`}
           className={classes.size}
         >
           {getFirstLettersOfTwoFirstNames(usrName)}
