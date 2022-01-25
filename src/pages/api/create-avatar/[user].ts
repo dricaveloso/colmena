@@ -42,7 +42,7 @@ function doRequest(url: any): Promise<ResponseDataAvatar> {
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { user, password, extension, width, height, x, y } = req.body;
-  const filename = `${process.cwd()}/public/tmp/avatar-${user}.${extension}`;
+  const filename = `${process.cwd()}/public/upload/avatar-${user}.${extension}`;
   try {
     const response = await axios.get(`${serverRuntimeConfig.api.baseUrl}/login`);
 
