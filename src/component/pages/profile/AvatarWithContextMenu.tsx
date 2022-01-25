@@ -134,8 +134,8 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
         body,
       });
       const result = await response.json();
-      if (!result.status) {
-        throw new Error("error");
+      if (!result.success) {
+        throw new Error(result.error);
       }
 
       handleReloadAvatar();
