@@ -6,7 +6,7 @@ import multer from "multer";
 // middleware that process files uploaded in multipart/form-data format.
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "./public/upload",
+    destination: `${process.cwd()}/public/images/upload`,
     filename: (req, file, cb) => {
       const ext = file.originalname.split(".");
       let name = req.query.user ? `avatar-${req.query.user}` : `avatar`;
