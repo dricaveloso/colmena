@@ -277,6 +277,7 @@ export type AllIconProps =
   | "html_tag"
   | "update"
   | "disabled"
-  | "camera";
+  | "camera"
+  | "edit_circle";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

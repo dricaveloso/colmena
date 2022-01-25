@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCurrentPage } from "@/store/actions/config/index";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 import { updateRecordingState } from "@/store/actions/recordings/index";
-// import DownloadPWA from "@/components/ui/InstallPWA";
 
 interface LayoutInterface extends AppBarInterface {
   showFooter?: boolean;
@@ -57,7 +56,6 @@ function LayoutApp({
   return (
     <Container extraStyle={{ padding: 0, backgroundColor: "#F9F9F9" }}>
       <FlexBox extraStyle={{ margin: 0, padding: 0 }}>
-        {/* <DownloadPWA /> */}
         <AppBar
           title={title}
           subtitle={subtitle}
