@@ -249,13 +249,13 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
               style={{
                 containerStyle: { width: "100%", height: 300 },
                 cropAreaStyle: { width: 250, height: 250 },
-                mediaStyle: { width: "100%", height: "100%", margin: "0 auto" },
+                // mediaStyle: { width: "100%", height: "100%", margin: "0 auto" },
               }}
               cropSize={{ width: 250, height: 250 }}
               onCropChange={onCropChange}
               onCropComplete={onCropComplete}
               onZoomChange={onZoomChange}
-              objectFit="contain"
+              objectFit="vertical-cover"
             />
           </Box>
           <Box height={30}>
