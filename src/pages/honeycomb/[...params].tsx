@@ -20,6 +20,7 @@ import ReloadChatMessages from "@/components/pages/honeycomb/Chat/ReloadChatMess
 import Subtitle from "@/components/pages/honeycomb/Subtitle";
 import { sendChatMessage } from "@/services/talk/chat";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
+import HoneycombLibrary from "@/components/pages/honeycomb/HoneycombLibrary";
 import SvgIcon from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
 import { AllIconProps } from "@/types/*";
@@ -28,7 +29,7 @@ import { v4 as uuid } from "uuid";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["honeycomb"])),
+    ...(await serverSideTranslations(locale, ["honeycomb", "library"])),
   },
 });
 
@@ -147,7 +148,14 @@ function Honeycomb() {
                 canDeleteConversation={canDeleteConversation}
               />
             </TabPanel>
-            <TabPanel value={value} index={1}></TabPanel>
+            <TabPanel value={value} index={1}>
+              {value === 1 && (
+                <HoneycombLibrary
+                  conversationName={displayName}
+                  canDeleteConversation={canDeleteConversation}
+                />
+              )}
+            </TabPanel>
           </SwipeableViews>
           {showInputMessage && (
             <InputSendMessage token={token} handleSendMessage={sendMessageAPI} />

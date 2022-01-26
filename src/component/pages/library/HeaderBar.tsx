@@ -43,6 +43,7 @@ type Props = {
   canChangeList?: boolean;
   firstBreadcrumbItem?: BreadcrumbItemInterface;
   isDisabled?: boolean;
+  rootPath?: string;
 };
 
 const defineIconListType = (type: string) => (type === ListTypeEnum.LIST ? "grid" : "checklist");
@@ -62,6 +63,7 @@ function HeaderBar({
   canChangeList = true,
   firstBreadcrumbItem,
   isDisabled = false,
+  rootPath = "/",
 }: Props) {
   const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
   const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
@@ -72,8 +74,18 @@ function HeaderBar({
   );
 
   useEffect(() => {
+    let currentPath = path;
+    if (rootPath !== "/" && currentPath) {
+      if (typeof currentPath === "object") {
+        currentPath = currentPath.join("/");
+      }
+
+      const regex = new RegExp(`^${rootPath}`);
+      currentPath = currentPath.replace(regex, "").split("/");
+    }
+
     if (firstBreadcrumbItem) {
-      const generatedBreadcrumb = generateBreadcrumb(path, firstBreadcrumbItem.path);
+      const generatedBreadcrumb = generateBreadcrumb(currentPath, firstBreadcrumbItem.path);
       const newBreadcrumbItem = {
         ...firstBreadcrumbItem,
         isCurrent: generatedBreadcrumb.length === 0,
@@ -82,7 +94,7 @@ function HeaderBar({
 
       setBreadcrumb([newBreadcrumbItem, ...generatedBreadcrumb]);
     } else {
-      const generatedBreadcrumb = generateBreadcrumb(path);
+      const generatedBreadcrumb = generateBreadcrumb(currentPath);
       setBreadcrumb(generatedBreadcrumb);
     }
 
