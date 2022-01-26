@@ -41,6 +41,7 @@
       "name": "Nombre"
     },
     "skipButton": "Saltar",
+    "URLInvalid": "URL invalid.",
     "nextIntro": "Continuar",
     "backButton": "Volver",
     "recoverPasswordButton": "Redefine password",

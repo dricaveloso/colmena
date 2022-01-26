@@ -1,4 +1,9 @@
-import { USER_UPDATE, USER_INFO_UPDATE, SET_INVITATION_TOKEN } from "@/store/actions/index";
+import {
+  USER_UPDATE,
+  USER_INFO_UPDATE,
+  SET_INVITATION_TOKEN,
+  MEDIA_INFO_UPDATE,
+} from "@/store/actions/index";
 import { UserInfoInterface, UserInfoUpdateInterface } from "@/interfaces/index";
 
 type initialStateProps = {
@@ -17,6 +22,8 @@ const reducer = (state = initialState, action: any) => {
       return { ...state, user: action.payload.user };
     case USER_INFO_UPDATE:
       return { ...state, user: { ...state.user, ...action.payload } };
+    case MEDIA_INFO_UPDATE:
+      return { ...state, user: { ...state.user, media: { ...action.payload } } };
     case SET_INVITATION_TOKEN:
       return { ...state, invitationToken: action.payload.invitationToken };
     default:

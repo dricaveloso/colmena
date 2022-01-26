@@ -23,5 +23,16 @@
   "welcomeErrorUser": "Usuario creado pero correo electrónico no enviado",
   "buttonCancelModalDialogInvite": "Cancelar",
   "inviteCollaboratorTitle": "Colaborador",
-  "inviteAdministratorTitle": "Administrador"
+  "inviteAdministratorTitle": "Administrator",
+  "contextMenuOptions": {
+    "settings": "Settings",
+    "edit": "Edit",
+    "deactivate": "Deactivate account"
+  },
+  "titleEditMediaModal": "Edit Media",
+  "editForm": {
+    "name": "Media name",
+    "slogan": "Description",
+    "url": "URL"
+  }
 }

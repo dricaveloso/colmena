@@ -5,6 +5,7 @@ import Text from "@/components/ui/Text";
 import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
+import { toast } from "@/utils/notifications";
 
 type Props = {
   title: string;
@@ -22,6 +23,7 @@ export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
       <Button
         title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
         variant={ButtonVariantEnum.TEXT}
+        handleClick={() => toast(t("featureUnavailable"), "warning")}
         style={{ color: "#292929" }}
       />
     </Box>

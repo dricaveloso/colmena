@@ -42,6 +42,7 @@
     },
     "skipButton": "Sauter",
     "nextIntro": "Suivant",
+    "URLInvalid": "URL invalid.",
     "backButton": "Retourner",
     "recoverPasswordButton": "Redefine password",
     "cancelButton": "Annuler",
