@@ -56,7 +56,7 @@ const ContextMenuOptions = () => {
       <IconButton
         key={uuid()}
         icon="more_vertical"
-        data-testid="open-context-profile-menu"
+        data-testid="open-context-media-profile-menu"
         iconColor="#fff"
         style={{ padding: 0, margin: 0, minWidth: 30 }}
         fontSizeIcon="small"

@@ -108,7 +108,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
       >
         {({ submitForm, isSubmitting, errors, touched }: any) => (
           <Form>
-            <Field name="name" InputProps={{ notched: true }}>
+            <Field name="name" data-testid="media-name" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="name"
@@ -125,7 +125,11 @@ export default function EditMedia({ title, open, handleClose }: Props) {
             </Field>
             {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
             <Divider marginTop={20} />
-            <Field name="description" InputProps={{ notched: true }}>
+            <Field
+              name="description"
+              data-testid="media-description"
+              InputProps={{ notched: true }}
+            >
               {({ field }: FieldProps) => (
                 <TextField
                   id="description"
@@ -145,7 +149,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
               <ErrorMessageForm message={errors.description} />
             ) : null}
             <Divider marginTop={20} />
-            <Field name="url" InputProps={{ notched: true }}>
+            <Field name="url" data-testid="media-url" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="url"
@@ -168,6 +172,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
                 title={c("form.submitSaveTitle")}
                 disabled={isSubmitting}
                 isLoading={isSubmitting}
+                data-testid="submit-edit-media"
                 type="submit"
               />
             </Grid>

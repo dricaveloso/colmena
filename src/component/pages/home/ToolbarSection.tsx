@@ -32,6 +32,7 @@ export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
         variant={ButtonVariantEnum.TEXT}
         handleClick={() => toast(t("featureUnavailable"), "warning")}
         style={{ color: "#292929" }}
+        data-testid="toolbar-click"
       />
     </Box>
   );

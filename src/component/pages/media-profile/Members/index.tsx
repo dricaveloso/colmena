@@ -38,6 +38,7 @@ export default function Members() {
             iconColor={theme.palette.secondary.main}
             iconStyle={{ fontSize: 64 }}
             fontSizeIcon="large"
+            data-testid="add-member-media"
             handleClick={() => setOpenInvite(true)}
             style={{ marginRight: 8, marginBottom: 25 }}
             textStyle={{

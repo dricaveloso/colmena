@@ -123,7 +123,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
               <DialogContent>
                 <DialogContentText>{t("descriptionModalDialogInvite")}</DialogContentText>
                 <Form autoComplete="off">
-                  <Field name="name" InputProps={{ notched: true }}>
+                  <Field name="name" data-testid="media-name" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
                         autoFocus
@@ -143,7 +143,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                     )}
                   </Field>
                   {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
-                  <Field name="emailCol" InputProps={{ notched: true }}>
+                  <Field name="emailCol" data-testid="media-email" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <TextField
                         margin="dense"
@@ -164,7 +164,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   {errors.emailCol && touched.emailCol ? (
                     <ErrorMessageForm message={errors.emailCol} />
                   ) : null}
-                  <Field name="group" InputProps={{ notched: true }}>
+                  <Field name="group" data-testid="media-group" InputProps={{ notched: true }}>
                     {({ field }: FieldProps) => (
                       <Select
                         label={t("placeholderGroup")}
@@ -181,7 +181,11 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   {errors.group && touched.group ? (
                     <ErrorMessageForm message={errors.group} />
                   ) : null}
-                  <Field name="permission" InputProps={{ notched: true }}>
+                  <Field
+                    name="permission"
+                    data-testid="media-permission"
+                    InputProps={{ notched: true }}
+                  >
                     {({ field }: FieldProps) => (
                       <Select
                         label={t("placeholderPermission")}
@@ -208,10 +212,19 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                 </Form>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleCloseInviteForm} color="primary">
+                <Button
+                  onClick={handleCloseInviteForm}
+                  data-testid="close-modal-invite"
+                  color="primary"
+                >
                   {t("buttonCancelModalDialogInvite")}
                 </Button>
-                <Button disabled={isSubmitting} onClick={submitForm} color="primary">
+                <Button
+                  disabled={isSubmitting}
+                  data-testid="submit-invite"
+                  onClick={submitForm}
+                  color="primary"
+                >
                   {t("buttonOkModalDialogInvite")}
                 </Button>
               </DialogActions>

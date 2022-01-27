@@ -29,6 +29,7 @@ export default function SocialMedia() {
         {isSubadminProfile() && (
           <IconButton
             icon="plus_circle"
+            data-testid="add-social-media-media"
             iconColor={theme.palette.secondary.main}
             iconStyle={{ fontSize: 64 }}
             fontSizeIcon="large"
