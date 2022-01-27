@@ -1,0 +1,21 @@
+{
+    "title": "",
+    "editTagTitle": "",
+    "createTagTitle": "",
+    "saveButton": "",
+    "form": {
+        "fields": {
+            "name": ""
+        }
+    },
+    "messages": {
+        "tagCreatedSuccessfully": "",
+        "tagRemovedSuccessfully": "",
+        "tagUpdatedSuccessfully": "",
+        "forbidden": "",
+        "tagAlreadyExists": ""
+    },
+    "table": {
+        "tagTitle": ""
+    }
+}
