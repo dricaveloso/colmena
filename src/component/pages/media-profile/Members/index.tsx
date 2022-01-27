@@ -21,7 +21,11 @@ export default function Members() {
 
   return (
     <Box width="100%">
-      <ToolbarSection seeAllTitle={t("manageTitle")} title={t("membersTitle")} />
+      <ToolbarSection
+        // seeAllTitle={t("manageTitle")}
+        title={t("membersTitle")}
+        showRightButton={false}
+      />
       <Divider marginTop={10} />
       <Box
         width="100%"

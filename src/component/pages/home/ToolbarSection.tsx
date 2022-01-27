@@ -11,9 +11,15 @@ type Props = {
   title: string;
   link?: string;
   seeAllTitle?: string | undefined;
+  showRightButton?: boolean;
 };
 
-export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
+export default function ToolbarSection({
+  title,
+  link,
+  seeAllTitle,
+  showRightButton = true,
+}: Props) {
   const { t } = useTranslation("common");
   return (
     <Box
@@ -21,19 +27,21 @@ export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
       marginLeft={2}
       marginRight={2}
       flexDirection="row"
-      justifyContent="space-between"
+      justifyContent={showRightButton ? "space-between" : "flex-start"}
       alignItems="center"
     >
       <Text variant={TextVariantEnum.H6} style={{ color: "#292929", fontWeight: "bold" }}>
         {title}
       </Text>
-      <Button
-        title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
-        variant={ButtonVariantEnum.TEXT}
-        handleClick={() => toast(t("featureUnavailable"), "warning")}
-        style={{ color: "#292929" }}
-        data-testid="toolbar-click"
-      />
+      {showRightButton && (
+        <Button
+          title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
+          variant={ButtonVariantEnum.TEXT}
+          handleClick={() => toast(t("featureUnavailable"), "warning")}
+          style={{ color: "#292929" }}
+          data-testid="toolbar-click"
+        />
+      )}
     </Box>
   );
 }

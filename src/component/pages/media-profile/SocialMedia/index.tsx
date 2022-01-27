@@ -15,7 +15,11 @@ export default function SocialMedia() {
 
   return (
     <Box width="100%">
-      <ToolbarSection seeAllTitle={t("manageTitle")} title={t("socialMediaTitle")} />
+      <ToolbarSection
+        showRightButton={false}
+        // seeAllTitle={t("manageTitle")}
+        title={t("socialMediaTitle")}
+      />
       <Divider marginTop={10} />
       <Box
         width="100%"
