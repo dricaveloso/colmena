@@ -88,7 +88,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
 
       dispatch(mediaInfoUpdate(mediaObj));
 
-      toast("Media edited successfully", "success");
+      toast(t("mediaProfileInfoSaved"), "success");
       handleClose();
     } catch (e) {
       console.log(e);

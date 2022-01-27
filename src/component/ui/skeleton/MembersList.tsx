@@ -18,7 +18,7 @@ export default function MembersList() {
   const classes = useStyles();
   return (
     <Box display="flex" justifyContent="column">
-      {[1, 2, 3].map(() => (
+      {[1, 2, 3, 4, 5, 6].map(() => (
         <Box className={classes.card} key={uuid()} margin={1}>
           <Skeleton variant="circle" width={65} height={65} />
           <Typography variant="body1">

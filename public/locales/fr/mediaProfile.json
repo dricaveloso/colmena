@@ -34,5 +34,7 @@
     "name": "Media name",
     "slogan": "Description",
     "url": "URL"
-  }
+  },
+  "mediaProfileAvatarSaved": "Avatar saved",
+  "mediaProfileInfoSaved": "Media updated"
 }
