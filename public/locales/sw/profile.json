@@ -1,0 +1,26 @@
+{
+    "title": "",
+    "textEditButton": "",
+    "textPhotoButton": "",
+    "mediaTitle": "",
+    "switchLanguage": "",
+    "successMessage": "",
+    "nameField": "",
+    "lastnameField": "",
+    "emailField": "",
+    "urlField": "",
+    "socialMediaTitle": "",
+    "editButton": "",
+    "saveButton": "",
+    "resetPasswordButton": "",
+    "manageTitle": "",
+    "contextMenuOptions": {
+        "settings": "",
+        "remove": "",
+        "deactivate": ""
+    },
+    "confirmationRemoveAccountMessage": "",
+    "confirmationSuspendAccountMessage": "",
+    "messageSuccessAccountDeactivated": "",
+    "messageSuccessAccountDeleted": ""
+}

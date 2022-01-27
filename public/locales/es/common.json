@@ -116,5 +116,8 @@
   "changeLocationModalTitle": "Choose the new location",
   "changeLocationButton": "Choose here",
   "noPrivilegesAccessTitle": "No privileges to access.",
-  "confirmCancelUpload": "Do you really want to cancel the upload?"
+  "confirmCancelUpload": "Do you really want to cancel the upload?",
+  "textDrawerBottomTitle": "Texto",
+  "uploadDrawerBottomTitle": "Subir",
+  "streamDrawerBottomTitle": "Transmisión"
 }

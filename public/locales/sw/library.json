@@ -1,0 +1,80 @@
+{
+    "title": "",
+    "sort": {
+        "title": "",
+        "highlights": "",
+        "newest": "",
+        "oldest": "",
+        "alphabeticalOrder": "",
+        "descendingAlphabeticalOrder": ""
+    },
+    "filter": {
+        "title": "",
+        "all": "",
+        "availableOffline": "",
+        "synchronized": "",
+        "audios": "",
+        "images": "",
+        "texts": ""
+    },
+    "language": {
+        "title": "",
+        "english": "",
+        "spanish": "",
+        "french": ""
+    },
+    "contextMenuOptions": {
+        "edit": "",
+        "copy": "",
+        "move": "",
+        "duplicate": "",
+        "download": "",
+        "rename": "",
+        "details": "",
+        "synchronize": "",
+        "publish": "",
+        "delete": ""
+    },
+    "messages": {
+        "couldNotRemove": "",
+        "fileAlreadyExists": "",
+        "cannotDownloadFile": "",
+        "unidentifiedEnvironment": "",
+        "unableToCompleteRequest": "",
+        "directorySuccessfullyCopied": "",
+        "fileSuccessfullyCopied": "",
+        "directorySuccessfullyMoved": "",
+        "fileSuccessfullyMoved": "",
+        "directorySuccessfullyDuplicated": "",
+        "fileSuccessfullyDuplicated": "",
+        "directorySuccessfullyRenamed": "",
+        "fileSuccessfullyRenamed": "",
+        "directorySuccessfullyRemoved": "",
+        "fileSuccessfullyRemoved": ""
+    },
+    "renameTitle": "",
+    "saveButton": "",
+    "duplicateTitle": "",
+    "duplicateButton": "",
+    "copyModalTitle": "",
+    "pasteButton": "",
+    "moveModalTitle": "",
+    "chooseButton": "",
+    "detailsTitle": "",
+    "detailsModal": {
+        "name": "",
+        "path": "",
+        "lastUpdate": "",
+        "size": "",
+        "type": "",
+        "creator": "",
+        "fileId": "",
+        "tags": "",
+        "language": "",
+        "description": ""
+    },
+    "downloading": "",
+    "synchronizing": "",
+    "cancel": "",
+    "moveButton": ""
+}
