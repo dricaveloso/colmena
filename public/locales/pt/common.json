@@ -2,7 +2,8 @@
     "form": {
         "skipButton": "Pular",
         "nextIntro": "Próximo",
-        "backButton": "Voltar"
+        "backButton": "Voltar",
+        "cancelButton": "Cancelar"
     },
     "agreeWithTerms": "Eu concordo com os",
     "termsOfUse": "Termos de uso",
@@ -23,5 +24,10 @@
     "honeycombModal": {
         "buttonStep2": "Adicionar"
     },
-    "administratorTitle": "Administrador(a)"
+    "administratorTitle": "Administrador(a)",
+    "invitationGreeting": "Olá {{name}}",
+    "confirmTitleDelete": "Você tem certeza?",
+    "backToLogin": "Voltar ao login",
+    "socialMediaTitle": "Redes Sociais",
+    "confirmMessageDelete": "Ao executar esta ação,  será impossível revertê-la"
 }
