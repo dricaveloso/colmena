@@ -16,7 +16,14 @@ type Props = {
 export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
   const { t } = useTranslation("common");
   return (
-    <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+    <Box
+      display="flex"
+      marginLeft={2}
+      marginRight={2}
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <Text variant={TextVariantEnum.H6} style={{ color: "#292929", fontWeight: "bold" }}>
         {title}
       </Text>

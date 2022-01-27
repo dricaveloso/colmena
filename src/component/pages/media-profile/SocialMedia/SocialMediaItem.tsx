@@ -6,22 +6,32 @@ import Text from "@/components/ui/Text";
 import { TextDisplayEnum, TextVariantEnum } from "@/enums/*";
 import Image from "next/image";
 import theme from "@/styles/theme";
+import SvgIcon from "@/components/ui/SvgIcon";
+import { AllIconProps } from "@/types/*";
 
 type Props = {
-  title?: string;
-  url?: string;
+  title: string;
+  icon: AllIconProps;
+  fontSize?: number;
+  iconColor?: string;
 };
 
-export default function SocialMedia({ title = "Ana", url = "teste" }: Props) {
+export default function SocialMediaItem({
+  title,
+  icon,
+  fontSize = 64,
+  iconColor = "#343A40",
+}: Props) {
   return (
     <Box
-      key={uuid()}
       justifyContent="center"
       alignItems="center"
       display="flex"
       flexDirection="column"
+      margin={1}
+      width={70}
     >
-      <Image width={60} height={60} src="/images/member.png" />
+      <SvgIcon icon={icon} style={{ fontSize }} htmlColor={iconColor} />
       <Text
         variant={TextVariantEnum.SUBTITLE1}
         display={TextDisplayEnum.BLOCK}

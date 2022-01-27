@@ -34,7 +34,7 @@ function MediaProfile() {
         <HeaderMediaProfile />
         <FlexBox
           justifyContent={JustifyContentEnum.FLEXSTART}
-          extraStyle={{ paddingTop: 8, marginTop: 0 }}
+          extraStyle={{ padding: 0, margin: 0 }}
         >
           {isSubadminProfile() && (
             <>

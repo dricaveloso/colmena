@@ -278,6 +278,8 @@ export type AllIconProps =
   | "update"
   | "disabled"
   | "camera"
-  | "edit_circle";
+  | "edit_circle"
+  | "facebook_rounded"
+  | "twitter_rounded";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

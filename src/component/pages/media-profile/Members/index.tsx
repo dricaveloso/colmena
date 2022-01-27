@@ -29,6 +29,8 @@ export default function Members() {
         flexDirection="row"
         alignItems="center"
         justifyContent="flex-start"
+        style={{ backgroundColor: "#fff" }}
+        padding={1}
       >
         {isSubadminProfile() && (
           <IconButton
@@ -37,7 +39,6 @@ export default function Members() {
             iconStyle={{ fontSize: 64 }}
             fontSizeIcon="large"
             handleClick={() => setOpenInvite(true)}
-            // handleClick={() => toast(t("featureUnavailable"), "warning")}
             style={{ marginRight: 8, marginBottom: 25 }}
             textStyle={{
               color: theme.palette.primary.dark,
