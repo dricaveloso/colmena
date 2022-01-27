@@ -43,6 +43,18 @@ export const isAudioFile = (mime: string | undefined) => {
   return /^audio/.test(mime);
 };
 
+export const isPNGImage = (mime: string | undefined) => {
+  if (!mime) return false;
+
+  return mime === "image/png";
+};
+
+export const isJPGImage = (mime: string | undefined) => {
+  if (!mime) return false;
+
+  return mime === "image/jpeg" || mime === "image/jpg";
+};
+
 export const isValidUrl = (url: string) => {
   try {
     // eslint-disable-next-line no-new
@@ -312,14 +324,28 @@ export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en"
   });
 }
 
-export function formatCookies(cookies: string[]) {
+export function formatCookies(cookies: string[], existentCookies = "") {
   if (!cookies || cookies.length === 0) return "";
 
-  const cookiesKeys = cookies
-    .map((item: string) => item.split(";")[0])
-    .map((item: string) => item.split("=")[0]);
+  let cookiesKeys: string[] = [];
 
-  const cookiesPre = cookies.map((item: string) => item.split(";")[0]).reverse();
+  if (existentCookies) {
+    cookiesKeys = existentCookies.split(";").map((item: string) => item.split("=")[0]);
+  }
+
+  cookiesKeys = [
+    ...cookiesKeys,
+    ...cookies.map((item: string) => item.split(";")[0]).map((item: string) => item.split("=")[0]),
+  ];
+
+  let cookiesPre: string[] = [];
+  if (existentCookies) {
+    cookiesPre = existentCookies.split(";");
+  }
+
+  cookiesPre = [...cookiesPre, ...cookies.map((item: string) => item.split(";")[0])];
+
+  cookiesPre = cookiesPre.reverse();
 
   const cookiesMap = new Map();
   cookiesKeys.forEach((element: string) => {

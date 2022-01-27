@@ -117,6 +117,13 @@
   "changeLocationButton": "Choose here",
   "noPrivilegesAccessTitle": "No privileges to access.",
   "confirmCancelUpload": "Do you really want to cancel the upload?",
+  "contextMenuUserAvatar": {
+    "upload": "Select image",
+    "remove": "Remove"
+  },
+  "uploadUserAvatarSuccessfully": "Profile image successfully updated",
+  "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
+  "uploadRuleFileSize": "Image cannot be larger than 20mb",
   "textDrawerBottomTitle": "Texto",
   "uploadDrawerBottomTitle": "Subir",
   "streamDrawerBottomTitle": "Transmisión"

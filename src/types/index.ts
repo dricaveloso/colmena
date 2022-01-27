@@ -275,6 +275,9 @@ export type AllIconProps =
   | "pause_flat"
   | "trash"
   | "html_tag"
-  | "update";
+  | "update"
+  | "disabled"
+  | "camera"
+  | "edit_circle";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

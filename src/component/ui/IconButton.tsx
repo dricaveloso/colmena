@@ -52,6 +52,7 @@ function IconButtonCtr({
   size = "medium",
   component = "button",
   handleClick,
+  ...props
 }: Props) {
   const svgIcon = (
     <SvgIcon icon={icon} htmlColor={iconColor} fontSize={fontSizeIcon} style={{ ...iconStyle }} />
@@ -70,7 +71,7 @@ function IconButtonCtr({
     if (url !== "no-navigation" && !download)
       return (
         <Link href={url}>
-          <Button component="a" {...commonProperties}>
+          <Button component="a" {...commonProperties} {...props}>
             {svgIcon}
           </Button>
         </Link>
@@ -78,13 +79,13 @@ function IconButtonCtr({
 
     if (download)
       return (
-        <Button component="a" download={download} href={url} {...commonProperties}>
+        <Button component="a" download={download} href={url} {...commonProperties} {...props}>
           {svgIcon}
         </Button>
       );
 
     return (
-      <Button onClick={handleClick} component={component} {...commonProperties}>
+      <Button onClick={handleClick} component={component} {...commonProperties} {...props}>
         {svgIcon}
       </Button>
     );

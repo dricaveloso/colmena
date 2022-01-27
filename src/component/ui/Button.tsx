@@ -40,6 +40,7 @@ export default function Btn({
   className,
   type,
   download,
+  ...props
 }: Props) {
   const { t } = useTranslation("common");
 
@@ -58,6 +59,7 @@ export default function Btn({
       disabled={disabled}
       component="a"
       fullWidth={fullWidth}
+      {...props}
     >
       {isLoading ? (
         <>

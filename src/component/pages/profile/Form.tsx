@@ -105,7 +105,7 @@ export default function FormProfile() {
       >
         {({ submitForm, isSubmitting, errors, touched }: any) => (
           <Form autoComplete="off">
-            <Field name="user_name" InputProps={{ notched: true }}>
+            <Field name="user_name" data-testid="first-name-field" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="user_name"
@@ -127,7 +127,11 @@ export default function FormProfile() {
               <ErrorMessageForm message={errors.user_name} />
             ) : null}
             <Divider marginTop={20} />
-            <Field name="lastname" InputProps={{ notched: true }}>
+            <Field
+              name="lastname"
+              data-testid="first-lastname-field"
+              InputProps={{ notched: true }}
+            >
               {({ field }: FieldProps) => (
                 <TextField
                   id="lastname"
@@ -149,7 +153,7 @@ export default function FormProfile() {
               <ErrorMessageForm message={errors.lastname} />
             ) : null}
             <Divider marginTop={20} />
-            <Field name="emlUser" InputProps={{ notched: true }}>
+            <Field name="emlUser" data-testid="email-field" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="emlUser"
@@ -174,7 +178,12 @@ export default function FormProfile() {
             <Divider marginTop={20} />
             <div className={classes.marginInputDivs}>
               <div className="marginTop15">
-                <Button title={t("saveButton")} disabled={isSubmitting} handleClick={submitForm} />
+                <Button
+                  title={t("saveButton")}
+                  data-testid="submit-profile-form"
+                  disabled={isSubmitting}
+                  handleClick={submitForm}
+                />
               </div>
               <div className="marginTop15">
                 <Button
@@ -182,6 +191,7 @@ export default function FormProfile() {
                   disabled={isSubmitting}
                   variant={ButtonVariantEnum.TEXT}
                   handleClick={handleOpenResetPasswordModal}
+                  data-testid="open-reset-password-modal"
                 />
               </div>
             </div>
