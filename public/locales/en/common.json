@@ -130,5 +130,10 @@
   },
   "uploadUserAvatarSuccessfully": "Profile image successfully updated",
   "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
-  "uploadRuleFileSize": "Image cannot be larger than 20mb"
+  "uploadRuleFileSize": "Image cannot be larger than 20mb",
+  "languagesAllowed": {
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French"
+  }
 }
