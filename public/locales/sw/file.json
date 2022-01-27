@@ -1,0 +1,15 @@
+{
+    "audioTitle": "",
+    "descriptionTitle": "",
+    "tagTitle": "",
+    "contextMenuOptions": {
+        "downloadTitle": "",
+        "renameTitle": "",
+        "editAudio": "",
+        "deleteAudio": ""
+    },
+    "messages": {
+        "descriptionSuccessfullyUpdated": ""
+    },
+    "editDescription": ""
+}
