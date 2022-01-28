@@ -55,13 +55,10 @@ export default function UpdatePassword() {
       >
         <ExternalVerticalLogo />
         <Divider marginTop={24} />
-        <Text
-          variant={TextVariantEnum.BODY2}
-          style={{ marginTop: 20, color: "#fff", textAlign: "center" }}
-        >
+        <Text variant={TextVariantEnum.BODY2} style={{ color: "#fff", textAlign: "center" }}>
           {t(`${type === "create" ? "titleCreated" : "titleUpdated"}`)}
         </Text>
-        <Divider />
+        <Divider marginTop={24} />
         <Form userId={Array.isArray(userId) ? userId[0] : userId} type={type} />
       </Box>
       <FooterDW />

@@ -1,17 +1,21 @@
 /* eslint-disable camelcase */
-import React, { useState } from "react";
+import React from "react";
 import Button from "@/components/ui/Button";
-import { TextField } from "@material-ui/core";
+import { InputAdornment, OutlinedInput, FormControl, InputLabel } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
-import { SelectVariantEnum, ButtonVariantEnum } from "@/enums/index";
+import { ButtonVariantEnum } from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
 import Box from "@material-ui/core/Box";
 import BackdropModal from "@/components/ui/Backdrop";
 import { toast } from "@/utils/notifications";
+import { v4 as uuid } from "uuid";
+import { makeStyles } from "@material-ui/core/styles";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import theme from "@/styles/theme";
 
 type MyFormValues = {
   email: string;
@@ -19,8 +23,21 @@ type MyFormValues = {
 
 export default function WrapperForm() {
   const { t: c } = useTranslation("common");
-  const [showBackdrop, setShowBackdrop] = useState(false);
   const router = useRouter();
+
+  const color = `white !important`;
+  const useOutlinedInputStyles = makeStyles(() => ({
+    input: {
+      color,
+    },
+    focused: {
+      borderColor: color,
+    },
+    notchedOutline: {
+      borderColor: color,
+    },
+  }));
+  const outlinedInputClasses = useOutlinedInputStyles();
 
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
@@ -35,45 +52,43 @@ export default function WrapperForm() {
   };
 
   return (
-    <>
-      {showBackdrop && <BackdropModal open={showBackdrop} />}
-      <Formik
-        initialValues={initialValues}
-        validationSchema={ValidationSchema}
-        onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          const { email } = values;
+    <Formik
+      initialValues={initialValues}
+      validationSchema={ValidationSchema}
+      onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
+        const { email } = values;
+        setSubmitting(true);
+        (async () => {
           setSubmitting(true);
-          (async () => {
-            setSubmitting(true);
-            setShowBackdrop(true);
-            try {
-              const response = await fetch("/api/recover-password", {
-                method: "POST",
-                body: JSON.stringify({ email }),
-                headers: {
-                  "Content-type": "application/json",
-                },
-              });
-              const data = await response.json();
-              console.log(data);
-              if (data.success) {
-                toast(c("passwordRecoveryMessage"), "success");
-                router.push("/login");
-              } else {
-                toast(c("genericErrorMessage"), "error");
-              }
-            } catch (e) {
-              console.log(e);
+          try {
+            const response = await fetch("/api/recover-password", {
+              method: "POST",
+              body: JSON.stringify({ email }),
+              headers: {
+                "Content-type": "application/json",
+              },
+            });
+            const data = await response.json();
+            if (data.success) {
+              toast(c("passwordRecoveryMessage"), "success");
+              router.push("/login");
+            } else {
               toast(c("genericErrorMessage"), "error");
-            } finally {
-              setSubmitting(false);
-              setShowBackdrop(false);
             }
-          })();
-        }}
-      >
-        {({ submitForm, isSubmitting, errors, touched }: any) => (
+          } catch (e) {
+            console.log(e);
+            toast(c("genericErrorMessage"), "error");
+          } finally {
+            setSubmitting(false);
+          }
+        })();
+      }}
+    >
+      {({ submitForm, isSubmitting, errors, touched }: any) => (
+        <>
+          <BackdropModal open={isSubmitting} />
           <Form
+            id="loginForm"
             style={{ width: "100%" }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -83,39 +98,62 @@ export default function WrapperForm() {
           >
             <Field name="email" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
-                <TextField
-                  id="email"
-                  label={c("form.placeholderEmail")}
-                  variant={SelectVariantEnum.OUTLINED}
-                  fullWidth
-                  {...field}
-                />
+                <FormControl style={{ width: "100%" }} variant="outlined">
+                  <InputLabel htmlFor={`outlined-adornment-${c("form.placeholderEmail")}`}>
+                    {c("form.placeholderEmail")}
+                  </InputLabel>
+                  <OutlinedInput
+                    id={uuid()}
+                    label={c("form.placeholderEmail")}
+                    classes={outlinedInputClasses}
+                    inputProps={{
+                      autoComplete: "off",
+                    }}
+                    fullWidth
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <MailOutlineIcon style={{ color: "#fff" }} />
+                      </InputAdornment>
+                    }
+                    {...field}
+                  />
+                </FormControl>
               )}
             </Field>
-            {errors.email && touched.email ? <ErrorMessageForm message={errors.email} /> : null}
+            {errors.email && touched.email ? (
+              <ErrorMessageForm message={errors.email} color="#fff" />
+            ) : null}
             <Divider marginTop={20} />
             <Box
-              flexDirection="row"
+              flexDirection="column"
               display="flex"
               alignContent="center"
-              justifyContent="space-between"
+              alignItems="center"
+              justifyContent="center"
             >
               <Button
                 title={c("backToLogin")}
-                style={{ fontSize: 12 }}
+                style={{ color: "#fff" }}
                 variant={ButtonVariantEnum.TEXT}
                 handleClick={navigateToLogin}
               />
+
               <Button
                 title={c("form.recoverPasswordButton")}
                 disabled={isSubmitting}
                 handleClick={submitForm}
-                style={{ width: "60%" }}
+                style={{
+                  width: 200,
+                  marginTop: 15,
+                  marginBottom: 30,
+                  backgroundColor: theme.palette.ciano.main,
+                  textTransform: "uppercase",
+                }}
               />
             </Box>
           </Form>
-        )}
-      </Formik>
-    </>
+        </>
+      )}
+    </Formik>
   );
 }
