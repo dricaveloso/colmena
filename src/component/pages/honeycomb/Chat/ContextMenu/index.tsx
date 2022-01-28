@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { addParticipantToConversation, getRoomParticipants } from "@/services/talk/room";
 import Backdrop from "@/components/ui/Backdrop";
 import { RoomParticipant } from "@/interfaces/talk";
+import theme from "@/styles/theme";
 
 type PositionProps = {
   mouseX: null | number;
@@ -120,6 +121,12 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
     setOpenAddParticipant(true);
   };
 
+  const ButtonStep1Style = {
+    backgroundColor: theme.palette.ciano.main,
+    color: "#fff",
+    margin: 8,
+  };
+
   return (
     <Box display="flex" justifyContent="flex-end">
       <Backdrop open={showBackdrop} />
@@ -165,8 +172,10 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
             <Button
               handleClick={handleInviteParticipants}
               disabled={participants.length === 0}
-              style={{ margin: 8 }}
-              variant={ButtonVariantEnum.CONTAINED}
+              style={participants.length > 0 ? ButtonStep1Style : { margin: 8 }}
+              variant={
+                participants.length > 0 ? ButtonVariantEnum.CONTAINED : ButtonVariantEnum.OUTLINED
+              }
               color={ButtonColorEnum.PRIMARY}
               title={c("form.submitSaveTitle")}
             />

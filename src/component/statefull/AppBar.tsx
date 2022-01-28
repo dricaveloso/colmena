@@ -120,6 +120,7 @@ function AppBarSys({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
+                style={{ marginLeft: 4 }}
                 onClick={() => setOpenDrawer(!openDrawer)}
               >
                 <SvgIcon

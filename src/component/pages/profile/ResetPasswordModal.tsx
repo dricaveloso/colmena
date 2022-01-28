@@ -17,6 +17,7 @@ import { signOut } from "next-auth/client";
 import { useRouter } from "next/router";
 import PasswordField from "@/components/statefull/PasswordField";
 import Modal from "@/components/ui/Modal";
+import theme from "@/styles/theme";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -174,7 +175,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                 color={ButtonColorEnum.PRIMARY}
                 variant={ButtonVariantEnum.CONTAINED}
                 disabled={isSubmitting}
-                style={{ float: "right" }}
+                style={{ float: "right", backgroundColor: theme.palette.ciano.main }}
                 title={c("form.submitSaveTitle")}
                 data-testid="submit-reset-password"
               />

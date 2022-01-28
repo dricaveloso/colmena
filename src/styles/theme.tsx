@@ -6,6 +6,7 @@ declare module "@material-ui/core/styles/createPalette" {
     orange: Palette["primary"];
     green: Palette["primary"];
     ciano: Palette["primary"];
+    purple: Palette["primary"];
     danger: Palette["primary"];
   }
   interface PaletteOptions {
@@ -13,6 +14,7 @@ declare module "@material-ui/core/styles/createPalette" {
     ciano: PaletteOptions["primary"];
     orange: PaletteOptions["primary"];
     green: PaletteOptions["primary"];
+    purple: PaletteOptions["primary"];
     danger: PaletteOptions["primary"];
   }
 }
@@ -29,15 +31,21 @@ const theme = createTheme({
       contrastText: "#fff",
     },
     secondary: {
-      light: "#ff73ad",
-      main: "#d53e7e",
-      dark: "#9f0052",
+      light: "#fbe1b7",
+      main: "#f39b10",
+      dark: "#ed7f09",
       contrastText: "#fff",
     },
     ciano: {
       light: "#b3e7e7",
       main: "#00aeaf",
       dark: "#009496",
+      contrastText: "#fff",
+    },
+    purple: {
+      light: "#5B2DAC",
+      main: "#8E6BC5",
+      dark: "#5B2DAC",
       contrastText: "#fff",
     },
     orange: {

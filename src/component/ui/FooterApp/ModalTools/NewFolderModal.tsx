@@ -23,11 +23,12 @@ import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { Box } from "@material-ui/core";
-import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
+import { ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum, ButtonColorEnum } from "@/enums/*";
 import LibraryModal from "@/components/ui/LibraryModal";
 import { LibraryItemInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
 import { shareInChat } from "@/services/share/share";
+import theme from "@/styles/theme";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -222,6 +223,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                 title={t("form.create")}
                 type="submit"
                 className={classes.submit}
+                style={{ backgroundColor: theme.palette.ciano.main }}
                 disabled={isLoading}
                 isLoading={isLoading}
               />

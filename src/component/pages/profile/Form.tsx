@@ -16,6 +16,7 @@ import ResetPasswordModal from "./ResetPasswordModal";
 import { updateUser } from "@/services/ocs/users";
 import { userInfoUpdate } from "@/store/actions/users";
 import BackdropModal from "@/components/ui/Backdrop";
+import theme from "@/styles/theme";
 
 type MyFormValues = {
   user_name: string;
@@ -183,6 +184,7 @@ export default function FormProfile() {
                   data-testid="submit-profile-form"
                   disabled={isSubmitting}
                   handleClick={submitForm}
+                  style={{ backgroundColor: theme.palette.ciano.main }}
                 />
               </div>
               <div className="marginTop15">
