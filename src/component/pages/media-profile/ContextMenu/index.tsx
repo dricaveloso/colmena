@@ -37,9 +37,9 @@ const ContextMenuOptions = () => {
     setAnchorEl(null);
   };
 
-  const featureUnavailable = () => {
-    toast(c("featureUnavailable"), "warning");
-  };
+  // const featureUnavailable = () => {
+  //   toast(c("featureUnavailable"), "warning");
+  // };
 
   const handleOpenEditForm = () => {
     if (!isSubadminProfile()) {
@@ -90,7 +90,7 @@ const ContextMenuOptions = () => {
         >
           <ContextMenuItem icon="edit" title={t("contextMenuOptions.edit")} />
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           key="disabled"
           data-testid="media-profile-disabled-menu-option"
           onClick={featureUnavailable}
@@ -101,7 +101,7 @@ const ContextMenuOptions = () => {
             icon="disabled"
             title={t("contextMenuOptions.deactivate")}
           />
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
       <EditMedia
         title={t("titleEditMediaModal")}

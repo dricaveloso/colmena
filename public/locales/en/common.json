@@ -47,7 +47,7 @@
       "skipButton": "Skip",
       "nextIntro": "Next",
       "backButton": "Back",
-      "recoverPasswordButton": "Redefine password",
+      "recoverPasswordButton": "Reset password",
       "cancelButton": "Cancel",
       "placeholderEmail": "Email",
       "placeholderPassword": "Password",

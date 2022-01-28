@@ -12,6 +12,7 @@ import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useRouter } from "next/router";
 import Box from "@material-ui/core/Box";
 import * as Yup from "yup";
+import theme from "@/styles/theme";
 
 type MyFormValues = {
   psdUserReset: string;
@@ -88,6 +89,7 @@ export default function WrapperForm({ userId, type }: Props) {
       >
         {({ submitForm, isSubmitting, setFieldValue, errors, touched }: any) => (
           <Form
+            id="loginForm"
             autoComplete="off"
             style={{ width: "100%" }}
             onKeyDown={(e) => {
@@ -99,6 +101,7 @@ export default function WrapperForm({ userId, type }: Props) {
             <Field name="psdUserReset" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <PasswordField
+                  mainColor="#fff"
                   label={c("form.placeholderPassword")}
                   placeholder={c("form.placeholderPassword")}
                   handleChangePassword={(value: string) => {
@@ -110,12 +113,13 @@ export default function WrapperForm({ userId, type }: Props) {
               )}
             </Field>
             {errors.psdUserReset && touched.psdUserReset ? (
-              <ErrorMessageForm message={errors.psdUserReset} />
+              <ErrorMessageForm message={errors.psdUserReset} color="#fff" />
             ) : null}
             <Divider marginTop={20} />
             <Field name="psdUserResetConfirmation" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <PasswordField
+                  mainColor="#fff"
                   label={c("form.placeholderPasswordConfirmation")}
                   placeholder={c("form.placeholderPasswordConfirmation")}
                   handleChangePassword={(value: string) => {
@@ -127,17 +131,23 @@ export default function WrapperForm({ userId, type }: Props) {
               )}
             </Field>
             {errors.psdUserResetConfirmation && touched.psdUserResetConfirmation ? (
-              <ErrorMessageForm message={errors.psdUserResetConfirmation} />
+              <ErrorMessageForm message={errors.psdUserResetConfirmation} color="#fff" />
             ) : null}
             <Divider marginTop={20} />
             {isSubmitting && <LinearProgress />}
             <Divider marginTop={20} />
-            <Box display="flex" justifyContent="flex-end" flex="1">
+            <Box display="flex" justifyContent="center" flex={1}>
               <Button
-                title={c("form.submitLoginTitle")}
+                title={c("form.submitSaveTitle")}
                 disabled={isSubmitting}
                 handleClick={submitForm}
-                style={{ width: "50%" }}
+                style={{
+                  width: 200,
+                  marginTop: 15,
+                  marginBottom: 30,
+                  backgroundColor: theme.palette.ciano.main,
+                  textTransform: "uppercase",
+                }}
               />
             </Box>
             <TermsOfUse open={openTerms} handleSetOpen={(flag) => setOpenTerms(flag)} />

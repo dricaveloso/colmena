@@ -115,3 +115,7 @@ input:-webkit-autofill,
 .my-class:-webkit-autofill {
   -webkit-transition-delay: 9999999s;
 }
+
+#loginForm .MuiInputLabel-root {
+  color: white !important;
+}

@@ -27,7 +27,7 @@ type Props = {
 };
 
 interface MyFormValues {
-  name: string;
+  // name: string;
   description: string;
   url: string;
 }
@@ -39,18 +39,18 @@ export default function EditMedia({ title, open, handleClose }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const initialValues = {
-    name: userRdx.user.media?.name,
+    // name: userRdx.user.media?.name,
     description: userRdx.user.media?.slogan,
     url: userRdx.user.media?.url,
   };
 
-  const maxLengthName = 100;
+  // const maxLengthName = 100;
   const maxLengthDescription = 200;
 
   const schemaValidation = Yup.object().shape({
-    name: Yup.string()
-      .required(c("form.requiredTitle"))
-      .max(maxLengthName, c("form.passwordMaxLengthTitle", { size: maxLengthName })),
+    // name: Yup.string()
+    //   .required(c("form.requiredTitle"))
+    //   .max(maxLengthName, c("form.passwordMaxLengthTitle", { size: maxLengthName })),
     description: Yup.string()
       .required(c("form.requiredTitle"))
       .max(maxLengthDescription, c("form.passwordMaxLengthTitle", { size: maxLengthDescription })),
@@ -58,7 +58,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
   });
 
   const handleSubmit = async (values: MyFormValues, setSubmitting: (flag: boolean) => void) => {
-    const { name, description, url } = values;
+    const { description, url } = values;
     setSubmitting(true);
     try {
       const mediaName = getUserGroup();
@@ -72,7 +72,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
         true,
       );
       const mediaObj: MediaInfoInterface = JSON.parse(String(mediaFile));
-      mediaObj.name = name;
+      // mediaObj.name = name;
       mediaObj.slogan = description;
       mediaObj.url = url;
 
@@ -108,7 +108,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
       >
         {({ submitForm, isSubmitting, errors, touched }: any) => (
           <Form>
-            <Field name="name" data-testid="media-name" InputProps={{ notched: true }}>
+            {/* <Field name="name" data-testid="media-name" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="name"
@@ -123,7 +123,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
                 />
               )}
             </Field>
-            {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
+            {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null} */}
             <Divider marginTop={20} />
             <Field
               name="description"
