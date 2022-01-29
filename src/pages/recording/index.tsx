@@ -83,11 +83,30 @@ function Recording() {
   const language = cookies.NEXT_LOCALE || "en";
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+  // const [mediaRecorderParent, setMediaRecorderParent] = useState<MediaRecorder | null>(null);
   const dispatch = useDispatch();
+
+  async function getAudioStream() {
+    try {
+      return await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function askForAudioPermission() {
+    const stream = await getAudioStream();
+    if (!stream) {
+      console.log("teste");
+      // return;
+    }
+  }
 
   useEffect(() => {
     dispatch(updateRecordingState("NONE"));
     setBackAfterFinishRecording("no");
+
+    askForAudioPermission();
   }, []);
 
   const handleCloseExtraInfo = async (event: any, reason: string) => {
@@ -321,8 +340,18 @@ function Recording() {
   }
 
   return (
-    <LayoutApp title={t("title")} showFooter={false} back>
-      <FlexBox justifyContent={JustifyContentEnum.SPACEAROUND} alignItems={AlignItemsEnum.CENTER}>
+    <LayoutApp
+      templateHeader="variation3"
+      backgroundColor="#2C363E"
+      title={t("title")}
+      showFooter={false}
+      back
+    >
+      <FlexBox
+        extraStyle={{ backgroundColor: "#2C363E" }}
+        justifyContent={JustifyContentEnum.SPACEAROUND}
+        alignItems={AlignItemsEnum.CENTER}
+      >
         <AudioRecorder onStopRecording={onStopRecording} />
         <Divider marginTop={25} />
         <Timer />

@@ -20,7 +20,7 @@ export interface AppBarInterface {
   drawer?: boolean;
   back?: boolean;
   headerPosition?: PositionProps | undefined;
-  templateHeader?: "variation1" | "variation2";
+  templateHeader?: "variation1" | "variation2" | "variation3";
   extraElement?: React.ReactNode | undefined;
 }
 
@@ -31,6 +31,10 @@ tplHeader.set("variation1", {
 });
 tplHeader.set("variation2", {
   backgroundAppBar: theme.palette.primary.main,
+  textColor: "#fff",
+});
+tplHeader.set("variation3", {
+  backgroundAppBar: "#2C363E",
   textColor: "#fff",
 });
 

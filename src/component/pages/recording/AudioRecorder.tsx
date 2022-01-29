@@ -140,9 +140,9 @@ function AudioRecorder({ onStopRecording }: Props) {
     }
   }
 
-  const navigate = () => {
-    router.push(`/library/${userRdx.user.id}/audios`);
-  };
+  // const navigate = () => {
+  //   router.push(`/library/${userRdx.user.id}/audios`);
+  // };
 
   return (
     <div style={{ width: style.width, height: style.height }}>
@@ -157,12 +157,6 @@ function AudioRecorder({ onStopRecording }: Props) {
             iconStyle={{ fontSize: 90 }}
             iconColor="#EBEBEB"
           />
-          {/* <Button
-            title="Show my recordings"
-            style={{ width: 200 }}
-            variant={ButtonVariantEnum.TEXT}
-            handleClick={navigate}
-          /> */}
         </Box>
       )}
     </div>
