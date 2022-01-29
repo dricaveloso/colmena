@@ -211,6 +211,7 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
         handleNavigate={handleBreadcrumbNavigate}
         canChangeList={false}
         hasFilter={false}
+        hasSearch={false}
         firstBreadcrumbItem={firstBreadrcrumbMenu}
         rootPath={rootPath}
       />

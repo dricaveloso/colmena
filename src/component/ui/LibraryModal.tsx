@@ -241,6 +241,7 @@ export default function LibraryModal({
               handleNavigate={handleBreadcrumbNavigate}
               canChangeList={false}
               hasFilter={false}
+              hasSearch={false}
               firstBreadcrumbItem={firstBreadrcrumbMenu}
               isDisabled={isDisabled}
             />

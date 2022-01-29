@@ -40,6 +40,7 @@ type Props = {
   pathExists: boolean;
   handleNavigate: (dir: BreadcrumbItemInterface) => void;
   hasFilter?: boolean;
+  hasSearch?: boolean;
   canChangeList?: boolean;
   firstBreadcrumbItem?: BreadcrumbItemInterface;
   isDisabled?: boolean;
@@ -60,6 +61,7 @@ function HeaderBar({
   pathExists,
   handleNavigate,
   hasFilter = true,
+  hasSearch = true,
   canChangeList = true,
   firstBreadcrumbItem,
   isDisabled = false,
@@ -143,6 +145,19 @@ function HeaderBar({
       </Box>
       {pathExists && (
         <Box className={classes.options}>
+          {hasSearch && (
+            <IconButton
+              color="primary"
+              component="span"
+              /* onClick={handleOpenFilterDrawer}
+              aria-controls="filter-menu"
+              aria-haspopup="true"
+              disabled={isDisabled} */
+            >
+              <SvgIcon icon="search" htmlColor="#292929" fontSize="small" />
+            </IconButton>
+          )}
+
           {hasFilter && (
             <IconButton
               color="primary"
