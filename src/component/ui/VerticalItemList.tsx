@@ -4,7 +4,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
 import { VerticalItemListInterface } from "@/interfaces/index";
-import AudioItemVertical from "@/components/pages/library/AudioFile/AudioItemVertical";
+import AudioItemPreview from "@/components/pages/library/AudioFile/AudioItemPreview";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -58,11 +58,12 @@ const VerticalItemList = ({
           data-testid="title"
           className={classes.description}
           primary={
-            <AudioItemVertical
+            <AudioItemPreview
               primary={primary}
               size={size}
               filename={filename}
               environment={environment}
+              type="vertical"
             />
           }
         />

@@ -9,8 +9,7 @@ export default function FooterDW() {
       bottom={0}
       width="100%"
       display="flex"
-      flex={1}
-      padding={2}
+      padding={0.7}
       justifyContent="center"
       style={{
         backgroundColor: "#fff",

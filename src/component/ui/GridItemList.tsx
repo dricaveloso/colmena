@@ -6,7 +6,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
 import { Environment } from "@/types/*";
-import AudioItemGrid from "@/components/pages/library/AudioFile/AudioItemGrid";
+import AudioItemPreview from "@/components/pages/library/AudioFile/AudioItemPreview";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -100,12 +100,14 @@ const GridItemList = ({
       {isPlaying ? (
         <ListItemText
           data-testid="title"
+          style={{ width: "100%" }}
           primary={
-            <AudioItemGrid
+            <AudioItemPreview
               primary={primary}
               size={size}
               filename={filename}
               environment={environment}
+              type="grid"
             />
           }
         />
