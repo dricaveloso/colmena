@@ -8,6 +8,7 @@ declare module "@material-ui/core/styles/createPalette" {
     ciano: Palette["primary"];
     purple: Palette["primary"];
     danger: Palette["primary"];
+    darkBlue: Palette["primary"];
   }
   interface PaletteOptions {
     icon: PaletteOptions["primary"];
@@ -16,6 +17,7 @@ declare module "@material-ui/core/styles/createPalette" {
     green: PaletteOptions["primary"];
     purple: PaletteOptions["primary"];
     danger: PaletteOptions["primary"];
+    darkBlue: PaletteOptions["primary"];
   }
 }
 
@@ -58,6 +60,12 @@ const theme = createTheme({
       light: "#cdf3dd",
       main: "#57D88F",
       dark: "#3cc872",
+      contrastText: "#fff",
+    },
+    darkBlue: {
+      light: "#c0c3c5",
+      main: "#2c363e",
+      dark: "#1b2228",
       contrastText: "#fff",
     },
     icon: {

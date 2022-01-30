@@ -16,6 +16,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function Home() {
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("home");
+
   return (
     <LayoutApp title={t("welcomeTitle")}>
       <FlexBox justifyContent={JustifyContentEnum.CENTER} extraStyle={{ padding: 0, margin: 0 }}>

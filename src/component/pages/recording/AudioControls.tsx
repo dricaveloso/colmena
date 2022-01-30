@@ -35,30 +35,50 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
   };
 
   return (
-    <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center">
-      {recordingRdx.activeRecordingState === "START" && (
+    <Box
+      display="flex"
+      flexDirection="row"
+      flex={1}
+      width="100%"
+      justifyContent="space-around"
+      alignItems="center"
+    >
+      {["START", "PAUSE"].includes(recordingRdx.activeRecordingState) && (
         <IconButton
-          icon="pause"
-          iconColor={theme.palette.primary.dark}
-          iconStyle={{ fontSize: 80 }}
-          handleClick={_handlePause}
-        />
-      )}
-
-      {recordingRdx.activeRecordingState !== "START" && (
-        <IconButton
-          icon="record_outlined"
-          iconStyle={{ fontSize: 80 }}
-          iconColor="tomato"
+          icon="play_outlined"
+          iconColor={
+            recordingRdx.activeRecordingState === "START" ? theme.palette.darkBlue.light : "#fff"
+          }
+          disabled={recordingRdx.activeRecordingState === "START"}
+          iconStyle={{ fontSize: 50 }}
           handleClick={_handleStart}
         />
       )}
 
-      {recordingRdx.activeRecordingState === "START" && (
+      {recordingRdx.activeRecordingState === "NONE" && (
         <IconButton
-          icon="stop"
-          iconColor={theme.palette.secondary.main}
-          iconStyle={{ fontSize: 65 }}
+          icon="record_outlined"
+          iconStyle={{ fontSize: 70, marginBottom: 30 }}
+          handleClick={_handleStart}
+        />
+      )}
+
+      {["START", "PAUSE"].includes(recordingRdx.activeRecordingState) && (
+        <IconButton
+          icon="pause_outlined"
+          iconColor={
+            recordingRdx.activeRecordingState === "PAUSE" ? theme.palette.darkBlue.light : "#fff"
+          }
+          iconStyle={{ fontSize: 70, marginBottom: 30 }}
+          handleClick={_handlePause}
+        />
+      )}
+
+      {["START", "PAUSE"].includes(recordingRdx.activeRecordingState) && (
+        <IconButton
+          icon="stop_outlined"
+          iconColor="#fff"
+          iconStyle={{ fontSize: 50 }}
           handleClick={_handleStop}
         />
       )}

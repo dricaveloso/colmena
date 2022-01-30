@@ -97,7 +97,6 @@ function Recording() {
   async function askForAudioPermission() {
     const stream = await getAudioStream();
     if (!stream) {
-      console.log("teste");
       // return;
     }
   }
@@ -342,14 +341,14 @@ function Recording() {
   return (
     <LayoutApp
       templateHeader="variation3"
-      backgroundColor="#2C363E"
+      backgroundColor={theme.palette.darkBlue.main}
       title={t("title")}
       showFooter={false}
       back
     >
       <FlexBox
-        extraStyle={{ backgroundColor: "#2C363E" }}
-        justifyContent={JustifyContentEnum.SPACEAROUND}
+        extraStyle={{ backgroundColor: theme.palette.darkBlue.main }}
+        justifyContent={JustifyContentEnum.SPACEBETWEEN}
         alignItems={AlignItemsEnum.CENTER}
       >
         <AudioRecorder onStopRecording={onStopRecording} />

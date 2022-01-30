@@ -31,11 +31,11 @@ tplHeader.set("variation1", {
 });
 tplHeader.set("variation2", {
   backgroundAppBar: theme.palette.primary.main,
-  textColor: "#fff",
+  textColor: theme.palette.primary.contrastText,
 });
 tplHeader.set("variation3", {
-  backgroundAppBar: "#2C363E",
-  textColor: "#fff",
+  backgroundAppBar: theme.palette.darkBlue.main,
+  textColor: theme.palette.darkBlue.contrastText,
 });
 
 function AppBarSys({

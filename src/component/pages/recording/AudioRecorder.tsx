@@ -7,6 +7,7 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { createObjectURL } from "blob-util";
 import VUMeter from "@/components/ui/VUMeter";
+import Sinewaves from "@/components/ui/Sinewaves";
 import { PropsAudioData, PropsRecordingSelector, PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -15,8 +16,10 @@ import { useTranslation } from "next-i18next";
 import IconButton from "@/components/ui/IconButton";
 import Button from "@/components/ui/Button";
 import Box from "@material-ui/core/Box";
-import { ButtonVariantEnum } from "@/enums/*";
+import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import { useRouter } from "next/router";
+import Text from "@/components/ui/Text";
+import theme from "@/styles/theme";
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
@@ -144,22 +147,69 @@ function AudioRecorder({ onStopRecording }: Props) {
   //   router.push(`/library/${userRdx.user.id}/audios`);
   // };
 
+  const getInformationRecordingState = () => {
+    switch (recordingRdx.activeRecordingState) {
+      case "NONE":
+        return t("recordingOrientation");
+      case "START":
+        return t("recordingTitle");
+      case "PAUSE":
+        return t("pausingTitle");
+      default:
+        return t("recordingOrientation");
+    }
+  };
+
   return (
-    <div style={{ width: style.width, height: style.height }}>
-      {isRecording ? (
-        <VUMeter stream={audioStream} removeCanvas={removeCanvas} canvasSize={style} />
-      ) : (
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <IconButton
-            icon="folder_outlined"
-            textStyle={{ color: "#9A9A9A", fontSize: 14, width: 200 }}
-            title={t("recordingOrientation")}
-            iconStyle={{ fontSize: 90 }}
-            iconColor="#EBEBEB"
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      flex={1}
+      justifyContent={isRecording ? "center" : "flex-start"}
+    >
+      <Text
+        variant={TextVariantEnum.CAPTION}
+        style={{ color: theme.palette.darkBlue.light, fontSize: 14, width: "100%" }}
+      >
+        {getInformationRecordingState()}
+      </Text>
+      {isRecording && (
+        <Box display="flex" flex={1} width="100%" flexDirection="column" justifyContent="center">
+          <Sinewaves
+            stream={audioStream}
+            removeCanvas={removeCanvas}
+            height="190px"
+            backgroundColor={theme.palette.darkBlue.main}
+            foregroundColor={theme.palette.secondary.main}
           />
+          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-around">
+            <Box display="flex" flexDirection="column" justifyContent="flex-start">
+              <Text
+                variant={TextVariantEnum.CAPTION}
+                style={{ color: theme.palette.darkBlue.light }}
+              >
+                New recording
+              </Text>
+              <Text
+                variant={TextVariantEnum.CAPTION}
+                style={{ color: theme.palette.darkBlue.light }}
+              >
+                12/12/2022
+              </Text>
+              <Text
+                variant={TextVariantEnum.CAPTION}
+                style={{ color: theme.palette.darkBlue.light }}
+              >
+                /devteam
+              </Text>
+            </Box>
+            <VUMeter stream={audioStream} removeCanvas={removeCanvas} width="70px" height="150px" />
+          </Box>
         </Box>
       )}
-    </div>
+    </Box>
   );
 }
 
