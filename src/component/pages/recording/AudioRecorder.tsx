@@ -8,7 +8,13 @@ import React, { useState, useEffect, useCallback, useContext } from "react";
 import { createObjectURL } from "blob-util";
 import VUMeter from "@/components/ui/VUMeter";
 import Sinewaves from "@/components/ui/Sinewaves";
-import { PropsAudioData, PropsRecordingSelector, PropsUserSelector } from "@/types/index";
+import {
+  PropsAudioData,
+  PropsRecordingSelector,
+  PropsUserSelector,
+  PropsConfigSelector,
+  PropsLibrarySelector,
+} from "@/types/index";
 import { useSelector } from "react-redux";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
@@ -20,15 +26,17 @@ import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import { useRouter } from "next/router";
 import Text from "@/components/ui/Text";
 import theme from "@/styles/theme";
+import { format } from "date-fns";
+import { convertPrivateToUsername, getPrivatePath } from "@/utils/directory";
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
 };
 
-type StyleProps = {
-  width: string;
-  height: string;
-};
+// type StyleProps = {
+//   width: string;
+//   height: string;
+// };
 
 function AudioRecorder({ onStopRecording }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -45,16 +53,19 @@ function AudioRecorder({ onStopRecording }: Props) {
   const [isStop, setIsStop] = useState(false);
   const [removeCanvas, setRemoveCanvas] = useState(false);
   const theme = useTheme();
-  const matchXs = useMediaQuery(theme.breakpoints.down("sm"));
-  const styleMatchXs = {
-    width: "5em",
-    height: "20em",
-  };
-  const styleMatchRest = {
-    width: "5em",
-    height: "20em",
-  };
-  const style: StyleProps = matchXs ? styleMatchXs : styleMatchRest;
+  const [pathLocationSave, setPathLocationSave] = useState("");
+  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
+  const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
+  // const matchXs = useMediaQuery(theme.breakpoints.down("sm"));
+  // const styleMatchXs = {
+  //   width: "5em",
+  //   height: "20em",
+  // };
+  // const styleMatchRest = {
+  //   width: "5em",
+  //   height: "20em",
+  // };
+  // const style: StyleProps = matchXs ? styleMatchXs : styleMatchRest;
 
   const startRecording = useCallback(async () => {
     let mediaRecorder: MediaRecorder | null = mediaRcdr;
@@ -133,6 +144,7 @@ function AudioRecorder({ onStopRecording }: Props) {
 
   useEffect(() => {
     init(state);
+    setPathLocationSave(prepareUploadPath());
   }, [state]);
 
   async function getAudioStream() {
@@ -142,10 +154,6 @@ function AudioRecorder({ onStopRecording }: Props) {
       return null;
     }
   }
-
-  // const navigate = () => {
-  //   router.push(`/library/${userRdx.user.id}/audios`);
-  // };
 
   const getInformationRecordingState = () => {
     switch (recordingRdx.activeRecordingState) {
@@ -159,6 +167,29 @@ function AudioRecorder({ onStopRecording }: Props) {
         return t("recordingOrientation");
     }
   };
+
+  function prepareUploadPath() {
+    if (pathLocationSave) return pathLocationSave;
+
+    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    let url = "";
+
+    if (/^[/]library/.test(urlOrigin)) {
+      if ((urlOrigin.match(/[/]/g) || []).length > 1) {
+        const path = libraryRdx.currentPath;
+        url = convertPrivateToUsername(path, userRdx.user.id).replace(/[/]library[/]/, "");
+      }
+    }
+
+    if (/^[/]honeycomb/.test(urlOrigin)) {
+      const url_ = urlOrigin.split("/");
+      if (url_.length > 4) {
+        url = decodeURI(url_[url_.length - 2]);
+      }
+    }
+
+    return url || convertPrivateToUsername(getPrivatePath(), userRdx.user.id);
+  }
 
   return (
     <Box
@@ -190,19 +221,19 @@ function AudioRecorder({ onStopRecording }: Props) {
                 variant={TextVariantEnum.CAPTION}
                 style={{ color: theme.palette.darkBlue.light }}
               >
-                New recording
+                {t("newRecordingTitle")}
               </Text>
               <Text
                 variant={TextVariantEnum.CAPTION}
                 style={{ color: theme.palette.darkBlue.light }}
               >
-                12/12/2022
+                {format(new Date(), "MM/dd/yyyy")}
               </Text>
               <Text
                 variant={TextVariantEnum.CAPTION}
                 style={{ color: theme.palette.darkBlue.light }}
               >
-                /devteam
+                /{pathLocationSave}
               </Text>
             </Box>
             <VUMeter stream={audioStream} removeCanvas={removeCanvas} width="70px" height="150px" />

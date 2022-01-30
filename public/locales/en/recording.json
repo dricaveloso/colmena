@@ -22,5 +22,6 @@
   "availableWithoutInternetTitle": "Available offline",
   "tagsRequiredTitle": "At least one tag is required",
   "recordingTitle": "Recording...",
-  "pausingTitle": "Recording paused"
+  "pausingTitle": "Recording paused",
+  "newRecordingTitle": "New recording"
 }

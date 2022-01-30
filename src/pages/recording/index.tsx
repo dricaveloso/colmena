@@ -83,7 +83,6 @@ function Recording() {
   const language = cookies.NEXT_LOCALE || "en";
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  // const [mediaRecorderParent, setMediaRecorderParent] = useState<MediaRecorder | null>(null);
   const dispatch = useDispatch();
 
   async function getAudioStream() {

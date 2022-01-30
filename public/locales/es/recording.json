@@ -20,5 +20,6 @@
   "uploadLocationTitle": "Upload location",
   "changeUploadLocationTitle": "change",
   "availableWithoutInternetTitle": "Disponible sin conexion a Internet",
-  "tagsRequiredTitle": "At least one tag is required"
+  "tagsRequiredTitle": "At least one tag is required",
+  "newRecordingTitle": "New recording"
 }

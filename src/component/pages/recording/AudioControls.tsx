@@ -23,7 +23,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
   };
 
   const _handleStop = () => {
-    if (recordingRdx.activeRecordingState === "START") {
+    if (["START", "PAUSE"].includes(recordingRdx.activeRecordingState)) {
       handleStop();
     }
   };
