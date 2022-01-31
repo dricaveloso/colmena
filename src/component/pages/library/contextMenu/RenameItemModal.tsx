@@ -31,6 +31,7 @@ import { editLibraryFile } from "@/store/actions/library";
 import { updateFile } from "@/store/idb/models/files";
 import { Box } from "@material-ui/core";
 import ActionConfirm from "@/components/ui/ActionConfirm";
+import theme from "@/styles/theme";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -329,6 +330,7 @@ export default function RenameItemModal({
                   className={classes.submit}
                   disabled={isLoading}
                   isLoading={isLoading}
+                  style={{ backgroundColor: theme.palette.variation1.main }}
                 />
               </Box>
             </Form>

@@ -3,6 +3,7 @@ import Text from "@/components/ui/Text";
 import SvgIcon from "@/components/ui/SvgIcon";
 import Box from "@material-ui/core/Box";
 import { TextVariantEnum } from "@/enums/*";
+import theme from "@/styles/theme";
 
 type Props = {
   title: string;
@@ -10,7 +11,11 @@ type Props = {
   iconColor?: string;
 };
 
-export default function ContextMenuItem({ title, icon, iconColor }: Props) {
+export default function ContextMenuItem({
+  title,
+  icon,
+  iconColor = theme.palette.variation6.main,
+}: Props) {
   return (
     <Box
       display="flex"
@@ -20,7 +25,7 @@ export default function ContextMenuItem({ title, icon, iconColor }: Props) {
       justifyContent="flex-start"
     >
       {icon && <SvgIcon icon={icon} htmlColor={iconColor} fontSize="small" />}
-      <Text style={{ marginLeft: 8 }} variant={TextVariantEnum.SUBTITLE2}>
+      <Text style={{ marginLeft: 8, color: iconColor }} variant={TextVariantEnum.SUBTITLE2}>
         {title}
       </Text>
     </Box>

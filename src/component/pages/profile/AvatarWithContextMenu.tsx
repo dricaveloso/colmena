@@ -139,6 +139,8 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
         throw new Error(result.error);
       }
 
+      console.log(result);
+
       handleReloadAvatar();
       toast(c("uploadUserAvatarSuccessfully"), "success");
     } catch (e) {

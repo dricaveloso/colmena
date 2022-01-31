@@ -17,6 +17,7 @@ import { EnvironmentEnum } from "@/enums/*";
 import Switch from "@material-ui/core/Switch";
 import { Box } from "@material-ui/core";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename, arrayBufferBlob, mime } =
@@ -131,9 +132,15 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         )}
         {type === "file" && environment !== EnvironmentEnum.LOCAL && (
           <MenuItem key="sync">
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <ContextMenuItem title={t("contextMenuOptions.availableOffline")} icon="sync" />
-              <Switch checked={availableOffline} onChange={handleAvailableOffline} />
+            <Box display="flex" justifyContent="flex-start">
+              <FormControlLabel
+                style={{ paddingLeft: 0, marginLeft: 0 }}
+                labelPlacement="start"
+                control={<Switch checked={availableOffline} onChange={handleAvailableOffline} />}
+                label={
+                  <ContextMenuItem title={t("contextMenuOptions.availableOffline")} icon="sync" />
+                }
+              />
             </Box>
           </MenuItem>
         )}

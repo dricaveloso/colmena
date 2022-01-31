@@ -177,7 +177,7 @@ export default function WrapperForm() {
               });
 
               toast(t("loginSuccesfully"), "success");
-              router.push("/library", "", {
+              router.push("/home", "", {
                 locale,
               });
               setSubmitting(false);

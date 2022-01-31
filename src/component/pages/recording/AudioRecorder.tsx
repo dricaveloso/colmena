@@ -202,7 +202,7 @@ function AudioRecorder({ onStopRecording }: Props) {
     >
       <Text
         variant={TextVariantEnum.CAPTION}
-        style={{ color: theme.palette.variation5.light, fontSize: 14, width: "100%" }}
+        style={{ color: theme.palette.variation5.light, fontSize: 16, width: "100%" }}
       >
         {getInformationRecordingState()}
       </Text>
@@ -219,19 +219,19 @@ function AudioRecorder({ onStopRecording }: Props) {
             <Box display="flex" flexDirection="column" justifyContent="flex-start">
               <Text
                 variant={TextVariantEnum.CAPTION}
-                style={{ color: theme.palette.variation5.light }}
+                style={{ color: theme.palette.variation5.light, fontSize: 16 }}
               >
                 {t("newRecordingTitle")}
               </Text>
               <Text
                 variant={TextVariantEnum.CAPTION}
-                style={{ color: theme.palette.variation5.light }}
+                style={{ color: theme.palette.variation5.light, fontSize: 16 }}
               >
                 {format(new Date(), "MM/dd/yyyy")}
               </Text>
               <Text
                 variant={TextVariantEnum.CAPTION}
-                style={{ color: theme.palette.variation5.light }}
+                style={{ color: theme.palette.variation5.light, fontSize: 16 }}
               >
                 /{pathLocationSave}
               </Text>
