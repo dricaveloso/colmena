@@ -80,8 +80,10 @@
     "unableToProcessFile": "No se puede procesar el archivo {{fileName}}.",
     "unableToUpdatePassword": "No fue possible actualizar su contraseña.",
     "passwordUpdatedSuccessfully": "Contraseña actualizada con éxito.",
-    "directoryCreatedSuccessfully": "Directory created successfully.",
-    "fileUploadedSuccessfully": "File uploaded successfully."
+    "directoryCreatedSuccessfully": "Directory created.",
+    "fileUploadedSuccessfully": "File uploaded.",
+    "uploadCanceledSuccessfully": "File upload canceled.",
+    "folderCreationCanceledSuccessfully": "Folder creation canceled."
   },
   "timeDescription": {
     "singularYear": "año",
@@ -116,9 +118,11 @@
   "passwordRecoveryMessage": "Password recovery email sent successfully.",
   "backToLogin": "Back to login",
   "changeLocationModalTitle": "Choose the new location",
-  "changeLocationButton": "Choose here",
+  "changeLocationButton": "Change",
+  "chooseLocationButton": "Choose here",
   "noPrivilegesAccessTitle": "No privileges to access.",
   "confirmCancelUpload": "Do you really want to cancel the upload?",
+  "confirmCancelFolderCreation": "Do you really want to cancel the folder creation?",
   "contextMenuUserAvatar": {
     "upload": "Select image",
     "remove": "Remove"

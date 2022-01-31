@@ -141,6 +141,7 @@ export default function SyncModal({ open, handleOpen, cardItem, availableOffline
   return (
     <>
       <Modal
+        data-testid="modal-available-offline"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
