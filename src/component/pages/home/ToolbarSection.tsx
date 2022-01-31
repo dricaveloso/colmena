@@ -11,24 +11,42 @@ type Props = {
   title: string;
   link?: string;
   seeAllTitle?: string | undefined;
+  showRightButton?: boolean;
 };
 
-export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
+export default function ToolbarSection({
+  title,
+  link,
+  seeAllTitle,
+  showRightButton = true,
+}: Props) {
   const goTo = () => {
-    router.push(link!);
+    if (!link) return;
+
+    router.push(link);
   };
   const { t } = useTranslation("common");
   return (
-    <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+    <Box
+      display="flex"
+      marginLeft={2}
+      marginRight={2}
+      flexDirection="row"
+      justifyContent={showRightButton ? "space-between" : "flex-start"}
+      alignItems="center"
+    >
       <Text variant={TextVariantEnum.H6} style={{ color: "#292929", fontWeight: "bold" }}>
         {title}
       </Text>
-      <Button
-        title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
-        variant={ButtonVariantEnum.TEXT}
-        style={{ color: "#292929" }}
-        handleClick={() => goTo()}
-      />
+      {showRightButton && (
+        <Button
+          title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
+          variant={ButtonVariantEnum.TEXT}
+          style={{ color: "#292929" }}
+          data-testid="toolbar-click"
+          handleClick={() => goTo()}
+        />
+      )}
     </Box>
   );
 }

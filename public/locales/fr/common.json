@@ -42,6 +42,7 @@
     },
     "skipButton": "Sauter",
     "nextIntro": "Suivant",
+    "URLInvalid": "URL invalid.",
     "backButton": "Retourner",
     "recoverPasswordButton": "Redefine password",
     "cancelButton": "Annuler",
@@ -124,5 +125,10 @@
   },
   "uploadUserAvatarSuccessfully": "Profile image successfully updated",
   "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
-  "uploadRuleFileSize": "Image cannot be larger than 20mb"
+  "uploadRuleFileSize": "Image cannot be larger than 20mb",
+  "languagesAllowed": {
+    "en": "Anglais",
+    "es": "Espagnol",
+    "fr": "Français"
+  }
 }

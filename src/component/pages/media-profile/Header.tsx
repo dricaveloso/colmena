@@ -1,17 +1,18 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import theme from "@/styles/theme";
-import UserAvatar from "@/components/ui/Avatar";
 import Text from "@/components/ui/Text";
-import { TextVariantEnum } from "@/enums/*";
-import IconButton from "@/components/ui/IconButton";
-import { useTranslation } from "next-i18next";
+import { TextVariantEnum, ButtonVariantEnum } from "@/enums/*";
+// import IconButton from "@/components/ui/IconButton";
+// import { useTranslation } from "next-i18next";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
-import { toast } from "@/utils/notifications";
+import { isSubadminProfile } from "@/utils/permissions";
+import Button from "@/components/ui/Button";
+import AvatarWithContextMenu from "@/components/pages/media-profile/AvatarWithContextMenu";
 
 export default function HeaderMediaProfile() {
-  const { t: c } = useTranslation("common");
+  // const { t: c } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const textAlign = "left";
@@ -26,7 +27,7 @@ export default function HeaderMediaProfile() {
       flexDirection="row"
       style={{ backgroundColor: theme.palette.primary.main, width: "100%" }}
     >
-      <UserAvatar size={10} name={userRdx.user.media?.name} />
+      <AvatarWithContextMenu size={10} showEditImage={isSubadminProfile()} />
       <Box
         display="flex"
         flexDirection="column"
@@ -47,18 +48,20 @@ export default function HeaderMediaProfile() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Text
-            variant={TextVariantEnum.BODY2}
-            style={{ color: colorBody1, fontSize: 12, textAlign }}
-          >
-            {userRdx.user.media?.url}
-          </Text>
-          <IconButton
+          <Button
+            component="a"
+            style={{ color: colorBody1, fontSize: 12, textAlign, marginLeft: 0, paddingLeft: 0 }}
+            title={userRdx.user.media?.url}
+            target="blank"
+            url={userRdx.user.media?.url}
+            variant={ButtonVariantEnum.TEXT}
+          />
+          {/* <IconButton
             handleClick={() => toast(c("featureUnavailable"), "warning")}
             icon="speaker"
             fontSizeIcon="small"
             iconColor="#fff"
-          />
+          /> */}
         </Box>
       </Box>
     </Box>

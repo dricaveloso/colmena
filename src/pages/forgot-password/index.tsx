@@ -8,6 +8,7 @@ import Form from "@/components/pages/forgot-password/Form";
 import ExternalVerticalLogo from "@/components/ui/ExternalVerticalLogo";
 import FooterDW from "@/components/ui/FooterDW";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
+import theme from "@/styles/theme";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -15,19 +16,20 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
   },
 });
 
+const backgroundColor = theme.palette.primary.main;
 export default function ForgotPassword() {
   return (
-    <Container>
+    <Container backgroundColor={backgroundColor}>
       <Box
         className="width-based-device"
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
         display="flex"
-        style={{ backgroundColor: "#fff" }}
+        style={{ backgroundColor }}
       >
         <ExternalVerticalLogo />
-        <Divider marginTop={24} />
+        <Divider marginTop={35} />
         <Form />
       </Box>
       <FooterDW />

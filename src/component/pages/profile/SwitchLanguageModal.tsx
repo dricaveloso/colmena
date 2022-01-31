@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
@@ -10,26 +10,14 @@ import { setCookie } from "nookies";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { updateUser } from "@/services/ocs/users";
+import Backdrop from "@/components/ui/Backdrop";
+import constants from "@/constants/index";
 
 type LanguageProps = {
   abbr: string;
   language: string;
 };
-
-const languages: LanguageProps[] = [
-  {
-    abbr: "en",
-    language: "English",
-  },
-  {
-    abbr: "es",
-    language: "Spanish",
-  },
-  {
-    abbr: "fr",
-    language: "French",
-  },
-];
 
 type Props = {
   open: boolean;
@@ -40,14 +28,24 @@ type Props = {
 
 export default function SwitchLanguageModal({ open, onClose, defaultLang, backUrl }: Props) {
   const router = useRouter();
+  const [showBackdrop, setShowBackdrop] = useState(false);
   const { t } = useTranslation("common");
 
-  const changeLanguageHandler = (locale: string) => {
+  const locales = Object.values(constants.LOCALES);
+  const languages: LanguageProps[] = locales.map((item) => ({
+    abbr: item,
+    language: t(`languagesAllowed.${item}`),
+  }));
+
+  const changeLanguageHandler = async (locale: string) => {
     if (defaultLang !== locale) {
+      setShowBackdrop(true);
       setCookie(null, "NEXT_LOCALE", locale, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
+      await updateUser<string>("language", locale);
+      setShowBackdrop(false);
       router.push(backUrl, "", {
         locale,
       });
@@ -62,6 +60,7 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
       aria-labelledby="simple-dialog-title"
       open={open}
     >
+      <Backdrop open={showBackdrop} />
       <DialogTitle id="simple-dialog-title">{t("titleSwitchLanguage")}</DialogTitle>
       <List>
         {languages.map((item: LanguageProps) => (

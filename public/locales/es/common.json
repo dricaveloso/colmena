@@ -41,6 +41,7 @@
       "name": "Nombre"
     },
     "skipButton": "Saltar",
+    "URLInvalid": "URL invalid.",
     "nextIntro": "Continuar",
     "backButton": "Volver",
     "recoverPasswordButton": "Redefine password",
@@ -125,6 +126,11 @@
   "uploadUserAvatarSuccessfully": "Profile image successfully updated",
   "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
   "uploadRuleFileSize": "Image cannot be larger than 20mb",
+  "languagesAllowed": {
+    "en": "Inglés",
+    "es": "Español",
+    "fr": "Francés"
+  },
   "textDrawerBottomTitle": "Texto",
   "uploadDrawerBottomTitle": "Subir",
   "streamDrawerBottomTitle": "Transmisión"

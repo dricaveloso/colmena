@@ -22,6 +22,7 @@ type Props = {
   type?: string;
   className?: string;
   download?: string;
+  target?: string;
 };
 
 export default function Btn({
@@ -39,6 +40,7 @@ export default function Btn({
   isLoading = false,
   className,
   type,
+  target = "",
   download,
   ...props
 }: Props) {
@@ -59,6 +61,7 @@ export default function Btn({
       disabled={disabled}
       component="a"
       fullWidth={fullWidth}
+      target={target}
       {...props}
     >
       {isLoading ? (

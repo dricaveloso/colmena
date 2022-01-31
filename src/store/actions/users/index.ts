@@ -1,5 +1,10 @@
-import { USER_UPDATE, USER_INFO_UPDATE, SET_INVITATION_TOKEN } from "@/store/actions/index";
-import { UserInfoUpdateInterface } from "@/interfaces/index";
+import {
+  USER_UPDATE,
+  USER_INFO_UPDATE,
+  SET_INVITATION_TOKEN,
+  MEDIA_INFO_UPDATE,
+} from "@/store/actions/index";
+import { UserInfoUpdateInterface, MediaInfoInterface } from "@/interfaces/index";
 
 export const userUpdate = (user: any) => ({
   type: USER_UPDATE,
@@ -9,6 +14,11 @@ export const userUpdate = (user: any) => ({
 export const userInfoUpdate = (userInfo: UserInfoUpdateInterface) => ({
   type: USER_INFO_UPDATE,
   payload: userInfo,
+});
+
+export const mediaInfoUpdate = (mediaInfo: MediaInfoInterface) => ({
+  type: MEDIA_INFO_UPDATE,
+  payload: mediaInfo,
 });
 
 export const setInvitationToken = (invitationToken: { invitationToken: string | undefined }) => ({
