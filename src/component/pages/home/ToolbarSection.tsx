@@ -5,7 +5,7 @@ import Text from "@/components/ui/Text";
 import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
-import { toast } from "@/utils/notifications";
+import router from "next/router";
 
 type Props = {
   title: string;
@@ -20,6 +20,11 @@ export default function ToolbarSection({
   seeAllTitle,
   showRightButton = true,
 }: Props) {
+  const goTo = () => {
+    if (!link) return;
+
+    router.push(link);
+  };
   const { t } = useTranslation("common");
   return (
     <Box
@@ -37,9 +42,9 @@ export default function ToolbarSection({
         <Button
           title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
           variant={ButtonVariantEnum.TEXT}
-          handleClick={() => toast(t("featureUnavailable"), "warning")}
           style={{ color: "#292929" }}
           data-testid="toolbar-click"
+          handleClick={() => goTo()}
         />
       )}
     </Box>
