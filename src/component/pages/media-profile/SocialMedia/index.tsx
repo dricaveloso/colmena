@@ -34,7 +34,7 @@ export default function SocialMedia() {
           <IconButton
             icon="plus_circle"
             data-testid="add-social-media-media"
-            iconColor={theme.palette.secondary.main}
+            iconColor={theme.palette.variation1.main}
             iconStyle={{ fontSize: 64 }}
             fontSizeIcon="large"
             handleClick={() => toast(t("featureUnavailable"), "warning")}
@@ -52,13 +52,13 @@ export default function SocialMedia() {
             title="facebook"
             icon="facebook_rounded"
             fontSize={64}
-            iconColor="#343A40"
+            iconColor={theme.palette.variation6.main}
           />
           <SocialMediaItem
             title="twitter"
             icon="twitter_rounded"
             fontSize={64}
-            iconColor="#343A40"
+            iconColor={theme.palette.variation6.main}
           />
         </GalleryHorizontalScroll>
       </Box>

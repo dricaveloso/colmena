@@ -177,7 +177,7 @@ export default function DialogExtraInfoAudio({
                 <Button
                   handleClick={submitForm}
                   variant={ButtonVariantEnum.CONTAINED}
-                  style={{ margin: 8, backgroundColor: theme.palette.ciano.main }}
+                  style={{ margin: 8, backgroundColor: theme.palette.variation1.main }}
                   title={t("submitButton")}
                 />
               </Box>

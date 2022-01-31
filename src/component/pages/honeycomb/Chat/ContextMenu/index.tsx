@@ -122,7 +122,7 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
   };
 
   const ButtonStep1Style = {
-    backgroundColor: theme.palette.ciano.main,
+    backgroundColor: theme.palette.variation1.main,
     color: "#fff",
     margin: 8,
   };

@@ -223,7 +223,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                 title={t("form.create")}
                 type="submit"
                 className={classes.submit}
-                style={{ backgroundColor: theme.palette.ciano.main }}
+                style={{ backgroundColor: theme.palette.variation1.main }}
                 disabled={isLoading}
                 isLoading={isLoading}
               />

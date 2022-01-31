@@ -254,7 +254,7 @@ export default function Upload({ open, handleClose }: Props) {
               className={classes.submit}
               disabled={isLoading}
               isLoading={isLoading}
-              style={{ backgroundColor: theme.palette.ciano.main }}
+              style={{ backgroundColor: theme.palette.variation1.main }}
             />
           </label>
         </form>

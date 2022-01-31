@@ -34,8 +34,8 @@ tplHeader.set("variation2", {
   textColor: theme.palette.primary.contrastText,
 });
 tplHeader.set("variation3", {
-  backgroundAppBar: theme.palette.darkBlue.main,
-  textColor: theme.palette.darkBlue.contrastText,
+  backgroundAppBar: theme.palette.variation5.main,
+  textColor: theme.palette.variation5.contrastText,
 });
 
 function AppBarSys({

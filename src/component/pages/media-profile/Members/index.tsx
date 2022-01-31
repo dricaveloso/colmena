@@ -39,7 +39,7 @@ export default function Members() {
         {isSubadminProfile() && (
           <IconButton
             icon="plus_circle"
-            iconColor={theme.palette.secondary.main}
+            iconColor={theme.palette.variation1.main}
             iconStyle={{ fontSize: 64 }}
             fontSizeIcon="large"
             data-testid="add-member-media"

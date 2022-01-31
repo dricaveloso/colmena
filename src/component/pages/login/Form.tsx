@@ -280,7 +280,7 @@ export default function WrapperForm() {
                     width: 200,
                     marginTop: 15,
                     marginBottom: 30,
-                    backgroundColor: theme.palette.ciano.main,
+                    backgroundColor: theme.palette.variation1.main,
                     textTransform: "uppercase",
                   }}
                 />

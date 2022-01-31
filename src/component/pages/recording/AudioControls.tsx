@@ -47,7 +47,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
         <IconButton
           icon="play_outlined"
           iconColor={
-            recordingRdx.activeRecordingState === "START" ? theme.palette.darkBlue.light : "#fff"
+            recordingRdx.activeRecordingState === "START" ? theme.palette.variation5.light : "#fff"
           }
           disabled={recordingRdx.activeRecordingState === "START"}
           iconStyle={{ fontSize: 50 }}
@@ -67,7 +67,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
         <IconButton
           icon="pause_outlined"
           iconColor={
-            recordingRdx.activeRecordingState === "PAUSE" ? theme.palette.darkBlue.light : "#fff"
+            recordingRdx.activeRecordingState === "PAUSE" ? theme.palette.variation5.light : "#fff"
           }
           iconStyle={{ fontSize: 70, marginBottom: 30 }}
           handleClick={_handlePause}

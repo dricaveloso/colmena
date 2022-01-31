@@ -175,7 +175,7 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
                 color={ButtonColorEnum.PRIMARY}
                 variant={ButtonVariantEnum.CONTAINED}
                 disabled={isSubmitting}
-                style={{ float: "right", backgroundColor: theme.palette.ciano.main }}
+                style={{ float: "right", backgroundColor: theme.palette.variation1.main }}
                 title={c("form.submitSaveTitle")}
                 data-testid="submit-reset-password"
               />

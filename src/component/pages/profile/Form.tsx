@@ -184,7 +184,7 @@ export default function FormProfile() {
                   data-testid="submit-profile-form"
                   disabled={isSubmitting}
                   handleClick={submitForm}
-                  style={{ backgroundColor: theme.palette.ciano.main }}
+                  style={{ backgroundColor: theme.palette.variation1.main }}
                 />
               </div>
               <div className="marginTop15">
