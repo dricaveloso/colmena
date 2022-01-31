@@ -84,6 +84,7 @@ export default function DownloadModal({
   return (
     <>
       <Modal
+        data-testid="modal-download-item"
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}

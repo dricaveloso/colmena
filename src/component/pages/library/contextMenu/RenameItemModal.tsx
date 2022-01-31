@@ -26,9 +26,11 @@ import {
 import { toast } from "@/utils/notifications";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
-import { EnvironmentEnum } from "@/enums/*";
+import { ButtonColorEnum, ButtonVariantEnum, EnvironmentEnum } from "@/enums/*";
 import { editLibraryFile } from "@/store/actions/library";
 import { updateFile } from "@/store/idb/models/files";
+import { Box } from "@material-ui/core";
+import ActionConfirm from "@/components/ui/ActionConfirm";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -37,7 +39,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   submit: {
-    float: "right",
+    marginLeft: 10,
   },
 }));
 
@@ -51,6 +53,8 @@ type Props = {
   type: string;
   environment: EnvironmentEnum;
 };
+
+let requestCancel = false;
 
 export default function RenameItemModal({
   id,
@@ -71,6 +75,8 @@ export default function RenameItemModal({
   const [finalPath, setFinalPath] = useState(filename);
   const [aliasPath, setAliasPath] = useState(aliasFilename);
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
+  const [cancelIsLoading, setCancelIsLoading] = useState(false);
   const dispatch = useDispatch();
   const initialValues = {
     name: getOnlyFilename(basename),
@@ -87,6 +93,10 @@ export default function RenameItemModal({
         let name = values.name.trim();
         if (extension) {
           name += `.${extension}`;
+        }
+
+        if (requestCancel) {
+          return;
         }
 
         switch (environment) {
@@ -106,9 +116,19 @@ export default function RenameItemModal({
             throw new Error(l("messages.unidentifiedEnvironment"));
         }
 
+        if (requestCancel) {
+          if (moved) {
+            undoChange(userId);
+          }
+
+          return;
+        }
+
         if (!moved) {
           throw new Error(l("messages.unableToCompleteRequest"));
         }
+
+        setShowConfirmCancel(false);
 
         if (type === "directory") {
           toast(l("messages.directorySuccessfullyRenamed"), "success");
@@ -126,8 +146,41 @@ export default function RenameItemModal({
     })();
   };
 
+  const undoChange = useCallback(
+    async (userId: string) => {
+      switch (environment) {
+        case EnvironmentEnum.REMOTE:
+          await moveFile(userId, finalPath, filename);
+          break;
+        case EnvironmentEnum.LOCAL:
+          await updateFile(id, {
+            basename,
+            filename,
+            aliasFilename,
+          });
+          break;
+        case EnvironmentEnum.BOTH:
+          if (await moveFile(userId, finalPath, filename)) {
+            await updateFile(id, {
+              basename,
+              filename,
+              aliasFilename,
+            });
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    [aliasFilename, basename, environment, filename, finalPath, id],
+  );
+
   const renameRemoteItem = useCallback(
     async (userId) => {
+      if (requestCancel) {
+        return false;
+      }
+
       if (type === "directory") {
         const directoryExists = await existDirectory(userId, finalPath);
         if (directoryExists) {
@@ -151,12 +204,17 @@ export default function RenameItemModal({
   );
 
   const renameLocalItem = useCallback(
-    async (name) =>
-      updateFile(id, {
+    async (name) => {
+      if (requestCancel) {
+        return false;
+      }
+
+      return updateFile(id, {
         basename: name,
         filename: finalPath,
         aliasFilename: aliasPath,
-      }),
+      });
+    },
     [aliasPath, finalPath, id],
   );
 
@@ -187,6 +245,25 @@ export default function RenameItemModal({
     return !path || path === "/" ? rootPath : path;
   }, []);
 
+  const handleClose = useCallback(() => {
+    handleOpen(false);
+  }, [handleOpen]);
+
+  const confirmClose = useCallback(() => {
+    if (isLoading) {
+      setShowConfirmCancel(true);
+    } else {
+      handleClose();
+    }
+  }, [handleClose, isLoading]);
+
+  const requestAbortUpload = () => {
+    setCancelIsLoading(true);
+    requestCancel = true;
+    toast(l("messages.itemRenamingCanceledSuccessfully"), "success");
+    handleClose();
+  };
+
   useEffect(() => {
     setFinalPath(definePath(filename));
 
@@ -197,49 +274,75 @@ export default function RenameItemModal({
   }, [path, definePath, filename]);
 
   return (
-    <Modal title={l("renameTitle")} handleClose={() => handleOpen(false)} open={open}>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={RenameItemSchema}
-        onSubmit={(values) => handleSubmit(values)}
+    <>
+      <Modal
+        data-testid="modal-rename-item"
+        title={l("renameTitle")}
+        open={open}
+        handleClose={isLoading ? undefined : handleClose}
       >
-        {({ setFieldValue }: any) => (
-          <Form className={classes.form}>
-            <Field name="name" InputProps={{ notched: true }}>
-              {({ field }: FieldProps) => (
-                <TextField
-                  id="outlined-search"
-                  label={t("form.fields.name")}
-                  variant="outlined"
-                  inputProps={{ maxLength: 60 }}
-                  {...field}
-                  onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
-                    setFieldValue("name", treatName(event.target.value))
-                  }
-                  onKeyUp={(event: any) => defineFinalPath(event.target.value)}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={RenameItemSchema}
+          onSubmit={(values) => handleSubmit(values)}
+        >
+          {({ setFieldValue }: any) => (
+            <Form className={classes.form}>
+              <Field name="name" InputProps={{ notched: true }}>
+                {({ field }: FieldProps) => (
+                  <TextField
+                    id="outlined-search"
+                    label={t("form.fields.name")}
+                    variant="outlined"
+                    inputProps={{ maxLength: 60 }}
+                    {...field}
+                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+                      setFieldValue("name", treatName(event.target.value))
+                    }
+                    onKeyUp={(event: any) => defineFinalPath(event.target.value)}
+                  />
+                )}
+              </Field>
+              <ErrorMessage name="name">{(msg) => <ErrorMessageForm message={msg} />}</ErrorMessage>
+              <Divider marginTop={20} />
+              <TextField
+                id="outlined-search"
+                label={t("form.local")}
+                variant="outlined"
+                value={aliasPath}
+                disabled
+              />
+              <Divider marginTop={20} />
+              <Box display="flex" justifyContent="flex-end" width="100%">
+                {isLoading && (
+                  <Button
+                    handleClick={confirmClose}
+                    title={t("form.cancelButton")}
+                    data-cy="cancel"
+                    color={ButtonColorEnum.DEFAULT}
+                    variant={ButtonVariantEnum.OUTLINED}
+                  />
+                )}
+                <Button
+                  title={l("saveButton")}
+                  type="submit"
+                  className={classes.submit}
+                  disabled={isLoading}
+                  isLoading={isLoading}
                 />
-              )}
-            </Field>
-            <ErrorMessage name="name">{(msg) => <ErrorMessageForm message={msg} />}</ErrorMessage>
-            <Divider marginTop={20} />
-            <TextField
-              id="outlined-search"
-              label={t("form.local")}
-              variant="outlined"
-              value={aliasPath}
-              disabled
-            />
-            <Divider marginTop={20} />
-            <Button
-              title={l("saveButton")}
-              type="submit"
-              className={classes.submit}
-              disabled={isLoading}
-              isLoading={isLoading}
-            />
-          </Form>
-        )}
-      </Formik>
-    </Modal>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Modal>
+      {showConfirmCancel && (
+        <ActionConfirm
+          title={l("confirmCancelItemRenaming")}
+          onOk={requestAbortUpload}
+          onClose={() => setShowConfirmCancel(false)}
+          isLoading={cancelIsLoading}
+        />
+      )}
+    </>
   );
 }

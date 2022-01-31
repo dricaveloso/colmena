@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/ban-types */
 import webdav from "@/services/webdav";
 import { BufferLike, ResponseDataDetailed, DAVResultResponseProps } from "webdav";
 import { removeFirstSlash, getRandomInt, trailingSlash, removeCornerSlash } from "@/utils/utils";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { arrayBufferToBlob, blobToArrayBuffer, createObjectURL } from "blob-util";
 import davAxiosConnection from "@/services/webdav/axiosConnection";
 import axiosBase from "@/services/webdav/axiosBase";
@@ -278,15 +280,21 @@ export async function setDataFile(data: FileDataNCInterface, path: string) {
   return false;
 }
 
+let cancelUpload = false;
+
+export function abortUpload() {
+  cancelUpload = true;
+}
+
 export async function chunkFileUpload(userId: string | number, file: File, filename: string) {
   const maxChunkFile = 2 * 1000000; // 2mb
   const totalLength = file.size;
 
-  if (maxChunkFile >= totalLength) {
+  /* if (maxChunkFile >= totalLength) {
     const contentFile = await blobToArrayBuffer(file);
 
     return putFile(userId, filename, contentFile);
-  }
+  } */
 
   let tempFilename = "file";
   // eslint-disable-next-line no-plusplus
@@ -304,6 +312,12 @@ export async function chunkFileUpload(userId: string | number, file: File, filen
   let done = false;
   let chunkNumber = 0;
   while (done === false) {
+    if (cancelUpload) {
+      abortChunkFileUpload(userId, tempFilename);
+
+      return false;
+    }
+
     chunkNumber += 1;
     if (chunkNumber > 1) {
       initialChunk += maxChunkFile;
@@ -354,6 +368,12 @@ async function doneChunkFileUpload(
 ) {
   return axiosBase(null, `dav/uploads/${userId}/${tempFilename}/.file`, "MOVE", {
     Destination: `${publicRuntimeConfig.api.baseUrl}/remote.php/dav/files/${userId}/${destination}`,
+    "Content-Type": null,
+  });
+}
+
+async function abortChunkFileUpload(userId: string | number, tempFilename: string) {
+  return axiosBase(null, `dav/uploads/${userId}/${tempFilename}/`, "DELETE", {
     "Content-Type": null,
   });
 }

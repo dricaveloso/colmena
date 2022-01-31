@@ -94,6 +94,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   return (
     <>
       <IconButton
+        data-testid="library-context-menu"
         key={`${basename}-more-options`}
         icon="more_vertical"
         color="#9A9A9A"

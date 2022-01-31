@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@/components/ui/Modal";
-import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
 import Button from "@/components/ui/Button";
 import { Formik, Form, Field, FieldProps } from "formik";
@@ -78,6 +77,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
   }
 
   const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [participants, setParticipants] = useState<string[]>([]);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -100,78 +100,87 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
 
   return (
     <>
-      <Modal title={c("addHoneycombTitle")} handleClose={handleClose} open={open}>
-        <Fade in={open}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={schemaValidation}
-            onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-              const { room: room2 } = values;
-              const room = room2.trim();
-              (async () => {
-                try {
-                  setErrorMessageValidation("");
-                  setSubmitting(true);
+      <Modal
+        data-testid="modal-create-honeycomb"
+        title={c("addHoneycombTitle")}
+        open={open}
+        handleClose={isLoading ? undefined : handleClose}
+      >
+        <Formik
+          initialValues={initialValues}
+          validationSchema={schemaValidation}
+          onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
+            const { room: room2 } = values;
+            const room = room2.trim();
+            (async () => {
+              try {
+                setErrorMessageValidation("");
+                setSubmitting(true);
 
-                  if (userRdx.user.id === room) {
-                    throw new Error(c("reservedNameError"));
-                  }
-
-                  if (room.indexOf("/") !== -1) {
-                    throw new Error(
-                      c("form.slashNotAllowed", {
-                        field: c("form.fields.name"),
-                      }),
-                    );
-                  }
-
-                  const directoryExists = await existDirectory(userId, room);
-                  if (directoryExists) {
-                    throw new Error(c("honeycombModal.errorCreatePanal"));
-                  }
-
-                  const conversation = await createNewConversation(room);
-                  const { token, canDeleteConversation } = conversation.data.ocs.data;
-
-                  // eslint-disable-next-line no-restricted-syntax
-                  for (const participant of participants) {
-                    // eslint-disable-next-line no-await-in-loop
-                    await addParticipantToConversation(token, participant);
-                  }
-                  dispatch(addHoneycomb(conversation.data.ocs.data));
-
-                  const folderName = conversation.data.ocs.data.displayName;
-
-                  const create = await createDirectory(userId, folderName);
-                  if (create) {
-                    const date = new Date();
-                    const item: LibraryItemInterface = {
-                      basename: folderName,
-                      id: "",
-                      filename: "",
-                      aliasFilename: "",
-                      type: "directory",
-                      environment: EnvironmentEnum.REMOTE,
-                      createdAt: date,
-                      createdAtDescription: dateDescription(date, timeDescription),
-                    };
-                    dispatch(addLibraryFile(item));
-                    await createShare(token, folderName);
-                  }
-
-                  handleClose();
-                  toast(c("honeycombModal.chatRoomSuccess"), "success");
-                  router.push(`/honeycomb/${token}/${room}/${!canDeleteConversation ? 0 : 1}`);
-                } catch (e) {
-                  const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
-                  setErrorMessageValidation(msg);
-                } finally {
-                  setSubmitting(false);
+                if (userRdx.user.id === room) {
+                  throw new Error(c("reservedNameError"));
                 }
-              })();
-            }}
-          >
-            {({ submitForm, isSubmitting, errors, touched, values }: any) => (
+
+                if (room.indexOf("/") !== -1) {
+                  throw new Error(
+                    c("form.slashNotAllowed", {
+                      field: c("form.fields.name"),
+                    }),
+                  );
+                }
+
+                const directoryExists = await existDirectory(userId, room);
+                if (directoryExists) {
+                  throw new Error(c("honeycombModal.errorCreatePanal"));
+                }
+
+                const conversation = await createNewConversation(room);
+                const { token, canDeleteConversation } = conversation.data.ocs.data;
+
+                // eslint-disable-next-line no-restricted-syntax
+                for (const participant of participants) {
+                  // eslint-disable-next-line no-await-in-loop
+                  await addParticipantToConversation(token, participant);
+                }
+                dispatch(addHoneycomb(conversation.data.ocs.data));
+
+                const folderName = conversation.data.ocs.data.displayName;
+
+                const create = await createDirectory(userId, folderName);
+                if (create) {
+                  const date = new Date();
+                  const item: LibraryItemInterface = {
+                    basename: folderName,
+                    id: "",
+                    filename: "",
+                    aliasFilename: "",
+                    type: "directory",
+                    environment: EnvironmentEnum.REMOTE,
+                    createdAt: date,
+                    createdAtDescription: dateDescription(date, timeDescription),
+                  };
+                  dispatch(addLibraryFile(item));
+                  await createShare(token, folderName);
+                }
+
+                handleClose();
+                toast(c("honeycombModal.chatRoomSuccess"), "success");
+                router.push(`/honeycomb/${token}/${room}/${!canDeleteConversation ? 0 : 1}`);
+              } catch (e) {
+                const msg = e.message ? e.message : c("honeycombModal.chatRoomFailed");
+                setErrorMessageValidation(msg);
+              } finally {
+                setSubmitting(false);
+              }
+            })();
+          }}
+        >
+          {({ submitForm, isSubmitting, errors, touched, values }: any) => {
+            useEffect(() => {
+              setIsLoading(isSubmitting);
+            }, [isSubmitting]);
+
+            return (
               <Form className={classes.form} autoComplete="off">
                 {step === 1 && (
                   <>
@@ -274,9 +283,9 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                   </>
                 )}
               </Form>
-            )}
-          </Formik>
-        </Fade>
+            );
+          }}
+        </Formik>
       </Modal>
     </>
   );

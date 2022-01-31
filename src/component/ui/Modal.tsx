@@ -45,12 +45,13 @@ type Props = {
   title?: string;
   description?: string;
   open: boolean;
-  handleClose: (event: any, reason: string) => void;
+  handleClose?: (event: any, reason: string) => void | undefined;
   children: React.ReactNode;
   actions?: React.ReactNode;
+  disableBackdropClick?: boolean;
 };
 
-function Modal({ title, description, open, handleClose, children, actions }: Props) {
+function Modal({ title, description, open, handleClose, children, actions, ...props }: Props) {
   return (
     <Dialog
       onClose={handleClose}
@@ -58,6 +59,7 @@ function Modal({ title, description, open, handleClose, children, actions }: Pro
       open={open}
       fullWidth
       maxWidth="xs"
+      {...props}
     >
       {title && (
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>

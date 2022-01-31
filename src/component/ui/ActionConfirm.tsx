@@ -27,11 +27,19 @@ export default function ActionConfirm({
   onClose,
   onOk,
   isLoading = false,
+  ...props
 }: Props) {
   const { t: c } = useTranslation("common");
 
   return (
-    <Dialog fullWidth maxWidth="xs" onClose={onClose} aria-labelledby="simple-dialog-title" open>
+    <Dialog
+      fullWidth
+      maxWidth="xs"
+      onClose={onClose}
+      aria-labelledby="simple-dialog-title"
+      open
+      {...props}
+    >
       <Box
         padding={2}
         display="flex"

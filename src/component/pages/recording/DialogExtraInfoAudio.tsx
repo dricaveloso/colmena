@@ -52,7 +52,6 @@ type MyFormValues = {
 
 export default function DialogExtraInfoAudio({
   open,
-  handleClose,
   handleSubmit,
   pathLocationSave = "",
   discardAudioHandle,
@@ -162,7 +161,6 @@ export default function DialogExtraInfoAudio({
         {({ submitForm, errors, touched, setFieldValue, values }: any) => (
           <Modal
             title={t("recordingFinishDescription")}
-            handleClose={handleClose}
             open={open}
             aria-labelledby="form-dialog-title"
             actions={

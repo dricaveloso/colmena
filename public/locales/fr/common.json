@@ -80,8 +80,10 @@
     "unableToProcessFile": "Impossible de traiter le fichier {{fileName}}..",
     "unableToUpdatePassword": "Impossible de mettre à jour votre mot de passe.",
     "passwordUpdatedSuccessfully": "Mot de passe mis à jour avec succès.",
-    "directoryCreatedSuccessfully": "Directory created successfully.",
-    "fileUploadedSuccessfully": "File uploaded successfully."
+    "directoryCreatedSuccessfully": "Directory created.",
+    "fileUploadedSuccessfully": "File uploaded.",
+    "uploadCanceledSuccessfully": "File upload canceled.",
+    "folderCreationCanceledSuccessfully": "Folder creation canceled."
   },
   "timeDescription": {
     "singularYear": "année",
@@ -111,13 +113,16 @@
   "confirmMessageDelete": "By performing this action, it will be impossible to reverse it.",
   "yesTitle": "Yes",
   "noTitle": "No",
+  "used": "Utilisé",
   "genericErrorMessage": "Unable to perform this action.",
   "passwordRecoveryMessage": "Password recovery email sent successfully.",
   "backToLogin": "Back to login",
   "changeLocationModalTitle": "Choose the new location",
-  "changeLocationButton": "Choose here",
+  "changeLocationButton": "Change",
+  "chooseLocationButton": "Choose here",
   "noPrivilegesAccessTitle": "No privileges to access.",
   "confirmCancelUpload": "Do you really want to cancel the upload?",
+  "confirmCancelFolderCreation": "Do you really want to cancel the folder creation?",
   "contextMenuUserAvatar": {
     "upload": "Select image",
     "remove": "Remove"
