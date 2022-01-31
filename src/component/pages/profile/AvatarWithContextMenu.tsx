@@ -19,6 +19,7 @@ import { ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import { isPNGImage, isJPGImage } from "@/utils/utils";
+import theme from "@/styles/theme";
 
 type Props = {
   size: number;
@@ -228,9 +229,8 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
             />
             <Button
               handleClick={submitCrop}
-              style={{ margin: 8 }}
+              style={{ margin: 8, backgroundColor: theme.palette.variation1.main }}
               variant={ButtonVariantEnum.CONTAINED}
-              color={ButtonColorEnum.PRIMARY}
               title={c("form.submitSaveTitle")}
               data-testid="submit-modal-crop"
             />
