@@ -131,22 +131,22 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         {type === "file" && environment !== EnvironmentEnum.LOCAL && (
           <MenuItem key="sync">
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              <div>{t("contextMenuOptions.availableOffline")}</div>
+              <ContextMenuItem title={t("contextMenuOptions.availableOffline")} icon="sync" />
               <Switch checked={availableOffline} onChange={handleAvailableOffline} />
             </Box>
           </MenuItem>
         )}
         <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
-          {t("contextMenuOptions.rename")}
+          <ContextMenuItem title={t("contextMenuOptions.rename")} icon="rename" />
         </MenuItem>
         <MenuItem key="details" onClick={() => handleOpenDetailsModal(true)}>
-          {t("contextMenuOptions.details")}
+          <ContextMenuItem title={t("contextMenuOptions.details")} icon="details" />
         </MenuItem>
         <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
-          {t("contextMenuOptions.publish")}
+          <ContextMenuItem title={t("contextMenuOptions.publish")} icon="upload" />
         </MenuItem>
         <MenuItem key="delete" onClick={() => handleOpenDeleteItemConfirm(true)}>
-          {t("contextMenuOptions.delete")}
+          <ContextMenuItem title={t("contextMenuOptions.delete")} icon="trash" iconColor="tomato" />
         </MenuItem>
       </Menu>
       <DownloadModal

@@ -287,6 +287,9 @@ export type AllIconProps =
   | "edit_filled"
   | "copy"
   | "duplicate"
-  | "move";
+  | "move"
+  | "rename"
+  | "details"
+  | "sync";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
