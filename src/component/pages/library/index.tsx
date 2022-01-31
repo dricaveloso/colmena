@@ -66,7 +66,6 @@ function setCurrentItem(
 }
 
 export function getCurrentItem(): null | LibraryItemInterface {
-  console.log(currentItem);
   return currentItem;
 }
 

@@ -110,6 +110,7 @@
   "confirmMessageDelete": "By performing this action, it will be impossible to reverse it.",
   "yesTitle": "Yes",
   "noTitle": "No",
+  "used": "Utilisé",
   "genericErrorMessage": "Unable to perform this action.",
   "passwordRecoveryMessage": "Password recovery email sent successfully.",
   "backToLogin": "Back to login",

@@ -9,11 +9,11 @@ type Props = {
 
 export default function Item({ title, amount }: Props) {
   return (
-    <Box>
-      <Text variant={TextVariantEnum.BODY2} style={{ color: "#D2D3DC" }}>
+    <Box data-testid="ui-file-info--item">
+      <Text variant={TextVariantEnum.BODY2} style={{ color: "#534bae" }}>
         {title}
       </Text>
-      <Text variant={TextVariantEnum.H6} style={{ color: "#fff", fontWeight: "bold" }}>
+      <Text variant={TextVariantEnum.H6} style={{ color: "#534bae", fontWeight: "bold" }}>
         {amount}
       </Text>
     </Box>

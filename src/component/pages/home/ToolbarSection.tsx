@@ -5,6 +5,7 @@ import Text from "@/components/ui/Text";
 import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
+import router from "next/router";
 
 type Props = {
   title: string;
@@ -13,6 +14,9 @@ type Props = {
 };
 
 export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
+  const goTo = () => {
+    router.push(link!);
+  };
   const { t } = useTranslation("common");
   return (
     <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
@@ -23,6 +27,7 @@ export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
         title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
         variant={ButtonVariantEnum.TEXT}
         style={{ color: "#292929" }}
+        handleClick={() => goTo()}
       />
     </Box>
   );
