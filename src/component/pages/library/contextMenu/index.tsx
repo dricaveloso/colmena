@@ -16,6 +16,7 @@ import { toast } from "@/utils/notifications";
 import { EnvironmentEnum } from "@/enums/*";
 import Switch from "@material-ui/core/Switch";
 import { Box } from "@material-ui/core";
+import ContextMenuItem from "@/components/ui/ContextMenuItem";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename, arrayBufferBlob, mime } =
@@ -110,21 +111,21 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
       >
         {type === "file" && (
           <MenuItem key="edit" onClick={unavailable} style={{ color: "#aaa" }}>
-            {t("contextMenuOptions.edit")}
+            <ContextMenuItem title={t("contextMenuOptions.edit")} icon="edit_filled" />
           </MenuItem>
         )}
         <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
-          {t("contextMenuOptions.copy")}
+          <ContextMenuItem title={t("contextMenuOptions.copy")} icon="copy" />
         </MenuItem>
         <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
-          {t("contextMenuOptions.move")}
+          <ContextMenuItem title={t("contextMenuOptions.move")} icon="move" />
         </MenuItem>
         <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
-          {t("contextMenuOptions.duplicate")}
+          <ContextMenuItem title={t("contextMenuOptions.duplicate")} icon="duplicate" />
         </MenuItem>
         {type === "file" && (
           <MenuItem key="download" onClick={() => handleOpenDownloadModal(true)}>
-            {t("contextMenuOptions.download")}
+            <ContextMenuItem title={t("contextMenuOptions.download")} icon="download" />
           </MenuItem>
         )}
         {type === "file" && environment !== EnvironmentEnum.LOCAL && (
