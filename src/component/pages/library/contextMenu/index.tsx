@@ -93,6 +93,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   return (
     <>
       <IconButton
+        data-testid="library-context-menu"
         key={`${basename}-more-options`}
         icon="more_vertical"
         color="#9A9A9A"
@@ -109,21 +110,34 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         onClose={handleCloseContextMenu}
       >
         {type === "file" && (
-          <MenuItem key="edit" onClick={unavailable} style={{ color: "#aaa" }}>
+          <MenuItem
+            key="edit"
+            onClick={unavailable}
+            style={{ color: "#aaa" }}
+            data-testid="edit-item"
+          >
             {t("contextMenuOptions.edit")}
           </MenuItem>
         )}
-        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
+        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)} data-testid="copy-item">
           {t("contextMenuOptions.copy")}
         </MenuItem>
-        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
+        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)} data-testid="move-item">
           {t("contextMenuOptions.move")}
         </MenuItem>
-        <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
+        <MenuItem
+          key="duplicate"
+          onClick={() => handleOpenDuplicateModal(true)}
+          data-testid="duplicate-item"
+        >
           {t("contextMenuOptions.duplicate")}
         </MenuItem>
         {type === "file" && (
-          <MenuItem key="download" onClick={() => handleOpenDownloadModal(true)}>
+          <MenuItem
+            key="download"
+            onClick={() => handleOpenDownloadModal(true)}
+            data-testid="download-item"
+          >
             {t("contextMenuOptions.download")}
           </MenuItem>
         )}
@@ -135,16 +149,33 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
             </Box>
           </MenuItem>
         )}
-        <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
+        <MenuItem
+          key="rename"
+          onClick={() => handleOpenRenameModal(true)}
+          data-testid="rename-item"
+        >
           {t("contextMenuOptions.rename")}
         </MenuItem>
-        <MenuItem key="details" onClick={() => handleOpenDetailsModal(true)}>
+        <MenuItem
+          key="details"
+          onClick={() => handleOpenDetailsModal(true)}
+          data-testid="item-details"
+        >
           {t("contextMenuOptions.details")}
         </MenuItem>
-        <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
+        <MenuItem
+          key="publish"
+          onClick={unavailable}
+          style={{ color: "#aaa" }}
+          data-testid="publish-item"
+        >
           {t("contextMenuOptions.publish")}
         </MenuItem>
-        <MenuItem key="delete" onClick={() => handleOpenDeleteItemConfirm(true)}>
+        <MenuItem
+          key="delete"
+          onClick={() => handleOpenDeleteItemConfirm(true)}
+          data-testid="delete-item"
+        >
           {t("contextMenuOptions.delete")}
         </MenuItem>
       </Menu>
