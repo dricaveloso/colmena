@@ -28,54 +28,70 @@ const theme = createTheme({
     fontFamily: "Nunito, Nunito Sans, Open Sans, sans-serif",
   },
   palette: {
+    // blue
     primary: {
       light: "#c9cbd9",
       main: "#4c517f",
       dark: "#333762",
       contrastText: "#fff",
     },
+
+    // orange
     secondary: {
       light: "#fbe1b7",
       main: "#f39b10",
       dark: "#ed7f09",
       contrastText: "#fff",
     },
+
+    // ciano
     variation1: {
       light: "#b3e7e7",
       main: "#00aeaf",
       dark: "#009496",
       contrastText: "#fff",
     },
+
+    // purple
     variation2: {
       light: "#5B2DAC",
       main: "#8E6BC5",
       dark: "#5B2DAC",
       contrastText: "#fff",
     },
+
+    // orange
     variation3: {
       light: "#fbe1b7",
       main: "#f39b10",
       dark: "#ed7f09",
       contrastText: "#fff",
     },
+
+    // light green
     variation4: {
       light: "#cdf3dd",
       main: "#57D88F",
       dark: "#3cc872",
       contrastText: "#fff",
     },
+
+    // dark blue
     variation5: {
       light: "#c0c3c5",
       main: "#2c363e",
       dark: "#1b2228",
       contrastText: "#fff",
     },
+
+    // dark blue variation
     variation6: {
       light: "#c2c4c6",
       main: "#343a40",
       dark: "#21252a",
       contrastText: "#fff",
     },
+
     icon: {
       light: "#a4a4a4",
       main: "#757575",
