@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import FilesInfoSection from "@/components/pages/home/FilesInfo";
 import HoneyCombsList from "@/components/pages/home/Section3";
 import SliderQuota from "@/components/ui/SliderQuota";
-import Search from "@/components/pages/home/Search/index";
+// import Search from "@/components/pages/home/Search/index";
 import Avatar from "@/components/pages/profile/AvatarWithContextMenu";
 import { getUsersConversations } from "@/services/talk/room";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
@@ -84,7 +84,7 @@ function Home() {
 
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <FilesInfoSection />
-        <Search />
+        {/* <Search /> */}
         <RecentFiles library={library} />
 
         {!data ? <DirectoryList /> : <HoneyCombsList data={data.ocs.data} />}

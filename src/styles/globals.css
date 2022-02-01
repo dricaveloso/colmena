@@ -124,13 +124,23 @@ input:-webkit-autofill,
   background-color: #2c363e !important;
 }
 
-.searchForm form.nosubmit {
+.searchForm {
+  width: 100vw;
+  margin: 0 auto;
+}
+
+form.nosubmit {
   display: flex;
   padding: 2px;
   background: #4c517f;
-
+  align-self: "center";
   border-radius: 16px;
-  margin: 0 0 30px;
+  /* margin: 0 0 30px; */
+  width: 75%;
+
+  @media (max-width: "768px") {
+    width: 85%;
+  }
 }
 
 .searchForm input[type="search"] {
@@ -173,16 +183,6 @@ input:-webkit-autofill,
 .searchForm input[type="search"]:focus {
   box-shadow: 0 0 3px 0 #fff;
   outline: none;
-}
-
-.searchForm form.nosubmit {
-  border: none;
-  padding: 0;
-  width: 75%;
-
-  @media (max-width: "768px") {
-    width: 85%;
-  }
 }
 
 .searchForm input.nosubmit {
