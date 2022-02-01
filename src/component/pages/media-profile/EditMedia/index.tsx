@@ -12,7 +12,7 @@ import { Grid } from "@material-ui/core";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
 import { getUserGroup } from "@/utils/permissions";
-import { ConfigFilesNCEnum, ButtonVariantEnum } from "@/enums/index";
+import { ConfigFilesNCEnum } from "@/enums/index";
 import { listFile, putFile } from "@/services/webdav/files";
 import { useSelector, useDispatch } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
@@ -167,13 +167,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
             </Field>
             {errors.url && touched.url ? <ErrorMessageForm message={errors.url} /> : null}
             <Divider marginTop={20} />
-            <Grid container justifyContent="space-between">
-              <Button
-                handleClick={handleClose}
-                title={t("buttonCancelModalDialogInvite")}
-                data-testid="close-modal-invite"
-                variant={ButtonVariantEnum.OUTLINED}
-              />
+            <Grid container justifyContent="flex-end">
               <Button
                 handleClick={submitForm}
                 title={c("form.submitSaveTitle")}
