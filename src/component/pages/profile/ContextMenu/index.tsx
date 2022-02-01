@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { toast } from "@/utils/notifications";
 // import { signOut } from "next-auth/client";
 // import BackdropModal from "@/components/ui/Backdrop";
+import ContextMenuItem from "@/components/ui/ContextMenuItem";
 
 type PositionProps = {
   mouseX: null | number;
@@ -147,6 +148,7 @@ const ContextMenuOptions = () => {
       <IconButton
         key={uuid()}
         icon="more_vertical"
+        data-testid="open-context-profile-menu"
         iconColor="#fff"
         style={{ padding: 0, margin: 0, minWidth: 30 }}
         fontSizeIcon="small"
@@ -166,15 +168,37 @@ const ContextMenuOptions = () => {
         }
         onClose={handleCloseContextMenu}
       >
-        <MenuItem key="settings" onClick={() => router.push("/settings")}>
-          {t("contextMenuOptions.settings")}
+        <MenuItem
+          key="settings"
+          data-testid="profile-settings-menu-option"
+          onClick={() => router.push("/settings")}
+        >
+          <ContextMenuItem icon="settings" title={t("contextMenuOptions.settings")} />
         </MenuItem>
-        <MenuItem key="suspend" onClick={featureUnavailable}>
-          {t("contextMenuOptions.deactivate")}
+        <MenuItem
+          key="suspend"
+          data-testid="profile-suspend-menu-option"
+          onClick={featureUnavailable}
+          style={{ color: "#ff6347" }}
+        >
+          <ContextMenuItem
+            icon="disabled"
+            iconColor="#ff6347"
+            title={t("contextMenuOptions.deactivate")}
+          />
         </MenuItem>
-        <MenuItem key="remove" onClick={featureUnavailable} style={{ color: "tomato" }}>
-          {t("contextMenuOptions.remove")}
-        </MenuItem>
+        {/* <MenuItem
+          key="remove"
+          data-testid="profile-remove-menu-option"
+          onClick={featureUnavailable}
+          style={{ color: "#ff6347" }}
+        >
+          <ContextMenuItem
+            icon="trash"
+            iconColor="#ff6347"
+            title={t("contextMenuOptions.remove")}
+          />
+        </MenuItem> */}
       </Menu>
     </Box>
   );

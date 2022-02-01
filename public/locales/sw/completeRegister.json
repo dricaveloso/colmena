@@ -1,0 +1,10 @@
+{
+    "description": "",
+    "messagePasswordCreated": "",
+    "invalidToken": "",
+    "forms": {
+        "placeholderPassword": "",
+        "placeholderPasswordConfirmation": "",
+        "submitButton": ""
+    }
+}

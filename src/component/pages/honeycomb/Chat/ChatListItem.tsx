@@ -9,7 +9,8 @@ import {
   ChatMessageItemMessageParameterInterface,
 } from "@/interfaces/talk";
 import { makeStyles } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "@/components/pages/profile/Avatar";
+import AvatarCore from "@material-ui/core/Avatar";
 import {
   getFirstLettersOfTwoFirstNames,
   getFormattedDistanceDateFromNow,
@@ -71,14 +72,18 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
     referenceId,
   } = item;
 
-  function getAvatarComponent(actorDisplayName: string, justifyContent = "flex-start") {
+  function getAvatarComponent(
+    actorDisplayName: string,
+    actorId: string,
+    justifyContent = "flex-start",
+  ) {
     if (
       (prevItem && prevItem.actorId !== actorId && systemMessage === "") ||
       prevItem?.systemMessage !== ""
     )
       return (
         <ListItemAvatar key={id} style={{ width: 30, height: 30, display: "flex", justifyContent }}>
-          <Avatar>{getFirstLettersOfTwoFirstNames(actorDisplayName)}</Avatar>
+          <Avatar size={6} userName={actorDisplayName} userId={actorId} />
         </ListItemAvatar>
       );
 
@@ -153,7 +158,7 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
   if (systemMessage === "")
     return (
       <Box className={classes.card} key={id}>
-        {getAvatarComponent(actorDisplayName, "flex-start")}
+        {getAvatarComponent(actorDisplayName, actorId, "flex-start")}
         <ListItemText
           data-testid="title"
           className={classes.description}
@@ -193,11 +198,11 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
             size="small"
             style={{ fontSize: 12 }}
             avatar={
-              <Avatar>
+              <AvatarCore>
                 {getFirstLettersOfTwoFirstNames(
                   item === "{user}" ? messageParameters?.user?.name : messageParameters?.actor.name,
                 )}
-              </Avatar>
+              </AvatarCore>
             }
             label={
               item === "{user}" ? messageParameters?.user?.name : messageParameters?.actor.name

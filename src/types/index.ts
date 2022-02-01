@@ -275,6 +275,11 @@ export type AllIconProps =
   | "pause_flat"
   | "trash"
   | "html_tag"
-  | "update";
+  | "update"
+  | "disabled"
+  | "camera"
+  | "edit_circle"
+  | "facebook_rounded"
+  | "twitter_rounded";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

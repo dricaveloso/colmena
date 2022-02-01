@@ -33,7 +33,8 @@
     "details": "Detalles",
     "synchronize": "Synchronizar",
     "publish": "Publicar",
-    "delete": "Borrar"
+    "delete": "Borrar",
+    "availableOffline": "Available Offline"
   },
   "messages": {
     "couldNotRemove": "No se ha podido eliminar",
@@ -50,7 +51,9 @@
     "directorySuccessfullyRenamed": "Directory successfully renamed.",
     "fileSuccessfullyRenamed": "File successfully renamed.",
     "directorySuccessfullyRemoved": "Directory successfully removed.",
-    "fileSuccessfullyRemoved": "File successfully removed."
+    "fileSuccessfullyRemoved": "File has been removed.",
+    "itemDuplicationSuccessfully": "Item duplication has been canceled.",
+    "itemRenamingCanceledSuccessfully": "Item renaming has been canceled."
   },
   "renameTitle": "Rename",
   "saveButton": "Save",
@@ -76,5 +79,7 @@
   "downloading": "Downloading",
   "synchronizing": "Synchronizing",
   "cancel": "Cancel",
-  "moveButton": "Move here"
+  "moveButton": "Move here",
+  "confirmCancelItemDuplication": "Do you really want to cancel the item duplication?",
+  "confirmCancelItemRenaming": "Do you really want to cancel the item renaming?"
 }

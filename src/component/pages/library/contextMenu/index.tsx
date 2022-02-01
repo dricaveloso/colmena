@@ -14,6 +14,8 @@ import DeleteItemConfirm from "./DeleteItemConfirm";
 import SyncModal from "./SyncModal";
 import { toast } from "@/utils/notifications";
 import { EnvironmentEnum } from "@/enums/*";
+import Switch from "@material-ui/core/Switch";
+import { Box } from "@material-ui/core";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename, arrayBufferBlob, mime } =
@@ -21,6 +23,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
+  const [availableOffline, setAvailableOffline] = useState(environment === EnvironmentEnum.BOTH);
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
   const [openSyncModal, setOpenSyncModal] = useState(false);
   const [openRenameItemModal, setOpenRenameItemModal] = useState(false);
@@ -82,9 +85,15 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     handleCloseContextMenu();
   };
 
+  const handleAvailableOffline = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAvailableOffline(event.target.checked);
+    handleOpenSyncModal(true);
+  };
+
   return (
     <>
       <IconButton
+        data-testid="library-context-menu"
         key={`${basename}-more-options`}
         icon="more_vertical"
         color="#9A9A9A"
@@ -101,39 +110,72 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         onClose={handleCloseContextMenu}
       >
         {type === "file" && (
-          <MenuItem key="edit" onClick={unavailable} style={{ color: "#aaa" }}>
+          <MenuItem
+            key="edit"
+            onClick={unavailable}
+            style={{ color: "#aaa" }}
+            data-testid="edit-item"
+          >
             {t("contextMenuOptions.edit")}
           </MenuItem>
         )}
-        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
+        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)} data-testid="copy-item">
           {t("contextMenuOptions.copy")}
         </MenuItem>
-        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
+        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)} data-testid="move-item">
           {t("contextMenuOptions.move")}
         </MenuItem>
-        <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
+        <MenuItem
+          key="duplicate"
+          onClick={() => handleOpenDuplicateModal(true)}
+          data-testid="duplicate-item"
+        >
           {t("contextMenuOptions.duplicate")}
         </MenuItem>
         {type === "file" && (
-          <MenuItem key="download" onClick={() => handleOpenDownloadModal(true)}>
+          <MenuItem
+            key="download"
+            onClick={() => handleOpenDownloadModal(true)}
+            data-testid="download-item"
+          >
             {t("contextMenuOptions.download")}
           </MenuItem>
         )}
-        {type === "file" && environment === EnvironmentEnum.REMOTE && (
-          <MenuItem key="sync" onClick={() => handleOpenSyncModal(true)}>
-            {t("contextMenuOptions.synchronize")}
+        {type === "file" && environment !== EnvironmentEnum.LOCAL && (
+          <MenuItem key="sync">
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <div>{t("contextMenuOptions.availableOffline")}</div>
+              <Switch checked={availableOffline} onChange={handleAvailableOffline} />
+            </Box>
           </MenuItem>
         )}
-        <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
+        <MenuItem
+          key="rename"
+          onClick={() => handleOpenRenameModal(true)}
+          data-testid="rename-item"
+        >
           {t("contextMenuOptions.rename")}
         </MenuItem>
-        <MenuItem key="details" onClick={() => handleOpenDetailsModal(true)}>
+        <MenuItem
+          key="details"
+          onClick={() => handleOpenDetailsModal(true)}
+          data-testid="item-details"
+        >
           {t("contextMenuOptions.details")}
         </MenuItem>
-        <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
+        <MenuItem
+          key="publish"
+          onClick={unavailable}
+          style={{ color: "#aaa" }}
+          data-testid="publish-item"
+        >
           {t("contextMenuOptions.publish")}
         </MenuItem>
-        <MenuItem key="delete" onClick={() => handleOpenDeleteItemConfirm(true)}>
+        <MenuItem
+          key="delete"
+          onClick={() => handleOpenDeleteItemConfirm(true)}
+          data-testid="delete-item"
+        >
           {t("contextMenuOptions.delete")}
         </MenuItem>
       </Menu>
@@ -202,6 +244,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
 
       {openSyncModal && (
         <SyncModal
+          availableOffline={availableOffline}
           key={`${basename}-sync-modal`}
           open={openSyncModal}
           handleOpen={() => handleOpenDownloadModal(false)}

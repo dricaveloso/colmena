@@ -9,13 +9,18 @@ type Props = {
   justifyContent?: string;
   // eslint-disable-next-line @typescript-eslint/ban-types
   extraStyle?: object;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  backgroundImage?: object;
+  backgroundColor?: string;
 };
 
 export default function Ctnr({
   justifyContent = "center",
-  maxWidth = SizeScreensEnum.LG,
+  maxWidth = SizeScreensEnum.XL,
   children,
   extraStyle = {},
+  backgroundColor = "#fff",
+  backgroundImage = {},
 }: Props) {
   return (
     <Container
@@ -25,8 +30,9 @@ export default function Ctnr({
         flex: 1,
         justifyContent,
         height: "100vh",
-        backgroundColor: "#fff",
+        backgroundColor,
         ...extraStyle,
+        ...backgroundImage,
       }}
     >
       <>{children}</>

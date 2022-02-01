@@ -41,6 +41,7 @@
       "name": "Nombre"
     },
     "skipButton": "Saltar",
+    "URLInvalid": "URL invalid.",
     "nextIntro": "Continuar",
     "backButton": "Volver",
     "recoverPasswordButton": "Redefine password",
@@ -79,8 +80,10 @@
     "unableToProcessFile": "No se puede procesar el archivo {{fileName}}.",
     "unableToUpdatePassword": "No fue possible actualizar su contraseña.",
     "passwordUpdatedSuccessfully": "Contraseña actualizada con éxito.",
-    "directoryCreatedSuccessfully": "Directory created successfully.",
-    "fileUploadedSuccessfully": "File uploaded successfully."
+    "directoryCreatedSuccessfully": "Directory created.",
+    "fileUploadedSuccessfully": "File uploaded.",
+    "uploadCanceledSuccessfully": "File upload canceled.",
+    "folderCreationCanceledSuccessfully": "Folder creation canceled."
   },
   "timeDescription": {
     "singularYear": "año",
@@ -110,11 +113,29 @@
   "confirmMessageDelete": "By performing this action, it will be impossible to reverse it.",
   "yesTitle": "Yes",
   "noTitle": "No",
+  "used": "Usado",
   "genericErrorMessage": "Unable to perform this action.",
   "passwordRecoveryMessage": "Password recovery email sent successfully.",
   "backToLogin": "Back to login",
   "changeLocationModalTitle": "Choose the new location",
-  "changeLocationButton": "Choose here",
+  "changeLocationButton": "Change",
+  "chooseLocationButton": "Choose here",
   "noPrivilegesAccessTitle": "No privileges to access.",
-  "confirmCancelUpload": "Do you really want to cancel the upload?"
+  "confirmCancelUpload": "Do you really want to cancel the upload?",
+  "confirmCancelFolderCreation": "Do you really want to cancel the folder creation?",
+  "contextMenuUserAvatar": {
+    "upload": "Select image",
+    "remove": "Remove"
+  },
+  "uploadUserAvatarSuccessfully": "Profile image successfully updated",
+  "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
+  "uploadRuleFileSize": "Image cannot be larger than 20mb",
+  "languagesAllowed": {
+    "en": "Inglés",
+    "es": "Español",
+    "fr": "Francés"
+  },
+  "textDrawerBottomTitle": "Texto",
+  "uploadDrawerBottomTitle": "Subir",
+  "streamDrawerBottomTitle": "Transmisión"
 }

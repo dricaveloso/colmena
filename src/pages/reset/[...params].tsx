@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import ExternalVerticalLogo from "@/components/ui/ExternalVerticalLogo";
 import FooterDW from "@/components/ui/FooterDW";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
+import theme from "@/styles/theme";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -42,8 +43,9 @@ export default function UpdatePassword() {
     return null;
   }
 
+  const backgroundColor = theme.palette.primary.main;
   return (
-    <Container>
+    <Container backgroundColor={backgroundColor}>
       <Box
         className="width-based-device"
         justifyContent="center"
@@ -52,10 +54,11 @@ export default function UpdatePassword() {
         display="flex"
       >
         <ExternalVerticalLogo />
-        <Text variant={TextVariantEnum.BODY2} style={{ marginTop: 20, textAlign: "center" }}>
+        <Divider marginTop={24} />
+        <Text variant={TextVariantEnum.BODY2} style={{ color: "#fff", textAlign: "center" }}>
           {t(`${type === "create" ? "titleCreated" : "titleUpdated"}`)}
         </Text>
-        <Divider />
+        <Divider marginTop={24} />
         <Form userId={Array.isArray(userId) ? userId[0] : userId} type={type} />
       </Box>
       <FooterDW />

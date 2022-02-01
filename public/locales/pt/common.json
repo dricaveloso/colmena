@@ -1,21 +1,33 @@
 {
-  "form": {
-    "skipButton": "Pular",
-    "nextIntro": "Próximo",
-    "backButton": "Voltar"
-  },
-  "agreeWithTerms": "Eu concordo com os",
-  "termsOfUse": "Termos de uso",
-  "termsOfUseText": "Todos os seres humanos nascem livres e iguais em dignidade e direitos. Toda pessoa tem direito à vida, à liberdade e à segurança pessoal. Ninguém será submetido a tortura, nem a tratamentos ou penas cruéis, desumanos ou degradantes. Toda pessoa tem direito ao reconhecimento, em todos os lugares, como pessoa perante a lei.",
-  "aboutMaia": "Sobre Colmena",
-  "profileText": "Meu Perfil",
-  "textUseApp": "Usar o app",
-  "featureUnavailable": "Esta funcionalidade não está disponível no momento.",
-  "messageOffline": "Favor acessar esta página pelo menos uma vez com a internet habilitada.",
-  "welcomeUserMessage": "Seja bem vindo(a) {{userName}}",
-  "welcomeRadioMessage": "Radio {{mediaName}}",
-  "notFoundPageText": "Página não encontrada",
-  "internErrorPageText": "Erro interno",
-  "constructionPageText": "Página em construção",
-  "addFolderDrawerBottomTitle": "Pasta"
+    "form": {
+        "skipButton": "Pular",
+        "nextIntro": "Próximo",
+        "backButton": "Voltar",
+        "cancelButton": "Cancelar"
+    },
+    "agreeWithTerms": "Eu concordo com os",
+    "termsOfUse": "Termos de uso",
+    "termsOfUseText": "Todos os seres humanos nascem livres e iguais em dignidade e direitos. Toda pessoa tem direito à vida, à liberdade e à segurança pessoal. Ninguém será submetido a tortura, nem a tratamentos ou penas cruéis, desumanos ou degradantes. Toda pessoa tem direito ao reconhecimento, em todos os lugares, como pessoa perante a lei.",
+    "aboutMaia": "Sobre Colmena",
+    "profileText": "Meu Perfil",
+    "textUseApp": "Usar o app",
+    "featureUnavailable": "Esta funcionalidade não está disponível no momento.",
+    "messageOffline": "Favor acessar esta página pelo menos uma vez com a internet habilitada.",
+    "welcomeUserMessage": "Seja bem vindo(a) {{userName}}",
+    "welcomeRadioMessage": "Radio {{mediaName}}",
+    "notFoundPageText": "Página não encontrada",
+    "internErrorPageText": "Erro interno",
+    "constructionPageText": "Página em construção",
+    "addFolderDrawerBottomTitle": "Pasta",
+    "recordingDrawerBottomTitle": "Gravar",
+    "callDrawerBottomTitle": "Chamada",
+    "honeycombModal": {
+        "buttonStep2": "Adicionar"
+    },
+    "administratorTitle": "Administrador(a)",
+    "invitationGreeting": "Olá {{name}}",
+    "confirmTitleDelete": "Você tem certeza?",
+    "backToLogin": "Voltar ao login",
+    "socialMediaTitle": "Redes Sociais",
+    "confirmMessageDelete": "Ao executar esta ação,  será impossível revertê-la"
 }

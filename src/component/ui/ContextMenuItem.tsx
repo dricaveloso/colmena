@@ -7,9 +7,10 @@ import { TextVariantEnum } from "@/enums/*";
 type Props = {
   title: string;
   icon: AllIconProps | undefined;
+  iconColor?: string;
 };
 
-export default function ContextMenuItem({ title, icon }: Props) {
+export default function ContextMenuItem({ title, icon, iconColor }: Props) {
   return (
     <Box
       display="flex"
@@ -18,7 +19,7 @@ export default function ContextMenuItem({ title, icon }: Props) {
       alignContent="center"
       justifyContent="flex-start"
     >
-      {icon && <SvgIcon icon={icon} fontSize="small" />}
+      {icon && <SvgIcon icon={icon} htmlColor={iconColor} fontSize="small" />}
       <Text style={{ marginLeft: 8 }} variant={TextVariantEnum.SUBTITLE2}>
         {title}
       </Text>

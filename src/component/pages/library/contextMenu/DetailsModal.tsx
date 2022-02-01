@@ -42,7 +42,12 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
   }, []);
 
   return (
-    <Modal title={t("detailsTitle")} handleClose={() => handleOpen(false)} open={open}>
+    <Modal
+      data-testid="modal-item-details"
+      title={t("detailsTitle")}
+      handleClose={() => handleOpen(false)}
+      open={open}
+    >
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <strong>{t("detailsModal.name")}</strong>

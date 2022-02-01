@@ -5,25 +5,48 @@ import Text from "@/components/ui/Text";
 import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
+import router from "next/router";
 
 type Props = {
   title: string;
   link?: string;
   seeAllTitle?: string | undefined;
+  showRightButton?: boolean;
 };
 
-export default function ToolbarSection({ title, link, seeAllTitle }: Props) {
+export default function ToolbarSection({
+  title,
+  link,
+  seeAllTitle,
+  showRightButton = true,
+}: Props) {
+  const goTo = () => {
+    if (!link) return;
+
+    router.push(link);
+  };
   const { t } = useTranslation("common");
   return (
-    <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+    <Box
+      display="flex"
+      marginLeft={2}
+      marginRight={2}
+      flexDirection="row"
+      justifyContent={showRightButton ? "space-between" : "flex-start"}
+      alignItems="center"
+    >
       <Text variant={TextVariantEnum.H6} style={{ color: "#292929", fontWeight: "bold" }}>
         {title}
       </Text>
-      <Button
-        title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
-        variant={ButtonVariantEnum.TEXT}
-        style={{ color: "#292929" }}
-      />
+      {showRightButton && (
+        <Button
+          title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
+          variant={ButtonVariantEnum.TEXT}
+          style={{ color: "#292929" }}
+          data-testid="toolbar-click"
+          handleClick={() => goTo()}
+        />
+      )}
     </Box>
   );
 }

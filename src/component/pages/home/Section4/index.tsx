@@ -9,7 +9,7 @@ import { v4 as uuid } from "uuid";
 import { dateDescription } from "@/utils/utils";
 import { useTranslation } from "react-i18next";
 
-export default function Section2() {
+export default function Section4() {
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("home");
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });

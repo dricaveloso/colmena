@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import React, { useState } from "react";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -8,6 +9,7 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 type Props = {
   placeholder: string;
@@ -15,6 +17,8 @@ type Props = {
   name: string;
   required?: boolean;
   handleChangePassword: (value: string) => void;
+  InputProps?: {};
+  mainColor?: string;
 };
 
 function PasswordField({
@@ -23,11 +27,27 @@ function PasswordField({
   placeholder,
   handleChangePassword,
   required = false,
+  mainColor = "#343A40",
 }: Props) {
   const [values, setValues] = useState({
     password: "",
     showPassword: false,
   });
+
+  const color = `${mainColor} !important`;
+
+  const useOutlinedInputStyles = makeStyles(() => ({
+    input: {
+      color,
+    },
+    focused: {
+      borderColor: color,
+    },
+    notchedOutline: {
+      borderColor: color,
+    },
+  }));
+  const outlinedInputClasses = useOutlinedInputStyles();
 
   const handleChange = (prop: string) => (event: any) => {
     handleChangePassword(event.target.value);
@@ -51,11 +71,9 @@ function PasswordField({
         value={values.password}
         onChange={handleChange("password")}
         fullWidth
+        classes={outlinedInputClasses}
         inputProps={{
           autoComplete: `new-${name}`,
-          form: {
-            autoComplete: "off",
-          },
         }}
         required={required}
         label={label}
@@ -67,7 +85,11 @@ function PasswordField({
               onMouseDown={handleMouseDownPassword}
               edge="end"
             >
-              {values.showPassword ? <Visibility /> : <VisibilityOff />}
+              {values.showPassword ? (
+                <Visibility style={{ color: mainColor }} />
+              ) : (
+                <VisibilityOff style={{ color: mainColor }} />
+              )}
             </IconButton>
           </InputAdornment>
         }
