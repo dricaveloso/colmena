@@ -32,7 +32,6 @@ import { toast } from "@/utils/notifications";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { listTags } from "@/services/webdav/tags";
 import Modal from "@/components/ui/Modal";
-import theme from "@/styles/theme";
 import ButtonCore from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -175,7 +174,7 @@ export default function DialogExtraInfoAudio({
                 <Button
                   handleClick={submitForm}
                   variant={ButtonVariantEnum.CONTAINED}
-                  style={{ margin: 8, backgroundColor: theme.palette.variation1.main }}
+                  style={{ margin: 8 }}
                   title={t("submitButton")}
                 />
               </Box>

@@ -246,7 +246,6 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       />
                       <Button
                         handleClick={submitForm}
-                        style={{ backgroundColor: theme.palette.variation1.main, color: "#fff" }}
                         variant={
                           isSubmitting ? ButtonVariantEnum.CONTAINED : ButtonVariantEnum.OUTLINED
                         }

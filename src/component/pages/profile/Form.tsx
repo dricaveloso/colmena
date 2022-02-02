@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "next-i18next";
 import Button from "@/components/ui/Button";
 import { toast } from "@/utils/notifications";
-import { ButtonVariantEnum, SelectVariantEnum } from "@/enums/index";
+import { ButtonColorEnum, ButtonVariantEnum, SelectVariantEnum } from "@/enums/index";
 import { makeStyles } from "@material-ui/styles";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
@@ -16,7 +16,6 @@ import ResetPasswordModal from "./ResetPasswordModal";
 import { updateUser } from "@/services/ocs/users";
 import { userInfoUpdate } from "@/store/actions/users";
 import BackdropModal from "@/components/ui/Backdrop";
-import theme from "@/styles/theme";
 
 type MyFormValues = {
   user_name: string;
@@ -184,13 +183,13 @@ export default function FormProfile() {
                   data-testid="submit-profile-form"
                   disabled={isSubmitting}
                   handleClick={submitForm}
-                  style={{ backgroundColor: theme.palette.variation1.main }}
                 />
               </div>
               <div className="marginTop15">
                 <Button
                   title={t("resetPasswordButton")}
                   disabled={isSubmitting}
+                  color={ButtonColorEnum.SECONDARY}
                   variant={ButtonVariantEnum.TEXT}
                   handleClick={handleOpenResetPasswordModal}
                   data-testid="open-reset-password-modal"
