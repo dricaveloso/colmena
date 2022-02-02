@@ -15,7 +15,6 @@ import { toast } from "@/utils/notifications";
 import { v4 as uuid } from "uuid";
 import { makeStyles } from "@material-ui/core/styles";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import theme from "@/styles/theme";
 
 type MyFormValues = {
   email: string;
@@ -146,7 +145,6 @@ export default function WrapperForm() {
                   width: 200,
                   marginTop: 15,
                   marginBottom: 30,
-                  backgroundColor: theme.palette.variation1.main,
                   textTransform: "uppercase",
                 }}
               />

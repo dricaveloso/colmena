@@ -11,6 +11,7 @@ import {
   RoleUserEnum,
   ConfigFilesNCEnum,
   ButtonVariantEnum,
+  ButtonColorEnum,
 } from "@/enums/index";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
@@ -24,7 +25,6 @@ import getConfig from "next/config";
 import { UserProfileInterface } from "@/interfaces/index";
 import Divider from "@/components/ui/Divider";
 import Modal from "@/components/ui/Modal";
-import theme from "@/styles/theme";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -220,6 +220,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   handleClick={handleCloseInviteForm}
                   title={t("buttonCancelModalDialogInvite")}
                   data-testid="close-modal-invite"
+                  color={ButtonColorEnum.SECONDARY}
                   variant={ButtonVariantEnum.OUTLINED}
                 />
                 <Button
@@ -227,7 +228,6 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   title={t("buttonOkModalDialogInvite")}
                   disabled={isSubmitting}
                   isLoading={isSubmitting}
-                  style={{ backgroundColor: theme.palette.variation1.main }}
                   data-testid="submit-invite"
                   type="submit"
                 />

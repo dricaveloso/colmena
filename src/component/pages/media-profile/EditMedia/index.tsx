@@ -19,7 +19,6 @@ import { PropsUserSelector } from "@/types/index";
 import { MediaInfoInterface } from "@/interfaces/index";
 import { mediaInfoUpdate } from "@/store/actions/users/index";
 import { toast } from "@/utils/notifications";
-import theme from "@/styles/theme";
 
 type Props = {
   title: string;
@@ -173,7 +172,6 @@ export default function EditMedia({ title, open, handleClose }: Props) {
                 title={c("form.submitSaveTitle")}
                 disabled={isSubmitting}
                 isLoading={isSubmitting}
-                style={{ backgroundColor: theme.palette.variation1.main }}
                 data-testid="submit-edit-media"
                 type="submit"
               />

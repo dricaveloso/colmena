@@ -27,7 +27,6 @@ import Box from "@material-ui/core/Box";
 import { listFile } from "@/services/webdav/files";
 import { v4 as uuid } from "uuid";
 import { makeStyles } from "@material-ui/core/styles";
-import theme from "@/styles/theme";
 import Backdrop from "@/components/ui/Backdrop";
 
 type MyFormValues = {
@@ -280,7 +279,6 @@ export default function WrapperForm() {
                     width: 200,
                     marginTop: 15,
                     marginBottom: 30,
-                    backgroundColor: theme.palette.variation1.main,
                     textTransform: "uppercase",
                   }}
                 />

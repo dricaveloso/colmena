@@ -112,26 +112,39 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         onClose={handleCloseContextMenu}
       >
         {type === "file" && (
-          <MenuItem key="edit" onClick={unavailable} style={{ color: "#aaa" }}>
+          <MenuItem
+            key="edit"
+            onClick={unavailable}
+            data-testid="edit-item"
+            style={{ color: "#aaa" }}
+          >
             <ContextMenuItem title={t("contextMenuOptions.edit")} icon="edit_filled" />
           </MenuItem>
         )}
-        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)}>
+        <MenuItem key="copy" data-testid="copy-item" onClick={() => handleOpenCopyModal(true)}>
           <ContextMenuItem title={t("contextMenuOptions.copy")} icon="copy" />
         </MenuItem>
-        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)}>
+        <MenuItem key="move" data-testid="move-item" onClick={() => handleOpenMoveModal(true)}>
           <ContextMenuItem title={t("contextMenuOptions.move")} icon="move" />
         </MenuItem>
-        <MenuItem key="duplicate" onClick={() => handleOpenDuplicateModal(true)}>
+        <MenuItem
+          key="duplicate"
+          data-testid="duplicate-item"
+          onClick={() => handleOpenDuplicateModal(true)}
+        >
           <ContextMenuItem title={t("contextMenuOptions.duplicate")} icon="duplicate" />
         </MenuItem>
         {type === "file" && (
-          <MenuItem key="download" onClick={() => handleOpenDownloadModal(true)}>
+          <MenuItem
+            key="download"
+            data-testid="download-item"
+            onClick={() => handleOpenDownloadModal(true)}
+          >
             <ContextMenuItem title={t("contextMenuOptions.download")} icon="download" />
           </MenuItem>
         )}
         {type === "file" && environment !== EnvironmentEnum.LOCAL && (
-          <MenuItem key="sync">
+          <MenuItem key="sync" data-testid="sync-item">
             <Box display="flex" justifyContent="flex-start">
               <FormControlLabel
                 style={{ paddingLeft: 0, marginLeft: 0 }}
@@ -144,16 +157,33 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
             </Box>
           </MenuItem>
         )}
-        <MenuItem key="rename" onClick={() => handleOpenRenameModal(true)}>
+        <MenuItem
+          key="rename"
+          data-testid="rename-item"
+          onClick={() => handleOpenRenameModal(true)}
+        >
           <ContextMenuItem title={t("contextMenuOptions.rename")} icon="rename" />
         </MenuItem>
-        <MenuItem key="details" onClick={() => handleOpenDetailsModal(true)}>
+        <MenuItem
+          key="details"
+          data-testid="details-item"
+          onClick={() => handleOpenDetailsModal(true)}
+        >
           <ContextMenuItem title={t("contextMenuOptions.details")} icon="details" />
         </MenuItem>
-        <MenuItem key="publish" onClick={unavailable} style={{ color: "#aaa" }}>
+        <MenuItem
+          key="publish"
+          data-testid="publish-item"
+          onClick={unavailable}
+          style={{ color: "#aaa" }}
+        >
           <ContextMenuItem title={t("contextMenuOptions.publish")} icon="upload" />
         </MenuItem>
-        <MenuItem key="delete" onClick={() => handleOpenDeleteItemConfirm(true)}>
+        <MenuItem
+          key="delete"
+          data-testid="delete-item"
+          onClick={() => handleOpenDeleteItemConfirm(true)}
+        >
           <ContextMenuItem title={t("contextMenuOptions.delete")} icon="trash" iconColor="tomato" />
         </MenuItem>
       </Menu>

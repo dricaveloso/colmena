@@ -237,7 +237,6 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
               handleClick={showCroppedImage}
               style={{ margin: 8 }}
               variant={ButtonVariantEnum.CONTAINED}
-              color={ButtonColorEnum.PRIMARY}
               title={c("form.submitSaveTitle")}
               data-testid="submit-modal-crop-media-avatar"
             />
