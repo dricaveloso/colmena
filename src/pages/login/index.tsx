@@ -38,8 +38,11 @@ export default function Login() {
   const { t } = useTranslation("login");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isLower640, setIsLower640] = useState(false);
 
   useEffect(() => {
+    if (window.innerHeight <= 640) setIsLower640(true);
+
     if (!navigator.onLine) {
       router.replace("/home");
       return;
@@ -55,6 +58,7 @@ export default function Login() {
   if (isLoading) return <CenterProgress />;
 
   const backgroundColor = theme.palette.primary.main;
+
   return (
     <Container backgroundColor={backgroundColor}>
       <Box
@@ -66,13 +70,13 @@ export default function Login() {
       >
         <ExternalVerticalLogo />
         <Divider marginTop={24} />
-        <Text variant={TextVariantEnum.BODY1} style={{ color: "#fff" }}>
+        <Text variant={TextVariantEnum.BODY1} style={{ color: "#fff", textAlign: "center" }}>
           {t("title")}
         </Text>
         <Divider marginTop={24} />
         <Form />
       </Box>
-      <FooterDW />
+      {!isLower640 && <FooterDW />}
     </Container>
   );
 }

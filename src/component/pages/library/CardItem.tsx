@@ -65,18 +65,6 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     dispatch(setCurrentAudioPlaying(!flag ? filename : ""));
   };
 
-  const mountPlayPlauseButton: React.ReactNode | undefined =
-    type === "file" && isAudioFile(mime) ? (
-      <IconButton
-        key={`${basename}-playpause`}
-        icon={isPlaying ? "pause_flat" : "play_flat"}
-        color="#9A9A9A"
-        style={{ padding: 0, margin: 0, minWidth: 30 }}
-        fontSizeIcon="small"
-        handleClick={() => playPauseAudioHandle(isPlaying)}
-      />
-    ) : null;
-
   const avatar = useMemo(() => {
     let folderSecondIcon: AllIconProps | null | undefined = null;
     if (type === "directory") {
@@ -99,6 +87,19 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           }
           break;
       }
+    }
+
+    if (type === "file" && isAudioFile(mime)) {
+      return (
+        <IconButton
+          key={`${basename}-playpause`}
+          icon={isPlaying ? "stop" : "play"}
+          iconColor={theme.palette.primary.main}
+          iconStyle={{ fontSize: 45 }}
+          fontSizeIcon="small"
+          handleClick={() => playPauseAudioHandle(isPlaying)}
+        />
+      );
     }
 
     return (
@@ -200,7 +201,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           avatar={avatar}
           primary={basename}
           secondary={subtitle}
-          options={options && options(cardItem, mountPlayPlauseButton)}
+          options={options && options(cardItem)}
           handleClick={handleClick}
           isPlaying={isPlaying}
           environment={environment}
@@ -214,9 +215,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           primaryFormatted={formatPrimaryWithSecondaryGrid}
           primary={basename}
           topOptions={options && options(cardItem)}
-          bottomOptions={
-            bottomOptions && bottomOptions(cardItem, mountPlayPlauseButton, badgeStatusGrid)
-          }
+          bottomOptions={bottomOptions && bottomOptions(cardItem, badgeStatusGrid)}
           handleClick={handleClick}
           isPlaying={isPlaying}
           environment={environment}

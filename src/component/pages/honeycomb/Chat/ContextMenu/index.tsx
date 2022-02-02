@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { addParticipantToConversation, getRoomParticipants } from "@/services/talk/room";
 import Backdrop from "@/components/ui/Backdrop";
 import { RoomParticipant } from "@/interfaces/talk";
+import theme from "@/styles/theme";
 
 type PositionProps = {
   mouseX: null | number;
@@ -102,22 +103,26 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
     }
   }
 
-  const handleOpenParticipantModal = () => {
-    if (!part) return;
-
-    const isModerator = participantsAddedHoneycomb.find(
+  const isModerator = () => {
+    const result = participantsAddedHoneycomb.find(
       (item) =>
         item.actorId === userRdx.user.id &&
         (item.participantType === PermissionTalkMemberEnum.OWNER ||
           item.participantType === PermissionTalkMemberEnum.MODERATOR),
     );
-    if (!isModerator) {
-      toast(c("noPrivilegesAccessTitle"), "error");
-      return;
-    }
+    return result;
+  };
+
+  const handleOpenParticipantModal = () => {
+    if (!isModerator()) return;
 
     handleCloseContextMenu();
     setOpenAddParticipant(true);
+  };
+
+  const ButtonStep1Style = {
+    color: "#fff",
+    margin: 8,
   };
 
   return (
@@ -146,7 +151,13 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
         onClose={handleCloseContextMenu}
       >
         <MenuItem key="add" onClick={handleOpenParticipantModal}>
-          <ContextMenuItem icon="user" title={t("contextMenuOptions.addParticipantContextTitle")} />
+          <ContextMenuItem
+            icon="user"
+            iconColor={
+              !isModerator() ? theme.palette.variation6.light : theme.palette.variation6.main
+            }
+            title={t("contextMenuOptions.addParticipantContextTitle")}
+          />
         </MenuItem>
       </Menu>
       <Modal
@@ -165,9 +176,10 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
             <Button
               handleClick={handleInviteParticipants}
               disabled={participants.length === 0}
-              style={{ margin: 8 }}
-              variant={ButtonVariantEnum.CONTAINED}
-              color={ButtonColorEnum.PRIMARY}
+              style={participants.length > 0 ? ButtonStep1Style : { margin: 8 }}
+              variant={
+                participants.length > 0 ? ButtonVariantEnum.CONTAINED : ButtonVariantEnum.OUTLINED
+              }
               title={c("form.submitSaveTitle")}
             />
           </Box>

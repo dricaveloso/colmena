@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { ConfigFilesNCEnum } from "@/enums/*";
 import Loading from "@/components/ui/Loading";
 import { arrayBufferToBlob, blobToDataURL } from "blob-util";
+import { create as createMedia, findByName } from "@/store/idb/models/media";
 
 type Props = {
   size: number;
@@ -37,12 +38,20 @@ function AvatarAux({ size, showEditImage = false, mediaName = "" }: Props) {
   const init = async () => {
     try {
       setLoading(true);
-      const blobRes: any = await listFile(
-        userRdx.user.id,
-        `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE_AVATAR}`,
-      );
-      const blob = await arrayBufferToBlob(blobRes);
-      const file = await blobToDataURL(blob);
+      const media = await findByName(mediaName);
+      let blob: Blob;
+      let file: string | null = null;
+      if (!media) {
+        const blobRes: any = await listFile(
+          userRdx.user.id,
+          `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE_AVATAR}`,
+        );
+        blob = await arrayBufferToBlob(blobRes);
+        createMedia({ name: mediaName, image: blobRes });
+      } else {
+        blob = await arrayBufferToBlob(media.image);
+      }
+      file = await blobToDataURL(blob);
       setFile(file);
     } catch (e) {
       console.log(e);

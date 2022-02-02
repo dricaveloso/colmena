@@ -26,7 +26,6 @@ function MediaProfile() {
   return (
     <LayoutApp
       title={userRdx.user.media?.name || ""}
-      drawer={false}
       back
       extraElement={<ContextMenuMediaProfile />}
     >

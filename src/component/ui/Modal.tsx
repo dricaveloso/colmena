@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
@@ -42,6 +43,7 @@ const DialogContent = withStyles((theme) => ({
 
 type Props = {
   title?: string;
+  description?: string;
   open: boolean;
   handleClose?: (event: any, reason: string) => void | undefined;
   children: React.ReactNode;
@@ -49,7 +51,7 @@ type Props = {
   disableBackdropClick?: boolean;
 };
 
-function Modal({ title, open, handleClose, children, actions, ...props }: Props) {
+function Modal({ title, description, open, handleClose, children, actions, ...props }: Props) {
   return (
     <Dialog
       onClose={handleClose}
@@ -59,8 +61,15 @@ function Modal({ title, open, handleClose, children, actions, ...props }: Props)
       maxWidth="xs"
       {...props}
     >
-      {title && <DialogTitle onClose={handleClose}>{title}</DialogTitle>}
-      <DialogContent dividers>{children}</DialogContent>
+      {title && (
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          {title}
+        </DialogTitle>
+      )}
+      <DialogContent dividers>
+        {description && <DialogContentText>{description}</DialogContentText>}
+        {children}
+      </DialogContent>
       {actions && <DialogActions>{actions}</DialogActions>}
     </Dialog>
   );

@@ -16,6 +16,8 @@ import { toast } from "@/utils/notifications";
 import { EnvironmentEnum } from "@/enums/*";
 import Switch from "@material-ui/core/Switch";
 import { Box } from "@material-ui/core";
+import ContextMenuItem from "@/components/ui/ContextMenuItem";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename, arrayBufferBlob, mime } =
@@ -113,70 +115,76 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
           <MenuItem
             key="edit"
             onClick={unavailable}
-            style={{ color: "#aaa" }}
             data-testid="edit-item"
+            style={{ color: "#aaa" }}
           >
-            {t("contextMenuOptions.edit")}
+            <ContextMenuItem title={t("contextMenuOptions.edit")} icon="edit_filled" />
           </MenuItem>
         )}
-        <MenuItem key="copy" onClick={() => handleOpenCopyModal(true)} data-testid="copy-item">
-          {t("contextMenuOptions.copy")}
+        <MenuItem key="copy" data-testid="copy-item" onClick={() => handleOpenCopyModal(true)}>
+          <ContextMenuItem title={t("contextMenuOptions.copy")} icon="copy" />
         </MenuItem>
-        <MenuItem key="move" onClick={() => handleOpenMoveModal(true)} data-testid="move-item">
-          {t("contextMenuOptions.move")}
+        <MenuItem key="move" data-testid="move-item" onClick={() => handleOpenMoveModal(true)}>
+          <ContextMenuItem title={t("contextMenuOptions.move")} icon="move" />
         </MenuItem>
         <MenuItem
           key="duplicate"
-          onClick={() => handleOpenDuplicateModal(true)}
           data-testid="duplicate-item"
+          onClick={() => handleOpenDuplicateModal(true)}
         >
-          {t("contextMenuOptions.duplicate")}
+          <ContextMenuItem title={t("contextMenuOptions.duplicate")} icon="duplicate" />
         </MenuItem>
         {type === "file" && (
           <MenuItem
             key="download"
-            onClick={() => handleOpenDownloadModal(true)}
             data-testid="download-item"
+            onClick={() => handleOpenDownloadModal(true)}
           >
-            {t("contextMenuOptions.download")}
+            <ContextMenuItem title={t("contextMenuOptions.download")} icon="download" />
           </MenuItem>
         )}
         {type === "file" && environment !== EnvironmentEnum.LOCAL && (
-          <MenuItem key="sync">
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <div>{t("contextMenuOptions.availableOffline")}</div>
-              <Switch checked={availableOffline} onChange={handleAvailableOffline} />
+          <MenuItem key="sync" data-testid="sync-item">
+            <Box display="flex" justifyContent="flex-start">
+              <FormControlLabel
+                style={{ paddingLeft: 0, marginLeft: 0 }}
+                labelPlacement="start"
+                control={<Switch checked={availableOffline} onChange={handleAvailableOffline} />}
+                label={
+                  <ContextMenuItem title={t("contextMenuOptions.availableOffline")} icon="sync" />
+                }
+              />
             </Box>
           </MenuItem>
         )}
         <MenuItem
           key="rename"
-          onClick={() => handleOpenRenameModal(true)}
           data-testid="rename-item"
+          onClick={() => handleOpenRenameModal(true)}
         >
-          {t("contextMenuOptions.rename")}
+          <ContextMenuItem title={t("contextMenuOptions.rename")} icon="rename" />
         </MenuItem>
         <MenuItem
           key="details"
+          data-testid="details-item"
           onClick={() => handleOpenDetailsModal(true)}
-          data-testid="item-details"
         >
-          {t("contextMenuOptions.details")}
+          <ContextMenuItem title={t("contextMenuOptions.details")} icon="details" />
         </MenuItem>
         <MenuItem
           key="publish"
+          data-testid="publish-item"
           onClick={unavailable}
           style={{ color: "#aaa" }}
-          data-testid="publish-item"
         >
-          {t("contextMenuOptions.publish")}
+          <ContextMenuItem title={t("contextMenuOptions.publish")} icon="upload" />
         </MenuItem>
         <MenuItem
           key="delete"
-          onClick={() => handleOpenDeleteItemConfirm(true)}
           data-testid="delete-item"
+          onClick={() => handleOpenDeleteItemConfirm(true)}
         >
-          {t("contextMenuOptions.delete")}
+          <ContextMenuItem title={t("contextMenuOptions.delete")} icon="trash" iconColor="tomato" />
         </MenuItem>
       </Menu>
       <DownloadModal

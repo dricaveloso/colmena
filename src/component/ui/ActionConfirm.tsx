@@ -76,9 +76,11 @@ export default function ActionConfirm({
           <Button
             handleClick={onOk}
             variant={ButtonVariantEnum.CONTAINED}
-            color={ButtonColorEnum.PRIMARY}
             title={c("yesTitle")}
-            style={{ textTransform: "capitalize", marginLeft: 5 }}
+            style={{
+              textTransform: "capitalize",
+              marginLeft: 5,
+            }}
             disabled={isLoading}
             isLoading={isLoading}
           />

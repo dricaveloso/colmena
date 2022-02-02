@@ -7,13 +7,15 @@ const Search = () => {
   const { t: c } = useTranslation("common");
 
   return (
-    <form className="nosubmit" data-testid="ui-search">
-      <input
-        className="nosubmit"
-        type="search"
-        onClick={() => toast(c("featureUnavailable"), "warning")}
-      />
-    </form>
+    <div className="searchForm">
+      <form className="nosubmit" data-testid="ui-search">
+        <input
+          className="nosubmit"
+          type="search"
+          onClick={() => toast(c("featureUnavailable"), "warning")}
+        />
+      </form>
+    </div>
   );
 };
 

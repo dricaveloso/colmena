@@ -5,7 +5,7 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
+import { ButtonVariantEnum } from "@/enums/*";
 import { useTranslation } from "next-i18next";
 import { toast } from "@/utils/notifications";
 import { useDispatch, useSelector } from "react-redux";
@@ -171,7 +171,6 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
               <Divider marginTop={20} />
               <Button
                 handleClick={submitForm}
-                color={ButtonColorEnum.PRIMARY}
                 variant={ButtonVariantEnum.CONTAINED}
                 disabled={isSubmitting}
                 style={{ float: "right" }}

@@ -23,7 +23,7 @@ import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { Box } from "@material-ui/core";
-import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
+import { ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum, ButtonColorEnum } from "@/enums/*";
 import LibraryModal from "@/components/ui/LibraryModal";
 import { LibraryItemInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
