@@ -3,8 +3,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
 import { v4 as uuid } from "uuid";
 import { setCookie } from "nookies";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
@@ -13,6 +11,7 @@ import { useTranslation } from "next-i18next";
 import { updateUser } from "@/services/ocs/users";
 import Backdrop from "@/components/ui/Backdrop";
 import constants from "@/constants/index";
+import Modal from "@/components/ui/Modal";
 
 type LanguageProps = {
   abbr: string;
@@ -53,18 +52,16 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
   };
 
   return (
-    <Dialog
-      fullWidth
-      maxWidth="xs"
-      onClose={onClose}
-      aria-labelledby="simple-dialog-title"
-      open={open}
-    >
+    <Modal title={t("titleSwitchLanguage")} open={open} handleClose={onClose}>
       <Backdrop open={showBackdrop} />
-      <DialogTitle id="simple-dialog-title">{t("titleSwitchLanguage")}</DialogTitle>
       <List>
-        {languages.map((item: LanguageProps) => (
-          <ListItem button onClick={() => changeLanguageHandler(item.abbr)} key={uuid()}>
+        {languages.map((item: LanguageProps, idx: number) => (
+          <ListItem
+            style={{ backgroundColor: idx % 2 === 0 ? "#f2f2f2" : "#fff" }}
+            button
+            onClick={() => changeLanguageHandler(item.abbr)}
+            key={uuid()}
+          >
             <ListItemText primary={item.language} />
             {!!defaultLang && defaultLang === item.abbr && (
               <ListItemSecondaryAction>
@@ -74,6 +71,6 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
           </ListItem>
         ))}
       </List>
-    </Dialog>
+    </Modal>
   );
 }

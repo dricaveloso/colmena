@@ -139,6 +139,7 @@
   "languagesAllowed": {
     "en": "English",
     "es": "Spanish",
-    "fr": "French"
+    "fr": "French",
+    "ar": "Arabic"
   }
 }
