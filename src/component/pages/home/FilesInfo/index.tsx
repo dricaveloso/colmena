@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-hooks/exhaustive-deps */
 
@@ -63,8 +64,12 @@ const FilesInfoSection = () => {
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="row" alignContent="center" justifyContent="space-around">
-          <Item title={h("myFilesLabel")} amount={data.length + subPastLenght.length} />
-          <Item title={h("sharedLabel")} amount={sharedData.length} />
+          <a href={`/library/${userRdx.user.id}`}>
+            <Item title={h("myFilesLabel")} amount={data.length + subPastLenght.length} />
+          </a>
+          <a href="/library/Talk">
+            <Item title={h("sharedLabel")} amount={sharedData.length} />
+          </a>
           <Item title={h("publicLabel")} amount={0} />
         </Box>
       </Box>
