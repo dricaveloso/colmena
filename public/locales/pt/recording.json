@@ -20,5 +20,8 @@
     "uploadLocationTitle": "",
     "changeUploadLocationTitle": "",
     "availableWithoutInternetTitle": "",
-    "tagsRequiredTitle": ""
+    "tagsRequiredTitle": "",
+    "recordingTitle": "",
+    "pausingTitle": "",
+    "newRecordingTitle": ""
 }

@@ -10,13 +10,9 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { updateUser } from "@/services/ocs/users";
 import Backdrop from "@/components/ui/Backdrop";
-import constants from "@/constants/index";
 import Modal from "@/components/ui/Modal";
-
-type LanguageProps = {
-  abbr: string;
-  language: string;
-};
+import { getSystemLanguages } from "@/utils/utils";
+import { LanguageProps } from "@/types/*";
 
 type Props = {
   open: boolean;
@@ -30,12 +26,6 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
   const [showBackdrop, setShowBackdrop] = useState(false);
   const { t } = useTranslation("common");
 
-  const locales = Object.values(constants.LOCALES);
-  const languages: LanguageProps[] = locales.map((item) => ({
-    abbr: item,
-    language: t(`languagesAllowed.${item}`),
-  }));
-
   const changeLanguageHandler = async (locale: string) => {
     if (defaultLang !== locale) {
       setShowBackdrop(true);
@@ -43,7 +33,11 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
-      await updateUser<string>("language", locale);
+      try {
+        await updateUser<string>("language", locale);
+      } catch (e) {
+        // idioma não existe no NC
+      }
       setShowBackdrop(false);
       router.push(backUrl, "", {
         locale,
@@ -55,7 +49,7 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
     <Modal title={t("titleSwitchLanguage")} open={open} handleClose={onClose}>
       <Backdrop open={showBackdrop} />
       <List>
-        {languages.map((item: LanguageProps, idx: number) => (
+        {getSystemLanguages(t).map((item: LanguageProps, idx: number) => (
           <ListItem
             style={{ backgroundColor: idx % 2 === 0 ? "#f2f2f2" : "#fff" }}
             button

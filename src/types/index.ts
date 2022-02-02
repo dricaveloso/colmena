@@ -293,3 +293,8 @@ export type AllIconProps =
   | "sync";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
+
+export type LanguageProps = {
+  abbr: string;
+  language: string;
+};

@@ -6,6 +6,8 @@ import {
   BreadcrumbItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
+import constants from "@/constants/index";
+import { LanguageProps } from "@/types/*";
 
 export function formatBytes(bytes: number, decimals = 2) {
   if (bytes === 0) return "0 Bytes";
@@ -427,4 +429,20 @@ export function getBackAfterFinishRecording() {
 
 export function treatTagName(value: string) {
   return value.toLowerCase();
+}
+
+export function getSystemLanguages(t: any): LanguageProps[] {
+  const locales = Object.values(constants.LOCALES);
+  return locales
+    .map((item) => ({
+      abbr: item,
+      language: t(`languagesAllowed.${item}`),
+    }))
+    .sort((a, b) => {
+      if (a.language > b.language) return 1;
+
+      if (a.language < b.language) return -1;
+
+      return 0;
+    });
 }
