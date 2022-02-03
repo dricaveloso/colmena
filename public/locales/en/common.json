@@ -61,7 +61,6 @@
       "loadingTitle": "Wait...",
       "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
       "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",
-      "URLInvalid": "URL invalid.",
       "invalidEmailTitle": "Invalid email",
       "invalidURLTitle": "Invalid URL",
       "successMessageFormSave": "Saved successfully",
@@ -139,6 +138,9 @@
   "languagesAllowed": {
     "en": "English",
     "es": "Spanish",
-    "fr": "French"
+    "fr": "French",
+    "ar": "Arabic",
+    "pt": "Portuguese (Brazil)",
+    "sw": "Swahili"
   }
 }

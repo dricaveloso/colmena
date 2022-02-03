@@ -110,12 +110,11 @@ export default function WrapperForm() {
           const email = emailv.trim();
           setSubmitting(true);
           (async () => {
-            const lang = cookies.NEXT_LOCALE || "en";
+            const langCookie = cookies.NEXT_LOCALE || "en";
             const result: any | null = await signIn("credentials", {
               redirect: false,
               email,
               password,
-              lang,
             });
 
             if (!result.error) {
@@ -164,20 +163,25 @@ export default function WrapperForm() {
                 return;
               }
 
+              const { language } = user;
+              if (language !== langCookie) {
+                user.language = langCookie;
+              }
+
               dispatch(
                 userUpdate({
                   user,
                 }),
               );
-              const { language: locale } = user;
-              setCookie(null, "NEXT_LOCALE", locale, {
+
+              setCookie(null, "NEXT_LOCALE", user.language, {
                 maxAge: 30 * 24 * 60 * 60,
                 path: "/",
               });
 
               toast(t("loginSuccesfully"), "success");
               router.push("/home", "", {
-                locale,
+                locale: user.language,
               });
               setSubmitting(false);
               return;

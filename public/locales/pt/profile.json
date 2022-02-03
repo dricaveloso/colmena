@@ -1,13 +1,26 @@
 {
   "title": "Perfil",
-  "textEditButton": "Editar Perfil",
-  "textPhotoButton": "Subir foto",
+  "textEditButton": "Editar perfil",
+  "textPhotoButton": "Upload de imagem",
   "mediaTitle": "Meio",
+  "switchLanguage": "Idioma",
+  "successMessage": "Informação salva",
   "nameField": "Nome",
+  "lastnameField": "Último nome",
   "emailField": "E-mail",
   "urlField": "URL / BLOG",
-  "socialMediaTitle": "Mídias Sociais",
+  "socialMediaTitle": "Redes Sociais",
   "editButton": "Editar",
   "saveButton": "Salvar",
-  "resetPasswordButton": "Resetar senha"
+  "resetPasswordButton": "Redefinir senha",
+  "manageTitle": "Gerenciar",
+  "contextMenuOptions": {
+    "settings": "Configurações",
+    "remove": "Remover conta",
+    "deactivate": "Desativar conta"
+  },
+  "confirmationRemoveAccountMessage": "Esta ação removerá permanentemente seu usuário, e consequentemente não terá mais acesso a Colmena.",
+  "confirmationSuspendAccountMessage": "Esta ação removerá desativará sua conta, e somente com permissão do administrador poderá retornar.",
+  "messageSuccessAccountDeactivated": "Usuário desabilitado.",
+  "messageSuccessAccountDeleted": "Usuário removido."
 }
