@@ -12,7 +12,7 @@ import Box from "@material-ui/core/Box";
 type Props = {
   icon: AllIconProps;
   title?: string | null;
-  fontSizeIcon?: FontSizeIconProps;
+  fontSizeIcon?: FontSizeIconProps | number;
   variantTitle?: TextVariantProps;
   color?: string;
   iconColor?: string;

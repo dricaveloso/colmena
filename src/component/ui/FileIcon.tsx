@@ -8,6 +8,8 @@ import { AllIconProps } from "@/types/index";
 const useStyles = makeStyles(() => ({
   root: {
     position: "relative",
+    display: "flex",
+    alignItems: "center",
     "& .MuiSvgIcon-fontSizeLarge": {
       fontSize: "3rem",
       width: "inherit",
@@ -22,6 +24,7 @@ const useStyles = makeStyles(() => ({
     height: "100%",
     alignItems: "center",
     justifyContent: "space-evenly",
+    paddingTop: 5,
   },
   fileExtension: {
     position: "absolute",
@@ -92,15 +95,19 @@ export default function FileIcon({
     if (mime) {
       const splitMime = mime.split("/");
       const firstName = splitMime[0];
-      // const lastName = splitMime[1];
+      const lastName = splitMime[1];
       switch (firstName) {
         case "image":
           fileSecondIcon = "art_gallery";
           break;
         case "audio":
           fileSecondIcon = "music";
+          if (lastName === "webm") {
+            fileSecondIcon = "microphone";
+          }
           break;
         default:
+          fileSecondIcon = "generic_file";
           break;
       }
     }
@@ -110,7 +117,7 @@ export default function FileIcon({
     <div className={classes.root}>
       {folderSecondIcon && (
         <div className={classes.folderSecondIcon}>
-          <SvgIcon icon={folderSecondIcon} htmlColor={iconTextColor ?? "#fff"} fontSize="small" />
+          <SvgIcon icon={folderSecondIcon} htmlColor={iconTextColor ?? "#fff"} fontSize={20} />
         </div>
       )}
       {!fileSecondIcon && extensionDescription && (
@@ -120,7 +127,7 @@ export default function FileIcon({
       )}
       {fileSecondIcon && (
         <div className={classes.fileSecondIcon}>
-          <SvgIcon icon={fileSecondIcon} htmlColor={iconTextColor ?? "#fff"} fontSize="small" />
+          <SvgIcon icon={fileSecondIcon} htmlColor={iconTextColor ?? "#fff"} fontSize={22} />
         </div>
       )}
       <SvgIcon icon={icon} htmlColor={iconColor ?? theme.palette.primary.dark} fontSize="large" />

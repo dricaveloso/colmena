@@ -15,6 +15,8 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     background: "#fff",
     padding: 8,
+    borderRadius: 5,
+    border: "1px solid #eee",
   },
   description: {
     flexDirection: "column",
@@ -33,21 +35,22 @@ const useStyles = makeStyles(() => ({
   avatar: {
     minHeight: 50,
     display: "flex",
-    alignItems: "flex-end",
+    alignItems: "center",
   },
 }));
 
-const VerticalItemList = ({
-  avatar,
-  primary,
-  secondary,
-  options,
-  handleClick,
-  isPlaying = false,
-  filename,
-  environment,
-  size = 0,
-}: VerticalItemListInterface) => {
+const VerticalItemList = (cardItem: VerticalItemListInterface) => {
+  const {
+    avatar,
+    primary,
+    secondary,
+    options,
+    handleClick,
+    isPlaying = false,
+    filename,
+    environment,
+    size = 0,
+  } = cardItem;
   const classes = useStyles();
 
   return (
@@ -57,6 +60,7 @@ const VerticalItemList = ({
         <ListItemText
           data-testid="title"
           className={classes.description}
+          onClick={handleClick}
           primary={
             <AudioItemPreview
               primary={primary}
@@ -73,7 +77,6 @@ const VerticalItemList = ({
           className={classes.description}
           primary={primary}
           secondary={secondary}
-          onClick={handleClick}
         />
       )}
       <Box className={classes.options}>{options}</Box>
