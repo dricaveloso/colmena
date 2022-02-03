@@ -8,22 +8,20 @@ import {
   LibraryItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { listLibraryDirectories } from "@/services/webdav/directories";
-import { FileStat } from "webdav";
 import { getFilesByPath } from "@/store/idb/models/files";
 import { makeStyles } from "@material-ui/core";
-import { getExtensionFilename, dateDescription, removeCornerSlash } from "@/utils/utils";
+import { dateDescription, removeCornerSlash } from "@/utils/utils";
 import { EnvironmentEnum, OrderEnum, FilterEnum, ListTypeEnum } from "@/enums/index";
 import {
-  getAudioPath,
   getPrivatePath,
   getPublicPath,
-  convertPrivateToUsername,
   convertUsernameToPrivate,
   getFilename,
+  getTalkPath,
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 import { setCurrentAudioPlaying } from "@/store/actions/library";
+import { getFiles } from "@/services/webdav/files";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -37,32 +35,14 @@ const useStyles = makeStyles(() => ({
     padding: 4,
   },
   verticalList: {
-    padding: 1,
+    padding: "2px 10px",
   },
 }));
 
 let currentItem: LibraryItemInterface | null = null;
 
-function setCurrentItem(
-  directory: FileStat,
-  filename: string,
-  aliasFilename: string,
-  date: Date,
-  timeDescription: TimeDescriptionInterface,
-) {
-  currentItem = {
-    basename: directory.basename,
-    id: directory.filename,
-    filename,
-    aliasFilename,
-    type: directory.type,
-    environment: EnvironmentEnum.REMOTE,
-    extension: getExtensionFilename(filename),
-    createdAt: date,
-    createdAtDescription: dateDescription(date, timeDescription),
-    mime: directory.mime,
-    size: directory.size,
-  };
+function setCurrentItem(item: LibraryItemInterface) {
+  currentItem = item;
 }
 
 export function getCurrentItem(): null | LibraryItemInterface {
@@ -74,48 +54,33 @@ export async function getWebDavDirectories(
   currentDirectory: string,
   timeDescription: TimeDescriptionInterface,
 ) {
-  const items: LibraryItemInterface[] = [];
-
-  const ncItems = await listLibraryDirectories(userId, currentDirectory);
-
-  if (ncItems) {
-    ncItems.forEach((directory: FileStat) => {
-      const filename = removeCornerSlash(directory.filename.replace(/^.+?(\/|$)/, ""));
-      let { basename } = directory;
-      const aliasFilename = convertPrivateToUsername(filename, userId);
-      const date = new Date(directory.lastmod);
-      if (filename === "") {
-        currentItem = null;
-      } else if (
-        filename === removeCornerSlash(currentDirectory) ||
-        aliasFilename === removeCornerSlash(currentDirectory)
-      ) {
-        setCurrentItem(directory, filename, aliasFilename, date, timeDescription);
-      } else {
-        if (filename === getPrivatePath()) {
-          basename = userId;
-        }
-
-        const item: LibraryItemInterface = {
-          basename,
-          id: directory.filename,
-          filename,
-          aliasFilename,
-          type: directory.type,
-          environment: EnvironmentEnum.REMOTE,
-          extension: getExtensionFilename(filename),
-          createdAt: date,
-          createdAtDescription: dateDescription(date, timeDescription),
-          mime: directory.mime,
-          size: directory.size,
-        };
-
-        items.push(item);
-      }
-    });
+  const ncItems: false | LibraryItemInterface[] = await getFiles(
+    userId,
+    currentDirectory,
+    timeDescription,
+  );
+  if (!ncItems) {
+    return [];
   }
 
-  return items;
+  ncItems.map((item: LibraryItemInterface) => {
+    const { aliasFilename, filename } = item;
+    if (filename === "") {
+      currentItem = null;
+    } else if (
+      filename === removeCornerSlash(currentDirectory) ||
+      aliasFilename === removeCornerSlash(currentDirectory)
+    ) {
+      setCurrentItem(item);
+    } else if (filename === getPrivatePath()) {
+      // eslint-disable-next-line no-param-reassign
+      item.basename = userId;
+    }
+
+    return item;
+  });
+
+  return ncItems;
 }
 
 export async function getLocalFiles(
@@ -136,6 +101,8 @@ export async function getLocalFiles(
         environment: EnvironmentEnum.LOCAL,
         createdAt: file.createdAt,
         createdAtDescription: dateDescription(file.createdAt, timeDescription),
+        updatedAt: file.createdAt,
+        updatedAtDescription: dateDescription(file.createdAt, timeDescription),
         mime: "audio/webm",
         arrayBufferBlob: file.arrayBufferBlob,
       };
@@ -184,12 +151,12 @@ export function orderItems(order: string, items: Array<LibraryItemInterface>) {
   items.sort((a, b) => {
     switch (order) {
       case OrderEnum.OLDEST_FIST:
-        return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt > b.createdAt
+        return a.updatedAt !== undefined && b.updatedAt !== undefined && a.updatedAt > b.updatedAt
           ? 1
           : -1;
       case OrderEnum.HIGHLIGHT:
       case OrderEnum.LATEST_FIRST:
-        return a.createdAt !== undefined && b.createdAt !== undefined && a.createdAt < b.createdAt
+        return a.updatedAt !== undefined && b.updatedAt !== undefined && a.updatedAt < b.updatedAt
           ? 1
           : -1;
       case OrderEnum.ASC_ALPHABETICAL:
@@ -211,11 +178,11 @@ export function orderItems(order: string, items: Array<LibraryItemInterface>) {
 
   if (order === OrderEnum.HIGHLIGHT) {
     items.sort((a, b) => {
-      if (b.filename === getAudioPath()) {
+      if (b.filename === getPrivatePath()) {
         return 1;
       }
 
-      if (b.filename === getPrivatePath()) {
+      if (b.filename === getTalkPath()) {
         return 1;
       }
 

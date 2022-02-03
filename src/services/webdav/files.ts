@@ -2,13 +2,30 @@
 /* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/ban-types */
 import webdav from "@/services/webdav";
-import { BufferLike, ResponseDataDetailed, DAVResultResponseProps } from "webdav";
-import { removeFirstSlash, getRandomInt, trailingSlash, removeCornerSlash } from "@/utils/utils";
+import {
+  BufferLike,
+  ResponseDataDetailed,
+  DAVResultResponseProps,
+  DAVResult,
+  DAVResultResponse,
+} from "webdav";
+import {
+  removeFirstSlash,
+  getRandomInt,
+  trailingSlash,
+  removeCornerSlash,
+  getExtensionFilename,
+  dateDescription,
+  fileSizeConvert,
+} from "@/utils/utils";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { arrayBufferToBlob, blobToArrayBuffer, createObjectURL } from "blob-util";
 import davAxiosConnection from "@/services/webdav/axiosConnection";
 import axiosBase from "@/services/webdav/axiosBase";
 import getConfig from "next/config";
+import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
+import { convertPrivateToUsername, getTalkPath } from "@/utils/directory";
+import { EnvironmentEnum } from "@/enums/*";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -191,57 +208,162 @@ export async function getFileId(userId: string, path: string) {
   return false;
 }
 
-export async function getDataFile(path: string) {
-  const body = `<?xml version="1.0" encoding="utf-8" ?>
-                <d:propfind  xmlns:d="DAV:"
-                  xmlns:oc="http://owncloud.org/ns"
-                  xmlns:nc="http://nextcloud.org/ns"
-                  xmlns:ocs="http://open-collaboration-services.org/ns">
-                  <d:prop>
-                    <d:getlastmodified />
-                    <d:getetag />
-                    <d:getcontenttype />
-                    <d:resourcetype />
-                    <oc:fileid />
-                    <oc:permissions />
-                    <oc:size />
-                    <d:getcontentlength />
-                    <nc:has-preview />
-                    <nc:mount-type />
-                    <nc:is-encrypted />
-                    <ocs:share-permissions />
-                    <oc:tags />
-                    <oc:display-name/>
-                    <oc:user-visible/>
-                    <oc:user-assignable/>
-                    <oc:id/>
-                    <oc:favorite />
-                    <oc:comments-unread />
-                    <oc:owner-id />
-                    <oc:owner-display-name />
-                    <oc:share-types />
+const payloadRequest = `<?xml version="1.0" encoding="utf-8" ?>
+<d:propfind  xmlns:d="DAV:"
+  xmlns:oc="http://owncloud.org/ns"
+  xmlns:nc="http://nextcloud.org/ns"
+  xmlns:ocs="http://open-collaboration-services.org/ns">
+  <d:prop>
+    <d:getlastmodified />
+    <d:getetag />
+    <d:getcontenttype />
+    <d:resourcetype />
+    <oc:fileid />
+    <oc:permissions />
+    <oc:size />
+    <d:getcontentlength />
+    <nc:has-preview />
+    <nc:mount-type />
+    <nc:is-encrypted />
+    <ocs:share-permissions />
+    <oc:tags />
+    <oc:display-name/>
+    <oc:user-visible/>
+    <oc:user-assignable/>
+    <oc:id/>
+    <oc:favorite />
+    <oc:comments-unread />
+    <oc:owner-id />
+    <oc:owner-display-name />
+    <oc:share-types />
 
-                    <oc:created-at />
-                    <oc:customtitle />
-                    <oc:customdescription />
-                    <oc:description />
-                    <oc:language />
+    <oc:created-at />
+    <oc:customtitle />
+    <oc:customdescription />
+    <oc:description />
+    <oc:language />
 
-                  </d:prop>
-                </d:propfind>`;
+  </d:prop>
+</d:propfind>`;
+
+export async function getDataFile(path: string, firstItem = true) {
   const result = await davAxiosConnection(
-    body,
+    payloadRequest,
     `files/${removeCornerSlash(path)}`,
     undefined,
     undefined,
     true,
   );
+
   if (typeof result.multistatus.response[0].propstat.prop === "object") {
-    return result.multistatus.response[0].propstat.prop;
+    if (firstItem) {
+      return result.multistatus.response[0].propstat.prop;
+    }
+
+    return result;
   }
 
   return false;
 }
+
+export async function getFiles(
+  userId: string,
+  path: string,
+  timeDescription: TimeDescriptionInterface,
+) {
+  const ncFiles = await getDataFile(`${removeCornerSlash(path)}`, false);
+  if (!ncFiles) {
+    return false;
+  }
+
+  const files = ncFiles as DAVResult;
+
+  const items: Array<LibraryItemInterface> = [];
+  files.multistatus.response.forEach((item) => {
+    items.push(itemPayload(userId, item, timeDescription));
+  });
+
+  return handleItems(items, path);
+}
+
+const itemPayload = (
+  userId: string,
+  item: DAVResultResponse,
+  timeDescription: TimeDescriptionInterface,
+) => {
+  const filename = decodeURI(removeCornerSlash(item.href.replace(/^.+?\/.+?(\/|$)/, "")));
+  const basename = removeCornerSlash(filename.replace(/^.*\/(.*)$/, "$1"));
+  const aliasFilename = convertPrivateToUsername(filename, userId);
+  const prop = item.propstat.prop as DAVResultResponseProps | any;
+  const type = !prop?.getcontenttype ? "directory" : "file";
+  const lastModified = prop?.getlastmodified;
+  let updatedAt;
+  if (lastModified) {
+    updatedAt = new Date(lastModified);
+  }
+
+  const dateCreatedAt = typeof prop["created-at"] !== "undefined" ? prop["created-at"] : null;
+  let createdAt;
+  if (lastModified) {
+    createdAt = new Date(dateCreatedAt);
+  }
+
+  const newItem: LibraryItemInterface = {
+    basename,
+    id: filename,
+    filename,
+    aliasFilename,
+    type,
+    environment: EnvironmentEnum.REMOTE,
+    extension: getExtensionFilename(filename),
+    createdAt,
+    createdAtDescription: dateDescription(createdAt, timeDescription),
+    updatedAt,
+    updatedAtDescription: dateDescription(updatedAt, timeDescription),
+    mime: prop?.getcontenttype,
+    size: prop?.size,
+    sizeFormatted: `${fileSizeConvert(prop.size).description}`,
+    contentLength: prop?.getcontentlength,
+    fileId: prop?.fileid,
+    nextcloudId: prop?.id,
+    eTag: prop?.getetag,
+    favorite: prop?.favorite,
+    commentsUnread: typeof prop["comments-unread"] !== "undefined" ? prop["comments-unread"] : null,
+    ownerId: typeof prop["owner-id"] !== "undefined" ? prop["owner-id"] : null,
+    ownerName:
+      typeof prop["owner-display-name"] !== "undefined" ? prop["owner-display-name"] : null,
+    title: prop?.customtitle,
+    description: prop?.description,
+    language: prop?.language,
+  };
+
+  return newItem;
+};
+
+const handleItems = (items: Array<LibraryItemInterface>, path: string) => {
+  const handledItems = items
+    .filter(
+      (item: LibraryItemInterface, index) =>
+        index > 0 && item.basename !== "" && item.basename[0] !== ".",
+    )
+    .map((item: LibraryItemInterface) => {
+      const newItem = item;
+      const { type, filename } = newItem;
+      if (type === "directory" && removeCornerSlash(filename) === getTalkPath()) {
+        newItem.basename = "shared with me";
+      }
+
+      return newItem;
+    });
+
+  const isRoot = path === "/" || path === "";
+  if (isRoot) {
+    console.log(handledItems);
+    return handledItems.filter(({ type }: LibraryItemInterface) => type === "directory");
+  }
+
+  return handledItems;
+};
 
 interface FileDataNCInterface {
   customtitle?: string;

@@ -428,3 +428,53 @@ export function getBackAfterFinishRecording() {
 export function treatTagName(value: string) {
   return value.toLowerCase();
 }
+
+export function fileSizeConvert(bytes: number) {
+  const sizes = [
+    {
+      unit: "TB",
+      // eslint-disable-next-line no-restricted-properties
+      value: Math.pow(1024, 4),
+    },
+    {
+      unit: "GB",
+      // eslint-disable-next-line no-restricted-properties
+      value: Math.pow(1024, 3),
+    },
+    {
+      unit: "MB",
+      // eslint-disable-next-line no-restricted-properties
+      value: Math.pow(1024, 2),
+    },
+    {
+      unit: "KB",
+      // eslint-disable-next-line no-restricted-properties
+      value: 1024,
+    },
+    {
+      unit: "B",
+      // eslint-disable-next-line no-restricted-properties
+      value: 1,
+    },
+  ];
+
+  type Props = {
+    size?: number | null;
+    unit?: string | null;
+    description?: string | null;
+  };
+  const result: Props = {
+    size: 0,
+    unit: null,
+    description: "0 B",
+  };
+
+  const size = sizes.find((item) => bytes >= item.value);
+  if (size) {
+    result.size = bytes / size.value;
+    result.unit = size.unit;
+    result.description = `${Math.round(result.size)} ${size.unit}`;
+  }
+
+  return result;
+}

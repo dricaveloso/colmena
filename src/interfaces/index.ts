@@ -162,14 +162,27 @@ export interface LibraryItemInterface {
   type?: string;
   tags?: NXTagsProps[] | string[];
   arrayBufferBlob?: ArrayBuffer;
-  updatedAt?: Date;
   createdAt?: Date;
   createdAtDescription?: string | undefined;
+  updatedAt?: Date;
+  updatedAtDescription?: string | undefined;
   environment: Environment;
   path?: string;
   image?: string;
   mime?: string;
   size?: number;
+  sizeFormatted?: string;
+  contentLength?: number;
+  ownerId?: string;
+  ownerName?: string;
+  title?: string;
+  description?: string;
+  language?: string;
+  favorite?: number;
+  commentsUnread?: number;
+  fileId?: number;
+  nextcloudId?: string;
+  eTag?: string;
 }
 
 export interface LibraryCardItemInterface extends LibraryItemInterface {
