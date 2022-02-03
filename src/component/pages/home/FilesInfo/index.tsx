@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import Item from "./Item";
 import { getItems } from "../../library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
+import { getAllContents } from "@/services/webdav/directories";
 
 const FilesInfoSection = () => {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -20,21 +21,13 @@ const FilesInfoSection = () => {
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
   const [data, setData] = useState<LibraryItemInterface[]>([]);
   const [sharedData, setSharedData] = useState<LibraryItemInterface[]>([]);
-  const [subPastLenght, setSubPathLength] = useState<LibraryItemInterface[]>([]);
+
   const mountItems = async () => {
     try {
-      const items = await getItems(userRdx.user.id, userRdx.user.id, timeDescription);
-      items.forEach(async (item) => {
-        if (item.type === "directory") {
-          const itemDirectory = await getItems(item.filename, userRdx.user.id, timeDescription);
-          // @ts-ignore
-          setSubPathLength([...subPastLenght, itemDirectory]);
-        }
-      });
-
+      const contents = await getAllContents(userRdx.user.id);
       const talk = await getItems("Talk", userRdx.user.id, timeDescription);
       setSharedData(talk);
-      setData(items);
+      setData(contents.filter((item: any) => item.type !== "directory"));
     } catch (e) {
       console.log(e);
     }
@@ -65,7 +58,7 @@ const FilesInfoSection = () => {
       >
         <Box display="flex" flexDirection="row" alignContent="center" justifyContent="space-around">
           <a href={`/library/${userRdx.user.id}`}>
-            <Item title={h("myFilesLabel")} amount={data.length + subPastLenght.length} />
+            <Item title={h("myFilesLabel")} amount={data.length} />
           </a>
           <a href="/library/Talk">
             <Item title={h("sharedLabel")} amount={sharedData.length} />

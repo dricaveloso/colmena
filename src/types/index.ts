@@ -290,6 +290,10 @@ export type AllIconProps =
   | "move"
   | "rename"
   | "details"
+  | "banner_1"
+  | "banner_2"
+  | "banner_3"
+  | "banner_4"
   | "sync";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
