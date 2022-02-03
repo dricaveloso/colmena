@@ -11,6 +11,7 @@ import Item from "./Item";
 import { getItems } from "../../library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { getAllContents } from "@/services/webdav/directories";
+import Link from "next/link";
 
 const FilesInfoSection = () => {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -57,12 +58,12 @@ const FilesInfoSection = () => {
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="row" alignContent="center" justifyContent="space-around">
-          <a href={`/library/${userRdx.user.id}`}>
+          <Link href={`/library/${userRdx.user.id}`}>
             <Item title={h("myFilesLabel")} amount={data.length} />
-          </a>
-          <a href="/library/Talk">
+          </Link>
+          <Link href="/library/Talk">
             <Item title={h("sharedLabel")} amount={sharedData.length} />
-          </a>
+          </Link>
           <Item title={h("publicLabel")} amount={0} />
         </Box>
       </Box>
