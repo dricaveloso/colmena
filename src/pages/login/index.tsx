@@ -16,6 +16,7 @@ import theme from "@/styles/theme";
 import Text from "@/components/ui/Text";
 import { useTranslation } from "next-i18next";
 import { TextVariantEnum } from "@/enums/*";
+import { useDispatch } from "react-redux";
 
 // import FundoRodapeLogin from "../../../public/images/fundoRodapeLogin.png";
 /*
@@ -35,6 +36,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 export default function Login() {
+  const dispatch = useDispatch();
   const { t } = useTranslation("login");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +44,11 @@ export default function Login() {
 
   useEffect(() => {
     if (window.innerHeight <= 640) setIsLower640(true);
+
+    if (router.asPath.indexOf("?out") !== -1) {
+      dispatch({ type: "USER_LOGGED_OUT" });
+      router.push("/login");
+    }
 
     if (!navigator.onLine) {
       router.replace("/home");

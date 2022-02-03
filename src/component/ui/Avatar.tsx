@@ -7,13 +7,15 @@ type Props = {
   size: number;
   image?: string | undefined | null;
   name?: string | undefined;
+  borderRadius?: string | undefined;
 };
 
-function AvatarAux({ size, name = "", image }: Props) {
+function AvatarAux({ size, name = "", borderRadius, image }: Props) {
   const useStyles = makeStyles((theme) => ({
     size: {
       width: theme.spacing(size),
       height: theme.spacing(size),
+      borderRadius,
     },
   }));
   const classes = useStyles();

@@ -54,7 +54,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
     description: Yup.string()
       .required(c("form.requiredTitle"))
       .max(maxLengthDescription, c("form.passwordMaxLengthTitle", { size: maxLengthDescription })),
-    url: Yup.string().nullable().url(c("form.URLInvalid")),
+    url: Yup.string().nullable().url(c("form.invalidURLTitle")),
   });
 
   const handleSubmit = async (values: MyFormValues, setSubmitting: (flag: boolean) => void) => {

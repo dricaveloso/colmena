@@ -68,6 +68,7 @@
     "name": "Name",
     "path": "Path",
     "lastUpdate": "Last update at",
+    "createdAt": "Created at",
     "size": "Size",
     "type": "Type",
     "creator": "Creator",
@@ -81,5 +82,8 @@
   "cancel": "Cancel",
   "moveButton": "Move here",
   "confirmCancelItemDuplication": "Do you really want to cancel the item duplication?",
-  "confirmCancelItemRenaming": "Do you really want to cancel the item renaming?"
+  "confirmCancelItemRenaming": "Do you really want to cancel the item renaming?",
+  "itemStatus": {
+    "availableOffline": "Available Offline"
+  }
 }

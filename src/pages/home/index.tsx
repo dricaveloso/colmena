@@ -29,7 +29,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 
 function Home() {
   const { t } = useTranslation("home");
-  const { t: invitation } = useTranslation("invitation");
 
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -65,7 +64,7 @@ function Home() {
             }}
             variant={TextVariantEnum.CAPTION}
           >
-            {invitation("greeting")} {getFirstname(userRdx.user.name)}
+            {t("greetingTitle")} {getFirstname(userRdx.user.name)}
           </Text>
         </Box>
         <div
