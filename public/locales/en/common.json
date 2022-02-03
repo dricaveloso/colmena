@@ -47,7 +47,7 @@
       "skipButton": "Skip",
       "nextIntro": "Next",
       "backButton": "Back",
-      "recoverPasswordButton": "Redefine password",
+      "recoverPasswordButton": "Reset password",
       "cancelButton": "Cancel",
       "placeholderEmail": "Email",
       "placeholderPassword": "Password",
@@ -61,6 +61,7 @@
       "loadingTitle": "Wait...",
       "passwordMinLengthTitle": "Too short! Minimum of {{size}} characters.",
       "passwordMaxLengthTitle": "Too Long! Maximum of {{size}} characters.",
+      "URLInvalid": "URL invalid.",
       "invalidEmailTitle": "Invalid email",
       "invalidURLTitle": "Invalid URL",
       "successMessageFormSave": "Saved successfully",
@@ -84,9 +85,11 @@
     "fileTooLarg": "The {{fileName}} file is too large to upload.",
     "unableToProcessFile": "Unable to process file {{fileName}}.",
     "unableToUpdatePassword": "Unable to update your password.",
-    "passwordUpdatedSuccessfully": "Password updated successfully.",
-    "directoryCreatedSuccessfully": "Directory created successfully.",
-    "fileUploadedSuccessfully": "File uploaded successfully."
+    "passwordUpdatedSuccessfully": "Password updated.",
+    "directoryCreatedSuccessfully": "Directory created.",
+    "fileUploadedSuccessfully": "File uploaded.",
+    "uploadCanceledSuccessfully": "File upload canceled.",
+    "folderCreationCanceledSuccessfully": "Folder creation canceled."
   },
   "timeDescription": {
     "singularYear": "year",
@@ -103,7 +106,7 @@
   },
   "typeYourMessage": "Type your message",
   "latestPostTitle": "Latest posts",
-  "seeAllTitle": "see all",
+  "seeAllTitle": "See all",
   "examplePostTitle": "Show {{num}} Radio Colmena",
   "examplePostSubtitle": "5 days | 12mb",
   "membersTitle": "Members",
@@ -116,18 +119,26 @@
   "confirmMessageDelete": "By performing this action, it will be impossible to reverse it.",
   "yesTitle": "Yes",
   "noTitle": "No",
+  "used": "Used",
   "genericErrorMessage": "Unable to perform this action.",
   "passwordRecoveryMessage": "Password recovery email sent successfully.",
   "backToLogin": "Back to login",
   "changeLocationModalTitle": "Choose the new location",
-  "changeLocationButton": "Choose here",
+  "changeLocationButton": "Change",
+  "chooseLocationButton": "Choose here",
   "noPrivilegesAccessTitle": "No privileges to access.",
   "confirmCancelUpload": "Do you really want to cancel the upload?",
+  "confirmCancelFolderCreation": "Do you really want to cancel the folder creation?",
   "contextMenuUserAvatar": {
     "upload": "Select image",
     "remove": "Remove"
   },
   "uploadUserAvatarSuccessfully": "Profile image successfully updated",
   "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
-  "uploadRuleFileSize": "Image cannot be larger than 20mb"
+  "uploadRuleFileSize": "Image cannot be larger than 20mb",
+  "languagesAllowed": {
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French"
+  }
 }

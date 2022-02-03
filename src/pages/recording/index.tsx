@@ -85,9 +85,26 @@ function Recording() {
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const dispatch = useDispatch();
 
+  async function getAudioStream() {
+    try {
+      return await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function askForAudioPermission() {
+    const stream = await getAudioStream();
+    if (!stream) {
+      // return;
+    }
+  }
+
   useEffect(() => {
     dispatch(updateRecordingState("NONE"));
     setBackAfterFinishRecording("no");
+
+    askForAudioPermission();
   }, []);
 
   const handleCloseExtraInfo = async (event: any, reason: string) => {
@@ -321,8 +338,18 @@ function Recording() {
   }
 
   return (
-    <LayoutApp title={t("title")} showFooter={false} back>
-      <FlexBox justifyContent={JustifyContentEnum.SPACEAROUND} alignItems={AlignItemsEnum.CENTER}>
+    <LayoutApp
+      templateHeader="variation3"
+      backgroundColor={theme.palette.variation5.main}
+      title={t("title")}
+      showFooter={false}
+      back
+    >
+      <FlexBox
+        extraStyle={{ backgroundColor: theme.palette.variation5.main }}
+        justifyContent={JustifyContentEnum.SPACEBETWEEN}
+        alignItems={AlignItemsEnum.CENTER}
+      >
         <AudioRecorder onStopRecording={onStopRecording} />
         <Divider marginTop={25} />
         <Timer />

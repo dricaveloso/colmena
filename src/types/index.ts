@@ -278,6 +278,18 @@ export type AllIconProps =
   | "update"
   | "disabled"
   | "camera"
-  | "edit_circle";
+  | "edit_circle"
+  | "facebook_rounded"
+  | "twitter_rounded"
+  | "play_outlined"
+  | "pause_outlined"
+  | "stop_outlined"
+  | "edit_filled"
+  | "copy"
+  | "duplicate"
+  | "move"
+  | "rename"
+  | "details"
+  | "sync";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

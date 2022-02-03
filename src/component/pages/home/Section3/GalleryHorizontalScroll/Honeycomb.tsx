@@ -6,14 +6,15 @@ import Text from "@/components/ui/Text";
 import { TextDisplayEnum, TextVariantEnum } from "@/enums/*";
 import Image from "next/image";
 import theme from "@/styles/theme";
+import { RoomItemInterface } from "@/interfaces/talk";
+import { useEffect } from "react";
 
-type Props = {
+interface Props {
   title: string;
-  url?: string;
   image: string;
-};
+}
 
-export default function Honeycomb({ title = "teste", url = "teste", image }: Props) {
+export default function Honeycomb({ title, image }: Props) {
   return (
     <Box
       width={80}

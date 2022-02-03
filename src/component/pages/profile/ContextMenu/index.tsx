@@ -179,10 +179,15 @@ const ContextMenuOptions = () => {
           key="suspend"
           data-testid="profile-suspend-menu-option"
           onClick={featureUnavailable}
+          style={{ color: "#ff6347" }}
         >
-          <ContextMenuItem icon="disabled" title={t("contextMenuOptions.deactivate")} />
+          <ContextMenuItem
+            icon="disabled"
+            iconColor="#ff6347"
+            title={t("contextMenuOptions.deactivate")}
+          />
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           key="remove"
           data-testid="profile-remove-menu-option"
           onClick={featureUnavailable}
@@ -193,7 +198,7 @@ const ContextMenuOptions = () => {
             iconColor="#ff6347"
             title={t("contextMenuOptions.remove")}
           />
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </Box>
   );

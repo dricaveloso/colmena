@@ -12,6 +12,7 @@ import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useRouter } from "next/router";
 import Box from "@material-ui/core/Box";
 import * as Yup from "yup";
+import Backdrop from "@/components/ui/Backdrop";
 
 type MyFormValues = {
   psdUserReset: string;
@@ -46,48 +47,49 @@ export default function WrapperForm({ userId, type }: Props) {
   };
 
   return (
-    <>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={ValidationSchema}
-        onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-          const { psdUserReset: password, psdUserResetConfirmation: password_confirmation } =
-            values;
+    <Formik
+      initialValues={initialValues}
+      validationSchema={ValidationSchema}
+      onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
+        const { psdUserReset: password, psdUserResetConfirmation: password_confirmation } = values;
 
-          (async () => {
-            try {
-              setSubmitting(true);
-              if (password !== password_confirmation) throw new Error(t("errorMessagePassword"));
+        (async () => {
+          try {
+            setSubmitting(true);
+            if (password !== password_confirmation) throw new Error(t("errorMessagePassword"));
 
-              const response = await fetch("/api/update-user-password", {
-                method: "PUT",
-                body: JSON.stringify({ password, userId: atob(userId) }),
-                headers: {
-                  "Content-type": "application/json",
-                },
-              });
-              const result = await response.json();
+            const response = await fetch("/api/update-user-password", {
+              method: "PUT",
+              body: JSON.stringify({ password, userId: atob(userId) }),
+              headers: {
+                "Content-type": "application/json",
+              },
+            });
+            const result = await response.json();
 
-              if (!result.success)
-                throw new Error(
-                  t(`${type === "create" ? "errorCreatingPassword" : "errorUpdatingPassword"}`),
-                );
-              toast(
-                t(`${type === "create" ? "successCreatingPassword" : "successUpdatingPassword"}`),
-                "success",
+            if (!result.success)
+              throw new Error(
+                t(`${type === "create" ? "errorCreatingPassword" : "errorUpdatingPassword"}`),
               );
-              router.replace("/login");
-            } catch (e) {
-              console.log(e);
-              toast(e.message, "error");
-            } finally {
-              setSubmitting(false);
-            }
-          })();
-        }}
-      >
-        {({ submitForm, isSubmitting, setFieldValue, errors, touched }: any) => (
+            toast(
+              t(`${type === "create" ? "successCreatingPassword" : "successUpdatingPassword"}`),
+              "success",
+            );
+            router.replace("/login");
+          } catch (e) {
+            console.log(e);
+            toast(e.message, "error");
+          } finally {
+            setSubmitting(false);
+          }
+        })();
+      }}
+    >
+      {({ submitForm, isSubmitting, setFieldValue, errors, touched }: any) => (
+        <>
+          <Backdrop open={isSubmitting} />
           <Form
+            id="loginForm"
             autoComplete="off"
             style={{ width: "100%" }}
             onKeyDown={(e) => {
@@ -99,6 +101,7 @@ export default function WrapperForm({ userId, type }: Props) {
             <Field name="psdUserReset" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <PasswordField
+                  mainColor="#fff"
                   label={c("form.placeholderPassword")}
                   placeholder={c("form.placeholderPassword")}
                   handleChangePassword={(value: string) => {
@@ -110,12 +113,13 @@ export default function WrapperForm({ userId, type }: Props) {
               )}
             </Field>
             {errors.psdUserReset && touched.psdUserReset ? (
-              <ErrorMessageForm message={errors.psdUserReset} />
+              <ErrorMessageForm message={errors.psdUserReset} color="#fff" />
             ) : null}
             <Divider marginTop={20} />
             <Field name="psdUserResetConfirmation" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <PasswordField
+                  mainColor="#fff"
                   label={c("form.placeholderPasswordConfirmation")}
                   placeholder={c("form.placeholderPasswordConfirmation")}
                   handleChangePassword={(value: string) => {
@@ -127,23 +131,28 @@ export default function WrapperForm({ userId, type }: Props) {
               )}
             </Field>
             {errors.psdUserResetConfirmation && touched.psdUserResetConfirmation ? (
-              <ErrorMessageForm message={errors.psdUserResetConfirmation} />
+              <ErrorMessageForm message={errors.psdUserResetConfirmation} color="#fff" />
             ) : null}
             <Divider marginTop={20} />
             {isSubmitting && <LinearProgress />}
             <Divider marginTop={20} />
-            <Box display="flex" justifyContent="flex-end" flex="1">
+            <Box display="flex" justifyContent="center" flex={1}>
               <Button
-                title={c("form.submitLoginTitle")}
+                title={c("form.submitSaveTitle")}
                 disabled={isSubmitting}
                 handleClick={submitForm}
-                style={{ width: "50%" }}
+                style={{
+                  width: 200,
+                  marginTop: 15,
+                  marginBottom: 30,
+                  textTransform: "uppercase",
+                }}
               />
             </Box>
             <TermsOfUse open={openTerms} handleSetOpen={(flag) => setOpenTerms(flag)} />
           </Form>
-        )}
-      </Formik>
-    </>
+        </>
+      )}
+    </Formik>
   );
 }

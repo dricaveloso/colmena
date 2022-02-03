@@ -76,7 +76,12 @@ export default function DeleteItemConfirm({ handleOpen, cardItem }: Props) {
 
   return (
     <>
-      <ActionConfirm onOk={handleDelete} onClose={handleClose} isLoading={isLoading} />
+      <ActionConfirm
+        data-testid="delete-item-confirm"
+        onOk={handleDelete}
+        onClose={handleClose}
+        isLoading={isLoading}
+      />
     </>
   );
 }

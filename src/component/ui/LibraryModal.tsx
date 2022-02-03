@@ -192,6 +192,7 @@ export default function LibraryModal({
 
   return (
     <Modal
+      data-testid="library-modal"
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       className={classes.modal}

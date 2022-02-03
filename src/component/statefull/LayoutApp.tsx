@@ -16,6 +16,7 @@ import { updateRecordingState } from "@/store/actions/recordings/index";
 
 interface LayoutInterface extends AppBarInterface {
   showFooter?: boolean;
+  backgroundColor?: string;
   children: React.ReactNode;
 }
 
@@ -28,6 +29,7 @@ function LayoutApp({
   templateHeader = "variation2",
   showFooter = true,
   extraElement = undefined,
+  backgroundColor = "#F9F9F9",
   children,
 }: LayoutInterface) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -54,7 +56,7 @@ function LayoutApp({
   }, []);
 
   return (
-    <Container extraStyle={{ padding: 0, backgroundColor: "#F9F9F9" }}>
+    <Container extraStyle={{ padding: 0, backgroundColor }}>
       <FlexBox extraStyle={{ margin: 0, padding: 0 }}>
         <AppBar
           title={title}

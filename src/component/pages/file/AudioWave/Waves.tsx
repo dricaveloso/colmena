@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import theme from "@/styles/theme";
 import { v4 as uuid } from "uuid";
-import { toast } from "@/utils/notifications";
+// import { toast } from "@/utils/notifications";
 
 interface WavesurferInterface {
   current: {
@@ -76,7 +76,8 @@ export default function Waves({ blob, config = undefined, play = false }: Props)
         });
 
         wavesurfer?.current.on("error", (error: string) => {
-          toast(error, "error");
+          console.log(error);
+          // toast(error, "error");
         });
       }
     } catch (e) {

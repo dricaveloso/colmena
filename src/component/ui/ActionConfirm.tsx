@@ -26,11 +26,19 @@ export default function ActionConfirm({
   onClose,
   onOk,
   isLoading = false,
+  ...props
 }: Props) {
   const { t: c } = useTranslation("common");
 
   return (
-    <Dialog fullWidth maxWidth="xs" onClose={onClose} aria-labelledby="simple-dialog-title" open>
+    <Dialog
+      fullWidth
+      maxWidth="xs"
+      onClose={onClose}
+      aria-labelledby="simple-dialog-title"
+      open
+      {...props}
+    >
       <Box
         padding={2}
         display="flex"
@@ -68,9 +76,11 @@ export default function ActionConfirm({
           <Button
             handleClick={onOk}
             variant={ButtonVariantEnum.CONTAINED}
-            color={ButtonColorEnum.PRIMARY}
             title={c("yesTitle")}
-            style={{ textTransform: "capitalize", marginLeft: 5 }}
+            style={{
+              textTransform: "capitalize",
+              marginLeft: 5,
+            }}
             disabled={isLoading}
             isLoading={isLoading}
           />

@@ -13,12 +13,15 @@
   "audioTitle": "Audio",
   "audioSaveTitle": "saved",
   "tagsTitle": "Tags",
-  "recordingOrientation": "Audios are locally stored if there is no internet. Private synch by default with the possibility of sharing.",
+  "recordingOrientation": "Audios are locally stored if there is no internet.",
   "audioSavedSuccessfully": "Audio saved succesfully",
   "audioDiscardedSuccessfully": "Audio successfully discarded",
   "audioConfirmationToKeep": "Would you like to record another audio ?",
   "uploadLocationTitle": "Upload location",
   "changeUploadLocationTitle": "change",
   "availableWithoutInternetTitle": "Available offline",
-  "tagsRequiredTitle": "At least one tag is required"
+  "tagsRequiredTitle": "At least one tag is required",
+  "recordingTitle": "Recording...",
+  "pausingTitle": "Recording paused",
+  "newRecordingTitle": "New recording"
 }

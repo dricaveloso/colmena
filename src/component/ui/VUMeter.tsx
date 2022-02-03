@@ -4,13 +4,11 @@ import webAudioPeakMeter from "web-audio-peak-meter";
 type Props = {
   stream: MediaStream | undefined;
   removeCanvas?: boolean;
-  canvasSize: {
-    width: string;
-    height: string;
-  };
+  width: string;
+  height: string;
 };
 
-export default function VUMeter({ stream, removeCanvas = false, canvasSize }: Props) {
+export default function VUMeter({ stream, removeCanvas = false, width, height }: Props) {
   const init = useCallback(() => {
     if (removeCanvas) {
       const canvas = document.getElementById("canvas");
@@ -28,14 +26,14 @@ export default function VUMeter({ stream, removeCanvas = false, canvasSize }: Pr
       const canvasWrapper = document.getElementById("canvasWrapper");
       const canvas = document.createElement("div");
       canvas.setAttribute("id", "canvas");
-      canvas.style.width = canvasSize.width;
-      canvas.style.height = canvasSize.height;
+      canvas.style.width = width;
+      canvas.style.height = height;
       canvas.style.margin = "1em 0";
       canvasWrapper?.appendChild(canvas);
       const meterNode = webAudioPeakMeter.createMeterNode(source, audioCtx);
       webAudioPeakMeter.createMeter(canvas, meterNode, {});
     }
-  }, [stream, removeCanvas, canvasSize]);
+  }, [stream, removeCanvas, width, height]);
 
   useEffect(() => {
     init();

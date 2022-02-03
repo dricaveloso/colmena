@@ -22,9 +22,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import LanguageIcon from "@material-ui/icons/Language";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import UserAvatar from "@/components/ui/Avatar";
-import { useSelector } from "react-redux";
-import { PropsUserSelector } from "@/types/index";
+import UserAvatar from "@/components/pages/profile/Avatar";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/client";
 import Backdrop from "@/components/ui/Backdrop";
@@ -57,7 +55,6 @@ function Settings() {
   const { t: d } = useTranslation("drawer");
   const router = useRouter();
   const [showBackdrop, setShowBackdrop] = useState(false);
-  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [openChangeLanguage, setOpenChangeLanguage] = useState(false);
   const [checked, setChecked] = useState(["wifi"]);
   const cookies = parseCookies();
@@ -127,7 +124,7 @@ function Settings() {
             </ListItemIcon>
             <ListItemText id="change-profile-info" primary={t("changeProfileTitle")} />
             <ListItemSecondaryAction>
-              <UserAvatar size={4} name={userRdx?.user.name} />
+              <UserAvatar size={4} />
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem divider button onClick={switchLanguageHandle}>

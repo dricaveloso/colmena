@@ -20,7 +20,7 @@ export interface AppBarInterface {
   drawer?: boolean;
   back?: boolean;
   headerPosition?: PositionProps | undefined;
-  templateHeader?: "variation1" | "variation2";
+  templateHeader?: "variation1" | "variation2" | "variation3";
   extraElement?: React.ReactNode | undefined;
 }
 
@@ -31,7 +31,11 @@ tplHeader.set("variation1", {
 });
 tplHeader.set("variation2", {
   backgroundAppBar: theme.palette.primary.main,
-  textColor: "#fff",
+  textColor: theme.palette.primary.contrastText,
+});
+tplHeader.set("variation3", {
+  backgroundAppBar: theme.palette.variation5.main,
+  textColor: theme.palette.variation5.contrastText,
 });
 
 function AppBarSys({
@@ -120,6 +124,7 @@ function AppBarSys({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
+                style={{ marginLeft: 4 }}
                 onClick={() => setOpenDrawer(!openDrawer)}
               >
                 <SvgIcon

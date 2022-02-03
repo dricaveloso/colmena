@@ -3,8 +3,9 @@
   "myFilesLabel": "My files",
   "sharedLabel": "Shared",
   "publicLabel": "Public",
-  "section3Title": "Favorite honeycombs",
-  "section4Title": "Recent",
+  "section3Title": "Honeycombs",
+  "section4Title": "Recent files",
   "exampleHoneycombTitle": "Honeycomb {{num}}",
-  "exampleFileTitle": "File {{num}}"
+  "exampleFileTitle": "File {{num}}",
+  "seeAllTitle": "See all"
 }

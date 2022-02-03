@@ -6,7 +6,7 @@ import Text from "@/components/ui/Text";
 import { TextDisplayEnum, TextVariantEnum } from "@/enums/*";
 import Image from "next/image";
 import theme from "@/styles/theme";
-import UserAvatar from "@/components/ui/Avatar";
+import UserAvatar from "@/components/pages/profile/Avatar";
 
 type Props = {
   title: string;
@@ -23,7 +23,7 @@ export default function Member({ title, urlImage = null }: Props) {
       margin={1}
       width={70}
     >
-      <UserAvatar size={9} name={title} image={!urlImage ? "/images/user.png" : urlImage} />
+      <UserAvatar size={8} userId={title} />
       <Text
         variant={TextVariantEnum.SUBTITLE1}
         display={TextDisplayEnum.BLOCK}

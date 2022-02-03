@@ -114,7 +114,6 @@ function Honeycomb() {
       back
       title={displayName}
       subtitle={<Subtitle token={token} />}
-      drawer={false}
       extraElement={<ContextMenu token={token} reloadChatList={() => setTokenUuid(uuid())} />}
     >
       <FlexBox
