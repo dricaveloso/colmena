@@ -27,7 +27,6 @@ import Box from "@material-ui/core/Box";
 import { listFile } from "@/services/webdav/files";
 import { v4 as uuid } from "uuid";
 import { makeStyles } from "@material-ui/core/styles";
-import theme from "@/styles/theme";
 import Backdrop from "@/components/ui/Backdrop";
 
 type MyFormValues = {
@@ -111,12 +110,11 @@ export default function WrapperForm() {
           const email = emailv.trim();
           setSubmitting(true);
           (async () => {
-            const lang = cookies.NEXT_LOCALE || "en";
+            const langCookie = cookies.NEXT_LOCALE || "en";
             const result: any | null = await signIn("credentials", {
               redirect: false,
               email,
               password,
-              lang,
             });
 
             if (!result.error) {
@@ -165,20 +163,25 @@ export default function WrapperForm() {
                 return;
               }
 
+              const { language } = user;
+              if (language !== langCookie) {
+                user.language = langCookie;
+              }
+
               dispatch(
                 userUpdate({
                   user,
                 }),
               );
-              const { language: locale } = user;
-              setCookie(null, "NEXT_LOCALE", locale, {
+
+              setCookie(null, "NEXT_LOCALE", user.language, {
                 maxAge: 30 * 24 * 60 * 60,
                 path: "/",
               });
 
               toast(t("loginSuccesfully"), "success");
               router.push("/home", "", {
-                locale,
+                locale: user.language,
               });
               setSubmitting(false);
               return;
@@ -280,7 +283,6 @@ export default function WrapperForm() {
                     width: 200,
                     marginTop: 15,
                     marginBottom: 30,
-                    backgroundColor: theme.palette.variation1.main,
                     textTransform: "uppercase",
                   }}
                 />

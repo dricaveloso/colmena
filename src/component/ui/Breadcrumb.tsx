@@ -2,10 +2,8 @@ import React, { useRef, useEffect } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Button from "@material-ui/core/Button";
 import { BreadcrumbItemInterface } from "@/interfaces/index";
-import { Box, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { moveScrollToRight } from "@/utils/utils";
-import IconButton from "@material-ui/core/IconButton";
-import SvgIcon from "@/components/ui/SvgIcon";
 
 type Props = {
   breadcrumbs: Array<BreadcrumbItemInterface>;
@@ -57,24 +55,16 @@ function Breadcrumb({ breadcrumbs, handleNavigate, isDisabled = false }: Props) 
       {breadcrumbs.map((dir: BreadcrumbItemInterface) => {
         if (dir.icon !== undefined) {
           return (
-            <IconButton
+            <Button
               key={dir.path}
               color="primary"
-              component="span"
+              component="a"
               disabled={dir.isCurrent || isDisabled}
               onClick={() => handleNavigate(dir)}
+              style={{ padding: "8px 12px", minWidth: "auto" }}
             >
-              <SvgIcon
-                icon={dir.icon}
-                htmlColor={dir.isCurrent ? "#999" : "#292929"}
-                fontSize="small"
-              />
-              {dir.description && (
-                <Box fontSize="medium" ml={1} color="#999">
-                  {dir.description}
-                </Box>
-              )}
-            </IconButton>
+              /
+            </Button>
           );
         }
 

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import IconButton from "@/components/ui/IconButton";
 import FullScreenSearch from "@/components/ui/FooterApp/FullScreenSearch";
 import DrawerBottomRecording from "@/components/ui/FooterApp/DrawerMoreOptionsBottom";
 import Grid from "@material-ui/core/Grid";
 import { useTheme, makeStyles } from "@material-ui/core/styles";
+import { removeCornerSlash } from "@/utils/utils";
 // import { PropsLibrarySelector } from "@/types/index";
 // import { useSelector } from "react-redux";
 
@@ -56,6 +57,20 @@ function AppTab({ page }: Props) {
     setOpenDrawer(true);
   };
 
+  const iconSize = 28;
+
+  const handleMenuColor = useCallback(
+    (rootPath) => {
+      const splitPage = removeCornerSlash(page).split("/");
+      if (splitPage.length > 0 && splitPage[0] === rootPath) {
+        return theme.palette.primary.main;
+      }
+
+      return theme.palette.gray.main;
+    },
+    [page, theme.palette.gray.main, theme.palette.primary.main],
+  );
+
   return (
     <>
       <Grid container className={classes.gridContainer}>
@@ -63,43 +78,32 @@ function AppTab({ page }: Props) {
           <IconButton
             icon="home"
             url="/home"
-            fontSizeIcon="medium"
-            iconColor={page === "/home" ? theme.palette.primary.main : theme.palette.primary.main}
+            fontSizeIcon={iconSize}
+            iconColor={handleMenuColor("home")}
           />
         </Grid>
         <Grid item xs={2}>
           <IconButton
             icon="library"
             url="/library"
-            fontSizeIcon="medium"
-            iconColor={
-              page === `/library` ? theme.palette.primary.main : theme.palette.primary.main
-            }
+            fontSizeIcon={iconSize}
+            iconColor={handleMenuColor("library")}
           />
         </Grid>
         <Grid item xs={2}>
           <IconButton
-            icon="plus"
-            fontSizeIcon="medium"
+            icon="panal"
+            fontSizeIcon={iconSize}
+            url="/honeycomb"
+            iconColor={handleMenuColor("honeycomb")}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <IconButton
+            icon="gradient_plus"
+            fontSizeIcon={30}
             handleClick={handleOpenDrawer}
             iconColor="#fff"
-            className={classes.btnMore}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <IconButton
-            icon="gradient_panal"
-            fontSizeIcon="medium"
-            url="/honeycomb"
-            iconColor={theme.palette.primary.main}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <IconButton
-            icon="global"
-            fontSizeIcon="medium"
-            url="/tools"
-            iconColor={page === "/tools" ? theme.palette.primary.main : theme.palette.primary.main}
           />
         </Grid>
       </Grid>

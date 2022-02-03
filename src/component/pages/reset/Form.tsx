@@ -12,7 +12,6 @@ import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useRouter } from "next/router";
 import Box from "@material-ui/core/Box";
 import * as Yup from "yup";
-import theme from "@/styles/theme";
 import Backdrop from "@/components/ui/Backdrop";
 
 type MyFormValues = {
@@ -146,7 +145,6 @@ export default function WrapperForm({ userId, type }: Props) {
                   width: 200,
                   marginTop: 15,
                   marginBottom: 30,
-                  backgroundColor: theme.palette.variation1.main,
                   textTransform: "uppercase",
                 }}
               />

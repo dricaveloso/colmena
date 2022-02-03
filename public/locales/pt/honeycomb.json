@@ -7,5 +7,9 @@
     "tab2Title": "",
     "emptyTalkDescription": "",
     "downloadAudioFailed": "",
-    "downloadFileFailed": ""
+    "downloadFileFailed": "",
+    "contextMenuOptions": {
+      "addParticipantContextTitle": "Add participant",
+      "participantsAddedSuccessfully": "Participants added successfully"
+    }
 }

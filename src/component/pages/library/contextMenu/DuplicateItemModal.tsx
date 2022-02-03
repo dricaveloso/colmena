@@ -37,7 +37,6 @@ import {
 import { createFile, getFile, remove } from "@/store/idb/models/files";
 import { Box } from "@material-ui/core";
 import ActionConfirm from "@/components/ui/ActionConfirm";
-import theme from "@/styles/theme";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -356,7 +355,6 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
                   className={classes.submit}
                   disabled={isLoading}
                   isLoading={isLoading}
-                  style={{ backgroundColor: theme.palette.variation1.main }}
                 />
               </Box>
             </Form>

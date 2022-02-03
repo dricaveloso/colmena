@@ -121,7 +121,6 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
   };
 
   const ButtonStep1Style = {
-    backgroundColor: theme.palette.variation1.main,
     color: "#fff",
     margin: 8,
   };
@@ -181,7 +180,6 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
               variant={
                 participants.length > 0 ? ButtonVariantEnum.CONTAINED : ButtonVariantEnum.OUTLINED
               }
-              color={ButtonColorEnum.PRIMARY}
               title={c("form.submitSaveTitle")}
             />
           </Box>

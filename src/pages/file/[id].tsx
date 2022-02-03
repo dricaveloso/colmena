@@ -4,6 +4,8 @@
 import React, { useEffect, useState } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import Box from "@material-ui/core/Box";
+import Accordion from "@material-ui/core/Accordion";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
@@ -28,9 +30,16 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { MemoizedAudioFile } from "@/components/pages/file/AudioFile";
 import { parseCookies } from "nookies";
 import Divider from "@/components/ui/Divider";
+import { getFilename } from "@/utils/directory";
+import theme from "@/styles/theme";
+import { downloadFile } from "@/utils/utils";
+// import { arrayBufferToBlob, createObjectURL } from "blob-util";
 
 import { Formik, Form, Field, FieldProps } from "formik";
-import { Grid } from "@material-ui/core";
+import { AccordionDetails, AccordionSummary, Grid } from "@material-ui/core";
+import Avatar from "@/components/ui/Avatar";
+import Typography from "@material-ui/core/Typography";
+// import getBlobDuration from "get-blob-duration";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -57,10 +66,12 @@ function File() {
   const [tags, setTags] = useState<ItemTagInterface[]>([]);
   const { t } = useTranslation("file");
   const { t: c } = useTranslation("common");
+  const { t: l } = useTranslation("library");
   const [loading, setLoading] = useState(false);
   const cookies = parseCookies();
   const language = cookies.NEXT_LOCALE || "en";
   const [isLoading, setIsLoading] = useState(false);
+  // const [duration, setDuration] = useState(0);
 
   const initialValues = {
     customdescription: data && decodeURI(data.customdescription) ? data.customdescription : "",
@@ -69,6 +80,12 @@ function File() {
     try {
       setLoading(true);
       const result: any = await getDataFile(filename);
+      console.log(result);
+      // const blobRes: any = await listFile(userRdx.user.id, filename);
+      // const blob = arrayBufferToBlob(blobRes);
+      // const audioURL = createObjectURL(blob);
+      // const duration = await getBlobDuration(audioURL);
+      // setDuration(duration);
       let tags: boolean | ItemTagInterface[] = false;
       if (result.fileid) {
         tags = await getFileTags(userRdx.user.id, filename, result.fileid);
@@ -128,7 +145,7 @@ function File() {
                       width: "100%",
                     }}
                     {...field}
-                    value={decodeURI(field.value)}
+                    value={field.value ? decodeURI(field.value) : ""}
                     onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
                       setFieldValue("customdescription", event.target.value)
                     }
@@ -167,6 +184,38 @@ function File() {
           extraStyle={{ padding: 0, margin: 0 }}
         >
           <Box width="100%">
+            <div
+              style={{
+                backgroundColor: theme.palette.primary.main,
+                height: "140px",
+                display: "flex",
+                padding: "0 16px",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <div>
+                <Avatar size={10} borderRadius="8px!important" />
+              </div>
+              <Grid container alignItems="baseline" direction="column">
+                <Typography
+                  style={{
+                    color: theme.palette.primary.contrastText,
+                    fontWeight: "bold",
+                    marginLeft: "12px",
+                  }}
+                >
+                  {getFilename(decodeURIComponent(filename))}
+                </Typography>
+                <IconButton
+                  icon="download"
+                  fontSizeIcon="small"
+                  iconColor="#fff"
+                  handleClick={() => downloadFile(data, filename, data.type)}
+                  style={{ minWidth: 25, marginLeft: "4px", marginTop: "8px" }}
+                />
+              </Grid>
+            </div>
             <MemoizedAudioFile filename={filename} data={data} />
             <Section
               title={t("descriptionTitle")}
@@ -221,6 +270,130 @@ function File() {
                 ))
               )}
             </Section>
+            <Accordion
+              style={{
+                marginTop: "16px",
+                boxShadow: "none",
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon htmlColor="white" />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                style={{
+                  backgroundColor: "#4C517F",
+                  color: "white",
+                }}
+              >
+                <Typography
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  {l("contextMenuOptions.details")}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.name")}</strong>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {getFilename(decodeURIComponent(filename))}
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.path")}</strong>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {filename}
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.size")}</strong>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {data?.size ? <>{Math.round(data.size / 1024)} KiB</> : "-"}
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.description")}</strong>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {data?.description ?? "-"}
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.lastUpdate")}</strong>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {data?.createdAt?.toLocaleDateString("en-US")} - {data?.createdAtDescription}
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.creator")}</strong>
+                    </Grid>
+                    {/* <Grid item xs={6}>
+                      {typeof data["owner-display-name"] === "string"
+                        ? data["owner-display-name"]
+                        : "-"}
+                    </Grid> */}
+                  </Grid>
+                  {data?.type === "file" && (
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <strong>{l("detailsModal.type")}</strong>
+                      </Grid>
+                      <Grid item xs={6}>
+                        {data?.mime}
+                      </Grid>
+                    </Grid>
+                  )}
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.fileId")}</strong>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {data?.fileid ?? "-"}
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.language")}</strong>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {data?.language ?? "-"}
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <strong>{l("detailsModal.tags")}</strong>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {!tags && "-"}
+                      {tags &&
+                        tags.map((tag: ItemTagInterface, index: number) => (
+                          <span key={`tag-${tag.id}`}>
+                            {tag["display-name"]}
+                            {tags.length - 1 > index && ", "}
+                          </span>
+                        ))}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
           </Box>
         </FlexBox>
       </LayoutApp>

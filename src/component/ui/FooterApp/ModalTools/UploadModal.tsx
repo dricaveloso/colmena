@@ -24,7 +24,6 @@ import {
 } from "@/utils/directory";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import { shareInChat } from "@/services/share/share";
-import theme from "@/styles/theme";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -310,7 +309,6 @@ export default function Upload({ open, handleClose }: Props) {
                 className={classes.submit}
                 disabled={isLoading}
                 isLoading={isLoading}
-                style={{ backgroundColor: theme.palette.variation1.main }}
               />
             </label>
           </Box>

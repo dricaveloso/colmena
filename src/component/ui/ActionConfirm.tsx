@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import Dialog from "@material-ui/core/Dialog";
 import { AllIconProps } from "@/types/index";
 import Divider from "@/components/ui/Divider";
-import theme from "@/styles/theme";
 
 type Props = {
   title?: string;
@@ -81,7 +80,6 @@ export default function ActionConfirm({
             style={{
               textTransform: "capitalize",
               marginLeft: 5,
-              backgroundColor: theme.palette.variation1.main,
             }}
             disabled={isLoading}
             isLoading={isLoading}

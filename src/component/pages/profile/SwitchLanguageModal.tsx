@@ -3,8 +3,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
 import { v4 as uuid } from "uuid";
 import { setCookie } from "nookies";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
@@ -12,12 +10,9 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { updateUser } from "@/services/ocs/users";
 import Backdrop from "@/components/ui/Backdrop";
-import constants from "@/constants/index";
-
-type LanguageProps = {
-  abbr: string;
-  language: string;
-};
+import Modal from "@/components/ui/Modal";
+import { getSystemLanguages } from "@/utils/utils";
+import { LanguageProps } from "@/types/*";
 
 type Props = {
   open: boolean;
@@ -31,12 +26,6 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
   const [showBackdrop, setShowBackdrop] = useState(false);
   const { t } = useTranslation("common");
 
-  const locales = Object.values(constants.LOCALES);
-  const languages: LanguageProps[] = locales.map((item) => ({
-    abbr: item,
-    language: t(`languagesAllowed.${item}`),
-  }));
-
   const changeLanguageHandler = async (locale: string) => {
     if (defaultLang !== locale) {
       setShowBackdrop(true);
@@ -44,7 +33,11 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
-      await updateUser<string>("language", locale);
+      try {
+        await updateUser<string>("language", locale);
+      } catch (e) {
+        // idioma não existe no NC
+      }
       setShowBackdrop(false);
       router.push(backUrl, "", {
         locale,
@@ -53,18 +46,16 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
   };
 
   return (
-    <Dialog
-      fullWidth
-      maxWidth="xs"
-      onClose={onClose}
-      aria-labelledby="simple-dialog-title"
-      open={open}
-    >
+    <Modal title={t("titleSwitchLanguage")} open={open} handleClose={onClose}>
       <Backdrop open={showBackdrop} />
-      <DialogTitle id="simple-dialog-title">{t("titleSwitchLanguage")}</DialogTitle>
       <List>
-        {languages.map((item: LanguageProps) => (
-          <ListItem button onClick={() => changeLanguageHandler(item.abbr)} key={uuid()}>
+        {getSystemLanguages(t).map((item: LanguageProps, idx: number) => (
+          <ListItem
+            style={{ backgroundColor: idx % 2 === 0 ? "#f2f2f2" : "#fff" }}
+            button
+            onClick={() => changeLanguageHandler(item.abbr)}
+            key={uuid()}
+          >
             <ListItemText primary={item.language} />
             {!!defaultLang && defaultLang === item.abbr && (
               <ListItemSecondaryAction>
@@ -74,6 +65,6 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
           </ListItem>
         ))}
       </List>
-    </Dialog>
+    </Modal>
   );
 }

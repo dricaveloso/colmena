@@ -231,7 +231,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
             />
             <Button
               handleClick={submitCrop}
-              style={{ margin: 8, backgroundColor: theme.palette.variation1.main }}
+              style={{ margin: 8 }}
               variant={ButtonVariantEnum.CONTAINED}
               title={c("form.submitSaveTitle")}
               data-testid="submit-modal-crop"

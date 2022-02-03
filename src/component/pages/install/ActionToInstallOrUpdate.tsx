@@ -50,7 +50,7 @@ export default function ActionToInstallOrUpdate({
       <Button
         variant="contained"
         onClick={showInstallPrompt}
-        style={{ backgroundColor: theme.palette.primary.light, color: "#fff", marginBottom: 30 }}
+        style={{ backgroundColor: theme.palette.variation1.main, color: "#fff", marginBottom: 30 }}
         startIcon={<SvgIcon icon="download" htmlColor="#fff" />}
       >
         {t("buttonInstall")}

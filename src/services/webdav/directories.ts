@@ -1,5 +1,6 @@
 import webdav from "@/services/webdav";
-import { removeFirstSlash } from "@/utils/utils";
+import { getTalkPath } from "@/utils/directory";
+import { removeCornerSlash, removeFirstSlash } from "@/utils/utils";
 import { FileStat } from "webdav";
 
 // ver se não tem 404
@@ -15,12 +16,21 @@ export async function listLibraryDirectories(userId: string | number, path?: str
   const directories = await listDirectories(userId, path);
   if (!directories?.data) return false;
 
-  const items: Array<FileStat> = directories.data;
+  const items: Array<FileStat> = directories.data
+    .filter((item: FileStat) => item.basename[0] !== ".")
+    .map((item: FileStat) => {
+      const newItem = item;
+      const filename = removeCornerSlash(item.filename.replace(/^.+?(\/|$)/, ""));
+      if (item.type === "directory" && removeCornerSlash(filename) === getTalkPath()) {
+        newItem.basename = "shared with me";
+      }
+
+      return newItem;
+    });
   const isRoot = path === "/" || path === "";
 
   if (isRoot) {
     return items.filter((item: FileStat) => {
-      if (item.basename[0] === ".") return false;
       if (item.type !== "directory") return false;
 
       return true;

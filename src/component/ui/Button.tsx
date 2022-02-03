@@ -1,9 +1,10 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { ButtonColorProps, ButtonVariantProps, ButtonSizeProps } from "@/types/index";
-import { ButtonColorEnum, ButtonVariantEnum, ButtonSizeEnum } from "@/enums/index";
+import { ButtonVariantEnum, ButtonSizeEnum } from "@/enums/index";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useTranslation } from "next-i18next";
+import theme from "@/styles/theme";
 
 type Props = {
   title: string | React.ReactNode;
@@ -27,7 +28,7 @@ type Props = {
 
 export default function Btn({
   title,
-  color = ButtonColorEnum.SECONDARY,
+  color = undefined,
   variant = ButtonVariantEnum.CONTAINED,
   handleClick,
   style = {},
@@ -46,6 +47,11 @@ export default function Btn({
 }: Props) {
   const { t } = useTranslation("common");
 
+  const styleBtn =
+    !color && variant !== "text"
+      ? { ...style, backgroundColor: theme.palette.variation1.main, color: "#fff" }
+      : style;
+
   return url !== "no-navigation" ? (
     <Button
       download={download}
@@ -56,7 +62,7 @@ export default function Btn({
       size={size}
       // className="width-based-device"
       type={type}
-      style={{ textTransform: "lowercase", ...style }}
+      style={{ textTransform: "lowercase", ...styleBtn }}
       endIcon={endIcon}
       disabled={disabled}
       component="a"
@@ -78,7 +84,7 @@ export default function Btn({
       className={className}
       // className="width-based-device"
       type={type}
-      style={{ textTransform: "lowercase", ...style }}
+      style={{ textTransform: "lowercase", ...styleBtn }}
       variant={variant}
       color={color}
       size={size}

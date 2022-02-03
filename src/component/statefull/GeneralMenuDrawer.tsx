@@ -73,13 +73,10 @@ function DrawerAux({ open, onClose }: Props) {
 
   const logoutHandler = async () => {
     if (navigator.onLine) {
-      try {
-        setShowBackdrop(true);
-        await signOut({ redirect: false });
-      } finally {
-        setShowBackdrop(false);
-        router.push("/login");
-      }
+      setShowBackdrop(true);
+      await signOut({ redirect: false });
+      setShowBackdrop(false);
+      router.push("/login?out");
     }
   };
 

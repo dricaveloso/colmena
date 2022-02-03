@@ -1,14 +1,18 @@
 {
-  "homeTitle": "Início",
-  "myFilesTitle": "Biblioteca",
-  "recordTitle": "Gravar",
-  "editAudioTitle": "Editar Audio",
-  "editTextTitle": "Editar Texto",
-  "communityTitle": "Comunidades",
+  "downloadTitle": "Instalar Colmena",
+  "languageTitle": "Idioma",
+  "settingsTitle": "Configurações",
+  "userProfileTitle": "Meu perfil",
   "editMediaTitle": "Perfil do Meio",
-  "userProfileTitle": "Meu Perfil",
-  "supportTitle": "Fale Conosco",
+  "supportTitle": "Ajuda e suporte",
+  "termsOfUse": "Termos e condições",
+  "aboutMaia": "Sobre Colmena",
+  "faqTitle": "FAQ",
+  "myFilesTitle": "Bilbioteca",
+  "recordTitle": "Gravação",
+  "editAudioTitle": "Editar áudio",
+  "editTextTitle": "Editar texto",
+  "communityTitle": "Comunidade",
   "logoutTitle": "Sair",
-  "termsOfUse": "Termos de uso",
-  "aboutMaia": "Sobre Colmena"
+  "tagsTitle": "Tags"
 }

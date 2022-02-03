@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/utils/notifications";
+import { getSystemLanguages } from "@/utils/utils";
 
 type Props = {
   open: boolean;
@@ -166,15 +167,15 @@ export default function TemporaryFiltersDrawer({
         </AccordionSummary>
         <AccordionDetails>
           <List>
-            <ListItem button key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
-              <ListItemText primary={t("language.english")} />
-            </ListItem>
-            <ListItem button key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
-              <ListItemText primary={t("language.spanish")} />
-            </ListItem>
-            <ListItem button key={uuid()} onClick={() => toast(c("featureUnavailable"), "warning")}>
-              <ListItemText primary={t("language.french")} />
-            </ListItem>
+            {getSystemLanguages(c).map((item) => (
+              <ListItem
+                button
+                key={uuid()}
+                onClick={() => toast(c("featureUnavailable"), "warning")}
+              >
+                <ListItemText primary={item.language} />
+              </ListItem>
+            ))}
           </List>
         </AccordionDetails>
       </Accordion>

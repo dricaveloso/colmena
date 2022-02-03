@@ -281,6 +281,8 @@ export type AllIconProps =
   | "edit_circle"
   | "facebook_rounded"
   | "twitter_rounded"
+  | "sync_file"
+  | "generic_file"
   | "play_outlined"
   | "pause_outlined"
   | "stop_outlined"
@@ -294,6 +296,12 @@ export type AllIconProps =
   | "banner_2"
   | "banner_3"
   | "banner_4"
+  | "gradient_plus"
   | "sync";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
+
+export type LanguageProps = {
+  abbr: string;
+  language: string;
+};

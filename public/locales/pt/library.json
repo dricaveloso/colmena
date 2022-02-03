@@ -1,7 +1,8 @@
 {
-  "title": "My library",
+  "title": "Library",
   "sort": {
     "title": "Sorting",
+    "highlights": "Highlights",
     "newest": "Newest",
     "oldest": "Oldest",
     "alphabeticalOrder": "Alphabetical order",
@@ -15,5 +16,70 @@
     "audios": "Audios",
     "images": "Images",
     "texts": "Texts"
-  }
+  },
+  "language": {
+    "title": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "french": "French"
+  },
+  "contextMenuOptions": {
+    "edit": "Edit",
+    "copy": "Copy",
+    "move": "Move",
+    "duplicate": "Duplicate",
+    "download": "Download",
+    "rename": "Rename",
+    "details": "Details",
+    "synchronize": "Synchronize",
+    "publish": "Publish",
+    "delete": "Delete",
+    "availableOffline": "Available Offline"
+  },
+  "messages": {
+    "couldNotRemove": "Could not remove.",
+    "fileAlreadyExists": "There is already a file with that name.",
+    "cannotDownloadFile": "Cannot download this file.",
+    "unidentifiedEnvironment": "Unidentified environment.",
+    "unableToCompleteRequest": "Unable to complete request.",
+    "directorySuccessfullyCopied": "Directory successfully copied.",
+    "fileSuccessfullyCopied": "File successfully copied.",
+    "directorySuccessfullyMoved": "Directory successfully moved.",
+    "fileSuccessfullyMoved": "File successfully moved.",
+    "directorySuccessfullyDuplicated": "Directory successfully duplicated.",
+    "fileSuccessfullyDuplicated": "File successfully duplicated.",
+    "directorySuccessfullyRenamed": "Directory successfully renamed.",
+    "fileSuccessfullyRenamed": "File successfully renamed.",
+    "directorySuccessfullyRemoved": "Directory successfully removed.",
+    "fileSuccessfullyRemoved": "File has been removed.",
+    "itemDuplicationCanceledSuccessfully": "Item duplication has been canceled.",
+    "itemRenamingCanceledSuccessfully": "Item renaming has been canceled."
+  },
+  "renameTitle": "Rename",
+  "saveButton": "Save",
+  "duplicateTitle": "Duplicate",
+  "duplicateButton": "Duplicate",
+  "copyModalTitle": "Choose the destination",
+  "pasteButton": "Paste here",
+  "moveModalTitle": "Choose the destination",
+  "chooseButton": "Choose here",
+  "detailsTitle": "Details",
+  "detailsModal": {
+    "name": "Name",
+    "path": "Path",
+    "lastUpdate": "Last update at",
+    "size": "Size",
+    "type": "Type",
+    "creator": "Creator",
+    "fileId": "File ID",
+    "tags": "Tags",
+    "language": "Language",
+    "description": "Description"
+  },
+  "downloading": "Downloading",
+  "synchronizing": "Synchronizing",
+  "cancel": "Cancel",
+  "moveButton": "Move here",
+  "confirmCancelItemDuplication": "Do you really want to cancel the item duplication?",
+  "confirmCancelItemRenaming": "Do you really want to cancel the item renaming?"
 }

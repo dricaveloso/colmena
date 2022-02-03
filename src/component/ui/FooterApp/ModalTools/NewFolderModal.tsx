@@ -28,7 +28,6 @@ import LibraryModal from "@/components/ui/LibraryModal";
 import { LibraryItemInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
 import { shareInChat } from "@/services/share/share";
-import theme from "@/styles/theme";
 import ActionConfirm from "../../ActionConfirm";
 import { deleteFile } from "@/services/webdav/files";
 
@@ -283,7 +282,6 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                   className={classes.submit}
                   disabled={isLoading}
                   isLoading={isLoading}
-                  style={{ backgroundColor: theme.palette.variation1.main }}
                 />
               </Box>
             </Form>

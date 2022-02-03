@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
     position: "relative",
     boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.18)",
     borderRadius: 4,
-    overflow: "hidden",
   },
   description: {
     flexDirection: "column",
@@ -32,7 +31,6 @@ const useStyles = makeStyles(() => ({
     overflowWrap: "anywhere",
     "& .MuiTypography-body1": {
       overflow: "hidden",
-      height: 53,
     },
   },
   options: {
@@ -40,14 +38,13 @@ const useStyles = makeStyles(() => ({
     flexDirection: "row",
     flexWrap: "nowrap",
     alignSelf: "flex-end",
-    padding: 4,
   },
   topOptions: {
     position: "absolute",
     right: 4,
     top: 8,
   },
-  bottomOptionsRight: {
+  /* bottomOptionsRight: {
     position: "absolute",
     right: 4,
     bottom: 8,
@@ -56,11 +53,17 @@ const useStyles = makeStyles(() => ({
     position: "absolute",
     left: 4,
     bottom: 11,
-  },
+  }, */
   avatar: {
     minHeight: 50,
     display: "flex",
     alignItems: "flex-end",
+  },
+  title: {
+    maxWidth: "100%",
+    "& *": {
+      maxWidth: "100%",
+    },
   },
 }));
 
@@ -99,6 +102,7 @@ const GridItemList = ({
       {avatar && <ListItemAvatar className={classes.avatar}>{avatar}</ListItemAvatar>}
       {isPlaying ? (
         <ListItemText
+          className={classes.title}
           data-testid="title"
           style={{ width: "100%" }}
           primary={
@@ -112,13 +116,21 @@ const GridItemList = ({
           }
         />
       ) : (
-        <ListItemText data-testid="title" primary={primaryFormatted} onClick={handleClick} />
+        <ListItemText
+          className={classes.title}
+          data-testid="title"
+          primary={primaryFormatted}
+          onClick={handleClick}
+        />
       )}
-      {Array.isArray(bottomOptions) && bottomOptions[2] && (
-        <Box className={classes.bottomOptionsLeft}>{bottomOptions[2]}</Box>
-      )}
-      <Box className={[classes.options, classes.bottomOptionsRight].join(" ")}>
-        {bottomOptions && Array.isArray(bottomOptions) && bottomOptions.slice(0, 2)}
+
+      <Box display="flex" width="100%" alignItems="center" justifyContent="flex-end">
+        {Array.isArray(bottomOptions) && bottomOptions[2] && (
+          <Box flexGrow={1}>{bottomOptions[2]}</Box>
+        )}
+        <Box className={[classes.options].join(" ")}>
+          {bottomOptions && Array.isArray(bottomOptions) && bottomOptions.slice(0, 2)}
+        </Box>
       </Box>
     </Box>
   );
