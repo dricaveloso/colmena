@@ -5,7 +5,6 @@ import Grid from "@material-ui/core/Grid";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
 import { getFileTags, ItemTagInterface } from "@/services/webdav/tags";
-import { getDataFile } from "@/services/webdav/files";
 import Modal from "@/components/ui/Modal";
 
 type Props = {
@@ -16,23 +15,17 @@ type Props = {
 
 export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
   const { t } = useTranslation("library");
-  const [data, setData] = useState<any>(cardItem);
   const [tags, setTags] = useState<ItemTagInterface[] | false>(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const getAdditionalDataFile = useCallback(async () => {
     try {
-      const result: any = await getDataFile(cardItem.filename);
-      setData({ ...data, ...result });
-
-      if (result.fileid) {
-        const tags = await getFileTags(userRdx.user.id, cardItem.filename, result.fileid);
-        setTags(tags);
-      }
+      const tags = await getFileTags(userRdx.user.id, cardItem.filename, cardItem.fileId);
+      setTags(tags);
     } catch (e) {
       console.log(e);
     }
-  }, [cardItem.filename, data, userRdx.user.id]);
+  }, [cardItem.fileId, cardItem.filename, userRdx.user.id]);
 
   useEffect(() => {
     (async () => {
@@ -53,7 +46,7 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
           <strong>{t("detailsModal.name")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {data.basename}
+          {cardItem.basename}
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -61,7 +54,7 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
           <strong>{t("detailsModal.path")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {data.filename}
+          {cardItem.filename}
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -69,7 +62,7 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
           <strong>{t("detailsModal.size")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {data?.size ? <>{Math.round(data.size / 1024)} KiB</> : "-"}
+          {cardItem.size ? <>{Math.round(cardItem.size / 1024)} KiB</> : "-"}
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -77,15 +70,26 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
           <strong>{t("detailsModal.description")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {data?.description ?? "-"}
+          {cardItem.description ?? "-"}
         </Grid>
       </Grid>
+      {cardItem.createdAt && (
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <strong>{t("detailsModal.createdAt")}</strong>
+          </Grid>
+          <Grid item xs={6}>
+            {cardItem.createdAt?.toLocaleDateString("en-US")} - {cardItem.createdAtDescription}
+          </Grid>
+        </Grid>
+      )}
+
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <strong>{t("detailsModal.lastUpdate")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {data.createdAt?.toLocaleDateString("en-US")} - {data.createdAtDescription}
+          {cardItem.updatedAt?.toLocaleDateString("en-US")} - {cardItem.updatedAtDescription}
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -93,16 +97,16 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
           <strong>{t("detailsModal.creator")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {typeof data["owner-display-name"] === "string" ? data["owner-display-name"] : "-"}
+          {cardItem.ownerName ? cardItem.ownerName : "-"}
         </Grid>
       </Grid>
-      {data.type === "file" && (
+      {cardItem.type === "file" && (
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <strong>{t("detailsModal.type")}</strong>
           </Grid>
           <Grid item xs={6}>
-            {data.mime}
+            {cardItem.mime}
           </Grid>
         </Grid>
       )}
@@ -111,7 +115,7 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
           <strong>{t("detailsModal.fileId")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {data?.fileid ?? "-"}
+          {cardItem.fileId ?? "-"}
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -119,7 +123,7 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
           <strong>{t("detailsModal.language")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {data.language ?? "-"}
+          {cardItem.language ?? "-"}
         </Grid>
       </Grid>
       <Grid container spacing={2}>
