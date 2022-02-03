@@ -366,6 +366,7 @@ function Recording() {
       </FlexBox>
       {openContinueRecording && (
         <ActionConfirm
+          showIcon={false}
           title={t("audioConfirmationToKeep")}
           icon="info"
           iconColor={theme.palette.primary.dark}

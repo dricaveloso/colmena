@@ -23,5 +23,6 @@
   "tagsRequiredTitle": "At least one tag is required",
   "recordingTitle": "Recording...",
   "pausingTitle": "Recording paused",
-  "newRecordingTitle": "New recording"
+  "newRecordingTitle": "New recording",
+  "stopingTitle": "Recording stopped"
 }

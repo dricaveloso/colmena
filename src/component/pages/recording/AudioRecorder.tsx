@@ -115,12 +115,15 @@ function AudioRecorder({ onStopRecording }: Props) {
       setIsStop(true);
       setIsRecording(false);
       setRemoveCanvas(true);
-      audioStream.getTracks().forEach((track) => {
-        track.stop();
-      });
+      if (mediaRcdr) {
+        mediaRcdr.stop();
+      }
+      // audioStream.getTracks().forEach((track) => {
+      //   track.stop();
+      // });
       setMediaRcdr(null);
     }
-  }, [audioStream]);
+  }, [audioStream, mediaRcdr]);
 
   const pauseRecording = useCallback(() => {
     if (mediaRcdr) {
@@ -128,7 +131,7 @@ function AudioRecorder({ onStopRecording }: Props) {
       setIsPaused(true);
       setIsStop(false);
       setIsRecording(false);
-      setRemoveCanvas(true);
+      // setRemoveCanvas(true);
     }
   }, [mediaRcdr]);
 
@@ -163,6 +166,8 @@ function AudioRecorder({ onStopRecording }: Props) {
         return t("recordingTitle");
       case "PAUSE":
         return t("pausingTitle");
+      case "STOP":
+        return t("stopingTitle");
       default:
         return t("recordingOrientation");
     }
@@ -191,56 +196,83 @@ function AudioRecorder({ onStopRecording }: Props) {
     return url || convertPrivateToUsername(getPrivatePath(), userRdx.user.id);
   }
 
+  function showRecordingInformation() {
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="flex-start">
+        <Text
+          variant={TextVariantEnum.CAPTION}
+          style={{ color: theme.palette.variation5.light, fontSize: 16 }}
+        >
+          {t("newRecordingTitle")}
+        </Text>
+        <Text
+          variant={TextVariantEnum.CAPTION}
+          style={{ color: theme.palette.variation5.light, fontSize: 16 }}
+        >
+          {format(new Date(), "dd/MM/yyyy")}
+        </Text>
+        <Text
+          variant={TextVariantEnum.CAPTION}
+          style={{ color: theme.palette.variation5.light, fontSize: 16 }}
+        >
+          /{pathLocationSave}
+        </Text>
+      </Box>
+    );
+  }
+
+  function getJustifyContentBasedOnRecordingStatus() {
+    if (isRecording) return "center";
+    if (isPaused) return "cener";
+    return "flex-start";
+  }
+
   return (
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      flex={1}
-      justifyContent={isRecording ? "center" : "flex-start"}
-    >
-      <Text
-        variant={TextVariantEnum.CAPTION}
-        style={{ color: theme.palette.variation5.light, fontSize: 16, width: "100%" }}
+    <>
+      <Box>
+        <Text
+          variant={TextVariantEnum.CAPTION}
+          style={{ color: theme.palette.variation5.light, fontSize: 16, width: "100%" }}
+        >
+          {getInformationRecordingState()}
+        </Text>
+      </Box>
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        flex={1}
+        justifyContent={getJustifyContentBasedOnRecordingStatus()}
       >
-        {getInformationRecordingState()}
-      </Text>
-      {isRecording && (
-        <Box display="flex" flex={1} width="100%" flexDirection="column" justifyContent="center">
-          <Sinewaves
-            stream={audioStream}
-            removeCanvas={removeCanvas}
-            height="190px"
-            backgroundColor={theme.palette.variation5.main}
-            foregroundColor={theme.palette.secondary.main}
-          />
-          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-around">
-            <Box display="flex" flexDirection="column" justifyContent="flex-start">
-              <Text
-                variant={TextVariantEnum.CAPTION}
-                style={{ color: theme.palette.variation5.light, fontSize: 16 }}
-              >
-                {t("newRecordingTitle")}
-              </Text>
-              <Text
-                variant={TextVariantEnum.CAPTION}
-                style={{ color: theme.palette.variation5.light, fontSize: 16 }}
-              >
-                {format(new Date(), "MM/dd/yyyy")}
-              </Text>
-              <Text
-                variant={TextVariantEnum.CAPTION}
-                style={{ color: theme.palette.variation5.light, fontSize: 16 }}
-              >
-                /{pathLocationSave}
-              </Text>
+        {/* {isPaused && showRecordingInformation()} */}
+        {(isRecording || isPaused) && (
+          <Box display="flex" flex={1} width="100%" flexDirection="column" justifyContent="center">
+            <Sinewaves
+              stream={audioStream}
+              removeCanvas={removeCanvas}
+              height="190px"
+              backgroundColor={theme.palette.variation5.main}
+              foregroundColor={theme.palette.secondary.main}
+            />
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-around"
+            >
+              {showRecordingInformation()}
+              <VUMeter
+                stream={audioStream}
+                removeCanvas={removeCanvas}
+                width="70px"
+                height="150px"
+              />
             </Box>
-            <VUMeter stream={audioStream} removeCanvas={removeCanvas} width="70px" height="150px" />
           </Box>
-        </Box>
-      )}
-    </Box>
+        )}
+      </Box>
+    </>
   );
 }
 

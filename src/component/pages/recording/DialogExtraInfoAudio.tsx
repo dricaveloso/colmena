@@ -159,7 +159,7 @@ export default function DialogExtraInfoAudio({
       >
         {({ submitForm, errors, touched, setFieldValue, values }: any) => (
           <Modal
-            title={t("recordingFinishDescription")}
+            title={t("recordingFinishTitle")}
             open={open}
             aria-labelledby="form-dialog-title"
             actions={
