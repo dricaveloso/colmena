@@ -25,7 +25,7 @@ function Env({ HOTJAR, APP_ENV, API_BASE_URL }: Props) {
       <table className="envPage">
         <thead>
           <tr>
-            <th colSpan="2">Backend</th>
+            <th colSpan={2}>Backend</th>
           </tr>
           <tr>
             <th>Variável</th>
@@ -50,7 +50,7 @@ function Env({ HOTJAR, APP_ENV, API_BASE_URL }: Props) {
       <table className="envPage">
         <thead>
           <tr>
-            <th colSpan="2">Frontend</th>
+            <th colSpan={2}>Frontend</th>
           </tr>
           <tr>
             <th>Variável</th>

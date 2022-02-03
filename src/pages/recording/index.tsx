@@ -337,6 +337,8 @@ function Recording() {
     setOpenDialogAudioName(true);
   }
 
+  const tempFileName = new Date().toISOString();
+
   return (
     <LayoutApp
       templateHeader="variation3"
@@ -350,7 +352,7 @@ function Recording() {
         justifyContent={JustifyContentEnum.SPACEBETWEEN}
         alignItems={AlignItemsEnum.CENTER}
       >
-        <AudioRecorder onStopRecording={onStopRecording} />
+        <AudioRecorder onStopRecording={onStopRecording} tempFileName={tempFileName} />
         <Divider marginTop={25} />
         <Timer />
         {openDialogAudioName && (
@@ -360,6 +362,7 @@ function Recording() {
             handleSubmit={saveAudioHandle}
             pathLocationSave={pathLocationSave}
             discardAudioHandle={discardAudio}
+            tempFileName={tempFileName}
           />
         )}
         <Backdrop open={showBackdrop} />

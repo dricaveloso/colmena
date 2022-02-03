@@ -22,7 +22,7 @@ import { useTranslation } from "next-i18next";
 import IconButton from "@/components/ui/IconButton";
 import Button from "@/components/ui/Button";
 import Box from "@material-ui/core/Box";
-import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
+import { ButtonVariantEnum, TextVariantEnum, DefaultAudioTypeEnum } from "@/enums/*";
 import { useRouter } from "next/router";
 import Text from "@/components/ui/Text";
 import theme from "@/styles/theme";
@@ -31,6 +31,7 @@ import { convertPrivateToUsername, getPrivatePath } from "@/utils/directory";
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
+  tempFileName: string;
 };
 
 // type StyleProps = {
@@ -38,7 +39,7 @@ type Props = {
 //   height: string;
 // };
 
-function AudioRecorder({ onStopRecording }: Props) {
+function AudioRecorder({ onStopRecording, tempFileName }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
   const { t } = useTranslation("recording");
@@ -203,12 +204,6 @@ function AudioRecorder({ onStopRecording }: Props) {
           variant={TextVariantEnum.CAPTION}
           style={{ color: theme.palette.variation5.light, fontSize: 16 }}
         >
-          {t("newRecordingTitle")}
-        </Text>
-        <Text
-          variant={TextVariantEnum.CAPTION}
-          style={{ color: theme.palette.variation5.light, fontSize: 16 }}
-        >
           {format(new Date(), "dd/MM/yyyy")}
         </Text>
         <Text
@@ -245,9 +240,14 @@ function AudioRecorder({ onStopRecording }: Props) {
         flex={1}
         justifyContent={getJustifyContentBasedOnRecordingStatus()}
       >
-        {/* {isPaused && showRecordingInformation()} */}
         {(isRecording || isPaused) && (
           <Box display="flex" flex={1} width="100%" flexDirection="column" justifyContent="center">
+            <Text
+              variant={TextVariantEnum.CAPTION}
+              style={{ color: theme.palette.variation5.light, fontSize: 14 }}
+            >
+              {tempFileName}.{DefaultAudioTypeEnum.type}
+            </Text>
             <Sinewaves
               stream={audioStream}
               removeCanvas={removeCanvas}
