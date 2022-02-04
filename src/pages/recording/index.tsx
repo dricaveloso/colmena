@@ -337,20 +337,22 @@ function Recording() {
     setOpenDialogAudioName(true);
   }
 
+  const tempFileName = new Date().toISOString();
+
   return (
     <LayoutApp
       templateHeader="variation3"
-      backgroundColor={theme.palette.variation5.main}
+      backgroundColor={theme.palette.variation7.dark}
       title={t("title")}
       showFooter={false}
       back
     >
       <FlexBox
-        extraStyle={{ backgroundColor: theme.palette.variation5.main }}
+        extraStyle={{ backgroundColor: theme.palette.variation7.dark }}
         justifyContent={JustifyContentEnum.SPACEBETWEEN}
         alignItems={AlignItemsEnum.CENTER}
       >
-        <AudioRecorder onStopRecording={onStopRecording} />
+        <AudioRecorder onStopRecording={onStopRecording} tempFileName={tempFileName} />
         <Divider marginTop={25} />
         <Timer />
         {openDialogAudioName && (
@@ -360,12 +362,14 @@ function Recording() {
             handleSubmit={saveAudioHandle}
             pathLocationSave={pathLocationSave}
             discardAudioHandle={discardAudio}
+            tempFileName={tempFileName}
           />
         )}
         <Backdrop open={showBackdrop} />
       </FlexBox>
       {openContinueRecording && (
         <ActionConfirm
+          showIcon={false}
           title={t("audioConfirmationToKeep")}
           icon="info"
           iconColor={theme.palette.primary.dark}

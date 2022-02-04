@@ -8,5 +8,4 @@ declare module 'web-audio-peak-meter';
 declare module 'wavesurfer.js';
 declare module 'formidable';
 declare module 'request';
-declare module '@cleandersonlobo/react-mic';
 

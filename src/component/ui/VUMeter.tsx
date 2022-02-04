@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useCallback } from "react";
 import webAudioPeakMeter from "web-audio-peak-meter";
 
@@ -9,6 +10,17 @@ type Props = {
 };
 
 export default function VUMeter({ stream, removeCanvas = false, width, height }: Props) {
+  function createCanvas() {
+    const canvasWrapper = document.getElementById("canvasWrapper");
+    const canvas = document.createElement("div");
+    canvas.setAttribute("id", "canvas");
+    canvas.style.width = width;
+    canvas.style.height = height;
+    canvas.style.margin = "1em 0";
+    canvasWrapper?.appendChild(canvas);
+    return canvas;
+  }
+
   const init = useCallback(() => {
     if (removeCanvas) {
       const canvas = document.getElementById("canvas");
@@ -23,17 +35,12 @@ export default function VUMeter({ stream, removeCanvas = false, width, height }:
 
       source.connect(analyser);
 
-      const canvasWrapper = document.getElementById("canvasWrapper");
-      const canvas = document.createElement("div");
-      canvas.setAttribute("id", "canvas");
-      canvas.style.width = width;
-      canvas.style.height = height;
-      canvas.style.margin = "1em 0";
-      canvasWrapper?.appendChild(canvas);
+      const canvas = createCanvas();
+
       const meterNode = webAudioPeakMeter.createMeterNode(source, audioCtx);
       webAudioPeakMeter.createMeter(canvas, meterNode, {});
     }
-  }, [stream, removeCanvas, width, height]);
+  }, [stream, removeCanvas]);
 
   useEffect(() => {
     init();

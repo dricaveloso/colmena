@@ -115,7 +115,7 @@
   "administratorTitle": "Administrator",
   "collaboratorTitle": "Collaborator",
   "confirmTitleDelete": "Are you sure ?",
-  "confirmMessageDelete": "By performing this action, it will be impossible to reverse it.",
+  "confirmMessageDelete": "This action is irreversible.",
   "yesTitle": "Yes",
   "noTitle": "No",
   "used": "Used",

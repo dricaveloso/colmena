@@ -42,6 +42,7 @@ type Props = {
   handleSubmit: (values: PropsAudioSave) => void;
   pathLocationSave: string;
   discardAudioHandle: () => void;
+  tempFileName: string;
 };
 
 type MyFormValues = {
@@ -54,6 +55,7 @@ export default function DialogExtraInfoAudio({
   handleSubmit,
   pathLocationSave = "",
   discardAudioHandle,
+  tempFileName,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
@@ -77,7 +79,7 @@ export default function DialogExtraInfoAudio({
   });
 
   const initialValues: MyFormValues = {
-    name: new Date().toISOString(),
+    name: tempFileName,
     tags: [],
   };
 
@@ -159,7 +161,7 @@ export default function DialogExtraInfoAudio({
       >
         {({ submitForm, errors, touched, setFieldValue, values }: any) => (
           <Modal
-            title={t("recordingFinishDescription")}
+            title={t("recordingFinishTitle")}
             open={open}
             aria-labelledby="form-dialog-title"
             actions={

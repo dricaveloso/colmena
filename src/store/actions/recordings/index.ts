@@ -4,6 +4,7 @@ import {
   CLEAR_RECORDINGS,
   SET_ACTIVE_RECORDING_STATE,
   SET_ALLOW_BROWSER_RECORDING,
+  SET_PLAYING_AUDIO_PREVIEW,
 } from "@/store/actions/index";
 import { RecordingInterface } from "@/interfaces/index";
 
@@ -21,6 +22,11 @@ export const recordingUpdate = (id: string, recording: RecordingInterface) => ({
 export const updateRecordingState = (activeRecordingState: string) => ({
   type: SET_ACTIVE_RECORDING_STATE,
   activeRecordingState,
+});
+
+export const updatePlayingAudioPreview = (isPlayingAudioPreview: boolean) => ({
+  type: SET_PLAYING_AUDIO_PREVIEW,
+  isPlayingAudioPreview,
 });
 
 export const updatePermissionBrowserRecording = ({

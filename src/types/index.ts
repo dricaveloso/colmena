@@ -77,6 +77,7 @@ export type PropsRecordingSelector = {
   activeRecordingState: string;
   allowBrowserRecording: boolean;
   backAfterFinishRecording: boolean;
+  isPlayingAudioPreview: boolean;
 };
 
 export type NotificationStatusProps =

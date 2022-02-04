@@ -5,18 +5,21 @@ import {
   CLEAR_RECORDINGS,
   SET_ACTIVE_RECORDING_STATE,
   SET_ALLOW_BROWSER_RECORDING,
+  SET_PLAYING_AUDIO_PREVIEW,
 } from "@/store/actions/index";
 
 type initialStateProps = {
   recordings: RecordingInterface[];
   activeRecordingState: string;
   allowBrowserRecording: boolean;
+  isPlayingAudioPreview: boolean;
 };
 
 const initialState: initialStateProps = {
   recordings: [],
   activeRecordingState: "NONE",
   allowBrowserRecording: false,
+  isPlayingAudioPreview: false,
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -27,6 +30,8 @@ const reducer = (state = initialState, action: any) => {
       return { ...state, recordings: [] };
     case SET_ACTIVE_RECORDING_STATE:
       return { ...state, activeRecordingState: action.activeRecordingState };
+    case SET_PLAYING_AUDIO_PREVIEW:
+      return { ...state, isPlayingAudioPreview: action.isPlayingAudioPreview };
     case SET_ALLOW_BROWSER_RECORDING:
       return { ...state, allowBrowserRecording: action.allowBrowserRecording };
     case RECORDING_UPDATE:

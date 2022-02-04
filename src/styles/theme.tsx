@@ -8,6 +8,7 @@ declare module "@material-ui/core/styles/createPalette" {
     variation4: Palette["primary"];
     variation5: Palette["primary"];
     variation6: Palette["primary"];
+    variation7: Palette["primary"];
     gray: Palette["primary"];
     icon: Palette["primary"];
     danger: Palette["primary"];
@@ -19,6 +20,7 @@ declare module "@material-ui/core/styles/createPalette" {
     variation4: PaletteOptions["primary"];
     variation5: PaletteOptions["primary"];
     variation6: PaletteOptions["primary"];
+    variation7: PaletteOptions["primary"];
     gray: PaletteOptions["primary"];
     icon: PaletteOptions["primary"];
     danger: PaletteOptions["primary"];
@@ -91,6 +93,13 @@ const theme = createTheme({
       light: "#c2c4c6",
       main: "#343a40",
       dark: "#21252a",
+      contrastText: "#fff",
+    },
+    // dark blue variation 2
+    variation7: {
+      light: "#c2c3d0",
+      main: "##333762",
+      dark: "#202346",
       contrastText: "#fff",
     },
 

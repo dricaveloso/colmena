@@ -121,7 +121,7 @@ input:-webkit-autofill,
 }
 
 #canvasWrapper #canvas div {
-  background-color: #2c363e !important;
+  background-color: #202346 !important;
 }
 
 .searchForm {
@@ -194,6 +194,25 @@ form.nosubmit {
     no-repeat 98%;
 }
 
+table.envPage {
+  font-size: 10px;
+  width: 400px;
+  margin-bottom: 20px;
+}
+
+table.envPage th {
+  background-color: #bbb;
+  text-align: center;
+}
+
+table.envPage td {
+  text-align: center;
+}
+
+table.envPage td:nth-child(1) {
+  width: 60%;
+}
+
 .ui-carousel{
   margin-bottom: 16px;
 }
@@ -201,3 +220,4 @@ form.nosubmit {
 .ui-carousel > .awssld__wrapper{
   height: 85px;
 }
+

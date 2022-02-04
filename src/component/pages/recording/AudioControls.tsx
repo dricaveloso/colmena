@@ -1,10 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { PropsRecordingSelector } from "@/types/*";
 import IconButton from "@/components/ui/IconButton";
+import { updatePlayingAudioPreview } from "@/store/actions/recordings/index";
 import Box from "@material-ui/core/Box";
 import theme from "@/styles/theme";
+import { toast } from "@/utils/notifications";
+import { useTranslation } from "next-i18next";
 
 type Props = {
   handleStop: () => void;
@@ -13,23 +16,35 @@ type Props = {
 };
 
 export default function AudioControls({ handleStop, handleStart, handlePause }: Props) {
+  const dispatch = useDispatch();
+  const { t: c } = useTranslation("common");
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
+  const state = recordingRdx.activeRecordingState;
+
   const _handleStart = () => {
-    if (recordingRdx.activeRecordingState !== "START") {
+    if (state !== "START") {
+      dispatch(updatePlayingAudioPreview(false));
       handleStart();
     }
   };
 
+  const _handleStart2 = () => {
+    // dispatch(updatePlayingAudioPreview(true));
+    toast(c("featureUnavailable"), "warning");
+  };
+
   const _handleStop = () => {
-    if (["START", "PAUSE"].includes(recordingRdx.activeRecordingState)) {
+    if (["START", "PAUSE"].includes(state)) {
+      dispatch(updatePlayingAudioPreview(false));
       handleStop();
     }
   };
 
   const _handlePause = () => {
-    if (recordingRdx.activeRecordingState === "START") {
+    if (state === "START") {
+      dispatch(updatePlayingAudioPreview(false));
       handlePause();
     }
   };
@@ -43,38 +58,34 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
       justifyContent="space-around"
       alignItems="center"
     >
-      {["START", "PAUSE"].includes(recordingRdx.activeRecordingState) && (
+      {["START", "PAUSE"].includes(state) && (
         <IconButton
           icon="play_outlined"
-          iconColor={
-            recordingRdx.activeRecordingState === "START" ? theme.palette.variation5.light : "#fff"
-          }
-          disabled={recordingRdx.activeRecordingState === "START"}
+          iconColor={state === "START" ? theme.palette.variation5.light : "#fff"}
+          disabled={state === "START"}
           iconStyle={{ fontSize: 50 }}
-          handleClick={_handleStart}
+          handleClick={_handleStart2}
         />
       )}
 
-      {recordingRdx.activeRecordingState === "NONE" && (
+      {["NONE", "START", "PAUSE"].includes(state) && (
         <IconButton
           icon="record_outlined"
           iconStyle={{ fontSize: 70, marginBottom: 30 }}
-          handleClick={_handleStart}
+          handleClick={state === "START" ? _handlePause : _handleStart}
         />
       )}
 
-      {["START", "PAUSE"].includes(recordingRdx.activeRecordingState) && (
+      {/* {["START", "PAUSE"].includes(state) && (
         <IconButton
           icon="pause_outlined"
-          iconColor={
-            recordingRdx.activeRecordingState === "PAUSE" ? theme.palette.variation5.light : "#fff"
-          }
+          iconColor={state === "PAUSE" ? theme.palette.variation5.light : "#fff"}
           iconStyle={{ fontSize: 70, marginBottom: 30 }}
           handleClick={_handlePause}
         />
-      )}
+      )} */}
 
-      {["START", "PAUSE"].includes(recordingRdx.activeRecordingState) && (
+      {["START", "PAUSE"].includes(state) && (
         <IconButton
           icon="stop_outlined"
           iconColor="#fff"
