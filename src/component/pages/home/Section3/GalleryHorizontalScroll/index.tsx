@@ -19,7 +19,7 @@ export default function GalleryHorizontalScroll({ data }: Props) {
       <div className="scrollingContainer" style={!match ? { width: "95vw" } : { width: "90%" }}>
         {honeycombData.map((item, index) => (
           <div key={uuid()} onClick={() => router.push(`honeycomb/${item.token}`)}>
-            <Honeycomb title={item.name} image={`/images/honeycombs/honeycomb${index}.jpeg`} />
+            <Honeycomb title={item.name} image={`/images/honeycombs/honeycomb${index}.png`} />
           </div>
         ))}
       </div>
