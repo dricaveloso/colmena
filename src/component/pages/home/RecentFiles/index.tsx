@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from "react";
-import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  LibraryCardItemInterface,
+  LibraryItemInterface,
+  TimeDescriptionInterface,
+} from "@/interfaces/index";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { ListTypeEnum } from "@/enums/index";
-import Library from "@/components/pages/library";
+import Library, { getItems } from "@/components/pages/library";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
 import ToolbarSection from "../ToolbarSection";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
@@ -27,27 +31,28 @@ interface IProps {
 const RecentFiles: React.FC<IProps> = ({}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<Array<LibraryItemInterface>>();
-  const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-
   const router = useRouter();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const { t } = useTranslation("common");
-  const rawItems: Array<LibraryItemInterface> = library.libraryFiles;
+  const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
 
   const { t: homeTranslation } = useTranslation("home");
 
-  const mountItems = async () => {
-    setIsLoading(true);
-    console.log(rawItems.filter((item) => item.type !== "directory"));
-    const recentFiles = rawItems
-      // @ts-ignore
-      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-      .filter((item) => item.type !== "directory")
-      .reverse()
-      .slice(0, 4);
-    setData(recentFiles);
+  const mountItems = useCallback(async () => {
+    try {
+      const items = await getItems(userRdx.user.id, userRdx.user.id, timeDescription);
+      const recentFiles = items
+        // @ts-ignore
+        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+        .filter((item) => item.type !== "directory")
+        .reverse()
+        .slice(0, 4);
+      setData(recentFiles);
+    } catch (e) {
+      console.log(e);
+    }
     setIsLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     mountItems();

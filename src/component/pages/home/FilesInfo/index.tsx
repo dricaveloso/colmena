@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -11,7 +12,7 @@ import Item from "./Item";
 import { getItems } from "../../library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { getAllContents } from "@/services/webdav/directories";
-import Link from "next/link";
+import router from "next/router";
 
 const FilesInfoSection = () => {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -58,12 +59,12 @@ const FilesInfoSection = () => {
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="row" alignContent="center" justifyContent="space-around">
-          <Link href={`/library/${userRdx.user.id}`}>
+          <a onClick={() => router.push(`/library/${userRdx.user.id}`)}>
             <Item title={h("myFilesLabel")} amount={data.length} />
-          </Link>
-          <Link href="/library/Talk">
+          </a>
+          <a onClick={() => router.push("/library/Talk")}>
             <Item title={h("sharedLabel")} amount={sharedData.length} />
-          </Link>
+          </a>
           <Item title={h("publicLabel")} amount={0} />
         </Box>
       </Box>
