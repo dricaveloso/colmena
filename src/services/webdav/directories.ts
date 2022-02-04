@@ -8,6 +8,10 @@ export function listDirectories(userId: string | number, path?: string): any {
   return webdav().getDirectoryContents(`${userId}/${removeFirstSlash(path)}`, { details: true });
 }
 
+export function getAllContents(userId: string): any {
+  return webdav().getDirectoryContents(`${removeFirstSlash(userId)}/private`, { deep: true });
+}
+
 export async function listLibraryDirectories(userId: string | number, path?: string): Promise<any> {
   const directories = await listDirectories(userId, path);
   if (!directories?.data) return false;

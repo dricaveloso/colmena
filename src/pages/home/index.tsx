@@ -20,10 +20,11 @@ import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import { getFirstname } from "@/utils/utils";
+import Carousel from "@/components/pages/home/Carousel";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["home", "invitation", "library"])),
+    ...(await serverSideTranslations(locale, ["home", "invitation", "library", "common"])),
   },
 });
 
@@ -84,6 +85,7 @@ function Home() {
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <FilesInfoSection />
         {/* <Search /> */}
+        <Carousel />
         <RecentFiles library={library} />
 
         {!data ? <DirectoryList /> : <HoneyCombsList data={data.ocs.data} />}

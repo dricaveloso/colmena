@@ -292,6 +292,10 @@ export type AllIconProps =
   | "move"
   | "rename"
   | "details"
+  | "banner_1"
+  | "banner_2"
+  | "banner_3"
+  | "banner_4"
   | "gradient_plus"
   | "sync";
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   LibraryCardItemInterface,
   LibraryItemInterface,
@@ -34,26 +34,25 @@ const RecentFiles: React.FC<IProps> = ({}) => {
   const router = useRouter();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const { t } = useTranslation("common");
+  const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
+
   const { t: homeTranslation } = useTranslation("home");
 
-  const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
-  const mountItems = async () => {
-    setIsLoading(true);
+  const mountItems = useCallback(async () => {
     try {
       const items = await getItems(userRdx.user.id, userRdx.user.id, timeDescription);
       const recentFiles = items
-        .slice(0, 3)
         // @ts-ignore
         .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-        .reverse();
-
+        .filter((item) => item.type !== "directory")
+        .reverse()
+        .slice(0, 4);
       setData(recentFiles);
     } catch (e) {
       console.log(e);
-    } finally {
-      setIsLoading(false);
     }
-  };
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     mountItems();
