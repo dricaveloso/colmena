@@ -24,7 +24,7 @@ import davAxiosConnection from "@/services/webdav/axiosConnection";
 import axiosBase from "@/services/webdav/axiosBase";
 import getConfig from "next/config";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
-import { convertPrivateToUsername, getTalkPath } from "@/utils/directory";
+import { convertPrivateToUsername, getPrivatePath, getTalkPath } from "@/utils/directory";
 import { EnvironmentEnum } from "@/enums/*";
 
 const { publicRuntimeConfig } = getConfig();
@@ -283,7 +283,7 @@ export async function getFiles(
     items.push(itemPayload(userId, item, timeDescription));
   });
 
-  return handleItems(items, path);
+  return handleItems(userId, items, path);
 }
 
 const itemPayload = (
@@ -340,12 +340,18 @@ const itemPayload = (
   return newItem;
 };
 
-const handleItems = (items: Array<LibraryItemInterface>, path: string) => {
+let currentItem: LibraryItemInterface | null = null;
+
+function setCurrentFile(item: null | LibraryItemInterface) {
+  currentItem = item;
+}
+
+export function getCurrentFile(): null | LibraryItemInterface {
+  return currentItem;
+}
+
+const handleItems = (userId: string, items: Array<LibraryItemInterface>, path: string) => {
   const handledItems = items
-    .filter(
-      (item: LibraryItemInterface, index) =>
-        index > 0 && item.basename !== "" && item.basename[0] !== ".",
-    )
     .map((item: LibraryItemInterface) => {
       const newItem = item;
       const { type, filename } = newItem;
@@ -353,8 +359,20 @@ const handleItems = (items: Array<LibraryItemInterface>, path: string) => {
         newItem.basename = "shared with me";
       }
 
+      if (filename === "") {
+        setCurrentFile(null);
+      } else if (filename === removeCornerSlash(path)) {
+        setCurrentFile(item);
+      } else if (filename === getPrivatePath()) {
+        newItem.basename = userId;
+      }
+
       return newItem;
-    });
+    })
+    .filter(
+      (item: LibraryItemInterface, index) =>
+        index > 0 && item.basename !== "" && item.basename[0] !== ".",
+    );
 
   const isRoot = path === "/" || path === "";
   if (isRoot) {
