@@ -342,13 +342,13 @@ function Recording() {
   return (
     <LayoutApp
       templateHeader="variation3"
-      backgroundColor={theme.palette.variation5.main}
+      backgroundColor={theme.palette.variation7.dark}
       title={t("title")}
       showFooter={false}
       back
     >
       <FlexBox
-        extraStyle={{ backgroundColor: theme.palette.variation5.main }}
+        extraStyle={{ backgroundColor: theme.palette.variation7.dark }}
         justifyContent={JustifyContentEnum.SPACEBETWEEN}
         alignItems={AlignItemsEnum.CENTER}
       >

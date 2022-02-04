@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { useEffect, useRef } from "react";
@@ -24,12 +25,12 @@ type WaveProps = {
 };
 
 type Props = {
-  blob: Blob | null;
+  blob?: Blob | null;
   config?: WaveProps | undefined;
   play?: boolean;
 };
 
-export default function Waves({ blob, config = undefined, play = false }: Props) {
+export default function Waves({ blob = null, config = undefined, play = false }: Props) {
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
 

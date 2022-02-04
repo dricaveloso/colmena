@@ -28,6 +28,7 @@ import Text from "@/components/ui/Text";
 import theme from "@/styles/theme";
 import { format } from "date-fns";
 import { convertPrivateToUsername, getPrivatePath } from "@/utils/directory";
+import Waves from "@/components/pages/file/AudioWave/Waves";
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
@@ -47,8 +48,10 @@ function AudioRecorder({ onStopRecording, tempFileName }: Props) {
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
   const state = recordingRdx.activeRecordingState;
+  const { isPlayingAudioPreview } = recordingRdx;
   const [audioStream, setAudioStream] = useState<MediaStream | undefined>(undefined);
   const [mediaRcdr, setMediaRcdr] = useState<MediaRecorder | null>(null);
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isStop, setIsStop] = useState(false);
@@ -57,16 +60,6 @@ function AudioRecorder({ onStopRecording, tempFileName }: Props) {
   const [pathLocationSave, setPathLocationSave] = useState("");
   const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  // const matchXs = useMediaQuery(theme.breakpoints.down("sm"));
-  // const styleMatchXs = {
-  //   width: "5em",
-  //   height: "20em",
-  // };
-  // const styleMatchRest = {
-  //   width: "5em",
-  //   height: "20em",
-  // };
-  // const style: StyleProps = matchXs ? styleMatchXs : styleMatchRest;
 
   const startRecording = useCallback(async () => {
     let mediaRecorder: MediaRecorder | null = mediaRcdr;
@@ -227,7 +220,7 @@ function AudioRecorder({ onStopRecording, tempFileName }: Props) {
       <Box>
         <Text
           variant={TextVariantEnum.CAPTION}
-          style={{ color: theme.palette.variation5.light, fontSize: 16, width: "100%" }}
+          style={{ color: theme.palette.variation7.light, fontSize: 16, width: "100%" }}
         >
           {getInformationRecordingState()}
         </Text>
@@ -244,17 +237,21 @@ function AudioRecorder({ onStopRecording, tempFileName }: Props) {
           <Box display="flex" flex={1} width="100%" flexDirection="column" justifyContent="center">
             <Text
               variant={TextVariantEnum.CAPTION}
-              style={{ color: theme.palette.variation5.light, fontSize: 14 }}
+              style={{ color: theme.palette.variation7.light, fontSize: 14 }}
             >
               {tempFileName}.{DefaultAudioTypeEnum.type}
             </Text>
-            <Sinewaves
-              stream={audioStream}
-              removeCanvas={removeCanvas}
-              height="190px"
-              backgroundColor={theme.palette.variation5.main}
-              foregroundColor={theme.palette.secondary.main}
-            />
+            {!isPlayingAudioPreview ? (
+              <Sinewaves
+                stream={audioStream}
+                removeCanvas={removeCanvas}
+                height="190px"
+                backgroundColor={theme.palette.variation7.dark}
+                foregroundColor={theme.palette.secondary.main}
+              />
+            ) : (
+              <Waves blob={audioBlob} play config={{ height: 190 }} />
+            )}
             <Box
               display="flex"
               flexDirection="row"

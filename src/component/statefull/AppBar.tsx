@@ -34,7 +34,7 @@ tplHeader.set("variation2", {
   textColor: theme.palette.primary.contrastText,
 });
 tplHeader.set("variation3", {
-  backgroundAppBar: theme.palette.variation5.main,
+  backgroundAppBar: theme.palette.variation7.dark,
   textColor: theme.palette.variation5.contrastText,
 });
 
