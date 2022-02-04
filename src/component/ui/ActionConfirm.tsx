@@ -16,6 +16,7 @@ type Props = {
   onClose?: () => void;
   onOk?: () => void;
   isLoading?: boolean;
+  showMessage?: boolean;
   showIcon?: boolean;
 };
 
@@ -27,6 +28,7 @@ export default function ActionConfirm({
   onClose,
   onOk,
   isLoading = false,
+  showMessage = true,
   showIcon = true,
   ...props
 }: Props) {
@@ -55,9 +57,11 @@ export default function ActionConfirm({
           {!title ? c("confirmTitleDelete") : title}
         </Text>
         <Divider marginTop={5} />
-        <Text variant={TextVariantEnum.BODY1} style={{ textAlign: "center" }}>
-          {!message ? c("confirmMessageDelete") : message}
-        </Text>
+        {showMessage && (
+          <Text variant={TextVariantEnum.BODY1} style={{ textAlign: "center" }}>
+            {!message ? c("confirmMessageDelete") : message}
+          </Text>
+        )}
         <Divider marginTop={6} />
         <Box
           display="flex"

@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "next-i18next";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
@@ -19,6 +19,7 @@ import { PropsUserSelector } from "@/types/index";
 import { MediaInfoInterface } from "@/interfaces/index";
 import { mediaInfoUpdate } from "@/store/actions/users/index";
 import { toast } from "@/utils/notifications";
+import { isValidUrl } from "@/utils/utils";
 
 type Props = {
   title: string;
@@ -36,6 +37,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
   const { t } = useTranslation("mediaProfile");
   const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
+  const [errorUrlMessage, setErrorUrlMessage] = useState("");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const initialValues = {
@@ -54,11 +56,23 @@ export default function EditMedia({ title, open, handleClose }: Props) {
     description: Yup.string()
       .required(c("form.requiredTitle"))
       .max(maxLengthDescription, c("form.passwordMaxLengthTitle", { size: maxLengthDescription })),
-    url: Yup.string().nullable().url(c("form.invalidURLTitle")),
+    // url: Yup.string().nullable().url(c("form.invalidURLTitle")),
   });
 
   const handleSubmit = async (values: MyFormValues, setSubmitting: (flag: boolean) => void) => {
     const { description, url } = values;
+    let urlSend = url;
+    if (urlSend) {
+      if (urlSend.indexOf("http://") === -1 && urlSend.indexOf("https://") === -1)
+        urlSend = `http://${urlSend}`;
+      console.log(urlSend);
+      if (!isValidUrl(urlSend)) {
+        setSubmitting(false);
+        setErrorUrlMessage(c("form.invalidURLTitle"));
+        return;
+      }
+    }
+
     setSubmitting(true);
     try {
       const mediaName = getUserGroup();
@@ -74,7 +88,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
       const mediaObj: MediaInfoInterface = JSON.parse(String(mediaFile));
       // mediaObj.name = name;
       mediaObj.slogan = description;
-      mediaObj.url = url;
+      mediaObj.url = urlSend;
 
       await putFile(
         userRdx.user.id,
@@ -164,7 +178,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
                 />
               )}
             </Field>
-            {errors.url && touched.url ? <ErrorMessageForm message={errors.url} /> : null}
+            {errorUrlMessage ? <ErrorMessageForm message={errorUrlMessage} /> : null}
             <Divider marginTop={20} />
             <Grid container justifyContent="flex-end">
               <Button

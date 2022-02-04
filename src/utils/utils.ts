@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable import/no-duplicates */
 import { differenceInMinutes, differenceInCalendarMonths, formatDistanceToNow } from "date-fns";
 import { enUS, es, fr } from "date-fns/locale";
@@ -58,13 +60,16 @@ export const isJPGImage = (mime: string | undefined) => {
 };
 
 export const isValidUrl = (url: string) => {
-  try {
-    // eslint-disable-next-line no-new
-    new URL(url);
-  } catch (e) {
-    return false;
-  }
-  return true;
+  const pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i",
+  ); // fragment locator
+  return !!pattern.test(url);
 };
 
 export function parseJwt<Type>(token: string | undefined): Type | undefined {

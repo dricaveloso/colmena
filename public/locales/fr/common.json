@@ -135,6 +135,7 @@
     "es": "Espagnol",
     "fr": "Français"
   },
+  "confirmationDeleteFile": "Delete file ?",
   "bannerMessage1": "Colmena es una suite de productividad para medios locales, segura, libre y 100% gratuita.",
   "bannerMessage2": "Pensada para funcionar en zonas de baja conectividad.",
   "bannerMessage3": "Graba, edita y publica audios desde tu celular con múltiplas personas en salas de grabación.",

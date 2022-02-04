@@ -142,5 +142,6 @@
     "ar": "Arábico",
     "pt": "Português (Brasil)",
     "sw": "Swahili"
-  }
+  },
+  "confirmationDeleteFile": "Delete file ?"
 }
