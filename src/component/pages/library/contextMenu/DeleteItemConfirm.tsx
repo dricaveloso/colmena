@@ -18,6 +18,7 @@ type Props = {
 
 export default function DeleteItemConfirm({ handleOpen, cardItem }: Props) {
   const { t } = useTranslation("library");
+  const { t: c } = useTranslation("common");
   const [isLoading, setIsLoading] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const dispatch = useDispatch();
@@ -81,6 +82,8 @@ export default function DeleteItemConfirm({ handleOpen, cardItem }: Props) {
         onOk={handleDelete}
         onClose={handleClose}
         isLoading={isLoading}
+        showMessage={false}
+        title={c("confirmationDeleteFile")}
       />
     </>
   );
