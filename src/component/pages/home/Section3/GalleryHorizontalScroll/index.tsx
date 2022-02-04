@@ -4,22 +4,29 @@ import Honeycomb from "./Honeycomb";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import theme from "@/styles/theme";
 import { v4 as uuid } from "uuid";
-import { RoomItemInterface } from "@/interfaces/talk";
 import router from "next/router";
+import { useSelector } from "react-redux";
+import { PropsHoneycombSelector } from "@/types/*";
 
-interface Props {
-  data: RoomItemInterface[];
-}
-
-export default function GalleryHorizontalScroll({ data }: Props) {
+export default function GalleryHorizontalScroll() {
   const match = useMediaQuery(theme.breakpoints.up("sm"));
-  const honeycombData = data.slice(0, 13);
+
+  const honeycombRdx = useSelector(
+    (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
+  );
+
+  const items = honeycombRdx.honeycombs;
   return (
     <Box width="100%">
       <div className="scrollingContainer" style={!match ? { width: "95vw" } : { width: "90%" }}>
-        {honeycombData.map((item, index) => (
-          <div key={uuid()} onClick={() => router.push(`honeycomb/${item.token}`)}>
-            <Honeycomb title={item.name} image={`/images/honeycombs/honeycomb${index}.png`} />
+        {items.slice(0, 6).map(({ displayName, token, canDeleteConversation }, index) => (
+          <div
+            key={uuid()}
+            onClick={() =>
+              router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`)
+            }
+          >
+            <Honeycomb title={displayName} image={`/images/honeycombs/honeycomb${index}.png`} />
           </div>
         ))}
       </div>
