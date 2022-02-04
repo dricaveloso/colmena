@@ -212,3 +212,12 @@ table.envPage td {
 table.envPage td:nth-child(1) {
   width: 60%;
 }
+
+.ui-carousel{
+  margin-bottom: 16px;
+}
+
+.ui-carousel > .awssld__wrapper{
+  height: 85px;
+}
+

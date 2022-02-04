@@ -95,6 +95,7 @@ export default function LibraryModal({
   isDisabled = false,
   options,
   footerActions,
+  onlyDirectories = true,
 }: Props) {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
@@ -120,8 +121,9 @@ export default function LibraryModal({
         setIsLoading(true);
       }
 
-      const rawItems = await getItems(path, userRdx.user.id, timeDescription);
+      let rawItems = await getItems(path, userRdx.user.id, timeDescription);
       setCurrentItem(getCurrentItem());
+      rawItems = handleItems(rawItems);
 
       let currentOrder = order;
       if (isRootPath(path)) {
@@ -144,6 +146,11 @@ export default function LibraryModal({
     }
 
     setIsLoading(false);
+  };
+
+  const handleItems = (items: Array<LibraryItemInterface>) => {
+    if (!onlyDirectories) return items;
+    return items.filter((item) => item.type === "directory");
   };
 
   const prepareBreadcrumbPath = (path: string) => {

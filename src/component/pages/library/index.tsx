@@ -10,7 +10,7 @@ import {
 } from "@/interfaces/index";
 import { getFilesByPath } from "@/store/idb/models/files";
 import { makeStyles } from "@material-ui/core";
-import { dateDescription, removeCornerSlash } from "@/utils/utils";
+import { dateDescription } from "@/utils/utils";
 import { EnvironmentEnum, OrderEnum, FilterEnum, ListTypeEnum } from "@/enums/index";
 import {
   getPrivatePath,
@@ -21,7 +21,7 @@ import {
 } from "@/utils/directory";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 import { setCurrentAudioPlaying } from "@/store/actions/library";
-import { getFiles } from "@/services/webdav/files";
+import { getFiles, getCurrentFile } from "@/services/webdav/files";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -39,14 +39,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-let currentItem: LibraryItemInterface | null = null;
-
-function setCurrentItem(item: LibraryItemInterface) {
-  currentItem = item;
-}
-
 export function getCurrentItem(): null | LibraryItemInterface {
-  return currentItem;
+  return getCurrentFile();
 }
 
 export async function getWebDavDirectories(
@@ -62,23 +56,6 @@ export async function getWebDavDirectories(
   if (!ncItems) {
     return [];
   }
-
-  ncItems.map((item: LibraryItemInterface) => {
-    const { aliasFilename, filename } = item;
-    if (filename === "") {
-      currentItem = null;
-    } else if (
-      filename === removeCornerSlash(currentDirectory) ||
-      aliasFilename === removeCornerSlash(currentDirectory)
-    ) {
-      setCurrentItem(item);
-    } else if (filename === getPrivatePath()) {
-      // eslint-disable-next-line no-param-reassign
-      item.basename = userId;
-    }
-
-    return item;
-  });
 
   return ncItems;
 }

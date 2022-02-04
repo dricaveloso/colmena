@@ -12,7 +12,7 @@ import { signOut } from "next-auth/client";
 import Backdrop from "@/components/ui/Backdrop";
 import SvgIcon from "@/components/ui/SvgIcon";
 import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal";
-import SliderQuota from "@/components/ui/SliderQuota";
+// import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
 
@@ -206,9 +206,9 @@ function DrawerAux({ open, onClose }: Props) {
           );
         })}
       </List>
-      <div style={{ marginLeft: 15, paddingRight: 25, marginTop: 20 }}>
+      {/* <div style={{ marginLeft: 15, paddingRight: 25, marginTop: 20 }}>
         <SliderQuota />
-      </div>
+      </div> */}
     </div>
   );
 
