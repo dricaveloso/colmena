@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import ToolbarSection from "../ToolbarSection";
-import HoneycombList from "./GalleryHorizontalScroll";
+import HoneycombList from "./HoneycombList";
 import Divider from "@/components/ui/Divider";
 import { useTranslation } from "react-i18next";
 import { getUsersConversations } from "@/services/talk/room";
@@ -15,6 +15,7 @@ import { TextVariantEnum } from "@/enums/*";
 
 export default function Section2() {
   const { t } = useTranslation("home");
+  const { t: c } = useTranslation("common");
   const dispatch = useDispatch();
   const { data, error } = getUsersConversations({
     revalidateIfStale: false,
@@ -29,10 +30,14 @@ export default function Section2() {
       </LayoutWrapper>
     );
 
-  if (error)
+  if (error || data.ocs.data.length === 0)
     return (
       <LayoutWrapper title={t("section3Title")}>
-        <Text variant={TextVariantEnum.BODY2}>No items found</Text>
+        <Box style={{ backgroundColor: "#fff" }} padding={2}>
+          <Text style={{ textAlign: "left" }} variant={TextVariantEnum.BODY2}>
+            {c("noItemsFound")}
+          </Text>
+        </Box>
       </LayoutWrapper>
     );
 

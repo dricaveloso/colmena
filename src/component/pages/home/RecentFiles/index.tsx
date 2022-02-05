@@ -10,7 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { ListTypeEnum } from "@/enums/index";
+import { ListTypeEnum, TextVariantEnum } from "@/enums/index";
 import Library, { getItems } from "@/components/pages/library";
 import { PropsUserSelector } from "@/types/*";
 import ToolbarSection from "../ToolbarSection";
@@ -20,7 +20,7 @@ import { v4 as uuid } from "uuid";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { getAudioPath, hasExclusivePath, pathIsInFilename } from "@/utils/directory";
 import IconButton from "@/components/ui/IconButton";
-
+import Text from "@/components/ui/Text";
 import { Grid, Box } from "@material-ui/core";
 import { toast } from "@/utils/notifications";
 
@@ -142,9 +142,8 @@ const RecentFiles: React.FC = () => {
           link={`/library/${userRdx.user.id}`}
         />
       </Grid>
-      {isLoading ? (
-        <DirectoryList quantity={3} />
-      ) : (
+      {isLoading && <DirectoryList quantity={3} />}
+      {!isLoading && data && data?.length > 0 && (
         <Library
           items={data}
           options={options}
@@ -153,6 +152,13 @@ const RecentFiles: React.FC = () => {
           listType={ListTypeEnum.LIST}
           isLoading={isLoading}
         />
+      )}
+      {!isLoading && data && data?.length === 0 && (
+        <Box style={{ backgroundColor: "#fff" }} padding={2}>
+          <Text style={{ textAlign: "left" }} variant={TextVariantEnum.BODY2}>
+            {t("noItemsFound")}
+          </Text>
+        </Box>
       )}
     </Box>
   );
