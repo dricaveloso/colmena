@@ -88,7 +88,7 @@ export default function Upload({ open, handleClose }: Props) {
         handledName = getRandomInt(1, 9999) + name;
       }
 
-      const onlyName = handledName.replace(/\..*$/, "");
+      const onlyName = handledName.replace(/^(.*)\..*$/, "$1");
       const extension = getExtensionFilename(handledName);
       const finalName = `${onlyName.substr(0, 60)}.${extension}`;
 
