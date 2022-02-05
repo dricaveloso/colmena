@@ -67,7 +67,14 @@ export default function Login() {
   const backgroundColor = theme.palette.primary.main;
 
   return (
-    <Container backgroundColor={backgroundColor}>
+    <Container
+      backgroundColor={backgroundColor}
+      extraStyle={{
+        backgroundImage: "url('/images/svg/bg.svg')",
+        backgroundPosition: "bottom",
+        backgroundRepeat: "repeat-x",
+      }}
+    >
       <Box
         className="width-based-device"
         justifyContent="center"

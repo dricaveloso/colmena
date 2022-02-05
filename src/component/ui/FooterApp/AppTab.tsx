@@ -103,7 +103,7 @@ function AppTab({ page }: Props) {
             icon="gradient_plus"
             fontSizeIcon={30}
             handleClick={handleOpenDrawer}
-            iconColor="#fff"
+            iconColor={theme.palette.secondary.main}
           />
         </Grid>
       </Grid>
