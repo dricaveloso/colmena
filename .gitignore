@@ -43,7 +43,7 @@ yarn-error.log*
 **/public/sw.js.map
 **/public/service-worker.js
 **/public/worker-*.js
-package-lock.json
+#package-lock.json
 
 .env.develop
 .env
