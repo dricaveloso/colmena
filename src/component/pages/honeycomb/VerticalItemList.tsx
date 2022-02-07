@@ -9,9 +9,9 @@ import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import { getFirstLettersOfTwoFirstNames } from "@/utils/utils";
+import { getFirstLettersOfTwoFirstNames, getRandomInt } from "@/utils/utils";
 import Participants from "./Participants";
+import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -20,22 +20,28 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     flexWrap: "nowrap",
     width: "100%",
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingTop: 8,
-    paddingBottom: 8,
+    background: "#fff",
+    padding: 8,
+    borderRadius: 5,
+    border: "1px solid #eee",
   },
   description: {
     flexDirection: "column",
     flexGrow: 1,
     alignSelf: "stretch",
     overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
     marginLeft: 5,
   },
   options: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "nowrap",
+  },
+  avatar: {
+    display: "flex",
+    alignItems: "center",
   },
 }));
 
@@ -51,8 +57,13 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
 
   return (
     <Box className={classes.card} style={{ backgroundColor }}>
-      <ListItemAvatar>
-        <Avatar>{getFirstLettersOfTwoFirstNames(displayName)}</Avatar>
+      <ListItemAvatar className={classes.avatar}>
+        <HoneycombAvatar
+          showTitle={false}
+          width={55}
+          height={47}
+          image={`/images/honeycombs/honeycomb${getRandomInt(0, 13)}.png`}
+        />
       </ListItemAvatar>
       <ListItemText
         data-testid="title"

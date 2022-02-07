@@ -31,10 +31,9 @@ const CardItemAvatar = ({
   type,
 }: LibraryCardItemAvatarInterface) => {
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  const [isPlaying, setIsPlaying] = useState(library.currentAudioPlaying === filename);
-  const [isPause, setIsPaused] = useState(true);
   const dispatch = useDispatch();
   const playPauseAudioHandle = (flag: boolean) => {
+    console.log("aqui?");
     dispatch(setCurrentAudioPlaying(!flag ? filename : ""));
   };
 
@@ -68,11 +67,11 @@ const CardItemAvatar = ({
     return (
       <IconButton
         key={`${basename}-playpause`}
-        icon={isPlaying ? "stop" : "play"}
+        icon={library.currentAudioPlaying === filename ? "stop" : "play"}
         iconColor={theme.palette.primary.main}
         iconStyle={{ fontSize: 45 }}
         fontSizeIcon="small"
-        handleClick={() => playPauseAudioHandle(isPlaying)}
+        handleClick={() => playPauseAudioHandle(library.currentAudioPlaying === filename)}
       />
     );
   }

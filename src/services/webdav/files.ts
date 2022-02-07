@@ -376,7 +376,6 @@ const handleItems = (userId: string, items: Array<LibraryItemInterface>, path: s
 
   const isRoot = path === "/" || path === "";
   if (isRoot) {
-    console.log(handledItems);
     return handledItems.filter(({ type }: LibraryItemInterface) => type === "directory");
   }
 

@@ -17,6 +17,8 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import FormModal from "@/components/pages/tags/FormModal";
 import { toast } from "@/utils/notifications";
 import { treatTagName } from "@/utils/utils";
+import { isSubadminProfile } from "@/utils/permissions";
+import { useRouter } from "next/router";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -25,7 +27,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 function Tags() {
-  // const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const router = useRouter();
   const [tags, setTags] = useState<Array<TagInterface>>([]);
   const [rawTags, setRawTags] = useState<Array<TagInterface>>([]);
   const [loading, setLoading] = useState(false);
@@ -37,6 +39,10 @@ function Tags() {
   const { t } = useTranslation("tags");
 
   useEffect(() => {
+    if (!isSubadminProfile()) {
+      router.push("/home");
+      return;
+    }
     setLoading(true);
     (async () => {
       const tagsList = await listAndPrepareTags();

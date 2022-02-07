@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
   },
 });
 
-const filterHoneycombs = (honeycombs: RoomItemInterface[]) => {
+export const filterHoneycombs = (honeycombs: RoomItemInterface[]) => {
   if (!honeycombs) {
     return honeycombs;
   }

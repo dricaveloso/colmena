@@ -7,15 +7,13 @@ import { useTranslation } from "next-i18next";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 // import ResourceUnavailable from "@/components/ui/ResourceUnavailable";
 import RecentFiles from "@/components/pages/home/RecentFiles";
-import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
+import { PropsUserSelector } from "@/types/*";
 import { useSelector } from "react-redux";
 import FilesInfoSection from "@/components/pages/home/FilesInfo";
 import HoneyCombsList from "@/components/pages/home/Section3";
 import SliderQuota from "@/components/ui/SliderQuota";
 // import Search from "@/components/pages/home/Search/index";
 import Avatar from "@/components/pages/profile/AvatarWithContextMenu";
-import { getUsersConversations } from "@/services/talk/room";
-import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
@@ -32,13 +30,6 @@ function Home() {
   const { t } = useTranslation("home");
 
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-
-  const { data } = getUsersConversations({
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
 
   return (
     <LayoutApp title={t("welcomeTitle")}>
@@ -86,10 +77,8 @@ function Home() {
         <FilesInfoSection />
         {/* <Search /> */}
         <Carousel />
-        <RecentFiles library={library} />
-
-        {!data ? <DirectoryList /> : <HoneyCombsList data={data.ocs.data} />}
-
+        <RecentFiles />
+        <HoneyCombsList />
         <div
           style={{
             marginLeft: 15,

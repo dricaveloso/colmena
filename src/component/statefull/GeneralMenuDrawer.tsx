@@ -15,6 +15,7 @@ import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal"
 // import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
+import { isSubadminProfile } from "@/utils/permissions";
 
 type ListItemProps = {
   id: string;
@@ -89,60 +90,70 @@ function DrawerAux({ open, onClose }: Props) {
       icon: <SvgIcon icon="global" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("languageTitle"),
       handleClick: switchLanguageHandle,
+      onlyAdmin: false,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="settings" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("settingsTitle"),
       url: "/settings",
+      onlyAdmin: false,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="user_group" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("editMediaTitle"),
       url: "/media-profile",
+      onlyAdmin: false,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="html_tag" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("tagsTitle"),
       url: "/tags",
+      onlyAdmin: true,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="user" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("userProfileTitle"),
       url: "/profile",
+      onlyAdmin: false,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="help" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("supportTitle"),
       url: "/help",
+      onlyAdmin: false,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="info" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("aboutMaia"),
       url: "/about",
+      onlyAdmin: false,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="faq" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("faqTitle"),
       url: "/faq",
+      onlyAdmin: false,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="contract" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("termsOfUse"),
       url: "/terms-of-use",
+      onlyAdmin: false,
     },
     {
       id: uuid(),
       icon: <SvgIcon icon="logout" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("logoutTitle"),
       handleClick: logoutHandler,
+      onlyAdmin: false,
     },
   ];
 
@@ -190,21 +201,28 @@ function DrawerAux({ open, onClose }: Props) {
             primaryTypographyProps={{ style: { fontSize: 14 } }}
           />
         </ListItem>
-        {menuArray.map((item: ListItemProps) => {
-          const { id, icon, color, title, url, handleClick } = item;
-          if (url)
-            return (
-              <Link key={uuid()} href={url}>
-                {getListItemButton(id, icon, color, title)}
-              </Link>
-            );
+        {menuArray
+          .filter((item) => {
+            if (item.onlyAdmin) {
+              return isSubadminProfile();
+            }
+            return true;
+          })
+          .map((item: ListItemProps) => {
+            const { id, icon, color, title, url, handleClick } = item;
+            if (url)
+              return (
+                <Link key={uuid()} href={url}>
+                  {getListItemButton(id, icon, color, title)}
+                </Link>
+              );
 
-          return (
-            <div onClick={handleClick} key={uuid()}>
-              {getListItemButton(id, icon, color, title)}
-            </div>
-          );
-        })}
+            return (
+              <div onClick={handleClick} key={uuid()}>
+                {getListItemButton(id, icon, color, title)}
+              </div>
+            );
+          })}
       </List>
       {/* <div style={{ marginLeft: 15, paddingRight: 25, marginTop: 20 }}>
         <SliderQuota />
