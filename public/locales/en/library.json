@@ -85,5 +85,6 @@
   "confirmCancelItemRenaming": "Do you really want to cancel the item renaming?",
   "itemStatus": {
     "availableOffline": "Available Offline"
-  }
+  },
+  "talkFolderName": "shared with me"
 }

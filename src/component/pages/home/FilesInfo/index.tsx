@@ -19,6 +19,7 @@ const FilesInfoSection = () => {
 
   const { t } = useTranslation("common");
   const { t: h } = useTranslation("home");
+  const { t: l } = useTranslation("library");
 
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
   const [data, setData] = useState<LibraryItemInterface[]>([]);
@@ -27,7 +28,7 @@ const FilesInfoSection = () => {
   const mountItems = async () => {
     try {
       const contents = await getAllContents(userRdx.user.id);
-      const talk = await getItems("Talk", userRdx.user.id, timeDescription);
+      const talk = await getItems("Talk", userRdx.user.id, timeDescription, l);
       setSharedData(talk);
       setData(contents.filter((item: any) => item.type !== "directory"));
     } catch (e) {

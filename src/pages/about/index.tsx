@@ -9,6 +9,7 @@ import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import Text from "@/components/ui/Text";
 import Box from "@material-ui/core/Box";
+import theme from "@/styles/theme";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -19,7 +20,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function About() {
   const { t } = useTranslation("intro");
   const fontSize = "4.0em";
-  const color = "black";
+  const color = theme.palette.icon.dark;
 
   return (
     <LayoutApp title={t("aboutTitle")} back>

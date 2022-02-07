@@ -1,21 +1,21 @@
 {
-  "title": "Tags",
-  "editTagTitle": "Edit tag",
-  "createTagTitle": "Create tag",
-  "saveButton": "Save",
-  "form": {
-    "fields": {
-      "name": "Tag name"
+    "title": "Étiquettes",
+    "editTagTitle": "Éditer l'étiquette",
+    "createTagTitle": "Créer une étiquette",
+    "saveButton": "Sauvegarder",
+    "form": {
+        "fields": {
+            "name": "Nom de l'étiquette"
+        }
+    },
+    "messages": {
+        "tagCreatedSuccessfully": "Étiquette créé avec succès !",
+        "tagRemovedSuccessfully": "Étiquette supprimé avec succès !",
+        "tagUpdatedSuccessfully": "L'étiquette a été créée correctement !",
+        "forbidden": "Cette action est interdite",
+        "tagAlreadyExists": "L'étiquette existe déjà"
+    },
+    "table": {
+        "tagTitle": "Étiquette"
     }
-  },
-  "messages": {
-    "tagCreatedSuccessfully": "Tag created successfully!",
-    "tagRemovedSuccessfully": "Tag removed successfully!",
-    "tagUpdatedSuccessfully": "Tag updated successfully!",
-    "forbidden": "This action is forbidden",
-    "tagAlreadyExists": "Tag already exists"
-  },
-  "table": {
-    "tagTitle": "Tag"
-  }
 }

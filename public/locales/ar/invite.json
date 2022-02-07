@@ -1,6 +1,6 @@
 {
-    "title": "",
-    "emailPlaceholder": "",
-    "submitTextButton": "",
-    "successText": ""
+    "title": "ادعُ فريقك إلى كولمينا",
+    "emailPlaceholder": "أدخل البريد الإلكتروني للمتعاون",
+    "submitTextButton": "إرسال",
+    "successText": "تم إرسال البريد الإلكتروني بنجاح"
 }

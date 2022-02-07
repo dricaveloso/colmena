@@ -1,20 +1,20 @@
 {
-    "aboutTitle": "",
+    "aboutTitle": "Kuhusu Colmena",
     "step1": {
-        "description": ""
+        "description": "Colmena ni asilimia 100 bila malipo na ni sehemu salama ya tija kwa vyombo vya habari na jumuiya. Suluhisho jumuishi la chanzo huria kwa mazingira ya simu na eneo kazi."
     },
     "step2": {
-        "description": ""
+        "description": "Kurekodi sauti kwa kushirikiana, makongaamano na uhariri iliyoundwa kufanya kazi katika maeneo ya muunganisho mdogo."
     },
     "step3": {
-        "description": ""
+        "description": "Hifadhi na ushiriki kazi yako inayoendelea na mwenzako na washirika wa vyombo vya habari kwa kuyumia huduma yetu maalum ya wingu."
     },
     "step4": {
-        "description": ""
+        "description": "Sambaza na uchapishe kazi yako kwenye tovuti yako, mitandao ya kijamii, majukwaa ya podikasti, ukurasa wa kutua uliobinafishwa au maktaba asilia ya wavuti ya Colmena."
     },
-    "communityTitle": "",
+    "communityTitle": "Jamii/Jumuiya",
     "forms": {
-        "nextButton": "",
-        "skipButton": ""
+        "nextButton": "Ijayo",
+        "skipButton": "Ruka"
     }
 }

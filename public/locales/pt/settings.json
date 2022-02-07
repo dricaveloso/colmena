@@ -1,12 +1,12 @@
 {
-    "title": "",
-    "profileTitle": "",
-    "changeProfileTitle": "",
-    "generalTitle": "",
-    "changeLangTitle": "",
-    "changeLangSubtitle": "",
-    "notificationTitle": "",
-    "cloudManagementTitle": "",
-    "privacyManagementTitle": "",
-    "clearCacheTitle": ""
+    "title": "Configurações",
+    "profileTitle": "Perfil",
+    "changeProfileTitle": "Mudar informações de perfil",
+    "generalTitle": "Geral",
+    "changeLangTitle": "Mudar informações de idioma",
+    "changeLangSubtitle": "Idioma padrão: {{lang}}",
+    "notificationTitle": "Notificações",
+    "cloudManagementTitle": "Gestão da nuvem",
+    "privacyManagementTitle": "Gestão de privacidade",
+    "clearCacheTitle": "Limpar cachê"
 }

@@ -1,11 +1,10 @@
 {
-    "welcomeTitle": "",
-    "greetingTitle": "Hello",
-    "myFilesLabel": "",
-    "sharedLabel": "",
-    "publicLabel": "",
-    "section3Title": "",
-    "section4Title": "",
-    "exampleHoneycombTitle": "",
-    "exampleFileTitle": ""
+    "welcomeTitle": "مرحبا",
+    "myFilesLabel": "ملفاتي",
+    "sharedLabel": "مشترك",
+    "publicLabel": "عام",
+    "section3Title": "الخليات النحل المفضلة",
+    "section4Title": "الأخيرة",
+    "exampleHoneycombTitle": "خلية النحل",
+    "exampleFileTitle": "ملف"
 }

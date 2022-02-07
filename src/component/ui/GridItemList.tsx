@@ -79,6 +79,7 @@ interface GridItemListInterface {
   filename: string;
   environment: Environment;
   size?: number;
+  arrayBufferBlob?: ArrayBuffer;
 }
 
 const GridItemList = ({
@@ -93,6 +94,7 @@ const GridItemList = ({
   filename,
   environment,
   size = 0,
+  arrayBufferBlob,
 }: GridItemListInterface) => {
   const classes = useStyles();
 
@@ -112,6 +114,7 @@ const GridItemList = ({
               filename={filename}
               environment={environment}
               type="grid"
+              arrayBufferBlob={arrayBufferBlob}
             />
           }
         />

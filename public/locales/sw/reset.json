@@ -1,6 +1,10 @@
 {
     "title": "",
-    "errorMessagePassword": "",
-    "errorUpdatingPassword": "",
-    "successUpdatingPassword": ""
+    "errorMessagePassword": "Nywila haziambatani",
+    "errorUpdatingPassword": "Haiwezekani kusahihisha nywila lako",
+    "successUpdatingPassword": "Nywila limesahihiswa kikamilifu",
+    "successCreatingPassword": "Nywila limebuniwa kikamilifu",
+    "titleCreated": "Buni nywila lako",
+    "titleUpdated": "Nywila limesahihishwa",
+    "errorCreatingPassword": "Haiwezekani kubuni nywila lako"
 }

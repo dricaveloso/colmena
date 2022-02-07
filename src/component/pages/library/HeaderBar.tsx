@@ -8,7 +8,7 @@ import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import { AllIconProps } from "@/types/index";
 import TemporaryFiltersDrawer from "./FiltersDrawer";
-import { isRootPath } from "@/utils/directory";
+import { getTalkPath, isRootPath } from "@/utils/directory";
 import { useDispatch } from "react-redux";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 import { toast } from "@/utils/notifications";
@@ -71,6 +71,7 @@ function HeaderBar({
   const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
   const [breadcrumb, setBreadcrumb] = useState<Array<BreadcrumbItemInterface>>(
     [] as Array<BreadcrumbItemInterface>,
@@ -95,14 +96,24 @@ function HeaderBar({
         description: generatedBreadcrumb.length === 0 ? firstBreadcrumbItem.description : undefined,
       };
 
-      setBreadcrumb([newBreadcrumbItem, ...generatedBreadcrumb]);
+      setBreadcrumb(handleBreadcrumb([newBreadcrumbItem, ...generatedBreadcrumb]));
     } else {
       const generatedBreadcrumb = generateBreadcrumb(currentPath);
-      setBreadcrumb(generatedBreadcrumb);
+      setBreadcrumb(handleBreadcrumb(generatedBreadcrumb));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
+
+  const handleBreadcrumb = (items: Array<BreadcrumbItemInterface>) =>
+    items.map((item) => {
+      const newItem = item;
+      if (newItem.path === `/library/${getTalkPath()}`) {
+        newItem.description = t("talkFolderName");
+      }
+
+      return newItem;
+    });
 
   const changeListType = () => {
     dispatch(setCurrentAudioPlaying(""));

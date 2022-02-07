@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { makeStyles, Typography } from "@material-ui/core";
@@ -33,21 +33,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function DirectoryList({ quantity = 9 }: { quantity?: number }) {
+export default function DirectoryList({ quantity = 3 }: { quantity?: number }) {
   const classes = useStyles();
-  const items = useMemo(() => {
-    const items: Array<number> = [];
-    // eslint-disable-next-line no-plusplus
-    for (let count = 0; count < quantity; count++) {
-      items.push(count);
-    }
-
-    return items;
-  }, [quantity]);
-
   return (
     <Box className={classes.base}>
-      {items.map(() => (
+      {Array.from({ length: quantity }).map(() => (
         <Box className={classes.card} key={uuid()}>
           <ListItemAvatar style={{ paddingLeft: 10 }}>
             <Skeleton width={40} height={64} />

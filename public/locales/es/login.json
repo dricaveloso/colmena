@@ -1,9 +1,9 @@
 {
-  "title": "Herramientas colaborativas gratuitas para crear y compartir",
-  "loginInvalid": "Usuario o contraseña incorrectos",
-  "permissionDenied": "No se permite el acceso al perfil de usuario.",
-  "userDeactivated": "Your user is disabled.",
-  "mediaNotFound": "Error fetching your media",
-  "profileNotFound": "Error accessing your user file",
-  "loginSuccesfully": "Successfully logged in"
+    "title": "Ingrese su correo electrónico y contraseña para iniciar sesión",
+    "loginInvalid": "Usuario o contraseña incorrectos",
+    "permissionDenied": "Acceso denegado",
+    "userDeactivated": "Usuario deshabilitado",
+    "mediaNotFound": "Error al obtener tus contenidos",
+    "profileNotFound": "Error al acceder a su archivo de usuario",
+    "loginSuccesfully": "Sesión iniciada con éxito"
 }

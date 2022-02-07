@@ -46,11 +46,12 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
   const [filter, setFilter] = useState("");
   const [notFoundDir, setNotFoundDir] = useState(false);
   const { t } = useTranslation("common");
+  const { t: l } = useTranslation("library");
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
 
   const mountItems = async (path: string) => {
     try {
-      const rawItems = await getItems(path, userRdx.user.id, timeDescription);
+      const rawItems = await getItems(path, userRdx.user.id, timeDescription, l);
 
       let currentOrder = order;
       if (isRootPath(path)) {

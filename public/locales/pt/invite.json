@@ -1,6 +1,6 @@
 {
-  "title": "Convidar colaboradores",
-  "emailPlaceholder": "Digite o e-mail do colaborador",
-  "submitTextButton": "Enviar",
-  "successText": "E-mail enviado com sucesso."
+    "title": "Convide sua equipe para colmena",
+    "emailPlaceholder": "Digite o e-mail da pessoa colaboradora",
+    "submitTextButton": "Enviar",
+    "successText": "E-mail enviado com sucesso."
 }

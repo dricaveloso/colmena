@@ -43,7 +43,13 @@ const Content: React.FC<IContent> = ({ iconName, text }) => (
 const Carousel = () => {
   const { t } = useTranslation("common");
   return (
-    <AutoplaySlider play bullets={false} className="ui-carousel" organicArrows={false}>
+    <AutoplaySlider
+      play
+      bullets={false}
+      className="ui-carousel"
+      transitionDelay={4000}
+      organicArrows={false}
+    >
       <Grid
         style={{
           backgroundColor: theme.palette.variation1.main,

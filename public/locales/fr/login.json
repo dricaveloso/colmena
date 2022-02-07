@@ -1,9 +1,10 @@
 {
-  "description": "Herramientas colaborativas gratuitas para crear y compartir",
-  "loginInvalid": "Nom d'utilisateur ou mot de passe incorrect",
-  "permissionDenied": "Profil d'utilisateur non autorisé à accéder.",
-  "userDeactivated": "Your user is disabled.",
-  "mediaNotFound": "Error fetching your media",
-  "profileNotFound": "Error accessing your user file",
-  "loginSuccesfully": "Successfully logged in"
+    "description": "Entrer courriel et mot de passe pour se connecter.",
+    "loginInvalid": "Nom d'utilisateur ou mot de passe incorrect",
+    "permissionDenied": "Accès refusé",
+    "userDeactivated": "Utilisateur désactivé",
+    "mediaNotFound": "Erreur de récupération de votre média",
+    "profileNotFound": "Erreur d'accès à votre fichier utilisateur",
+    "loginSuccesfully": "Connexion réussie",
+    "title": "Saisissez votre adresse électronique et votre mot de passe pour vous connecter"
 }

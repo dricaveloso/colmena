@@ -1,12 +1,12 @@
 {
-    "title": "",
-    "profileTitle": "",
-    "changeProfileTitle": "",
-    "generalTitle": "",
-    "changeLangTitle": "",
-    "changeLangSubtitle": "",
-    "notificationTitle": "",
-    "cloudManagementTitle": "",
-    "privacyManagementTitle": "",
-    "clearCacheTitle": ""
+    "title": "إعدادات",
+    "profileTitle": "الصفحة الشخصية",
+    "changeProfileTitle": "تغير معلومات الصفحة الشخصية",
+    "generalTitle": "عام",
+    "changeLangTitle": "تغير معلومات اللغة",
+    "changeLangSubtitle": "اللغة الافتراضية",
+    "notificationTitle": "إشعارات",
+    "cloudManagementTitle": "ادارة السحابة",
+    "privacyManagementTitle": "سياسة الخصوصية",
+    "clearCacheTitle": "تنظيف الملفات المؤقتة"
 }

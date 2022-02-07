@@ -1,15 +1,16 @@
 {
-  "title": "Panal",
-  "memberTitle": "Miembro",
-  "membersTitle": "Miembros",
-  "noMemberTitle": "Sin miembros",
-  "tab1Title": "Chat",
-  "tab2Title": "Library",
-  "emptyTalkDescription": "Click on the plus icon below to create a honeycomb",
-  "downloadAudioFailed": "Unable to download audio",
-  "contextMenuOptions": {
-    "addParticipantContextTitle": "Add",
-    "addParticipantModalTitle": "Add participant"
-  },
-  "downloadFileFailed": "Unable to download file"
+    "title": "Panal",
+    "memberTitle": "Miembro",
+    "membersTitle": "Miembros",
+    "noMemberTitle": "Sin integrantes",
+    "tab1Title": "Chat",
+    "tab2Title": "Librería",
+    "emptyTalkDescription": "Pulsa el signo de más para crear un panal",
+    "downloadAudioFailed": "No se puede descargar el audio",
+    "contextMenuOptions": {
+        "addParticipantContextTitle": "Añadir participante",
+        "addParticipantModalTitle": "Add participant",
+        "participantsAddedSuccessfully": "Los participantes se agregaron satisfactoriamente"
+    },
+    "downloadFileFailed": "No se puede descargar el archivo"
 }

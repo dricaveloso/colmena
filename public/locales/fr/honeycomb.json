@@ -1,15 +1,16 @@
 {
-  "title": "Nid d'abeille",
-  "memberTitle": "Membre",
-  "membersTitle": "Membres",
-  "noMemberTitle": "Aucun membre",
-  "tab1Title": "Chat",
-  "tab2Title": "Library",
-  "emptyTalkDescription": "Click on the plus icon below to create a honeycomb",
-  "downloadAudioFailed": "Unable to download audio",
-  "contextMenuOptions": {
-    "addParticipantContextTitle": "Add",
-    "addParticipantModalTitle": "Add participant"
-  },
-  "downloadFileFailed": "Unable to download file"
+    "title": "Nid d'abeille",
+    "memberTitle": "Personnes associées",
+    "membersTitle": "Membres",
+    "noMemberTitle": "Non associée",
+    "tab1Title": "Chat",
+    "tab2Title": "Bibliothèque",
+    "emptyTalkDescription": "Cliquez sur le signe plus pour créer un nid d'abeille.",
+    "downloadAudioFailed": "Impossible de télécharger l'audio",
+    "contextMenuOptions": {
+        "addParticipantContextTitle": "Ajouter participant",
+        "addParticipantModalTitle": "Add participant",
+        "participantsAddedSuccessfully": "Participants ajoutés avec succès"
+    },
+    "downloadFileFailed": "Impossible de télécharger le fichier"
 }
