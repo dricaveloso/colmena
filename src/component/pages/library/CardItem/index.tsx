@@ -31,6 +31,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     bottomOptions,
     handleOpenCard,
     isDisabled,
+    arrayBufferBlob,
   } = cardItem;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const handleClick = useCallback(() => {
@@ -76,6 +77,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           environment={environment}
           filename={filename}
           size={size}
+          arrayBufferBlob={arrayBufferBlob}
         />
       ) : (
         <GridItemList

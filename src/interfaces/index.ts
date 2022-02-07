@@ -226,6 +226,7 @@ export interface VerticalItemListInterface {
   filename: string;
   environment: Environment;
   size?: number;
+  arrayBufferBlob?: ArrayBuffer;
 }
 
 export interface TagInterface {

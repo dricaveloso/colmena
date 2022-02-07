@@ -22,6 +22,7 @@ import {
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 import { setCurrentAudioPlaying } from "@/store/actions/library";
 import { getFiles, getCurrentFile } from "@/services/webdav/files";
+import { TFunction } from "next-i18next";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -47,11 +48,13 @@ export async function getWebDavDirectories(
   userId: string,
   currentDirectory: string,
   timeDescription: TimeDescriptionInterface,
+  libraryTranslation: TFunction,
 ) {
   const ncItems: false | LibraryItemInterface[] = await getFiles(
     userId,
     currentDirectory,
     timeDescription,
+    libraryTranslation,
   );
   if (!ncItems) {
     return [];
@@ -178,10 +181,16 @@ export async function getItems(
   path: string,
   userId: string,
   timeDescription: TimeDescriptionInterface,
+  libraryTranslation: TFunction,
 ) {
   const realPath = convertUsernameToPrivate(path, userId);
   const localItems = await getLocalFiles(userId, realPath, timeDescription);
-  const remoteItems = await getWebDavDirectories(userId, realPath, timeDescription);
+  const remoteItems = await getWebDavDirectories(
+    userId,
+    realPath,
+    timeDescription,
+    libraryTranslation,
+  );
   const items = [...localItems, ...remoteItems];
   const deleteItems: Array<string> = [];
 

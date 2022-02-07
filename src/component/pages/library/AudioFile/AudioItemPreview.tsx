@@ -27,9 +27,17 @@ type Props = {
   primary: string | React.ReactNode;
   size: number;
   type: "vertical" | "grid";
+  arrayBufferBlob?: ArrayBuffer;
 };
 
-export default function AudioItemVertical({ filename, environment, primary, size, type }: Props) {
+export default function AudioItemVertical({
+  filename,
+  environment,
+  primary,
+  size,
+  type,
+  arrayBufferBlob,
+}: Props) {
   const [loading, setLoading] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [blob, setBlob] = useState<Blob | null>(null);
@@ -46,10 +54,9 @@ export default function AudioItemVertical({ filename, environment, primary, size
 
   const init = async () => {
     try {
-      if (environment === EnvironmentEnum.LOCAL || environment === EnvironmentEnum.BOTH) {
-        const localFile = await findByBasename(userRdx.user.id, removeSpecialCharacters(filename));
-        await prepareAudioBlob(localFile?.arrayBufferBlob);
-      } else if (environment === EnvironmentEnum.REMOTE) {
+      if (arrayBufferBlob) {
+        await prepareAudioBlob(arrayBufferBlob);
+      } else if (environment !== EnvironmentEnum.LOCAL) {
         const localFile = await findQuickBlobByBasename(
           userRdx.user.id,
           removeSpecialCharacters(filename),
