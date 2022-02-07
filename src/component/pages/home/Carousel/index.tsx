@@ -46,7 +46,7 @@ const Carousel = () => {
     <AutoplaySlider play bullets={false} className="ui-carousel" organicArrows={false}>
       <Grid
         style={{
-          backgroundColor: theme.palette.variation1.main,
+          backgroundColor: theme.palette.variation5.main,
           height: "85px",
           color: "#fff",
         }}
@@ -55,7 +55,7 @@ const Carousel = () => {
       </Grid>
       <Grid
         style={{
-          backgroundColor: theme.palette.secondary.main,
+          backgroundColor: theme.palette.variation5.main,
           height: "85px",
           color: "#fff",
         }}
@@ -73,7 +73,7 @@ const Carousel = () => {
       </Grid>
       <Grid
         style={{
-          backgroundColor: theme.palette.variation2.main,
+          backgroundColor: theme.palette.variation5.main,
           height: "85px",
           color: "#fff",
         }}
