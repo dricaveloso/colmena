@@ -30,6 +30,7 @@ const RecentFiles: React.FC = () => {
   const router = useRouter();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const { t } = useTranslation("common");
+  const { t: l } = useTranslation("library");
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
 
   const { t: homeTranslation } = useTranslation("home");
@@ -37,7 +38,7 @@ const RecentFiles: React.FC = () => {
   const mountItems = useCallback(async () => {
     try {
       setIsLoading(true);
-      const items = await getItems(userRdx.user.id, userRdx.user.id, timeDescription);
+      const items = await getItems(userRdx.user.id, userRdx.user.id, timeDescription, l);
       const recentFiles = items
         // @ts-ignore
         .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))

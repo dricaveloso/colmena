@@ -129,7 +129,7 @@ function MyLibrary() {
           setIsLoading(true);
         }
 
-        const items = await getItems(path, userRdx.user.id, timeDescription);
+        const items = await getItems(path, userRdx.user.id, timeDescription, l);
 
         dispatch(setLibraryPathExists(true));
         dispatch(setLibraryFiles(items));
@@ -142,7 +142,7 @@ function MyLibrary() {
 
       setIsLoading(false);
     },
-    [currentDirectory, dispatch, timeDescription, userRdx.user.id],
+    [currentDirectory, dispatch, l, timeDescription, userRdx.user.id],
   );
 
   useEffect(() => {
