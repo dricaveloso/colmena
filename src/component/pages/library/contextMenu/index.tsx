@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@/components/ui/IconButton";
@@ -18,6 +18,8 @@ import Switch from "@material-ui/core/Switch";
 import { Box } from "@material-ui/core";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { useRouter } from "next/router";
+import { removeCornerSlash } from "@/utils/utils";
 
 const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const { id, type, environment, filename, basename, aliasFilename, arrayBufferBlob, mime } =
@@ -34,6 +36,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
   const [openMoveItemModal, setOpenMoveItemModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openDeleteItemConfirm, setOpenDeleteItemConfirm] = useState(false);
+  const router = useRouter();
 
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -92,6 +95,12 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
     handleOpenSyncModal(true);
   };
 
+  const inLibraryPage = useMemo(() => {
+    const splitPage = removeCornerSlash(router.route).split("/");
+
+    return splitPage[0] === "library";
+  }, [router.route]);
+
   return (
     <>
       <IconButton
@@ -143,7 +152,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
             <ContextMenuItem title={t("contextMenuOptions.download")} icon="download" />
           </MenuItem>
         )}
-        {type === "file" && environment !== EnvironmentEnum.LOCAL && (
+        {inLibraryPage && type === "file" && environment !== EnvironmentEnum.LOCAL && (
           <MenuItem key="sync" data-testid="sync-item">
             <Box display="flex" justifyContent="flex-start">
               <FormControlLabel
@@ -250,7 +259,7 @@ const ContextMenuOptions = (cardItem: LibraryCardItemInterface) => {
         />
       )}
 
-      {openSyncModal && (
+      {openSyncModal && inLibraryPage && (
         <SyncModal
           availableOffline={availableOffline}
           key={`${basename}-sync-modal`}
