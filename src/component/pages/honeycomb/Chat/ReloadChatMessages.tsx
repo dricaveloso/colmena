@@ -9,7 +9,7 @@ import {
   addBlockIDChatControl,
   removeBlockIDChatControlByToken,
 } from "@/store/actions/honeycomb/index";
-import { ChatMessagesListInterfaceCustom } from "@/interfaces/talk";
+import { ChatMessagesListInterfaceCustom, ChatMessageItemInterface } from "@/interfaces/talk";
 
 type Props = {
   token: string;
@@ -18,6 +18,12 @@ type Props = {
 
 export default function ReloadChatMessages({ token, uuid }: Props) {
   const dispatch = useDispatch();
+
+  const createBlockChatControl = (onlineMessages: ChatMessageItemInterface[], token: string) => {
+    const blockBeginID = onlineMessages[0].id || 1;
+    const blockEndID = onlineMessages[onlineMessages.length - 1].id || 1;
+    dispatch(addBlockIDChatControl({ blockBeginID, blockEndID, token }));
+  };
 
   const { data, error } = receiveChatMessages(token, {
     // refreshInterval: 2000,
@@ -31,32 +37,41 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
       const onlineMessages = data.ocs.data.reverse();
 
       if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
-        const syncMessages = await getAllMessages(token);
-        if (syncMessages.length === 0) {
-          const blockBeginID = onlineMessages[0].id || 1;
-          const blockEndID = onlineMessages[onlineMessages.length - 1].id || 1;
+        const localMessages = await getAllMessages(token);
+        if (localMessages.length === 0) {
           dispatch(removeBlockIDChatControlByToken(token));
-          dispatch(addBlockIDChatControl({ blockBeginID, blockEndID, token }));
+          createBlockChatControl(onlineMessages, token);
+
           await addAllMessages(onlineMessages);
-        } else if (onlineMessages.length > syncMessages.length) {
-          const difference = onlineMessages.length - syncMessages.length;
+        } else {
+          const limitNextcloudApiChat = 200;
 
-          const arrDiffMessages = onlineMessages.slice(-difference);
-          console.log(arrDiffMessages);
-          await addAllMessages(arrDiffMessages);
+          if (onlineMessages.length === limitNextcloudApiChat) {
+            const lastIdInsertedLocalMessages = localMessages[localMessages.length - 1].id;
+            const resultDifference = onlineMessages.filter(
+              (item) => item.id > lastIdInsertedLocalMessages,
+            );
+            if (resultDifference.length > 0 && resultDifference.length < limitNextcloudApiChat) {
+              await addAllMessages(resultDifference);
+              createBlockChatControl(resultDifference, token);
+            } else if (
+              resultDifference.length > 0 &&
+              resultDifference.length >= limitNextcloudApiChat
+            ) {
+              // Será necessário tratar a atualização das mensagens do usuário
+              // quando houver mais de 200 mensagens não lidas
+              await addAllMessages(resultDifference);
+              createBlockChatControl(resultDifference, token);
+            }
+          } else {
+            const difference = onlineMessages.length - localMessages.length;
 
-          const blockBeginID = arrDiffMessages[0].id || 1;
-          const blockEndIDOnline = arrDiffMessages[arrDiffMessages.length - 1].id || 1;
-
-          dispatch(
-            addBlockIDChatControl({
-              blockBeginID,
-              blockEndID: blockEndIDOnline,
-              token,
-            }),
-          );
-        } else if (onlineMessages.length < syncMessages.length) {
-          console.log("mensagens offline a ser enviadas para o NC");
+            if (difference > 0) {
+              const arrDiffMessages = onlineMessages.slice(-difference);
+              await addAllMessages(arrDiffMessages);
+              createBlockChatControl(arrDiffMessages, token);
+            }
+          }
         }
       }
     },

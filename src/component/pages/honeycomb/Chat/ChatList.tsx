@@ -17,8 +17,8 @@ import {
   getAllLocalMessages,
   deleteAllLocalMessages,
 } from "@/store/idb/models/chat";
-import { useSelector, useDispatch } from "react-redux";
-import { PropsHoneycombSelector } from "@/types/*";
+import { useSelector } from "react-redux";
+import { PropsHoneycombSelector, PropsUserSelector } from "@/types/*";
 import { reloadChatLocalMessages } from "@/store/actions/honeycomb";
 
 const useStyles = makeStyles(() => ({
@@ -50,12 +50,12 @@ export function ChatList({
   canDeleteConversation,
 }: Props) {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const footerRef = useRef<HTMLDivElement | null>(null);
   const listRef = useRef<HTMLUListElement | null>(null);
   const honeycombRdx = useSelector(
     (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
   );
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const { chatMessagesBlockLoad } = honeycombRdx;
   const renderFooter =
     chatMessagesBlockLoad.filter((item) => item.token === token).length - 1 === idxElem;
@@ -113,6 +113,7 @@ export function ChatList({
               prevItem={null}
               canDeleteConversation={canDeleteConversation}
               item={item}
+              userId={userRdx.user.id}
             />
           </ListItem>
         ))}

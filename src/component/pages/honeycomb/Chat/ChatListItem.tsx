@@ -52,9 +52,10 @@ type Props = {
   item: ChatMessageItemInterface | undefined;
   prevItem: ChatMessageItemInterface | null | undefined;
   canDeleteConversation: number;
+  userId: string;
 };
 
-export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) => {
+export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: Props) => {
   const cookies = parseCookies();
   const lang = cookies.NEXT_LOCALE || "en";
   const classes = useStyles();
@@ -91,14 +92,6 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
       <ListItemAvatar key={id} style={{ width: 30, height: 30, display: "flex", justifyContent }}>
         <span></span>
       </ListItemAvatar>
-    );
-  }
-
-  function getDistanceTimeComponent(timestamp: number) {
-    return (
-      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#9A9A9A" }}>
-        {getFormattedDistanceDateFromNow(timestamp, lang)}
-      </Text>
     );
   }
 
@@ -158,29 +151,46 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
   if (systemMessage === "")
     return (
       <Box className={classes.card} key={id}>
-        {getAvatarComponent(actorDisplayName, actorId, "flex-start")}
-        <ListItemText
-          data-testid="title"
-          className={classes.description}
-          primary={
-            <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-              {/* {verifyActorAndSystemMessage(prevItem, actorId) && ( */}
-              <Box marginRight={1}>{actorDisplayName}</Box>
-              {/* )} */}
-              {getDistanceTimeComponent(timestamp)}
-            </Box>
-          }
-          secondary={prepareCommentWithFile(message, messageParameters)}
-          style={{ paddingTop: 0, marginTop: 0 }}
-          primaryTypographyProps={{
-            style: {
-              fontSize: 14,
-              fontWeight: "bold",
-              color: theme.palette.primary.main,
-            },
-          }}
-          secondaryTypographyProps={{ style: { fontSize: 14, color: "#858585" } }}
-        />
+        {userId === actorId && getAvatarComponent(actorDisplayName, actorId, "flex-start")}
+        <Box
+          padding={1}
+          display="flex"
+          borderRadius={20}
+          flex={1}
+          style={{ backgroundColor: "#f5f5f5", borderTopLeftRadius: 4 }}
+        >
+          <ListItemText
+            data-testid="title"
+            className={classes.description}
+            primary={
+              <Box
+                display="flex"
+                flex={1}
+                flexDirection={userId === actorId ? "row" : "row-reverse"}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Text variant={TextVariantEnum.BODY2} style={{ fontWeight: "bold" }}>
+                  {actorDisplayName}
+                </Text>
+                <Text variant={TextVariantEnum.CAPTION} style={{ color: "#9A9A9A" }}>
+                  {getFormattedDistanceDateFromNow(timestamp, lang)}
+                </Text>
+              </Box>
+            }
+            secondary={prepareCommentWithFile(message, messageParameters)}
+            style={{ paddingTop: 0, marginTop: 0 }}
+            primaryTypographyProps={{
+              style: {
+                fontSize: 14,
+                fontWeight: "bold",
+                color: theme.palette.primary.main,
+              },
+            }}
+            secondaryTypographyProps={{ style: { fontSize: 14, color: "#858585" } }}
+          />
+        </Box>
+        {userId !== actorId && getAvatarComponent(actorDisplayName, actorId, "flex-end")}
       </Box>
     );
 
@@ -196,6 +206,7 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation }: Props) =
           <Chip
             key={`chip${id}-${actorId}-${referenceId}`}
             size="small"
+            variant="outlined"
             style={{ fontSize: 12 }}
             avatar={
               <AvatarCore>
