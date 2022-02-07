@@ -1,8 +1,8 @@
 {
-    "title": "",
-    "textInvite": "",
-    "pressToStartTitle": "",
-    "pressToStopTitle": "",
-    "titleShareLink": "",
-    "goLiveTitle": ""
+    "title": "اتصال",
+    "textInvite": "أضف إلى الاتصال",
+    "pressToStartTitle": "اضغط لبدء التسجيل",
+    "pressToStopTitle": "اضغط لإنهاء التسجيل",
+    "titleShareLink": "شارك عبر",
+    "goLiveTitle": "تدفق"
 }

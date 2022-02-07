@@ -1,8 +1,9 @@
 {
-    "title": "",
-    "loginInvalid": "",
-    "permissionDenied": "",
-    "userDeactivated": "",
-    "mediaNotFound": "",
-    "loginSuccesfully": ""
+    "title": "أدخل بريدك الإلكتروني و كلمة المرور الخاصة بك للدخول",
+    "loginInvalid": "اسم االمستخدم او كلمة المرور غير صحيحة",
+    "permissionDenied": "تم رفض الدخول",
+    "userDeactivated": "تم إنشاء المستخدم ولكن لم يتم إرسال البريد الإلكتروني",
+    "mediaNotFound": "خطأ في جلب الملاف الصوتية الخاصة بك",
+    "loginSuccesfully": "تم تسجيل الدخول بنجاح",
+    "profileNotFound": "خطاء في الوصول الى ملف المستخدم"
 }

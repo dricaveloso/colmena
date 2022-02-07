@@ -1,12 +1,12 @@
 {
-  "title": "Installation",
-  "compatibleInstallationTitle": "Your browser is compatible for installation",
-  "notCompatibleInstallationTitle": "Your browser is not compatible for installation",
-  "alreadyInstalledTitle": "Colmena app is already installed",
-  "buttonInstall": "Install Colmena",
-  "browserCompability": "Browser compability",
-  "browserMinVersion": "Minimum version",
-  "browserDetected": "Browser detected: {{browser}} version {{version}}",
-  "browserCompatibility": "Browser compatibility",
-  "minimumVersionBrowserCompatibility": "Minimum version"
+    "title": "Instalación",
+    "compatibleInstallationTitle": "Su navegador es compatible para la instalación",
+    "notCompatibleInstallationTitle": "Su navegador no es compatible para la instalación",
+    "alreadyInstalledTitle": "La aplicación Colmena ya está instalada",
+    "buttonInstall": "Instalar Colmena",
+    "browserCompability": "Compatibilidad del navegador",
+    "browserMinVersion": "Versión mínima",
+    "browserDetected": "Navegador detectado: {{browser}} versión {{version}}",
+    "browserCompatibility": "Compatibilidad del navegador",
+    "minimumVersionBrowserCompatibility": "Versión mínima"
 }

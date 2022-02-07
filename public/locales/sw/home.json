@@ -1,11 +1,11 @@
 {
-    "welcomeTitle": "",
-    "greetingTitle": "Hello",
-    "myFilesLabel": "",
-    "sharedLabel": "",
-    "publicLabel": "",
-    "section3Title": "",
-    "section4Title": "",
-    "exampleHoneycombTitle": "",
-    "exampleFileTitle": ""
+    "welcomeTitle": "Karibu",
+    "greetingTitle": "",
+    "myFilesLabel": "Faili zangu",
+    "sharedLabel": "Pamoja",
+    "publicLabel": "Umma",
+    "section3Title": "Sega la asali linalopendwa zaidi",
+    "section4Title": "Hivi karibuni",
+    "exampleHoneycombTitle": "Sega la asali",
+    "exampleFileTitle": "Faili"
 }

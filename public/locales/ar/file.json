@@ -1,15 +1,15 @@
 {
-    "audioTitle": "",
-    "descriptionTitle": "",
-    "tagTitle": "",
+    "audioTitle": "صوت",
+    "descriptionTitle": "وصف",
+    "tagTitle": "الإشارات",
     "contextMenuOptions": {
-        "downloadTitle": "",
-        "renameTitle": "",
-        "editAudio": "",
-        "deleteAudio": ""
+        "downloadTitle": "تحميل",
+        "renameTitle": "إعادة تسمية العنوان",
+        "editAudio": "تعديل الصوت",
+        "deleteAudio": "حذف الصوت"
     },
     "messages": {
-        "descriptionSuccessfullyUpdated": ""
+        "descriptionSuccessfullyUpdated": "تم تعديل الوصف بنجاح"
     },
-    "editDescription": ""
+    "editDescription": "تعديل الوصف"
 }

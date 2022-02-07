@@ -1,11 +1,15 @@
 {
-    "title": "",
-    "memberTitle": "",
-    "membersTitle": "",
-    "noMemberTitle": "",
-    "tab1Title": "",
-    "tab2Title": "",
+    "title": "خلية النحل",
+    "memberTitle": "عضو",
+    "membersTitle": "أَعضاء",
+    "noMemberTitle": "لا يوجد عضو",
+    "tab1Title": "المحادثة",
+    "tab2Title": "مكتبة",
     "emptyTalkDescription": "",
-    "downloadAudioFailed": "",
-    "downloadFileFailed": ""
+    "downloadAudioFailed": "تحميل الصوت غير ممكن",
+    "downloadFileFailed": "تحميل الملف غير ممكن",
+    "contextMenuOptions": {
+        "participantsAddedSuccessfully": "تمت إضافة المشاركين بنجاح",
+        "addParticipantContextTitle": "إضافة مشارك"
+    }
 }

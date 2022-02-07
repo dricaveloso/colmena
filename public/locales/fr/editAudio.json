@@ -1,6 +1,6 @@
 {
-  "title": "Modifier l'enregistrement",
-  "description": "Nom du programme et métadonnées",
-  "textEditButton": "Éditer",
-  "textShareButton": "Partager"
+    "title": "Éditer l'enregistrement",
+    "description": "Nom du programme et métadonnées",
+    "textEditButton": "Éditer",
+    "textShareButton": "Partager"
 }

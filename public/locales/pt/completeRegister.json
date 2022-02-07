@@ -1,9 +1,10 @@
 {
-  "description": "E qual será sua senha ?",
-  "messagePasswordCreated": "Senha criada com sucesso.",
-  "forms": {
-    "placeholderPassword": "senha",
-    "placeholderPasswordConfirmation": "confirmação senha",
-    "submitButton": "Finalizar"
-  }
+    "description": "Escolha uma senha",
+    "messagePasswordCreated": "Senha criada com sucesso",
+    "forms": {
+        "placeholderPassword": "senha",
+        "placeholderPasswordConfirmation": "Confirme a senha",
+        "submitButton": "Finalizar"
+    },
+    "invalidToken": "Token inválido."
 }

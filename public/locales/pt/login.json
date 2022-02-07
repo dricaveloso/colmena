@@ -1,8 +1,9 @@
 {
-    "title": "",
-    "loginInvalid": "",
-    "permissionDenied": "",
-    "userDeactivated": "",
-    "mediaNotFound": "",
-    "loginSuccesfully": ""
+    "title": "Insira seu e-mail e passaporte para entrar",
+    "loginInvalid": "Nome de usuário ou senha incorreta",
+    "permissionDenied": "Acesso negado",
+    "userDeactivated": "Usuário desabilitado",
+    "mediaNotFound": "Erro na busca de mídia",
+    "loginSuccesfully": "Sessão iniciada com sucesso",
+    "profileNotFound": "Erro ao acessar seu arquivo de usuário"
 }

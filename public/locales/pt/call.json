@@ -1,8 +1,8 @@
 {
-    "title": "Gravar",
-    "textInvite": "Convidar para chamada",
-    "pressToStartTitle": "Toque para gravar",
-    "pressToStopTitle": "Parar gravação",
-    "titleShareLink": "Compartilhar Link",
-    "goLiveTitle": "Transmitir (Ao Vivo)"
+    "title": "Chamada",
+    "textInvite": "Adicionar à chamada",
+    "pressToStartTitle": "Toque para iniciar a gravação",
+    "pressToStopTitle": "Toque para encerrar a gravação",
+    "titleShareLink": "Compartilhar via",
+    "goLiveTitle": "Transmitir (ao vivo)"
 }

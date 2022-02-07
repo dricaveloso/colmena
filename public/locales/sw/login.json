@@ -1,8 +1,9 @@
 {
-    "title": "",
-    "loginInvalid": "",
-    "permissionDenied": "",
-    "userDeactivated": "",
-    "mediaNotFound": "",
-    "loginSuccesfully": ""
+    "title": "Ingiza barua pepe yako na nenosiri ili kuingia",
+    "loginInvalid": "Jina la mtumiaji na nenosiri si sahihi",
+    "permissionDenied": "Ufikiaji umekataliwa",
+    "userDeactivated": "Mtumiaji amezimwa",
+    "mediaNotFound": "Hitilafu katika kuleta midia yako",
+    "loginSuccesfully": "Umefanikiwa kuingia",
+    "profileNotFound": "Hitilafu ya kufikia faili yako ya mtumiaji"
 }
