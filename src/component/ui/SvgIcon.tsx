@@ -1441,6 +1441,21 @@ function SvgIconAux({
       ),
     });
 
+    items.set("delete", {
+      viewBox: "0 0 12 12",
+      path: () => (
+        <g fill="none">
+          <path
+            d="M1.5 1.5L10.5 10.5M1.5 10.5L10.5 1.5L1.5 10.5Z"
+            stroke={htmlColor}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </g>
+      ),
+    });
+
     if (!items.has(icon)) return undefined;
 
     return items.get(icon);
