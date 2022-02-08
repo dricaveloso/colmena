@@ -223,7 +223,7 @@ table.envPage td:nth-child(1) {
 
 
 .ui-carousel > .awssld__bullets{
-  background-color: rgb(44, 54, 62);
+  background-color: #00aeaf;
   bottom: 0px;
   position: inherit;
 }
