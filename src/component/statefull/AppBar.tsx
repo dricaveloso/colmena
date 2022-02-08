@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import Toolbar from "@material-ui/core/Toolbar";
 import SvgIcon from "@/components/ui/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
-import { PositionProps, PropsConfigSelector, PropsRecordingSelector } from "@/types/index";
+import { PositionProps, PropsRecordingSelector } from "@/types/index";
 import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import { useSelector, useDispatch } from "react-redux";
@@ -52,7 +52,6 @@ function AppBarSys({
   extraElement = undefined,
 }: AppBarInterface) {
   const router = useRouter();
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
@@ -60,14 +59,34 @@ function AppBarSys({
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const handleBack = () => {
-    if (router.pathname === "/profile") router.push(configRdx.currentPage);
-    else if (router.pathname === "/recording") {
+  const backTo = (backPage: string | null) => {
+    if (backPage) router.push(backPage);
+    else router.back();
+  };
+
+  const handleBack = async () => {
+    let backPage: null | string = null;
+    const isChangedLanguage = await localStorage.getItem("isChangedLanguage");
+    if (isChangedLanguage === "yes") {
+      const pages = await localStorage.getItem("accessedPages");
+      const pagesAc: string[] = JSON.parse(String(pages));
+      // eslint-disable-next-line prefer-destructuring
+      backPage = pagesAc[1] || null;
+      await localStorage.setItem("isChangedLanguage", "no");
+    }
+
+    // if (router.pathname === "/profile") router.push(configRdx.currentPage);
+    if (router.pathname === "/recording") {
       if (recordingRdx.activeRecordingState === "START") {
         setBackAfterFinishRecording("yes");
         dispatch(updateRecordingState("STOP"));
-      } else router.back();
-    } else router.back();
+      } else {
+        backTo(backPage);
+      }
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      backTo(backPage);
+    }
   };
 
   return (

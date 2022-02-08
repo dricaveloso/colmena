@@ -40,6 +40,7 @@ export type PropsHoneycombSelector = {
 export type PropsConfigSelector = {
   currentPage: string;
   lastTwoPagesAccessed: string[];
+  isChangedLanguage: boolean;
 };
 
 export type PropsAudioData = {

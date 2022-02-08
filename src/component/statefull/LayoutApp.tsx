@@ -10,7 +10,6 @@ import { PropsUserSelector } from "@/types/index";
 import { PositionEnum } from "@/enums/index";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentPage } from "@/store/actions/config/index";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 import { updateRecordingState } from "@/store/actions/recordings/index";
 
@@ -38,10 +37,27 @@ function LayoutApp({
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const setAccessedPages = async () => {
+    let pages = await localStorage.getItem("accessedPages");
+    if (pages) {
+      const pagesAc: string[] = JSON.parse(pages);
+      if (Array.isArray(pagesAc)) {
+        pagesAc.unshift(router.asPath);
+        const pagesAcR = [...new Set(pagesAc)];
+        await localStorage.setItem("accessedPages", JSON.stringify(pagesAcR.slice(0, 2)));
+      }
+    } else {
+      pages = JSON.stringify([router.asPath]);
+      await localStorage.setItem("accessedPages", pages);
+    }
+  };
+
   useEffect(() => {
     dispatch(setCurrentAudioPlaying(""));
     dispatch(updateRecordingState("NONE"));
-    if (router.asPath !== "/profile") dispatch(setCurrentPage(router.asPath));
+    // dispatch(setCurrentPage(router.asPath));
+    // dispatch(setChangedLanguage(false));
+    setAccessedPages();
     if (navigator.onLine) {
       (async () => {
         try {

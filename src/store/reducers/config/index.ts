@@ -1,31 +1,38 @@
-import { SET_CURRENT_PAGE } from "@/store/actions/index";
+import { SET_CURRENT_PAGE, SET_CHANGED_LANGUAGE } from "@/store/actions/index";
 
 type initialStateProps = {
   currentPage: string;
+  isChangedLanguage: boolean;
   lastTwoPagesAccessed: string[];
 };
 
 const initialState: initialStateProps = {
   currentPage: "",
   lastTwoPagesAccessed: [],
+  isChangedLanguage: false,
 };
-
-function onlyUnique(value: string, index: number, self: any) {
-  return self.indexOf(value) === index;
-}
 
 const reducer = (state = initialState, action: any) => {
   switch (action.type) {
+    case SET_CHANGED_LANGUAGE:
+      return {
+        ...state,
+        isChangedLanguage: action.isChangedLanguage,
+      };
     case SET_CURRENT_PAGE: {
-      let ltpa = state.lastTwoPagesAccessed || [];
+      const ltpa = state.lastTwoPagesAccessed;
+
       ltpa.unshift(action.currentPage);
-      ltpa = ltpa.filter(onlyUnique);
-      ltpa = ltpa.slice(0, 2);
+      const arr = [...new Set(ltpa)];
+      // ltpa = ltpa.filter(onlyUnique);
+      // ltpa = ltpa.slice(0, 2);
+
+      console.log(arr);
 
       return {
         ...state,
         currentPage: action.currentPage,
-        lastTwoPagesAccessed: ltpa,
+        lastTwoPagesAccessed: arr,
       };
     }
     default:
