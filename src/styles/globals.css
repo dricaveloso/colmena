@@ -221,3 +221,15 @@ table.envPage td:nth-child(1) {
   height: 85px;
 }
 
+
+.ui-carousel > .awssld__bullets{
+  background-color: rgb(44, 54, 62);
+  bottom: 0px;
+  position: inherit;
+}
+
+.ui-carousel > .awssld__bullets > button{
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+}

@@ -41,9 +41,10 @@ const Content: React.FC<IContent> = ({ iconName, text }) => (
 );
 
 const Carousel = () => {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("intro");
+
   return (
-    <AutoplaySlider play bullets={false} className="ui-carousel" organicArrows={false}>
+    <AutoplaySlider play bullets className="ui-carousel" organicArrows={false}>
       <Grid
         style={{
           backgroundColor: theme.palette.variation5.main,
@@ -51,7 +52,7 @@ const Carousel = () => {
           color: "#fff",
         }}
       >
-        <Content iconName="banner_1" text={t("bannerMessage1")} />
+        <Content iconName="banner_1" text={t("step1.description")} />
       </Grid>
       <Grid
         style={{
@@ -60,7 +61,7 @@ const Carousel = () => {
           color: "#fff",
         }}
       >
-        <Content iconName="banner_2" text={t("bannerMessage2")} />
+        <Content iconName="banner_2" text={t("step2.description")} />
       </Grid>
       <Grid
         style={{
@@ -69,7 +70,7 @@ const Carousel = () => {
           color: "#fff",
         }}
       >
-        <Content iconName="banner_3" text={t("bannerMessage3")} />
+        <Content iconName="banner_3" text={t("step3.description")} />
       </Grid>
       <Grid
         style={{
@@ -78,7 +79,7 @@ const Carousel = () => {
           color: "#fff",
         }}
       >
-        <Content iconName="banner_4" text={t("bannerMessage4")} />
+        <Content iconName="banner_4" text={t("step4.description")} />
       </Grid>
     </AutoplaySlider>
   );
