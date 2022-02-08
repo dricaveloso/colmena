@@ -247,7 +247,11 @@ const payloadRequest = `<?xml version="1.0" encoding="utf-8" ?>
   </d:prop>
 </d:propfind>`;
 
-export async function getDataFile(path: string, firstItem = true) {
+export async function getDataFile(
+  userId: string,
+  path: string,
+  timeDescription: TimeDescriptionInterface,
+) {
   const result = await davAxiosConnection(
     payloadRequest,
     `files/${removeCornerSlash(path)}`,
@@ -257,11 +261,7 @@ export async function getDataFile(path: string, firstItem = true) {
   );
 
   if (typeof result.multistatus.response[0].propstat.prop === "object") {
-    if (firstItem) {
-      return result.multistatus.response[0].propstat.prop;
-    }
-
-    return result;
+    return itemPayload(userId, result.multistatus.response[0], timeDescription);
   }
 
   return false;
@@ -273,7 +273,13 @@ export async function getFiles(
   timeDescription: TimeDescriptionInterface,
   libraryTranslation: TFunction,
 ) {
-  const ncFiles = await getDataFile(`${removeCornerSlash(path)}`, false);
+  const ncFiles = await davAxiosConnection(
+    payloadRequest,
+    `files/${removeCornerSlash(path)}`,
+    undefined,
+    undefined,
+    true,
+  );
   if (!ncFiles) {
     return false;
   }
@@ -306,7 +312,7 @@ const itemPayload = (
 
   const dateCreatedAt = typeof prop["created-at"] !== "undefined" ? prop["created-at"] : null;
   let createdAt;
-  if (lastModified) {
+  if (dateCreatedAt) {
     createdAt = new Date(dateCreatedAt);
   }
 
@@ -335,7 +341,7 @@ const itemPayload = (
     ownerName:
       typeof prop["owner-display-name"] !== "undefined" ? prop["owner-display-name"] : null,
     title: prop?.customtitle,
-    description: prop?.description,
+    description: prop?.customdescription,
     language: prop?.language,
   };
 

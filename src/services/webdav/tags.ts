@@ -44,6 +44,10 @@ export async function assignTagFile(fileId: number, tagId: number) {
   return webdavAxios().put(`/systemtags-relations/files/${fileId}/${tagId}`);
 }
 
+export async function unlinkTagFile(fileId: number, tagId: number) {
+  return webdavAxios().delete(`/systemtags-relations/files/${fileId}/${tagId}`);
+}
+
 export async function createAndAssignTagFile(fileId: number, tagName: string) {
   return webdavAxios().post(`/systemtags-relations/files/${fileId}`, {
     name: tagName,
