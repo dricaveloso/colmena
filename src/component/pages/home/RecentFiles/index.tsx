@@ -10,9 +10,9 @@ import {
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { ListTypeEnum } from "@/enums/index";
+import { ListTypeEnum, TextVariantEnum } from "@/enums/index";
 import Library, { getItems } from "@/components/pages/library";
-import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
+import { PropsUserSelector } from "@/types/*";
 import ToolbarSection from "../ToolbarSection";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 import { removeCornerSlash, isAudioFile } from "@/utils/utils";
@@ -20,38 +20,37 @@ import { v4 as uuid } from "uuid";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { getAudioPath, hasExclusivePath, pathIsInFilename } from "@/utils/directory";
 import IconButton from "@/components/ui/IconButton";
-
+import Text from "@/components/ui/Text";
 import { Grid, Box } from "@material-ui/core";
 import { toast } from "@/utils/notifications";
 
-interface IProps {
-  library: PropsLibrarySelector;
-}
-
-const RecentFiles: React.FC<IProps> = ({}) => {
+const RecentFiles: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<Array<LibraryItemInterface>>();
   const router = useRouter();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const { t } = useTranslation("common");
+  const { t: l } = useTranslation("library");
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
 
   const { t: homeTranslation } = useTranslation("home");
 
   const mountItems = useCallback(async () => {
     try {
-      const items = await getItems(userRdx.user.id, userRdx.user.id, timeDescription);
+      setIsLoading(true);
+      const items = await getItems(userRdx.user.id, userRdx.user.id, timeDescription, l);
       const recentFiles = items
         // @ts-ignore
         .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
         .filter((item) => item.type !== "directory")
         .reverse()
-        .slice(0, 4);
+        .slice(0, 3);
       setData(recentFiles);
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -136,18 +135,16 @@ const RecentFiles: React.FC<IProps> = ({}) => {
     return options;
   };
 
-  const render = () => {
-    if (isLoading) {
-      return <DirectoryList />;
-    }
-    return (
-      <Box width="100%" data-testid="ui-recent-files">
-        <Grid>
-          <ToolbarSection
-            title={homeTranslation("section4Title")}
-            link={`/library/${userRdx.user.id}`}
-          />
-        </Grid>
+  return (
+    <Box width="100%" data-testid="ui-recent-files">
+      <Grid>
+        <ToolbarSection
+          title={homeTranslation("section4Title")}
+          link={`/library/${userRdx.user.id}`}
+        />
+      </Grid>
+      {isLoading && <DirectoryList quantity={3} />}
+      {!isLoading && data && data?.length > 0 && (
         <Library
           items={data}
           options={options}
@@ -156,11 +153,16 @@ const RecentFiles: React.FC<IProps> = ({}) => {
           listType={ListTypeEnum.LIST}
           isLoading={isLoading}
         />
-      </Box>
-    );
-  };
-
-  return render();
+      )}
+      {!isLoading && data && data?.length === 0 && (
+        <Box style={{ backgroundColor: "#fff" }} padding={2}>
+          <Text style={{ textAlign: "left" }} variant={TextVariantEnum.BODY2}>
+            {t("noItemsFound")}
+          </Text>
+        </Box>
+      )}
+    </Box>
+  );
 };
 
 export default RecentFiles;

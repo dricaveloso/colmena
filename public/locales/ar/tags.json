@@ -1,21 +1,21 @@
 {
-    "title": "",
-    "editTagTitle": "",
-    "createTagTitle": "",
-    "saveButton": "",
+    "title": "اشعارات",
+    "editTagTitle": "تعديل شعار",
+    "createTagTitle": "انشاء شعار",
+    "saveButton": "حفظ",
     "form": {
         "fields": {
-            "name": ""
+            "name": "اسم الشعار"
         }
     },
     "messages": {
-        "tagCreatedSuccessfully": "",
-        "tagRemovedSuccessfully": "",
-        "tagUpdatedSuccessfully": "",
-        "forbidden": "",
-        "tagAlreadyExists": ""
+        "tagCreatedSuccessfully": "تم انشاء الشعار بنجاح",
+        "tagRemovedSuccessfully": "تم ازالة الشعار بنجاح",
+        "tagUpdatedSuccessfully": "تم تحديث الشعار بنجاح",
+        "forbidden": "هذا العمل ممنوع",
+        "tagAlreadyExists": "يوجد هذا الشعار بالفعل"
     },
     "table": {
-        "tagTitle": ""
+        "tagTitle": "شعار"
     }
 }

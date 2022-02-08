@@ -50,6 +50,7 @@ const VerticalItemList = (cardItem: VerticalItemListInterface) => {
     filename,
     environment,
     size = 0,
+    arrayBufferBlob,
   } = cardItem;
   const classes = useStyles();
 
@@ -68,6 +69,7 @@ const VerticalItemList = (cardItem: VerticalItemListInterface) => {
               filename={filename}
               environment={environment}
               type="vertical"
+              arrayBufferBlob={arrayBufferBlob}
             />
           }
         />

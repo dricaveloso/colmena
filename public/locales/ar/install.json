@@ -1,0 +1,12 @@
+{
+    "title": "تثبيت",
+    "compatibleInstallationTitle": "",
+    "notCompatibleInstallationTitle": "التثبيت غير ممكن كون المتصفح غير مدعوم",
+    "alreadyInstalledTitle": "تم تثبت تطبيق كولمينا بالفعل",
+    "buttonInstall": "تثبيت كولمينا",
+    "browserCompability": "توافق المتصفح",
+    "browserMinVersion": "",
+    "browserDetected": "",
+    "browserCompatibility": "توافق المتصفح",
+    "minimumVersionBrowserCompatibility": ""
+}

@@ -1,0 +1,12 @@
+{
+    "title": "Ufungaji",
+    "compatibleInstallationTitle": "Kivinjari chako kiko tayari kwa ufungaji/kusakinishwa",
+    "notCompatibleInstallationTitle": "Kivinjari chako hakiko tayari kwa ufungaji",
+    "alreadyInstalledTitle": "Programu ya Colmena iko tayari kusakinishwa",
+    "buttonInstall": "Sakinisha Colmena",
+    "browserCompability": "Utangamano wa kivinjari",
+    "browserMinVersion": "Toleo la chini",
+    "browserDetected": "Kivinjari kimegunduliwa: toleo",
+    "browserCompatibility": "Utangamano wa kivinjari",
+    "minimumVersionBrowserCompatibility": "Toleo la kiwango cha chini"
+}

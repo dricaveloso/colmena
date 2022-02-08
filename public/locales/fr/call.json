@@ -1,8 +1,8 @@
 {
-  "title": "Appel",
-  "textInvite": "Ajouter à l'appel",
-  "pressToStartTitle": "Appuyer pour commencer l'enregistrement",
-  "pressToStopTitle": "Appuyer pour arrêter l'enregistrement",
-  "titleShareLink": "Partage via",
-  "goLiveTitle": "Flux en direct"
+    "title": "Appel",
+    "textInvite": "Ajouter à l'appel",
+    "pressToStartTitle": "Appuyer pour commencer l'enregistrement",
+    "pressToStopTitle": "Appuyer pour arrêter l'enregistrement",
+    "titleShareLink": "Partager via",
+    "goLiveTitle": "Flux en direct"
 }

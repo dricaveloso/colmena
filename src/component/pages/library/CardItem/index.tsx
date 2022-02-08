@@ -5,7 +5,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { LibraryCardItemInterface } from "@/interfaces/index";
 import IconButton from "@/components/ui/IconButton";
-import { useRouter } from "next/router";
 import Box from "@material-ui/core/Box";
 import VerticalItemList from "@/components/ui/VerticalItemList";
 import GridItemList from "@/components/ui/GridItemList";
@@ -32,33 +31,14 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     bottomOptions,
     handleOpenCard,
     isDisabled,
+    arrayBufferBlob,
   } = cardItem;
-  const router = useRouter();
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  const [isPlaying, setIsPlaying] = useState(library.currentAudioPlaying === filename);
-  const [isPause, setIsPaused] = useState(true);
-  const dispatch = useDispatch();
   const handleClick = useCallback(() => {
     if (!isDisabled) {
       handleOpenCard(cardItem);
     }
   }, [cardItem, handleOpenCard, isDisabled]);
-
-  const playPauseAudioHandle = (flag: boolean) => {
-    dispatch(setCurrentAudioPlaying(!flag ? filename : ""));
-  };
-
-  const mountPlayPlauseButton: React.ReactNode | undefined =
-    type === "file" && isAudioFile(mime) ? (
-      <IconButton
-        key={`${basename}-playpause`}
-        icon={isPlaying ? "pause_flat" : "play_flat"}
-        color="#9A9A9A"
-        style={{ padding: 0, margin: 0, minWidth: 30 }}
-        fontSizeIcon="small"
-        handleClick={() => playPauseAudioHandle(isPlaying)}
-      />
-    ) : null;
 
   const badgeStatusGrid = useMemo(() => <CardItemStatus {...cardItem} />, [cardItem]);
 
@@ -93,10 +73,11 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           secondary={subtitleVerticalItem}
           options={options && options(cardItem)}
           handleClick={handleClick}
-          isPlaying={isPlaying}
+          isPlaying={library.currentAudioPlaying === filename}
           environment={environment}
           filename={filename}
           size={size}
+          arrayBufferBlob={arrayBufferBlob}
         />
       ) : (
         <GridItemList
@@ -107,7 +88,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           topOptions={options && options(cardItem)}
           bottomOptions={bottomOptions && bottomOptions(cardItem, badgeStatusGrid)}
           handleClick={handleClick}
-          isPlaying={isPlaying}
+          isPlaying={library.currentAudioPlaying === filename}
           environment={environment}
           filename={filename}
           size={size}

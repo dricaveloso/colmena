@@ -26,6 +26,7 @@ import getConfig from "next/config";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { convertPrivateToUsername, getPrivatePath, getTalkPath } from "@/utils/directory";
 import { EnvironmentEnum } from "@/enums/*";
+import { TFunction } from "next-i18next";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -270,6 +271,7 @@ export async function getFiles(
   userId: string,
   path: string,
   timeDescription: TimeDescriptionInterface,
+  libraryTranslation: TFunction,
 ) {
   const ncFiles = await getDataFile(`${removeCornerSlash(path)}`, false);
   if (!ncFiles) {
@@ -283,7 +285,7 @@ export async function getFiles(
     items.push(itemPayload(userId, item, timeDescription));
   });
 
-  return handleItems(userId, items, path);
+  return handleItems(userId, items, path, libraryTranslation);
 }
 
 const itemPayload = (
@@ -350,13 +352,18 @@ export function getCurrentFile(): null | LibraryItemInterface {
   return currentItem;
 }
 
-const handleItems = (userId: string, items: Array<LibraryItemInterface>, path: string) => {
+const handleItems = (
+  userId: string,
+  items: Array<LibraryItemInterface>,
+  path: string,
+  libraryTranslation: TFunction,
+) => {
   const handledItems = items
     .map((item: LibraryItemInterface) => {
       const newItem = item;
       const { type, filename } = newItem;
       if (type === "directory" && removeCornerSlash(filename) === getTalkPath()) {
-        newItem.basename = "shared with me";
+        newItem.basename = libraryTranslation("talkFolderName");
       }
 
       if (filename === "") {
@@ -376,7 +383,6 @@ const handleItems = (userId: string, items: Array<LibraryItemInterface>, path: s
 
   const isRoot = path === "/" || path === "";
   if (isRoot) {
-    console.log(handledItems);
     return handledItems.filter(({ type }: LibraryItemInterface) => type === "directory");
   }
 
