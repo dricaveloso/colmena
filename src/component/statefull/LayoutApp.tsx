@@ -22,7 +22,9 @@ interface LayoutInterface extends AppBarInterface {
 
 function LayoutApp({
   title,
+  fontSizeTitle = 20,
   subtitle = "",
+  fontSizeSubtitle = 15,
   drawer = true,
   back = false,
   headerPosition = PositionEnum.FIXED,
@@ -60,7 +62,9 @@ function LayoutApp({
       <FlexBox extraStyle={{ margin: 0, padding: 0 }}>
         <AppBar
           title={title}
+          fontSizeTitle={fontSizeTitle}
           subtitle={subtitle}
+          fontSizeSubtitle={fontSizeSubtitle}
           headerPosition={headerPosition}
           drawer={drawer}
           templateHeader={templateHeader}

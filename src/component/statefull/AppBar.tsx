@@ -16,7 +16,9 @@ import { setBackAfterFinishRecording } from "@/utils/utils";
 
 export interface AppBarInterface {
   title: string;
+  fontSizeTitle?: number;
   subtitle?: string | React.ReactNode;
+  fontSizeSubtitle?: number;
   drawer?: boolean;
   back?: boolean;
   headerPosition?: PositionProps | undefined;
@@ -40,7 +42,9 @@ tplHeader.set("variation3", {
 
 function AppBarSys({
   title,
+  fontSizeTitle,
   subtitle,
+  fontSizeSubtitle,
   headerPosition = PositionEnum.FIXED,
   drawer = true,
   back = false,
@@ -93,7 +97,7 @@ function AppBarSys({
                 variant={TextVariantEnum.H3}
                 align={TextAlignEnum.LEFT}
                 style={{
-                  fontSize: 20,
+                  fontSize: fontSizeTitle,
                   color: tplHeader.get(templateHeader).textColor,
                   fontWeight: 900,
                   fontFamily: "Nunito sans, sans-serif",
@@ -106,7 +110,7 @@ function AppBarSys({
                   variant={TextVariantEnum.H3}
                   align={TextAlignEnum.LEFT}
                   style={{
-                    fontSize: 15,
+                    fontSize: fontSizeSubtitle,
                     color: "#B4AEF5",
                     fontFamily: "Nunito sans, sans-serif",
                     paddingTop: 2,

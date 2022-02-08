@@ -2,14 +2,16 @@
 /* eslint-disable react/jsx-no-bind */
 import React from "react";
 import { receiveChatMessages } from "@/services/talk/chat";
-import { addAllMessages, getAllMessages } from "@/store/idb/models/chat";
+import { addAllMessages, deleteAllMessages, getAllMessages } from "@/store/idb/models/chat";
 import ChatListSkeleton from "@/components/ui/skeleton/ChatList";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addBlockIDChatControl,
   removeBlockIDChatControlByToken,
+  addClearHoneycombChatMessages,
 } from "@/store/actions/honeycomb/index";
 import { ChatMessagesListInterfaceCustom, ChatMessageItemInterface } from "@/interfaces/talk";
+import { PropsHoneycombSelector } from "@/types/*";
 
 type Props = {
   token: string;
@@ -18,6 +20,9 @@ type Props = {
 
 export default function ReloadChatMessages({ token, uuid }: Props) {
   const dispatch = useDispatch();
+  const honeycombRdx = useSelector(
+    (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
+  );
 
   const createBlockChatControl = (onlineMessages: ChatMessageItemInterface[], token: string) => {
     const blockBeginID = onlineMessages[0].id || 1;
@@ -35,6 +40,12 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
     },
     onSuccess: async (data: ChatMessagesListInterfaceCustom) => {
       const onlineMessages = data.ocs.data.reverse();
+
+      if (!honeycombRdx.clearChatMessages.includes(token)) {
+        dispatch(addClearHoneycombChatMessages(token));
+        dispatch(removeBlockIDChatControlByToken(token));
+        await deleteAllMessages(token);
+      }
 
       if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
         const localMessages = await getAllMessages(token);

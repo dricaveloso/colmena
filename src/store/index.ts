@@ -8,7 +8,7 @@ import reducers from "./reducers";
 let store: any;
 
 const persistConfig = {
-  key: "rootv2",
+  key: "rootv2.1",
   // eslint-disable-next-line no-undef
   storage,
   // whitelist: ['exampleData'], // place to select which state you want to persist

@@ -14,8 +14,6 @@ import {
   getMessageByRefIDAndToken,
   getMessageByIDAndToken,
   getAllMessages,
-  getAllLocalMessages,
-  deleteAllLocalMessages,
 } from "@/store/idb/models/chat";
 import { useSelector } from "react-redux";
 import { PropsHoneycombSelector, PropsUserSelector } from "@/types/*";

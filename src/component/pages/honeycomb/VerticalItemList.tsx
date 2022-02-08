@@ -55,6 +55,10 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
   const router = useRouter();
   const { id, displayName, token, canDeleteConversation, description } = data;
 
+  const navigateTo = async () => {
+    router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`);
+  };
+
   return (
     <Box className={classes.card} style={{ backgroundColor }}>
       <ListItemAvatar className={classes.avatar}>
@@ -69,9 +73,7 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
         data-testid="title"
         className={classes.description}
         primary={displayName}
-        onClick={() =>
-          router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`)
-        }
+        onClick={navigateTo}
         primaryTypographyProps={{ style: { color: theme.palette.primary.dark } }}
         secondary={
           <>

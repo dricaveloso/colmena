@@ -157,7 +157,11 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
           display="flex"
           borderRadius={20}
           flex={1}
-          style={{ backgroundColor: "#f5f5f5", borderTopLeftRadius: 4 }}
+          style={{
+            backgroundColor: "#f5f5f5",
+            borderTopLeftRadius: userId === actorId ? 2 : 20,
+            borderTopRightRadius: userId !== actorId ? 2 : 20,
+          }}
         >
           <ListItemText
             data-testid="title"
