@@ -22,7 +22,7 @@ import Carousel from "@/components/pages/home/Carousel";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["home", "invitation", "library", "common"])),
+    ...(await serverSideTranslations(locale, ["home", "invitation", "library", "common", "intro"])),
   },
 });
 

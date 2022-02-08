@@ -22,8 +22,13 @@ export default function DiscreteSlider() {
   const { t } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   return (
-    <div>
-      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#666" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#666", textAlign: "left" }}>
         {t("used")}
         <> {(userRdx.user.quota.used / (1000 * 1000 * 1000)).toFixed(2)} GB </>
         {`(${Math.round((userRdx.user.quota.used / userRdx.user.quota.total) * 100)}%)`}
