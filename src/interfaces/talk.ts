@@ -184,19 +184,6 @@ export interface ChatMessageItemInterfaceCustom {
   referenceId?: string;
 }
 
-export interface ChatLocalMessageItemInterface {
-  id?: number;
-  token?: string;
-  actorType: string;
-  actorId: string;
-  actorDisplayName: string;
-  timestamp: number;
-  message: string;
-  systemMessage: string;
-  messageType: string;
-  referenceId?: string;
-}
-
 export interface ChatMessagesListInterface extends SWRDefaultOptionsInterface {
   data: {
     ocs: {

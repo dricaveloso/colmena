@@ -48,12 +48,12 @@ export default function Btn({
   const { t } = useTranslation("common");
 
   const styleBtn1 =
-    !color && variant === "contained"
+    !color && variant === "contained" && !disabled
       ? { backgroundColor: theme.palette.variation1.main, color: "#fff" }
       : {};
 
   const styleBtn2 =
-    !color && variant === "outlined"
+    !color && variant === "outlined" && !disabled
       ? { borderColor: theme.palette.variation1.main, color: theme.palette.variation1.main }
       : {};
 

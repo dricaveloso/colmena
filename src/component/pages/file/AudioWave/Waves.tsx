@@ -4,7 +4,8 @@
 import { useEffect, useRef } from "react";
 import theme from "@/styles/theme";
 import { v4 as uuid } from "uuid";
-// import { toast } from "@/utils/notifications";
+import { useDispatch } from "react-redux";
+import { setCurrentAudioPlaying } from "@/store/actions/library";
 
 interface WavesurferInterface {
   current: {
@@ -33,6 +34,7 @@ type Props = {
 export default function Waves({ blob = null, config = undefined, play = false }: Props) {
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
+  const dispatch = useDispatch();
 
   const formWaveSurferOptions = (ref: any) => ({
     container: ref,
@@ -74,6 +76,11 @@ export default function Waves({ blob = null, config = undefined, play = false }:
           if (play) {
             wavesurfer?.current?.play();
           }
+        });
+
+        wavesurfer?.current.on("finish", () => {
+          wavesurfer?.current?.setPlayEnd(0);
+          dispatch(setCurrentAudioPlaying(""));
         });
 
         wavesurfer?.current.on("error", (error: string) => {

@@ -12,7 +12,8 @@ import { updateUser } from "@/services/ocs/users";
 import Backdrop from "@/components/ui/Backdrop";
 import Modal from "@/components/ui/Modal";
 import { getSystemLanguages } from "@/utils/utils";
-import { LanguageProps } from "@/types/*";
+import { LanguageProps, LanguagesAvailableProps } from "@/types/*";
+import constants from "@/constants/index";
 
 type Props = {
   open: boolean;
@@ -26,7 +27,7 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
   const [showBackdrop, setShowBackdrop] = useState(false);
   const { t } = useTranslation("common");
 
-  const changeLanguageHandler = async (locale: string) => {
+  const changeLanguageHandler = async (locale: LanguagesAvailableProps) => {
     if (defaultLang !== locale) {
       setShowBackdrop(true);
       setCookie(null, "NEXT_LOCALE", locale, {
@@ -35,8 +36,12 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
       });
       await localStorage.setItem("isChangedLanguage", "yes");
       try {
-        await updateUser<string>("language", locale);
+        const localesNextcloud = constants.LOCALES_NEXTCLOUD;
+        if (localesNextcloud[locale]) {
+          await updateUser<string>("language", localesNextcloud[locale]);
+        }
       } catch (e) {
+        console.log(e);
         // idioma não existe no NC
       }
       setShowBackdrop(false);
