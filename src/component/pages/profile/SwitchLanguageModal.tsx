@@ -33,6 +33,7 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
+      await localStorage.setItem("isChangedLanguage", "yes");
       try {
         await updateUser<string>("language", locale);
       } catch (e) {

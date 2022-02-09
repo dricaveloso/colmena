@@ -27,7 +27,6 @@ import { dateDescription } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import Text from "@/components/ui/Text";
 import { getUserGroup } from "@/utils/permissions";
-import theme from "@/styles/theme";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -92,11 +91,6 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
   const schemaValidation = Yup.object().shape({
     room: Yup.string().required(c("form.requiredTitle")),
   });
-
-  const ButtonStep1Style = {
-    backgroundColor: theme.palette.variation1.main,
-    color: "#fff",
-  };
 
   return (
     <>
@@ -209,13 +203,7 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       <Button
                         handleClick={() => setStep(2)}
                         title={c("honeycombModal.buttonStep1")}
-                        disabled={!(values.room !== "")}
-                        style={values.room !== "" ? ButtonStep1Style : {}}
-                        variant={
-                          !(values.room !== "")
-                            ? ButtonVariantEnum.CONTAINED
-                            : ButtonVariantEnum.OUTLINED
-                        }
+                        disabled={!values.room}
                       />
                     </Box>
                   </>
@@ -246,9 +234,6 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                       />
                       <Button
                         handleClick={submitForm}
-                        variant={
-                          isSubmitting ? ButtonVariantEnum.CONTAINED : ButtonVariantEnum.OUTLINED
-                        }
                         disabled={isSubmitting}
                         title={
                           isSubmitting ? (

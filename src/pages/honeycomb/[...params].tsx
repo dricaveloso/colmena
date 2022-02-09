@@ -101,9 +101,16 @@ function Honeycomb() {
   }
 
   const getTabOption = (title: string, icon: AllIconProps) => (
-    <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center">
+    <Box
+      display="flex"
+      flexDirection="row"
+      padding={0}
+      margin={0}
+      justifyContent="center"
+      alignItems="center"
+    >
       <SvgIcon icon={icon} htmlColor="#727272" fontSize="small" />
-      <Text variant={TextVariantEnum.CAPTION} style={{ marginLeft: 6 }}>
+      <Text variant={TextVariantEnum.CAPTION} style={{ marginLeft: 4 }}>
         {title}
       </Text>
     </Box>
@@ -113,7 +120,9 @@ function Honeycomb() {
     <LayoutApp
       back
       title={displayName}
+      fontSizeTitle={16}
       subtitle={<Subtitle token={token} />}
+      fontSizeSubtitle={12}
       extraElement={<ContextMenu token={token} reloadChatList={() => setTokenUuid(uuid())} />}
     >
       <FlexBox
@@ -121,12 +130,22 @@ function Honeycomb() {
         extraStyle={{ padding: 0, margin: 0, backgroundColor: "#fff" }}
       >
         <Box width="100vw" style={{ paddingTop: 55 }}>
-          <AppBar position="fixed" elevation={0} style={{ marginTop: 70 }}>
+          <AppBar
+            position="fixed"
+            elevation={0}
+            style={{ marginTop: 70, height: 40, backgroundColor: theme.palette.primary.main }}
+          >
             <Tabs
               value={value}
               onChange={handleChange}
               indicatorColor="primary"
-              style={{ backgroundColor: "#fff", width: "100vw", color: theme.palette.icon.main }}
+              style={{
+                backgroundColor: "#fff",
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                width: "100vw",
+                color: theme.palette.icon.main,
+              }}
               variant="fullWidth"
             >
               <Tab label={getTabOption(t("tab1Title"), "chat")} {...a11yProps(0)} />

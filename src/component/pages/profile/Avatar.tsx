@@ -62,3 +62,5 @@ function AvatarAux({ size, showEditImage = false, userId = "", userName = "" }: 
 }
 
 export default AvatarAux;
+
+export const AvatarMemoized = React.memo(AvatarAux);

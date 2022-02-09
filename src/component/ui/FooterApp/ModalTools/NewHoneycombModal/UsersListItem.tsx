@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
-import Avatar from "@/components/pages/profile/Avatar";
+import { AvatarMemoized } from "@/components/pages/profile/Avatar";
 import { getFirstLettersOfTwoFirstNames } from "@/utils/utils";
 import SvgIcon from "@/components/ui/SvgIcon";
 
@@ -47,7 +47,7 @@ const UsersListItem = ({ user, backgroundColor, selected = false }: Props) => {
   return (
     <Box className={classes.card} style={{ backgroundColor }}>
       <ListItemAvatar>
-        <Avatar size={5} userId={user} userName={user} />
+        <AvatarMemoized size={5} userId={user} userName={user} />
       </ListItemAvatar>
       <ListItemText
         data-testid="title"

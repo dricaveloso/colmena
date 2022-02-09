@@ -31,6 +31,7 @@ export type PropsUserSelector = {
 
 export type PropsHoneycombSelector = {
   honeycombs: RoomItemInterface[];
+  clearChatMessages: string[];
   chatMessages: ChatMessageItemInterface[];
   chatMessagesBlockLoad: MessageBlockLoadInterface[];
   reloadChatLocalMessage: boolean;
@@ -39,6 +40,7 @@ export type PropsHoneycombSelector = {
 export type PropsConfigSelector = {
   currentPage: string;
   lastTwoPagesAccessed: string[];
+  isChangedLanguage: boolean;
 };
 
 export type PropsAudioData = {
