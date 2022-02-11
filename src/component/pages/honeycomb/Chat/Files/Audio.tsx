@@ -118,6 +118,10 @@ export function Audio({ filename, size, name, config, canDeleteConversation }: P
       wavesurfer?.current.on("error", (error: string) => {
         toast(error, "error");
       });
+
+      wavesurfer?.current.on("finish", () => {
+        setPlaying(false);
+      });
     } catch (e) {
       console.log("error 2", e);
       // error container element not found

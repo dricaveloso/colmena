@@ -42,9 +42,9 @@ tplHeader.set("variation3", {
 
 function AppBarSys({
   title,
-  fontSizeTitle,
+  fontSizeTitle = 20,
   subtitle,
-  fontSizeSubtitle,
+  fontSizeSubtitle = 15,
   headerPosition = PositionEnum.FIXED,
   drawer = true,
   back = false,

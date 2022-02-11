@@ -305,7 +305,9 @@ export type AllIconProps =
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 
+export type LanguagesAvailableProps = "es" | "en" | "fr" | "pt" | "ar" | "sw";
+
 export type LanguageProps = {
-  abbr: string;
+  abbr: LanguagesAvailableProps;
   language: string;
 };

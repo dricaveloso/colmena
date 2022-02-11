@@ -61,7 +61,7 @@ function LayoutApp({
           const session = await getSession();
           if (!session || !userRdx.user) {
             await signOut({ redirect: false });
-            router.push("/login");
+            router.push("/login?out");
           }
         } catch (e) {
           console.log(e);

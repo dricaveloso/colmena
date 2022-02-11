@@ -63,7 +63,7 @@ function MyLibrary() {
     cardItem: LibraryCardItemInterface,
     playIconComp: React.ReactNode | undefined = undefined,
   ) => {
-    const { filename, basename, orientation, mime } = cardItem;
+    const { filename, basename, orientation } = cardItem;
     const options = [];
     const shareOption = (
       <IconButton
@@ -80,9 +80,7 @@ function MyLibrary() {
 
     if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
       if (!pathIsInFilename(getAudioPath(), filename) && orientation === "vertical") {
-        if (!isAudioFile(mime)) {
-          options.push(shareOption);
-        }
+        options.push(shareOption);
       }
 
       options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);

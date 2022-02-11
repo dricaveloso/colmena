@@ -33,7 +33,6 @@ const CardItemAvatar = ({
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const dispatch = useDispatch();
   const playPauseAudioHandle = (flag: boolean) => {
-    console.log("aqui?");
     dispatch(setCurrentAudioPlaying(!flag ? filename : ""));
   };
 

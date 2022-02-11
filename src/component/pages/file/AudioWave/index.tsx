@@ -10,15 +10,20 @@ import { fancyTimeFormat } from "@/utils/utils";
 import { createObjectURL } from "blob-util";
 import AudioWaveSkeleton from "./skeleton";
 import { getFilename } from "@/utils/directory";
+import { PropsLibrarySelector } from "@/types/index";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrentAudioPlaying } from "@/store/actions/library";
 
 type Props = {
   blob: Blob | null;
   data: any;
-  playingAs: boolean;
+  playingAs?: boolean;
 };
-export default function AudioWave({ blob, data, playingAs = false }: Props) {
-  const [playing, setPlaying] = useState(playingAs);
+export default function AudioWave({ blob, data }: Props) {
+  const dispatch = useDispatch();
+  const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const [duration, setDuration] = useState(0);
+  const filename = data?.filename;
   const getAudio = async () => {
     try {
       if (blob) {
@@ -35,8 +40,8 @@ export default function AudioWave({ blob, data, playingAs = false }: Props) {
     getAudio();
   }, [blob]);
 
-  const handlePlayPause = () => {
-    setPlaying(!playing);
+  const playPauseAudioHandle = (flag: boolean) => {
+    dispatch(setCurrentAudioPlaying(!flag ? filename : ""));
   };
 
   if (!blob) return <AudioWaveSkeleton />;
@@ -44,19 +49,23 @@ export default function AudioWave({ blob, data, playingAs = false }: Props) {
   return (
     <Box display="flex" flex={1} flexDirection="row" justifyContent="center" alignItems="center">
       <IconButton
-        icon={playing ? "pause" : "play"}
+        icon={library.currentAudioPlaying === filename ? "pause" : "play"}
         iconStyle={{ fontSize: 55 }}
-        handleClick={handlePlayPause}
+        handleClick={() => playPauseAudioHandle(library.currentAudioPlaying === filename)}
         iconColor={theme.palette.primary.main}
       />
       <Box display="flex" marginLeft={1} flexDirection="column" flex={1}>
         <ListItemText
           data-testid="title"
-          primary={getFilename(decodeURIComponent(data?.filename))}
+          primary={getFilename(decodeURIComponent(filename))}
           secondary={fancyTimeFormat(duration)}
           secondaryTypographyProps={{ style: { fontSize: 10 } }}
         />
-        <Waves blob={blob} config={{ height: 20 }} play={playing} />
+        <Waves
+          blob={blob}
+          config={{ height: 20 }}
+          play={library.currentAudioPlaying === filename}
+        />
       </Box>
     </Box>
   );

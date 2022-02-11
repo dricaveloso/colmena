@@ -4,6 +4,10 @@ export function addSingleMessage(file) {
   return db.chatMessages.add(file);
 }
 
+export function updateMessage(chatId, message) {
+  return db.chatMessages.update(chatId, { message });
+}
+
 export function addAllMessages(file) {
   return db.chatMessages.bulkAdd(file);
 }

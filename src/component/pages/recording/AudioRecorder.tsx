@@ -29,6 +29,7 @@ import theme from "@/styles/theme";
 import { format } from "date-fns";
 import { convertPrivateToUsername, getPrivatePath } from "@/utils/directory";
 import Waves from "@/components/pages/file/AudioWave/Waves";
+import { getAccessedPages } from "@/utils/utils";
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
@@ -140,8 +141,11 @@ function AudioRecorder({ onStopRecording, tempFileName }: Props) {
   );
 
   useEffect(() => {
+    (async () => {
+      const pathUp = await prepareUploadPath();
+      setPathLocationSave(pathUp);
+    })();
     init(state);
-    setPathLocationSave(prepareUploadPath());
   }, [state]);
 
   async function getAudioStream() {
@@ -167,10 +171,11 @@ function AudioRecorder({ onStopRecording, tempFileName }: Props) {
     }
   };
 
-  function prepareUploadPath() {
+  async function prepareUploadPath() {
     if (pathLocationSave) return pathLocationSave;
 
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    const accessedPages = await getAccessedPages();
+    const urlOrigin = accessedPages[1] || accessedPages[0];
     let url = "";
 
     if (/^[/]library/.test(urlOrigin)) {
