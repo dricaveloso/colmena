@@ -1,8 +1,11 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "../types";
-import { signOut } from "next-auth/client";
+import { signOut, getSession } from "next-auth/client";
+import ResourceUnavailable from "@/components/ui/ResourceUnavailable";
+import FullCenterContainer from "@/components/ui/FullCenterContainer";
 
 type Props = {
   statusCode: any;
@@ -10,21 +13,34 @@ type Props = {
 
 function Error({ statusCode }: Props) {
   const router = useRouter();
-  (async () => {
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+
+  const init = async () => {
     if (!statusCode) {
-      const userRdx = await useSelector((state: { user: PropsUserSelector }) => state.user);
-      if (!userRdx?.user) {
+      const session = await getSession();
+      if (!session || !userRdx?.user) {
         await signOut({ redirect: false });
-        router.push("/login");
+        router.push("/login?out");
       }
     }
+  };
 
+  useEffect(() => {
+    init();
+  }, []);
+
+  if (statusCode) {
     return (
-      <p>
-        {statusCode ? `An error ${statusCode} occurred on server` : "An error occurred on client"}
-      </p>
+      <FullCenterContainer>
+        <ResourceUnavailable
+          icon={statusCode === 500 ? "error" : "error_outline"}
+          title={statusCode}
+        />
+      </FullCenterContainer>
     );
-  })();
+  }
+
+  return null;
 }
 
 type InitialProps = {

@@ -10,7 +10,11 @@ import {
   removeBlockIDChatControlByToken,
   addClearHoneycombChatMessages,
 } from "@/store/actions/honeycomb/index";
-import { ChatMessagesListInterfaceCustom, ChatMessageItemInterface } from "@/interfaces/talk";
+import {
+  ChatMessagesListInterfaceCustom,
+  ChatMessageItemInterface,
+  ChatMessageItemInterfaceCustom,
+} from "@/interfaces/talk";
 import { PropsHoneycombSelector } from "@/types/*";
 
 type Props = {
@@ -28,6 +32,26 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
     const blockBeginID = onlineMessages[0].id || 1;
     const blockEndID = onlineMessages[onlineMessages.length - 1].id || 1;
     dispatch(addBlockIDChatControl({ blockBeginID, blockEndID, token }));
+  };
+
+  const prepareDataTranslate = async (
+    onlineMessages: ChatMessageItemInterface[],
+    localMessages: ChatMessageItemInterfaceCustom[],
+  ) => {
+    const messageOnline = onlineMessages.filter((item) => item.systemMessage !== "").reverse();
+    const messageLocal = localMessages.find((item) => item.id === messageOnline[0].id);
+    if (messageLocal?.message !== messageOnline[0].message) {
+      await deleteAllMessages(token);
+
+      dispatch(removeBlockIDChatControlByToken(token));
+      createBlockChatControl(onlineMessages, token);
+      await addAllMessages(onlineMessages);
+
+      const localMessages = await getAllMessages(token);
+      return localMessages;
+    }
+
+    return localMessages;
   };
 
   const { data, error } = receiveChatMessages(token, {
@@ -57,12 +81,15 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
         } else {
           const limitNextcloudApiChat = 200;
 
+          const lclMessages = await prepareDataTranslate(onlineMessages, localMessages);
+
           if (onlineMessages.length === limitNextcloudApiChat) {
-            const lastIdInsertedLocalMessages = localMessages[localMessages.length - 1].id;
+            const lastIdInsertedLocalMessages = lclMessages[lclMessages.length - 1].id;
             const resultDifference = onlineMessages.filter(
               (item) => item.id > lastIdInsertedLocalMessages,
             );
             if (resultDifference.length > 0 && resultDifference.length < limitNextcloudApiChat) {
+              console.log("men", resultDifference);
               await addAllMessages(resultDifference);
               createBlockChatControl(resultDifference, token);
             } else if (
@@ -75,7 +102,7 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
               createBlockChatControl(resultDifference, token);
             }
           } else {
-            const difference = onlineMessages.length - localMessages.length;
+            const difference = onlineMessages.length - lclMessages.length;
 
             if (difference > 0) {
               const arrDiffMessages = onlineMessages.slice(-difference);

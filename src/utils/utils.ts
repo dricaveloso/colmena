@@ -2,14 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable import/no-duplicates */
 import { differenceInMinutes, differenceInCalendarMonths, formatDistanceToNow } from "date-fns";
-import { enUS, es, fr } from "date-fns/locale";
+import { enUS, es, fr, ptBR, arDZ } from "date-fns/locale";
 import {
   UserInvitationInterface,
   BreadcrumbItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
 import constants from "@/constants/index";
-import { LanguageProps } from "@/types/*";
+import { LanguageProps, LanguagesAvailableProps } from "@/types/*";
 
 export function formatBytes(bytes: number, decimals = 2) {
   if (bytes === 0) return "0 Bytes";
@@ -308,26 +308,18 @@ export function getRandomInt(min: number, max: number) {
 }
 
 export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en") {
-  let lce;
-  switch (locale) {
-    case "en":
-      lce = enUS;
-      break;
-    case "es":
-      lce = es;
-      break;
-    case "fr":
-      lce = fr;
-      break;
-    default:
-      lce = enUS;
-      break;
-  }
+  const byPassObject = new Map();
+  byPassObject.set("en", enUS);
+  byPassObject.set("pt", ptBR);
+  byPassObject.set("ar", arDZ);
+  byPassObject.set("fr", fr);
+  byPassObject.set("es", es);
+  byPassObject.set("sw", enUS);
 
   if (!timestamp) return "";
 
   return formatDistanceToNow(new Date(timestamp * 1000), {
-    locale: lce,
+    locale: byPassObject.get(locale) || enUS,
   });
 }
 
@@ -439,7 +431,7 @@ export function treatTagName(value: string) {
 export function getSystemLanguages(t: any): LanguageProps[] {
   const locales = Object.values(constants.LOCALES);
   return locales
-    .map((item) => ({
+    .map((item: LanguagesAvailableProps) => ({
       abbr: item,
       language: t(`languagesAllowed.${item}`),
     }))
