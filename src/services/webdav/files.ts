@@ -16,7 +16,7 @@ import {
   removeCornerSlash,
   getExtensionFilename,
   dateDescription,
-  fileSizeConvert,
+  formatBytes,
 } from "@/utils/utils";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { arrayBufferToBlob, blobToArrayBuffer, createObjectURL } from "blob-util";
@@ -325,12 +325,12 @@ const itemPayload = (
     environment: EnvironmentEnum.REMOTE,
     extension: getExtensionFilename(filename),
     createdAt,
-    createdAtDescription: dateDescription(createdAt, timeDescription),
+    createdAtDescription: createdAt ? dateDescription(createdAt, timeDescription) : null,
     updatedAt,
-    updatedAtDescription: dateDescription(updatedAt, timeDescription),
+    updatedAtDescription: updatedAt ? dateDescription(updatedAt, timeDescription) : null,
     mime: prop?.getcontenttype,
     size: prop?.size,
-    sizeFormatted: `${fileSizeConvert(prop.size).description}`,
+    sizeFormatted: formatBytes(prop.size),
     contentLength: prop?.getcontentlength,
     fileId: prop?.fileid,
     nextcloudId: prop?.id,
