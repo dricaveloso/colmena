@@ -87,7 +87,11 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
           }
 
           if (copy) {
-            if (isPanal(item.filename)) {
+            if (
+              isPanal(item.filename) &&
+              (cardItem.environment === EnvironmentEnum.REMOTE ||
+                cardItem.environment === EnvironmentEnum.BOTH)
+            ) {
               await shareInChat(item.filename, cardItem.filename);
             }
 

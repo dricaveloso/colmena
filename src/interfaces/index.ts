@@ -163,9 +163,9 @@ export interface LibraryItemInterface {
   tags?: NXTagsProps[] | string[];
   arrayBufferBlob?: ArrayBuffer;
   createdAt?: Date;
-  createdAtDescription?: string | undefined;
+  createdAtDescription?: string | null;
   updatedAt?: Date;
-  updatedAtDescription?: string | undefined;
+  updatedAtDescription?: string | null;
   environment: Environment;
   path?: string;
   image?: string;

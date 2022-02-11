@@ -230,7 +230,7 @@ export function dateDescription(date: Date | undefined, timeDescription: TimeDes
 
   const today = new Date();
   const months = differenceInCalendarMonths(today, date);
-  if (months > 0) {
+  if (months > 0 && months <= 12) {
     const monthDescription = months > 1 ? pluralMonthDescription : singularMonthDescription;
 
     return `${months} ${monthDescription}`;

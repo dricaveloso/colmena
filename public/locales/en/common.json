@@ -89,13 +89,13 @@
         "fileUploadedSuccessfully": "File uploaded successfully",
         "uploadCanceledSuccessfully": "File upload canceled.",
         "folderCreationCanceledSuccessfully": "Folder creation canceled."
-      
+
     },
     "timeDescription": {
         "singularYear": "year",
         "pluralYear": "years",
         "singularMonth": "month",
-        "pluralMonth": "years",
+        "pluralMonth": "months",
         "singularDay": "day",
         "pluralDay": "days",
         "singularHour": "hour",

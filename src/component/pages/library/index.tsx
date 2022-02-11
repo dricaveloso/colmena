@@ -10,7 +10,7 @@ import {
 } from "@/interfaces/index";
 import { getFilesByPath } from "@/store/idb/models/files";
 import { makeStyles } from "@material-ui/core";
-import { dateDescription } from "@/utils/utils";
+import { dateDescription, formatBytes } from "@/utils/utils";
 import { EnvironmentEnum, OrderEnum, FilterEnum, ListTypeEnum } from "@/enums/index";
 import {
   getPrivatePath,
@@ -83,8 +83,17 @@ export async function getLocalFiles(
         createdAtDescription: dateDescription(file.createdAt, timeDescription),
         updatedAt: file.createdAt,
         updatedAtDescription: dateDescription(file.createdAt, timeDescription),
+        size: file?.size,
+        sizeFormatted: file?.size ? formatBytes(file.size) : undefined,
         mime: "audio/webm",
         arrayBufferBlob: file.arrayBufferBlob,
+        ownerId: file?.userId,
+        ownerName: file?.userId,
+        fileId: file?.nextcloudId,
+        language: file?.language,
+        tags: [],
+        title: file?.title,
+        description: file?.description,
       };
 
       items.push(item);

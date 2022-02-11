@@ -62,7 +62,7 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
           <strong>{t("detailsModal.size")}</strong>
         </Grid>
         <Grid item xs={6}>
-          {cardItem.size ? <>{Math.round(cardItem.size / 1024)} KiB</> : "-"}
+          {cardItem.size ? <>{cardItem.sizeFormatted}</> : "-"}
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -84,14 +84,17 @@ export default function DetailsModal({ open, handleOpen, cardItem }: Props) {
         </Grid>
       )}
 
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <strong>{t("detailsModal.lastUpdate")}</strong>
+      {cardItem.updatedAt && (
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <strong>{t("detailsModal.lastUpdate")}</strong>
+          </Grid>
+          <Grid item xs={6}>
+            {cardItem.updatedAt?.toLocaleDateString("en-US")} - {cardItem.updatedAtDescription}
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          {cardItem.updatedAt?.toLocaleDateString("en-US")} - {cardItem.updatedAtDescription}
-        </Grid>
-      </Grid>
+      )}
+
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <strong>{t("detailsModal.creator")}</strong>
