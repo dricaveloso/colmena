@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core";
 import { getFirstLettersOfTwoFirstNames, getRandomInt } from "@/utils/utils";
 import Participants from "./Participants";
 import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -53,7 +54,7 @@ type Props = {
 const VerticalItemList = ({ data, backgroundColor }: Props) => {
   const classes = useStyles();
   const router = useRouter();
-  const { id, displayName, token, canDeleteConversation, description } = data;
+  const { id, displayName, token, canDeleteConversation, description, unreadMessages } = data;
 
   const navigateTo = async () => {
     router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`);
@@ -74,7 +75,12 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
         className={classes.description}
         primary={displayName}
         onClick={navigateTo}
-        primaryTypographyProps={{ style: { color: theme.palette.primary.dark } }}
+        primaryTypographyProps={{
+          style: {
+            color: theme.palette.primary.dark,
+            fontWeight: unreadMessages > 0 ? "bold" : "normal",
+          },
+        }}
         secondary={
           <>
             <Participants token={token} />
@@ -83,6 +89,7 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
         }
       />
       <Box className={classes.options}>
+        {unreadMessages > 0 && <Chip label={unreadMessages} size="small" color="primary" />}
         <IconButton
           icon="more_vertical"
           color="#9A9A9A"

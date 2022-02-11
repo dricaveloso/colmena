@@ -35,11 +35,7 @@ export const filterHoneycombs = (honeycombs: RoomItemInterface[]) => {
 
 export default function Honeycomb() {
   const dispatch = useDispatch();
-  const { data, error } = getUsersConversations({
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  const { data, error } = getUsersConversations();
 
   if (!data && !error)
     return (
