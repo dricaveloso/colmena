@@ -13,6 +13,10 @@ import { getFirstLettersOfTwoFirstNames, getRandomInt } from "@/utils/utils";
 import Participants from "./Participants";
 import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
 import Chip from "@material-ui/core/Chip";
+import { markChatAsRead } from "@/services/talk/chat";
+import { useTranslation } from "next-i18next";
+import { PropsUserSelector } from "@/types/index";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -43,6 +47,7 @@ const useStyles = makeStyles(() => ({
   avatar: {
     display: "flex",
     alignItems: "center",
+    width: 65,
   },
 }));
 
@@ -52,17 +57,49 @@ type Props = {
 };
 
 const VerticalItemList = ({ data, backgroundColor }: Props) => {
+  const { t } = useTranslation("honeycomb");
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const classes = useStyles();
   const router = useRouter();
-  const { id, displayName, token, canDeleteConversation, description, unreadMessages } = data;
+  const {
+    id,
+    displayName,
+    token,
+    canDeleteConversation,
+    description,
+    unreadMessages,
+    lastReadMessage,
+    lastMessage: { id: lastMessageId, actorId, actorDisplayName, message, messageParameters },
+  } = data;
+
+  const prepareTitleMessage = userRdx.user.id === actorId ? t("youTitle") : actorDisplayName;
+
+  const prepareSubtitleMessage = () => {
+    let msg = message || "";
+    if (msg.indexOf("{actor}") !== -1) {
+      msg = msg.replace("{actor}", messageParameters.actor.name);
+    }
+    if (msg.indexOf("{user}") !== -1) {
+      const m = (messageParameters && messageParameters.user && messageParameters.user.name) || "";
+      msg = msg.replace("{user}", m);
+    }
+    if (msg.indexOf("{file}") !== -1) {
+      msg = msg.replace(
+        "{file}",
+        (messageParameters && messageParameters.file && messageParameters.file.name) || "",
+      );
+    }
+    return msg;
+  };
 
   const navigateTo = async () => {
+    if (unreadMessages > 0) markChatAsRead(token, lastMessageId);
     router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`);
   };
 
   return (
     <Box className={classes.card} style={{ backgroundColor }}>
-      <ListItemAvatar className={classes.avatar}>
+      <ListItemAvatar data-testid="honeycomb-avatar" className={classes.avatar}>
         <HoneycombAvatar
           showTitle={false}
           width={55}
@@ -71,7 +108,7 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
         />
       </ListItemAvatar>
       <ListItemText
-        data-testid="title"
+        data-testid="honeycomb-title"
         className={classes.description}
         primary={displayName}
         onClick={navigateTo}
@@ -81,12 +118,12 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
             fontWeight: unreadMessages > 0 ? "bold" : "normal",
           },
         }}
-        secondary={
-          <>
-            <Participants token={token} />
-            <span style={{ marginLeft: 3 }}>{description}</span>
-          </>
-        }
+        secondary={`${prepareTitleMessage}: ${prepareSubtitleMessage()}`}
+        secondaryTypographyProps={{
+          style: {
+            fontWeight: unreadMessages > 0 ? "bold" : "normal",
+          },
+        }}
       />
       <Box className={classes.options}>
         {unreadMessages > 0 && <Chip label={unreadMessages} size="small" color="primary" />}

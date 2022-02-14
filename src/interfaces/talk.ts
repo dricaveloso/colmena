@@ -230,6 +230,15 @@ export interface ChatMessagesCreateInterface {
   };
 }
 
+export interface ChatReadInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: string[];
+    };
+  };
+}
+
 export interface AllowedGuestsConversationInterface extends SWRDefaultOptionsInterface {
   data: {
     ocs: {
