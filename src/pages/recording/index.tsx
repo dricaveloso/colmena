@@ -26,7 +26,6 @@ import {
   PropsAudioSave,
   PropsAudioData,
   SelectOptionItem,
-  PropsConfigSelector,
   PropsLibrarySelector,
 } from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
@@ -57,6 +56,7 @@ import {
   findGroupFolderByPath,
   getBackAfterFinishRecording,
   setBackAfterFinishRecording,
+  getAccessedPages,
 } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
@@ -81,7 +81,6 @@ function Recording() {
   const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
   const cookies = parseCookies();
   const language = cookies.NEXT_LOCALE || "en";
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const dispatch = useDispatch();
 
@@ -178,6 +177,8 @@ function Recording() {
             }
           }
           const filenameWithTalkDir = `${talkDir}${filename}`;
+
+          console.log(filenameWithTalkDir);
 
           await putFileOnline(userRdx.user.id, `${filenameWithTalkDir}`, localFile.arrayBufferBlob);
           const fileId = await getFileOnlineId(userRdx.user.id, `${filenameWithTalkDir}`);
@@ -282,7 +283,7 @@ function Recording() {
     if (getBackAfterFinishRecording() === "yes") {
       router.back();
     } else {
-      const urlBack = redirectToLastAccessedPage();
+      const urlBack = await redirectToLastAccessedPage();
       if (amountAudiosRecorded === 1) {
         if (urlBack) router.push(urlBack);
         else router.push(`/file/${filename}`);
@@ -292,8 +293,9 @@ function Recording() {
     }
   };
 
-  function redirectToLastAccessedPage(): string | null {
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1] || "home";
+  async function redirectToLastAccessedPage(): Promise<string | null> {
+    const accessedPages = await getAccessedPages();
+    const urlOrigin = accessedPages[1] || accessedPages[0];
 
     if (/^[/]library/.test(urlOrigin)) {
       if ((urlOrigin.match(/[/]/g) || []).length > 1) {
