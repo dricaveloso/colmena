@@ -193,3 +193,9 @@ export enum PermissionTalkMemberEnum {
   USER_PUBLIC_LINK = 5,
   GUEST_WITH_MODERATOR_PERMISSIONS = 6,
 }
+
+export enum HoneycombContextOptions {
+  ADD_PARTICIPANT = "add-participant",
+  LEAVE_CONVERSATION = "leave-conversation",
+  REMOVE_CONVERSATION = "remove-conversation",
+}

@@ -67,6 +67,21 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
   },
 });
 
+export async function findTokenChatByPath(path: string): Promise<string | boolean> {
+  const arr = path.split("/");
+  const honeycombName = arr[0];
+  const response = await getUsersConversationsAxios();
+  const rooms = response.data.ocs.data;
+  // eslint-disable-next-line max-len
+  const token = rooms.find(
+    (item) => item.name.toLowerCase() === honeycombName.toLowerCase(),
+  )?.token;
+
+  if (!token) return false;
+
+  return token;
+}
+
 function Recording() {
   const { t } = useTranslation("recording");
   const { t: c } = useTranslation("common");
@@ -242,18 +257,6 @@ function Recording() {
     setOpenDialogAudioName(false);
     setOpenContinueRecording(false);
   };
-
-  async function findTokenChatByPath(path: string): Promise<string | boolean> {
-    const arr = path.split("/");
-    const honeycombName = arr[0];
-    const response = await getUsersConversationsAxios();
-    const rooms = response.data.ocs.data;
-    const token = rooms.find((item) => item.name === honeycombName)?.token;
-
-    if (!token) return false;
-
-    return token;
-  }
 
   async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
     const response = await getSingleConversationAxios(token);

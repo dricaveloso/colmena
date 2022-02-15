@@ -13,6 +13,7 @@ module.exports = withImages(
     serverRuntimeConfig: {
       hotjarProd: process.env.HOTJAR_PROD,
       appEnv: process.env.APP_ENV,
+      NCTalkVersion: process.env.NEXTCLOUD_TALK_VERSION,
       adminInfo: {
         username: process.env.USERNAME_ADMIN_NC,
         password: process.env.PASSWORD_ADMIN_NC

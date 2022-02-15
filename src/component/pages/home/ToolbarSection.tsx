@@ -6,6 +6,7 @@ import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 import router from "next/router";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 
 type Props = {
   title: string;
@@ -13,6 +14,17 @@ type Props = {
   seeAllTitle?: string | undefined;
   showRightButton?: boolean;
 };
+
+const useStyles = makeStyles(() => ({
+  title: {
+    color: "#292929",
+    fontWeight: "bold",
+    textAlign: "left",
+  },
+  button: {
+    color: "#292929",
+  },
+}));
 
 export default function ToolbarSection({
   title,
@@ -26,6 +38,7 @@ export default function ToolbarSection({
     router.push(link);
   };
   const { t } = useTranslation("common");
+  const classes = useStyles();
   return (
     <Box
       display="flex"
@@ -35,14 +48,14 @@ export default function ToolbarSection({
       justifyContent={showRightButton ? "space-between" : "flex-start"}
       alignItems="center"
     >
-      <Text variant={TextVariantEnum.H6} style={{ color: "#292929", fontWeight: "bold" }}>
+      <Text variant={TextVariantEnum.H6} className={classes.title}>
         {title}
       </Text>
       {showRightButton && (
         <Button
           title={!seeAllTitle ? t("seeAllTitle") : seeAllTitle}
           variant={ButtonVariantEnum.TEXT}
-          style={{ color: "#292929" }}
+          className={classes.button}
           data-testid="toolbar-click"
           handleClick={() => goTo()}
         />
