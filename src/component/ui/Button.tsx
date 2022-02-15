@@ -98,6 +98,7 @@ export default function Btn({
       disabled={disabled}
       component={component}
       fullWidth={fullWidth}
+      {...props}
     >
       {isLoading ? (
         <>

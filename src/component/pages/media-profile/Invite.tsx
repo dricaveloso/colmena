@@ -25,6 +25,7 @@ import getConfig from "next/config";
 import { UserProfileInterface } from "@/interfaces/index";
 import Divider from "@/components/ui/Divider";
 import Modal from "@/components/ui/Modal";
+import { findTokenChatByPath } from "@/pages/recording";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -61,6 +62,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
   };
 
   async function createOrUpdateFile(userId: string, file: UserProfileInterface) {
+    console.log(JSON.stringify(file));
     await putFile(userId, ConfigFilesNCEnum.USER_PROFILE, JSON.stringify(file), {
       username: userId,
       password: publicRuntimeConfig.user.defaultNewUserPassword,
@@ -102,6 +104,20 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   file = JSON.parse(String(userProfileFile));
                   file.medias.push(group);
                   await createOrUpdateFile(userId, file);
+                  const tokenChat = await findTokenChatByPath(group);
+                  if (typeof tokenChat === "string") {
+                    const response = await fetch("/api/add-participant-conversation", {
+                      method: "POST",
+                      body: JSON.stringify({ token: tokenChat, newParticipant: userId }),
+                      headers: {
+                        "Content-type": "application/json",
+                      },
+                    });
+                    const data = await response.json();
+                    if (!data.success) {
+                      console.log("erro ao adicionar o participante em um chat");
+                    }
+                  }
                 } catch (e) {
                   console.log("Arquivo .profile.json não encontrado", e);
                 }
