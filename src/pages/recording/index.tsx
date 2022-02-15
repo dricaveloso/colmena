@@ -178,8 +178,6 @@ function Recording() {
           }
           const filenameWithTalkDir = `${talkDir}${filename}`;
 
-          console.log(filenameWithTalkDir);
-
           await putFileOnline(userRdx.user.id, `${filenameWithTalkDir}`, localFile.arrayBufferBlob);
           const fileId = await getFileOnlineId(userRdx.user.id, `${filenameWithTalkDir}`);
 

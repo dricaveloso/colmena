@@ -11,5 +11,6 @@
     "addParticipantContextTitle": "Add participant",
     "participantsAddedSuccessfully": "Participants added successfully"
   },
-  "downloadFileFailed": "Unable to download file"
+  "downloadFileFailed": "Unable to download file",
+  "youTitle": "You"
 }

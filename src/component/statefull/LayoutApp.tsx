@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 import { updateRecordingState } from "@/store/actions/recordings/index";
+import { getAccessedPages, setAccessedPages } from "@/utils/utils";
 
 interface LayoutInterface extends AppBarInterface {
   showFooter?: boolean;
@@ -37,25 +38,23 @@ function LayoutApp({
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const setAccessedPages = async () => {
-    let pages = await localStorage.getItem("accessedPages");
-    if (pages) {
-      const pagesAc: string[] = JSON.parse(pages);
-      if (Array.isArray(pagesAc)) {
-        pagesAc.unshift(router.asPath);
-        const pagesAcR = [...new Set(pagesAc)];
-        await localStorage.setItem("accessedPages", JSON.stringify(pagesAcR.slice(0, 2)));
-      }
+  const updateAccessedPages = async () => {
+    const pages = await getAccessedPages();
+    if (pages.length > 0) {
+      pages.unshift(router.asPath);
+      const pagesAcR = [...new Set(pages)];
+      await setAccessedPages(pagesAcR);
     } else {
-      pages = JSON.stringify([router.asPath]);
-      await localStorage.setItem("accessedPages", pages);
+      await setAccessedPages([router.asPath]);
     }
   };
 
   useEffect(() => {
     dispatch(setCurrentAudioPlaying(""));
     dispatch(updateRecordingState("NONE"));
-    setAccessedPages();
+    // dispatch(setCurrentPage(router.asPath));
+    // dispatch(setChangedLanguage(false));
+    updateAccessedPages();
     if (navigator.onLine) {
       (async () => {
         try {

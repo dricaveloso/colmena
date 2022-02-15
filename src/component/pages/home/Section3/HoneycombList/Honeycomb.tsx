@@ -19,15 +19,14 @@ export default function Honeycomb({
   title,
   image,
   showTitle = true,
-  width = 80,
-  height = 72,
+  width = 65,
+  height = 57,
 }: Props) {
   return (
     <Box
       width={width}
       key={uuid()}
       justifyContent="center"
-      marginRight={2.5}
       alignItems="center"
       flex={1}
       display="flex"
