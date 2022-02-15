@@ -49,9 +49,15 @@ export default function AudioWave({ blob, data }: Props) {
   return (
     <Box display="flex" flex={1} flexDirection="row" justifyContent="center" alignItems="center">
       <IconButton
-        icon={library.currentAudioPlaying === filename ? "pause" : "play"}
+        icon={
+          library.currentAudioPlaying && library.currentAudioPlaying === filename ? "pause" : "play"
+        }
         iconStyle={{ fontSize: 55 }}
-        handleClick={() => playPauseAudioHandle(library.currentAudioPlaying === filename)}
+        handleClick={() =>
+          playPauseAudioHandle(
+            library.currentAudioPlaying ? library.currentAudioPlaying === filename : false,
+          )
+        }
         iconColor={theme.palette.primary.main}
       />
       <Box display="flex" marginLeft={1} flexDirection="column" flex={1}>
@@ -64,7 +70,7 @@ export default function AudioWave({ blob, data }: Props) {
         <Waves
           blob={blob}
           config={{ height: 20 }}
-          play={library.currentAudioPlaying === filename}
+          play={library.currentAudioPlaying ? library.currentAudioPlaying === filename : false}
         />
       </Box>
     </Box>
