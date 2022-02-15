@@ -123,7 +123,13 @@ function Honeycomb() {
       fontSizeTitle={16}
       subtitle={<Subtitle token={token} />}
       fontSizeSubtitle={12}
-      extraElement={<ContextMenu token={token} reloadChatList={() => setTokenUuid(uuid())} />}
+      extraElement={
+        <ContextMenu
+          token={token}
+          handleFallbackLeaveConversation={() => router.push("/honeycomb")}
+          handleFallbackParticipants={() => setTokenUuid(uuid())}
+        />
+      }
     >
       <FlexBox
         justifyContent={JustifyContentEnum.FLEXSTART}

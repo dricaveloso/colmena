@@ -5,18 +5,18 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import { RoomItemInterface } from "@/interfaces/talk";
-import IconButton from "@/components/ui/IconButton";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
-import { getFirstLettersOfTwoFirstNames, getRandomInt } from "@/utils/utils";
-import Participants from "./Participants";
+import { getRandomInt } from "@/utils/utils";
 import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
 import Chip from "@material-ui/core/Chip";
 import { markChatAsRead } from "@/services/talk/chat";
 import { useTranslation } from "next-i18next";
 import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
+import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
+import { HoneycombContextOptions } from "@/enums/*";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -49,15 +49,20 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     width: 65,
   },
+  more: {
+    padding: 0,
+    margin: 0,
+    minWidth: 30,
+  },
 }));
 
 type Props = {
   data: RoomItemInterface;
-  backgroundColor: string;
 };
 
-const VerticalItemList = ({ data, backgroundColor }: Props) => {
+const VerticalItemList = ({ data }: Props) => {
   const { t } = useTranslation("honeycomb");
+  const [removeItem, setRemoveItem] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const classes = useStyles();
   const router = useRouter();
@@ -66,9 +71,7 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
     displayName,
     token,
     canDeleteConversation,
-    description,
     unreadMessages,
-    lastReadMessage,
     lastMessage: { id: lastMessageId, actorId, actorDisplayName, message, messageParameters },
   } = data;
 
@@ -97,8 +100,10 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
     router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`);
   };
 
+  if (removeItem) return null;
+
   return (
-    <Box className={classes.card} style={{ backgroundColor }}>
+    <Box className={classes.card}>
       <ListItemAvatar data-testid="honeycomb-avatar" className={classes.avatar}>
         <HoneycombAvatar
           showTitle={false}
@@ -127,11 +132,11 @@ const VerticalItemList = ({ data, backgroundColor }: Props) => {
       />
       <Box className={classes.options}>
         {unreadMessages > 0 && <Chip label={unreadMessages} size="small" color="primary" />}
-        <IconButton
-          icon="more_vertical"
-          color="#9A9A9A"
-          style={{ padding: 0, margin: 0, minWidth: 30 }}
-          fontSizeIcon="small"
+        <ContextMenu
+          token={token}
+          iconColor={theme.palette.gray.dark}
+          blackList={[HoneycombContextOptions.ADD_PARTICIPANT]}
+          handleFallbackLeaveConversation={() => setRemoveItem(true)}
         />
       </Box>
     </Box>

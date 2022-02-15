@@ -62,7 +62,6 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
   };
 
   async function createOrUpdateFile(userId: string, file: UserProfileInterface) {
-    console.log(JSON.stringify(file));
     await putFile(userId, ConfigFilesNCEnum.USER_PROFILE, JSON.stringify(file), {
       username: userId,
       password: publicRuntimeConfig.user.defaultNewUserPassword,
