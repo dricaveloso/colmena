@@ -30,7 +30,7 @@
     "noItemsFound": "No items found",
     "reservedNameError": "Name not available for registration",
     "honeycombModal": {
-        "chatRoomSuccess": "Chat room created successfully",
+        "chatRoomSuccess": "Chat room has been created",
         "chatRoomFailed": "Unable to create chat room",
         "buttonStep1": "Create",
         "buttonStep2": "Add",
@@ -84,9 +84,9 @@
         "fileTooLarg": "The {{fileName}} file is too large to upload",
         "unableToProcessFile": "Unable to process file {{fileName}}",
         "unableToUpdatePassword": "Unable to update your password",
-        "passwordUpdatedSuccessfully": "Updated Password",
-        "directoryCreatedSuccessfully": "Created directory ",
-        "fileUploadedSuccessfully": "Uploaded File",
+        "passwordUpdatedSuccessfully": "Password has been updated",
+        "directoryCreatedSuccessfully": "Directory has been created",
+        "fileUploadedSuccessfully": "File has been uploaded",
         "uploadCanceledSuccessfully": "File upload canceled.",
         "folderCreationCanceledSuccessfully": "Folder creation canceled."
 

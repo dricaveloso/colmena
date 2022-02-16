@@ -9,9 +9,9 @@
     }
   },
   "messages": {
-    "tagCreatedSuccessfully": "Created tag",
-    "tagRemovedSuccessfully": "Removed tag",
-    "tagUpdatedSuccessfully": "Updated tag",
+    "tagCreatedSuccessfully": "Tag has been created",
+    "tagRemovedSuccessfully": "Tag has been removed",
+    "tagUpdatedSuccessfully": "Tag has been updated",
     "forbidden": "This action is forbidden",
     "tagAlreadyExists": "Tag already exists"
   },

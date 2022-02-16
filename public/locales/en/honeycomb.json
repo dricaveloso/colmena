@@ -9,7 +9,7 @@
   "downloadAudioFailed": "Unable to download audio",
   "contextMenuOptions": {
     "addParticipantContextTitle": "Add participant",
-    "participantsAddedSuccessfully": "Added participants"
+    "participantsAddedSuccessfully": "Participants has been added"
   },
   "downloadFileFailed": "Unable to download file"
 }

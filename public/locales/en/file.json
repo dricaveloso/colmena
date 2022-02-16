@@ -9,8 +9,8 @@
     "deleteAudio": "Delete audio"
   },
   "messages": {
-    "descriptionSuccessfullyUpdated": "Description updated.",
-    "tagsSuccessfullyCreated": "Tags created."
+    "descriptionSuccessfullyUpdated": "Description has been updated.",
+    "tagsSuccessfullyCreated": "Tags has been created"
   },
   "editDescription": "Edit Description",
   "createTag": "Create Tag"

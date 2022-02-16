@@ -178,8 +178,6 @@ export default function WrapperForm() {
                 maxAge: 30 * 24 * 60 * 60,
                 path: "/",
               });
-
-              toast(t("loginSuccesfully"), "success");
               router.push("/home", "", {
                 locale: user.language,
               });

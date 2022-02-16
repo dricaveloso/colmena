@@ -372,6 +372,7 @@ function Recording() {
           showIcon={false}
           title={t("audioConfirmationToKeep")}
           icon="info"
+          message=""
           iconColor={theme.palette.primary.dark}
           onOk={keepRecordingHandle}
           onClose={finishRecordingHandle}
