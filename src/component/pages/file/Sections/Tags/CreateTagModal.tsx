@@ -21,6 +21,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Chip from "@material-ui/core/Chip";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useSelector } from "react-redux";
+import { v4 as uuid } from "uuid";
+import { parseCookies } from "nookies";
 
 type Props = {
   open: boolean;
@@ -30,17 +32,26 @@ type Props = {
 };
 
 export default function CreateTagModal({ open, closeModal, data, setTags }: Props) {
+  const cookies = parseCookies();
+  const lang = cookies.NEXT_LOCALE || "en";
   const [optionsTag, setOptionsTag] = useState<SelectOptionItem[]>([]);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation("file");
   const { t: c } = useTranslation("common");
+  const [tagOnBlur, setTagOnBlur] = useState("");
+  const [autoFocusCustom, setAutoFocusCustom] = useState(false);
   const initialValues = {
     tags: [],
   };
 
+  const separator = lang === "ar" ? "،" : ",";
+
   const createTag = async (values: any) => {
     const { tags } = values;
+
+    if (tagOnBlur) tags.push(tagOnBlur);
+
     setIsLoading(true);
 
     try {
@@ -64,7 +75,6 @@ export default function CreateTagModal({ open, closeModal, data, setTags }: Prop
       }
 
       const ncTags = await getFileTags(userRdx.user.id, data.filename, data.fileId);
-      console.log(ncTags);
       if (ncTags) {
         setTags(ncTags);
       }
@@ -86,7 +96,7 @@ export default function CreateTagModal({ open, closeModal, data, setTags }: Prop
           .filter((_, idx) => idx !== 0)
           .map((item: any | SystemTagsInterface) => ({
             id: item.propstat.prop.id,
-            value: item.propstat.prop["display-name"].toLowerCase(),
+            value: String(item.propstat.prop["display-name"]).toLowerCase(),
           }));
         setOptionsTag(optionsTag);
       } catch (e) {
@@ -106,12 +116,31 @@ export default function CreateTagModal({ open, closeModal, data, setTags }: Prop
           <Form>
             <>
               <Autocomplete
+                key={uuid()}
+                onBlur={(e: any) => setTagOnBlur(e.target.value)}
                 multiple
                 value={values.tags}
+                data-testid="audio-tags"
                 id="tags-filled"
                 options={optionsTag.map((option) => option.value)}
                 defaultValue={["asd"]}
-                onChange={(e, value) => setFieldValue("tags", value)}
+                onChange={(e, value) => {
+                  setAutoFocusCustom(true);
+                  setFieldValue("tags", value);
+                }}
+                onInputChange={(event, value) => {
+                  const arr = values.tags;
+                  if (value.split("").every((item) => item.indexOf(separator) !== -1)) return;
+
+                  if (value.indexOf(separator) !== -1) {
+                    const res = value.split(",")[0];
+                    if (res) {
+                      arr.push(res.replace(separator, ""));
+                      setFieldValue("tags", arr);
+                      setAutoFocusCustom(true);
+                    }
+                  }
+                }}
                 freeSolo
                 renderTags={(value: string[], getTagProps) =>
                   value.map((option: string, index: number) => (
@@ -123,7 +152,13 @@ export default function CreateTagModal({ open, closeModal, data, setTags }: Prop
                   ))
                 }
                 renderInput={(params) => (
-                  <TextField {...params} margin="dense" variant="outlined" label={t("tagTitle")} />
+                  <TextField
+                    {...params}
+                    autoFocus={autoFocusCustom}
+                    margin="dense"
+                    variant="outlined"
+                    label={t("tagTitle")}
+                  />
                 )}
               />
               {errors.tags && touched.tags ? <ErrorMessageForm message={errors.tags} /> : null}

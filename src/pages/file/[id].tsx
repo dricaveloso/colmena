@@ -112,6 +112,7 @@ function File() {
                     color: theme.palette.primary.contrastText,
                     fontWeight: "bold",
                     marginLeft: "12px",
+                    textAlign: "left",
                   }}
                 >
                   {getFilename(decodeURIComponent(filename))}

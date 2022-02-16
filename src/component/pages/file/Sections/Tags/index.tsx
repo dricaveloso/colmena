@@ -76,7 +76,7 @@ export default function TagsSection({ data }: Props) {
               key={uuid()}
               label={
                 <Box component="span" display="flex" flexDirection="row">
-                  {item["display-name"].toLowerCase()}
+                  {String(item["display-name"]).toLowerCase()}
                   <IconButton
                     style={{ padding: "0 0 0 4px", minWidth: "auto" }}
                     variant="text"
