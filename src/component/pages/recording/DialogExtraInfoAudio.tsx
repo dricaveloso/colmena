@@ -95,6 +95,7 @@ export default function DialogExtraInfoAudio({
   const { t: c } = useTranslation("common");
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [autoFocusCustom, setAutoFocusCustom] = useState(false);
+  const [tagOnBlur, setTagOnBlur] = useState("");
 
   const chooseUploadLocationHandle = useCallback((path: string) => {
     setUploadLocation(path);
@@ -181,9 +182,14 @@ export default function DialogExtraInfoAudio({
                 }),
               );
             }
-            const tagsFiltered = values.tags
+            const tagArray = values.tags;
+
+            if (tagOnBlur) tagArray.push(tagOnBlur);
+
+            const tagsFiltered = tagArray
               .map((item: string) => item.replaceAll(separator, "").toLocaleLowerCase())
               .filter((item: string) => item !== "");
+
             handleSubmit({
               ...values,
               tags: tagsFiltered,
@@ -254,6 +260,7 @@ export default function DialogExtraInfoAudio({
                 <>
                   <Autocomplete
                     key={uuid()}
+                    onBlur={(e: any) => setTagOnBlur(e.target.value)}
                     data-testid="audio-tags"
                     multiple
                     value={values.tags}
