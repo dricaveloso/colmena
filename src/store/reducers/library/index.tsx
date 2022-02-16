@@ -33,7 +33,7 @@ const reducer = (state = initialState, action: any) => {
       // eslint-disable-next-line no-case-declarations
       const updatedLibrary: LibraryItemInterface[] = state.libraryFiles.map(
         (item: LibraryItemInterface) => {
-          if (item.id === action.libraryFile?.id) {
+          if (item.id === action.id) {
             return { ...item, ...action.libraryFile };
           }
 

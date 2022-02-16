@@ -132,7 +132,7 @@ export function filterItems(filter: string, items: Array<LibraryItemInterface>) 
   });
 }
 
-export function orderItems(order: string, items: Array<LibraryItemInterface>) {
+export function orderItems(order: OrderEnum | string, items: Array<LibraryItemInterface>) {
   if (items.length === 0 || order === "") {
     return items;
   }
@@ -211,7 +211,7 @@ export async function getItems(
       );
 
       if (remoteItem) {
-        updatedItem = { ...remoteItem, ...item };
+        updatedItem = { ...item, ...remoteItem, id: item.id };
         updatedItem.environment = EnvironmentEnum.BOTH;
         deleteItems.push(remoteItem.id);
       }

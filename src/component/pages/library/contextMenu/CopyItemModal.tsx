@@ -1,14 +1,17 @@
 import React, { useState, useCallback } from "react";
 import LibraryModal from "@/components/ui/LibraryModal";
 import Button from "@/components/ui/Button";
-import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
-import { ButtonSizeEnum, EnvironmentEnum } from "@/enums/*";
+import { LibraryItemContextMenuInterface, LibraryItemInterface } from "@/interfaces/index";
+import {
+  ButtonSizeEnum,
+  ContextMenuEventEnum,
+  ContextMenuOptionEnum,
+  EnvironmentEnum,
+} from "@/enums/*";
 import { convertPrivateToUsername, isPanal, pathIsInFilename } from "@/utils/directory";
 import { copyFile, getUniqueName } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
-import { removeFirstSlash } from "@/utils/utils";
-import { useRouter } from "next/router";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "react-i18next";
 import { createFile, getFile } from "@/store/idb/models/files";
@@ -17,14 +20,13 @@ import { shareInChat } from "@/services/share/share";
 type Props = {
   open: boolean;
   handleOpen: (opt: boolean) => void;
-  cardItem: LibraryCardItemInterface;
+  cardItem: LibraryItemContextMenuInterface;
 };
 export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [isDisabled, setIsDisabled] = useState(false);
   const [itemIsLoading, setItemIsLoading] = useState({} as LibraryItemInterface);
   const { t } = useTranslation("library");
-  const router = useRouter();
   const options = (item: LibraryItemInterface) => {
     if (
       (cardItem.type !== "directory" ||
@@ -102,7 +104,18 @@ export default function CopyItemModal({ handleOpen, open, cardItem }: Props) {
               toast(t("messages.fileSuccessfullyCopied"), "success", { timer });
             }
 
-            router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
+            const updatedItem = {
+              ...cardItem,
+              filename: destination,
+              aliasFilename: convertPrivateToUsername(destination, userRdx.user.id),
+              basename: uniqueName,
+            } as LibraryItemInterface;
+            await cardItem.onChange(
+              updatedItem,
+              ContextMenuEventEnum.CREATE,
+              ContextMenuOptionEnum.COPY,
+            );
+            closeModal();
           }
         }
       } catch (e) {

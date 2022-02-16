@@ -19,8 +19,9 @@ export const addLibraryFile = (libraryFile: LibraryItemInterface) => ({
   libraryFile,
 });
 
-export const editLibraryFile = (libraryFile: any) => ({
+export const editLibraryFile = (id: string | number, libraryFile: any) => ({
   type: EDIT_LIBRARY_FILE,
+  id,
   libraryFile,
 });
 

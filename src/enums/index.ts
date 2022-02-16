@@ -194,6 +194,25 @@ export enum PermissionTalkMemberEnum {
   GUEST_WITH_MODERATOR_PERMISSIONS = 6,
 }
 
+export enum ContextMenuEventEnum {
+  CREATE = "create",
+  UPDATE = "update",
+  DELETE = "delete",
+}
+
+export enum ContextMenuOptionEnum {
+  EDIT = "edit",
+  COPY = "copy",
+  MOVE = "move",
+  DUPLICATE = "duplicate",
+  DOWNLOAD = "download",
+  AVAILABLE_OFFLINE = "available_offline",
+  RENAME = "rename",
+  DETAILS = "details",
+  PUBLISH = "publish",
+  DELETE = "delete",
+}
+
 export enum HoneycombContextOptions {
   ADD_PARTICIPANT = "add-participant",
   LEAVE_CONVERSATION = "leave-conversation",

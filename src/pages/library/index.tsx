@@ -13,15 +13,34 @@ import { useSelector, useDispatch } from "react-redux";
 import FlexBox from "@/components/ui/FlexBox";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { JustifyContentEnum, ListTypeEnum, OrderEnum } from "@/enums/index";
-import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
+import {
+  ContextMenuEventEnum,
+  ContextMenuOptionEnum,
+  JustifyContentEnum,
+  ListTypeEnum,
+  OrderEnum,
+} from "@/enums/index";
+import {
+  setLibraryFiles,
+  setLibraryPathExists,
+  setLibraryPath,
+  editLibraryFile,
+  addLibraryFile,
+  removeLibraryFile,
+} from "@/store/actions/library";
 import Library, { filterItems, getItems, orderItems } from "@/components/pages/library";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { toast } from "@/utils/notifications";
-import { removeCornerSlash, isAudioFile } from "@/utils/utils";
+import { removeCornerSlash, isAudioFile, removeFirstSlash } from "@/utils/utils";
 import IconButton from "@/components/ui/IconButton";
-import { getAudioPath, hasExclusivePath, isRootPath, pathIsInFilename } from "@/utils/directory";
+import {
+  getAudioPath,
+  getPath,
+  hasExclusivePath,
+  isRootPath,
+  pathIsInFilename,
+} from "@/utils/directory";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { Button } from "@material-ui/core";
 import Image from "next/image";
@@ -59,6 +78,39 @@ function MyLibrary() {
     toast(t("featureUnavailable"), "warning");
   };
 
+  const handleContextMenuUpdate = async (
+    item: LibraryItemInterface,
+    event: ContextMenuEventEnum,
+    option: ContextMenuOptionEnum,
+    extraInfo: any,
+  ) => {
+    switch (event) {
+      case ContextMenuEventEnum.UPDATE:
+        if (option === ContextMenuOptionEnum.AVAILABLE_OFFLINE) {
+          await dispatch(editLibraryFile(extraInfo.oldId, item));
+
+          return;
+        }
+
+        await dispatch(editLibraryFile(item.id, item));
+        break;
+      case ContextMenuEventEnum.CREATE:
+        if (option === ContextMenuOptionEnum.DUPLICATE) {
+          await dispatch(addLibraryFile(item));
+
+          return;
+        }
+
+        router.push(`/library/${removeFirstSlash(getPath(item.aliasFilename))}`);
+        break;
+      case ContextMenuEventEnum.DELETE:
+        await dispatch(removeLibraryFile(item.id));
+        break;
+      default:
+        break;
+    }
+  };
+
   const options = (
     cardItem: LibraryCardItemInterface,
     playIconComp: React.ReactNode | undefined = undefined,
@@ -83,7 +135,24 @@ function MyLibrary() {
         options.push(shareOption);
       }
 
-      options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);
+      options.push(
+        <ContextMenuOptions
+          key={`${basename}-more-options`}
+          {...cardItem}
+          availableOptions={[
+            ContextMenuOptionEnum.EDIT,
+            ContextMenuOptionEnum.COPY,
+            ContextMenuOptionEnum.MOVE,
+            ContextMenuOptionEnum.DETAILS,
+            ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+            ContextMenuOptionEnum.DELETE,
+            ContextMenuOptionEnum.DUPLICATE,
+            ContextMenuOptionEnum.PUBLISH,
+            ContextMenuOptionEnum.RENAME,
+          ]}
+          onChange={handleContextMenuUpdate}
+        />,
+      );
     }
 
     return options;

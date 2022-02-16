@@ -74,7 +74,7 @@ export function getFilename(path: string): string {
 }
 
 export function getPath(path: string): string {
-  return path.replace(/(.*)\/.+?\..+?$/, "$1");
+  return path.replace(/(.*)\/.*$/, "$1");
 }
 
 export function isRootPath(path: string | undefined | null): boolean {

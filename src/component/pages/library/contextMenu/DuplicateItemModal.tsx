@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 import { copyFile, deleteFile, existFile } from "@/services/webdav/files";
 import { existDirectory } from "@/services/webdav/directories";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
@@ -23,14 +23,20 @@ import {
   handleFileName,
   convertPrivateToUsername,
   convertUsernameToPrivate,
+  getPath,
 } from "@/utils/directory";
 import { toast } from "@/utils/notifications";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
-import { ButtonColorEnum, ButtonVariantEnum, EnvironmentEnum } from "@/enums/*";
-import { addLibraryFile } from "@/store/actions/library";
 import {
-  LibraryCardItemInterface,
+  ButtonColorEnum,
+  ButtonVariantEnum,
+  ContextMenuEventEnum,
+  ContextMenuOptionEnum,
+  EnvironmentEnum,
+} from "@/enums/*";
+import {
+  LibraryItemContextMenuInterface,
   LibraryItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
@@ -52,7 +58,7 @@ const useStyles = makeStyles(() => ({
 type Props = {
   open: boolean;
   handleOpen: (opt: boolean) => void;
-  cardItem: LibraryCardItemInterface;
+  cardItem: LibraryItemContextMenuInterface;
 };
 
 let requestCancel = false;
@@ -71,7 +77,6 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
   const [cancelIsLoading, setCancelIsLoading] = useState(false);
   const timeDescription: TimeDescriptionInterface = t("timeDescription", { returnObjects: true });
-  const dispatch = useDispatch();
   const initialValues = {
     name: getOnlyFilename(basename),
     path: aliasPath,
@@ -83,96 +88,94 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
     basename: string;
   }
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = async (values: any) => {
     setIsLoading(true);
-    (async () => {
-      try {
-        const userId = userRdx.user.id;
-        let name = values.name.trim();
-        if (finalPath === cardItem.filename) {
-          name += `-${getRandomInt(1000, 9999)}`;
-        }
-
-        if (extension) {
-          name += `.${extension}`;
-        }
-
-        const newFilename = filename.replace(/\/[^/]*$/, `/${name}`);
-
-        let duplicated: boolean | File = false;
-
-        if (requestCancel) {
-          return;
-        }
-
-        switch (cardItem.environment) {
-          case EnvironmentEnum.REMOTE:
-            duplicated = await duplicateRemoteItem(userId, newFilename);
-            break;
-          case EnvironmentEnum.LOCAL:
-            duplicated = await duplicateLocalItem(name, newFilename);
-            break;
-          case EnvironmentEnum.BOTH:
-            duplicated = await duplicateRemoteItem(userId, newFilename);
-            if (duplicated) {
-              duplicated = await duplicateLocalItem(name, newFilename);
-            }
-            break;
-          default:
-            break;
-        }
-
-        if (requestCancel) {
-          if (duplicated) {
-            await undoChange(userId, duplicated, newFilename);
-          }
-
-          return;
-        }
-
-        setShowConfirmCancel(false);
-
-        if (duplicated) {
-          let item: LibraryItemInterface = {} as LibraryItemInterface;
-          const date = new Date();
-          if (typeof duplicated === "boolean") {
-            // eslint-disable-next-line
-            const newId = id.replace(/\/[^\/]*$/, `/${name}`);
-            item = {
-              ...cardItem,
-              basename: name,
-              id: newId,
-              filename: newFilename,
-              aliasFilename: convertPrivateToUsername(newFilename, userId),
-              createdAt: date,
-              createdAtDescription: dateDescription(date, timeDescription),
-            };
-          } else {
-            item = {
-              ...cardItem,
-              id: duplicated.id,
-              basename: duplicated.basename,
-              filename: duplicated.filename,
-              createdAt: date,
-              createdAtDescription: dateDescription(date, timeDescription),
-            };
-          }
-
-          if (cardItem.type === "directory") {
-            toast(l("messages.directorySuccessfullyDuplicated"), "success");
-          } else {
-            toast(l("messages.fileSuccessfullyDuplicated"), "success");
-          }
-
-          dispatch(addLibraryFile(item));
-          setIsLoading(false);
-          handleOpen(false);
-        }
-      } catch (e) {
-        toast(e.message, "error");
-        setIsLoading(false);
+    try {
+      const userId = userRdx.user.id;
+      let name = values.name.trim();
+      if (finalPath === cardItem.filename) {
+        name += `-${getRandomInt(1000, 9999)}`;
       }
-    })();
+
+      if (extension) {
+        name += `.${extension}`;
+      }
+
+      const newFilename = filename.replace(/\/[^/]*$/, `/${name}`);
+
+      let duplicated: boolean | File = false;
+
+      if (requestCancel) {
+        return;
+      }
+
+      switch (cardItem.environment) {
+        case EnvironmentEnum.REMOTE:
+          duplicated = await duplicateRemoteItem(userId, newFilename);
+          break;
+        case EnvironmentEnum.LOCAL:
+          duplicated = await duplicateLocalItem(name, newFilename);
+          break;
+        case EnvironmentEnum.BOTH:
+          duplicated = await duplicateRemoteItem(userId, newFilename);
+          if (duplicated) {
+            duplicated = await duplicateLocalItem(name, newFilename);
+          }
+          break;
+        default:
+          break;
+      }
+
+      if (requestCancel) {
+        if (duplicated) {
+          await undoChange(userId, duplicated, newFilename);
+        }
+
+        return;
+      }
+
+      setShowConfirmCancel(false);
+
+      if (duplicated) {
+        let item: LibraryItemInterface = {} as LibraryItemInterface;
+        const date = new Date();
+        if (typeof duplicated === "boolean") {
+          // eslint-disable-next-line
+          const newId = id.replace(/\/[^\/]*$/, `/${name}`);
+          item = {
+            ...cardItem,
+            basename: name,
+            id: newId,
+            filename: newFilename,
+            aliasFilename: convertPrivateToUsername(newFilename, userId),
+            createdAt: date,
+            createdAtDescription: dateDescription(date, timeDescription),
+          };
+        } else {
+          item = {
+            ...cardItem,
+            id: duplicated.id,
+            basename: duplicated.basename,
+            filename: duplicated.filename,
+            createdAt: date,
+            createdAtDescription: dateDescription(date, timeDescription),
+          };
+        }
+
+        if (cardItem.type === "directory") {
+          toast(l("messages.directorySuccessfullyDuplicated"), "success");
+        } else {
+          toast(l("messages.fileSuccessfullyDuplicated"), "success");
+        }
+
+        await cardItem.onChange(item, ContextMenuEventEnum.CREATE, ContextMenuOptionEnum.DUPLICATE);
+        setIsLoading(false);
+        handleOpen(false);
+      }
+    } catch (e) {
+      toast(e.message, "error");
+      setIsLoading(false);
+    }
   };
 
   const undoChange = useCallback(
@@ -248,7 +251,7 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
   });
 
   const defineFinalPath = (name: any) => {
-    let aliasPath = `${trailingSlash(definePath(path))}${treatName(name)}`;
+    let aliasPath = `${trailingSlash(definePath(getPath(path)))}${treatName(name)}`;
     if (extension) {
       aliasPath += `.${extension}`;
     }
@@ -277,7 +280,7 @@ export default function DuplicateItemModal({ open, handleOpen, cardItem }: Props
       setFinalPath("");
       setIsLoading(false);
     };
-  }, [path, definePath, filename]);
+  }, [definePath, filename]);
 
   const handleClose = useCallback(() => {
     handleOpen(false);
