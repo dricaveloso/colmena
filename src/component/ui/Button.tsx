@@ -54,7 +54,7 @@ export default function Btn({
 
   const styleBtn2 =
     !color && variant === "outlined" && !disabled
-      ? { borderColor: theme.palette.variation1.main, color: theme.palette.variation1.main }
+      ? { borderColor: theme.palette.variation8.main, color: theme.palette.variation8.main }
       : {};
 
   return url !== "no-navigation" ? (

@@ -30,7 +30,7 @@
     "noItemsFound": "No items found",
     "reservedNameError": "Name not available for registration",
     "honeycombModal": {
-        "chatRoomSuccess": "Chat room created successfully",
+        "chatRoomSuccess": "Chat room has been created",
         "chatRoomFailed": "Unable to create chat room",
         "buttonStep1": "Create",
         "buttonStep2": "Add",
@@ -84,9 +84,9 @@
         "fileTooLarg": "The {{fileName}} file is too large to upload",
         "unableToProcessFile": "Unable to process file {{fileName}}",
         "unableToUpdatePassword": "Unable to update your password",
-        "passwordUpdatedSuccessfully": "Password updated successfully",
-        "directoryCreatedSuccessfully": "Directory created successfully",
-        "fileUploadedSuccessfully": "File uploaded successfully",
+        "passwordUpdatedSuccessfully": "Password has been updated",
+        "directoryCreatedSuccessfully": "Directory has been created",
+        "fileUploadedSuccessfully": "File has been uploaded",
         "uploadCanceledSuccessfully": "File upload canceled.",
         "folderCreationCanceledSuccessfully": "Folder creation canceled."
 
@@ -133,7 +133,7 @@
     "upload": "Select image",
     "remove": "Remove"
   },
-  "uploadUserAvatarSuccessfully": "Profile image successfully updated",
+  "uploadUserAvatarSuccessfully": "Updated profile picture",
   "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
   "uploadRuleFileSize": "Image cannot be larger than 20mb",
   "languagesAllowed": {

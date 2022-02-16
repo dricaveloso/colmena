@@ -109,6 +109,7 @@ body {
 
 .my-swal {
   z-index: 9999999999 !important;
+  border-radius: 10px;
 }
 
 input:-webkit-autofill,
@@ -218,7 +219,7 @@ table.envPage td:nth-child(1) {
 }
 
 .ui-carousel > .awssld__wrapper{
-  height: 85px;
+  height: 90px;
 }
 
 
@@ -226,6 +227,7 @@ table.envPage td:nth-child(1) {
   background-color: #00aeaf;
   bottom: 0px;
   position: inherit;
+  padding-bottom: 12px;
 }
 
 .ui-carousel > .awssld__bullets > button{
