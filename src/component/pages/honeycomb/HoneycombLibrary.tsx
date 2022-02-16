@@ -9,7 +9,7 @@ import {
   LibraryItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
-import { ListTypeEnum, OrderEnum } from "@/enums/*";
+import { ContextMenuEventEnum, ContextMenuOptionEnum, ListTypeEnum, OrderEnum } from "@/enums/*";
 import { useTranslation } from "react-i18next";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { PropsUserSelector } from "@/types/*";
@@ -19,6 +19,7 @@ import {
   getAudioPath,
   hasExclusivePath,
   pathIsInFilename,
+  getPath,
 } from "@/utils/directory";
 import { findGroupFolderByPath, removeCornerSlash, isAudioFile } from "@/utils/utils";
 import { toast } from "@/utils/notifications";
@@ -53,21 +54,10 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
     try {
       const rawItems = await getItems(path, userRdx.user.id, timeDescription, l);
 
-      let currentOrder = order;
-      if (isRootPath(path)) {
-        currentOrder = OrderEnum.HIGHLIGHT;
-        setOrder(currentOrder);
-      } else if (!isRootPath(path) && currentOrder === OrderEnum.HIGHLIGHT) {
-        currentOrder = OrderEnum.LATEST_FIRST;
-        setOrder(currentOrder);
-      }
-
-      setItems(orderItems(currentOrder, filterItems(filter, rawItems)));
-
       setNotFoundDir(false);
-      setRawItems(rawItems);
       setCurrentPath(path);
       prepareBreadcrumbPath(path);
+      setRawItems(rawItems);
     } catch (e) {
       setNotFoundDir(true);
       setRawItems([]);
@@ -75,6 +65,19 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
 
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    let currentOrder = order;
+    if (isRootPath(currentPath)) {
+      currentOrder = OrderEnum.HIGHLIGHT;
+      setOrder(currentOrder);
+    } else if (!isRootPath(currentPath) && currentOrder === OrderEnum.HIGHLIGHT) {
+      currentOrder = OrderEnum.LATEST_FIRST;
+      setOrder(currentOrder);
+    }
+
+    setItems(orderItems(currentOrder, filterItems(filter, rawItems)));
+  }, [rawItems, currentPath, order, filter]);
 
   const prepareBreadcrumbPath = (path: string) => {
     if (path !== "" && path !== "/") {
@@ -108,6 +111,60 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
     toast(t("featureUnavailable"), "warning");
   };
 
+  const deleteItem = (item: LibraryItemInterface) => {
+    setRawItems(rawItems.filter((rawItem) => item.id !== rawItem.id));
+  };
+
+  const updateItem = (id: number | string, item: LibraryItemInterface) => {
+    setRawItems(
+      rawItems.map((rawItem) => {
+        if (id === rawItem.id) {
+          return item;
+        }
+
+        return rawItem;
+      }),
+    );
+  };
+
+  const createItem = (item: LibraryItemInterface) => {
+    const path = getPath(item.filename);
+    if (rootPath === path) {
+      setRawItems([...rawItems, item]);
+    }
+  };
+
+  const handleContextMenuUpdate = async (
+    item: LibraryItemInterface,
+    event: ContextMenuEventEnum,
+    option: ContextMenuOptionEnum,
+    extraInfo: any,
+  ) => {
+    switch (event) {
+      case ContextMenuEventEnum.UPDATE:
+        if (option === ContextMenuOptionEnum.AVAILABLE_OFFLINE) {
+          updateItem(extraInfo.oldId, item);
+
+          return;
+        }
+
+        updateItem(item.id, item);
+        break;
+      case ContextMenuEventEnum.CREATE:
+        createItem(item);
+
+        if (option === ContextMenuOptionEnum.MOVE) {
+          deleteItem(extraInfo.oldItem);
+        }
+        break;
+      case ContextMenuEventEnum.DELETE:
+        deleteItem(item);
+        break;
+      default:
+        break;
+    }
+  };
+
   const options = (
     cardItem: LibraryCardItemInterface,
     playIconComp: React.ReactNode | undefined = undefined,
@@ -133,7 +190,24 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
 
     options.push(shareOption);
 
-    options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);
+    options.push(
+      <ContextMenuOptions
+        key={`${basename}-more-options`}
+        {...cardItem}
+        availableOptions={[
+          ContextMenuOptionEnum.EDIT,
+          ContextMenuOptionEnum.COPY,
+          ContextMenuOptionEnum.MOVE,
+          ContextMenuOptionEnum.DETAILS,
+          ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+          ContextMenuOptionEnum.DELETE,
+          ContextMenuOptionEnum.DUPLICATE,
+          ContextMenuOptionEnum.PUBLISH,
+          ContextMenuOptionEnum.RENAME,
+        ]}
+        onChange={handleContextMenuUpdate}
+      />,
+    );
 
     return options;
   };

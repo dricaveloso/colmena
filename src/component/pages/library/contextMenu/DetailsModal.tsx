@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "next-i18next";
-import { LibraryCardItemInterface } from "@/interfaces/index";
+import { LibraryItemContextMenuInterface } from "@/interfaces/index";
 import Grid from "@material-ui/core/Grid";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
@@ -10,7 +10,7 @@ import Modal from "@/components/ui/Modal";
 type Props = {
   open: boolean;
   handleOpen: (opt: boolean) => void;
-  cardItem: LibraryCardItemInterface;
+  cardItem: LibraryItemContextMenuInterface;
 };
 
 export default function DetailsModal({ open, handleOpen, cardItem }: Props) {

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
-import { LibraryCardItemInterface } from "@/interfaces/index";
-import { EnvironmentEnum } from "@/enums/*";
+import { LibraryItemContextMenuInterface, LibraryItemInterface } from "@/interfaces/index";
+import { ContextMenuEventEnum, ContextMenuOptionEnum, EnvironmentEnum } from "@/enums/*";
 import { remove } from "@/store/idb/models/files";
-import { removeLibraryFile } from "@/store/actions/library";
 import { deleteDirectory } from "@/services/webdav/directories";
 import { deleteFile } from "@/services/webdav/files";
 import ActionConfirm from "@/components/ui/ActionConfirm";
@@ -13,7 +12,7 @@ import { toast } from "@/utils/notifications";
 
 type Props = {
   handleOpen: (opt: boolean) => void;
-  cardItem: LibraryCardItemInterface;
+  cardItem: LibraryItemContextMenuInterface;
 };
 
 export default function DeleteItemConfirm({ handleOpen, cardItem }: Props) {
@@ -21,7 +20,6 @@ export default function DeleteItemConfirm({ handleOpen, cardItem }: Props) {
   const { t: c } = useTranslation("common");
   const [isLoading, setIsLoading] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const dispatch = useDispatch();
 
   const handleDelete = async () => {
     try {
@@ -55,7 +53,8 @@ export default function DeleteItemConfirm({ handleOpen, cardItem }: Props) {
         toast(t("messages.fileSuccessfullyRemoved"), "success");
       }
 
-      dispatch(removeLibraryFile(id));
+      const item = cardItem as LibraryItemInterface;
+      await cardItem.onChange(item, ContextMenuEventEnum.DELETE, ContextMenuOptionEnum.DELETE);
       handleClose();
     } catch (e) {
       setIsLoading(false);

@@ -10,8 +10,8 @@ import {
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { ListTypeEnum, TextVariantEnum } from "@/enums/index";
-import Library, { getItems } from "@/components/pages/library";
+import { ContextMenuOptionEnum, ListTypeEnum, OrderEnum, TextVariantEnum } from "@/enums/index";
+import Library, { getItems, orderItems } from "@/components/pages/library";
 import { PropsUserSelector } from "@/types/*";
 import ToolbarSection from "../ToolbarSection";
 import DirectoryList from "@/components/ui/skeleton/DirectoryList";
@@ -39,11 +39,8 @@ const RecentFiles: React.FC = () => {
     try {
       setIsLoading(true);
       const items = await getItems(userRdx.user.id, userRdx.user.id, timeDescription, l);
-      const recentFiles = items
-        // @ts-ignore
-        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+      const recentFiles = orderItems(OrderEnum.LATEST_FIRST, items)
         .filter((item) => item.type !== "directory")
-        .reverse()
         .slice(0, 3);
       setData(recentFiles);
     } catch (e) {
@@ -72,6 +69,10 @@ const RecentFiles: React.FC = () => {
     toast(t("featureUnavailable"), "warning");
   };
 
+  const handleContextMenuUpdate = async () => {
+    await mountItems();
+  };
+
   const options = (
     cardItem: LibraryCardItemInterface,
     playIconComp: React.ReactNode | undefined = undefined,
@@ -98,7 +99,24 @@ const RecentFiles: React.FC = () => {
         }
       }
 
-      options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);
+      options.push(
+        <ContextMenuOptions
+          key={`${basename}-more-options`}
+          {...cardItem}
+          availableOptions={[
+            ContextMenuOptionEnum.EDIT,
+            ContextMenuOptionEnum.COPY,
+            ContextMenuOptionEnum.MOVE,
+            ContextMenuOptionEnum.DETAILS,
+            ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+            ContextMenuOptionEnum.DELETE,
+            ContextMenuOptionEnum.DUPLICATE,
+            ContextMenuOptionEnum.PUBLISH,
+            ContextMenuOptionEnum.RENAME,
+          ]}
+          onChange={handleContextMenuUpdate}
+        />,
+      );
     }
 
     return options;
