@@ -19,7 +19,13 @@ import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
-import { ButtonColorEnum, ButtonVariantEnum, TextVariantEnum, ButtonSizeEnum } from "@/enums/*";
+import {
+  ButtonColorEnum,
+  ButtonVariantEnum,
+  TextVariantEnum,
+  ButtonSizeEnum,
+  TextAlignEnum,
+} from "@/enums/*";
 import ChangeUploadLocationModal from "./ChangeUploadLocationModal";
 import {
   convertPrivateToUsername,
@@ -35,6 +41,9 @@ import ButtonCore from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { getAccessedPages } from "@/utils/utils";
+import { parseCookies } from "nookies";
+import { v4 as uuid } from "uuid";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 
 type Props = {
   open: boolean;
@@ -50,6 +59,22 @@ type MyFormValues = {
   tags: string[];
 };
 
+const useStyles = makeStyles((theme: Theme) => ({
+  tagInformation: {
+    color: theme.palette.gray.main,
+  },
+  advancedOptionsTitle: {
+    fontSize: 12,
+    textTransform: "capitalize",
+  },
+  locationAudio: {
+    fontWeight: "bold",
+  },
+  marginButton: {
+    marginTop: 8,
+  },
+}));
+
 export default function DialogExtraInfoAudio({
   open,
   handleSubmit,
@@ -57,6 +82,9 @@ export default function DialogExtraInfoAudio({
   discardAudioHandle,
   tempFileName,
 }: Props) {
+  const classes = useStyles();
+  const cookies = parseCookies();
+  const lang = cookies.NEXT_LOCALE || "en";
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const { t } = useTranslation("recording");
@@ -66,6 +94,7 @@ export default function DialogExtraInfoAudio({
   const [uploadLocation, setUploadLocation] = useState(pathLocationSave);
   const { t: c } = useTranslation("common");
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [autoFocusCustom, setAutoFocusCustom] = useState(false);
 
   const chooseUploadLocationHandle = useCallback((path: string) => {
     setUploadLocation(path);
@@ -136,6 +165,8 @@ export default function DialogExtraInfoAudio({
     setAvailableOffline(event.target.checked);
   };
 
+  const separator = lang === "ar" ? "،" : ",";
+
   return (
     <>
       <Formik
@@ -150,7 +181,9 @@ export default function DialogExtraInfoAudio({
                 }),
               );
             }
-            const tagsFiltered = values.tags.map((item: string) => item.toLocaleLowerCase());
+            const tagsFiltered = values.tags
+              .map((item: string) => item.replaceAll(separator, "").toLocaleLowerCase())
+              .filter((item: string) => item !== "");
             handleSubmit({
               ...values,
               tags: tagsFiltered,
@@ -171,27 +204,29 @@ export default function DialogExtraInfoAudio({
               <Box display="flex" flex="1" flexDirection="row" justifyContent="space-between">
                 <Button
                   handleClick={discardAudioHandle}
-                  style={{ margin: 8 }}
+                  className={classes.marginButton}
                   variant={ButtonVariantEnum.OUTLINED}
                   color={ButtonColorEnum.SECONDARY}
                   title={t("discardButton")}
+                  data-testid="discard-audio"
                 />
                 <Button
                   handleClick={submitForm}
                   variant={ButtonVariantEnum.CONTAINED}
-                  style={{ margin: 8 }}
+                  className={classes.marginButton}
                   title={t("submitButton")}
+                  data-testid="save-audio"
                 />
               </Box>
             }
           >
             <Form>
-              <Field name="name" InputProps={{ notched: true }}>
+              <Field name="name" data-testid="audio-name" InputProps={{ notched: true }}>
                 {({ field }: FieldProps) => (
                   <TextField
-                    autoFocus
                     margin="dense"
                     variant="outlined"
+                    onFocus={() => setAutoFocusCustom(false)}
                     autoComplete="off"
                     id="name"
                     label={t("recordingFinishLabelForm")}
@@ -206,26 +241,42 @@ export default function DialogExtraInfoAudio({
               <Box display="flex" flex={1} justifyContent="flex-start">
                 <ButtonCore
                   size="small"
+                  data-testid="advanced-options-button"
                   onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
                   startIcon={showAdvancedOptions ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 >
-                  <Text
-                    variant={TextVariantEnum.CAPTION}
-                    style={{ fontSize: 12, textTransform: "capitalize" }}
-                  >
-                    Advanced options
+                  <Text variant={TextVariantEnum.CAPTION} className={classes.advancedOptionsTitle}>
+                    {t("advancedOptionsTitle")}
                   </Text>
                 </ButtonCore>
               </Box>
               {showAdvancedOptions && (
                 <>
                   <Autocomplete
+                    key={uuid()}
+                    data-testid="audio-tags"
                     multiple
                     value={values.tags}
                     id="tags-filled"
                     options={optionsTag.map((option) => option.value)}
                     defaultValue={["asd"]}
-                    onChange={(e, value) => setFieldValue("tags", value)}
+                    onChange={(e, value) => {
+                      setAutoFocusCustom(true);
+                      setFieldValue("tags", value);
+                    }}
+                    onInputChange={(event, value) => {
+                      const arr = values.tags;
+                      if (value.split("").every((item) => item.indexOf(separator) !== -1)) return;
+
+                      if (value.indexOf(separator) !== -1) {
+                        const res = value.split(",")[0];
+                        if (res) {
+                          arr.push(res.replace(separator, ""));
+                          setFieldValue("tags", arr);
+                          setAutoFocusCustom(true);
+                        }
+                      }
+                    }}
                     freeSolo
                     renderTags={(value: string[], getTagProps) =>
                       value.map((option: string, index: number) => (
@@ -241,11 +292,20 @@ export default function DialogExtraInfoAudio({
                         {...params}
                         margin="dense"
                         variant="outlined"
+                        autoFocus={autoFocusCustom}
                         label={t("tagsTitle")}
                       />
                     )}
                   />
-                  {errors.tags && touched.tags ? <ErrorMessageForm message={errors.tags} /> : null}
+                  <Box width="100%">
+                    <Text
+                      className={classes.tagInformation}
+                      align={TextAlignEnum.LEFT}
+                      variant={TextVariantEnum.CAPTION}
+                    >
+                      {t("tagInformationTitle")}
+                    </Text>
+                  </Box>
                   <Box marginTop={1} marginBottom={2}>
                     <FormControlLabel
                       control={
@@ -253,6 +313,7 @@ export default function DialogExtraInfoAudio({
                           checked={availableOffline}
                           onChange={handleChange}
                           name="availableOffline"
+                          data-testid="switch-available-offline"
                         />
                       }
                       label={
@@ -271,7 +332,7 @@ export default function DialogExtraInfoAudio({
                     paddingTop={1}
                   >
                     <Box display="flex" flexDirection="column">
-                      <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold" }}>
+                      <Text variant={TextVariantEnum.BODY1} className={classes.locationAudio}>
                         {t("uploadLocationTitle")}
                       </Text>
                       <Text variant={TextVariantEnum.BODY2}>
@@ -280,11 +341,12 @@ export default function DialogExtraInfoAudio({
                     </Box>
                     <Button
                       handleClick={() => setChangeLocationModal(true)}
-                      style={{ margin: 8 }}
+                      className={classes.marginButton}
                       variant={ButtonVariantEnum.TEXT}
                       color={ButtonColorEnum.PRIMARY}
                       title={t("changeUploadLocationTitle")}
                       size={ButtonSizeEnum.SMALL}
+                      data-testid="change-location-audio"
                     />
                   </Box>
                 </>

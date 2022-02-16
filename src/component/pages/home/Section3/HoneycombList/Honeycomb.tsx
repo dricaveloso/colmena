@@ -6,6 +6,13 @@ import Text from "@/components/ui/Text";
 import { TextDisplayEnum, TextVariantEnum } from "@/enums/*";
 import Image from "next/image";
 import theme from "@/styles/theme";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles(() => ({
+  honeycombItem: {
+    cursor: "pointer",
+  },
+}));
 
 interface Props {
   title?: string;
@@ -22,6 +29,7 @@ export default function Honeycomb({
   width = 65,
   height = 57,
 }: Props) {
+  const classes = useStyles();
   return (
     <Box
       width={width}
@@ -31,6 +39,7 @@ export default function Honeycomb({
       flex={1}
       display="flex"
       flexDirection="column"
+      className={classes.honeycombItem}
     >
       <Image width={width} height={height} src={image} />
       {showTitle && (

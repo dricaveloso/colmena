@@ -24,6 +24,7 @@ type Props = {
   className?: string;
   download?: string;
   target?: string;
+  [x: string]: any;
 };
 
 export default function Btn({

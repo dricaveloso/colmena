@@ -21,8 +21,10 @@
     "changeUploadLocationTitle": "change",
     "availableWithoutInternetTitle": "Available offline",
     "tagsRequiredTitle": "At least one tag is required",
-	"recordingTitle": "Recording...",
+	  "recordingTitle": "Recording...",
     "pausingTitle": "Recording paused",
     "newRecordingTitle": "New recording",
-    "stopingTitle": "Recording stopped"
+    "stopingTitle": "Recording stopped",
+    "advancedOptionsTitle": "Advanced options",
+    "tagInformationTitle": "Separate with commas or with the Enter key"
 }
