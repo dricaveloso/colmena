@@ -5,19 +5,18 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { useTranslation } from "next-i18next";
 import { getFileContents } from "@/services/webdav/files";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {
-  LibraryCardItemInterface,
+  LibraryItemContextMenuInterface,
   LibraryItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
 import { createFile, remove } from "@/store/idb/models/files";
 import { getPath } from "@/utils/directory";
-import { EnvironmentEnum } from "@/enums/*";
+import { ContextMenuEventEnum, ContextMenuOptionEnum, EnvironmentEnum } from "@/enums/*";
 import { dateDescription, getExtensionFilename } from "@/utils/utils";
-import { addLibraryFile, editLibraryFile, removeLibraryFile } from "@/store/actions/library";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -47,7 +46,7 @@ type Props = {
   open: boolean;
   availableOffline: boolean;
   handleOpen: (opt: boolean) => void;
-  cardItem: LibraryCardItemInterface;
+  cardItem: LibraryItemContextMenuInterface;
 };
 
 export default function SyncModal({ open, handleOpen, cardItem, availableOffline }: Props) {
@@ -56,7 +55,6 @@ export default function SyncModal({ open, handleOpen, cardItem, availableOffline
   const classes = useStyles();
   const [downloadError, setDownloadError] = useState<boolean | string>(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const dispatch = useDispatch();
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
 
   useEffect(() => {
@@ -70,6 +68,7 @@ export default function SyncModal({ open, handleOpen, cardItem, availableOffline
             await deleteOfflinePath();
           }
 
+          console.log("chegou aqui");
           handleOpen(false);
         } catch (e) {
           setDownloadError(e.message);
@@ -104,13 +103,9 @@ export default function SyncModal({ open, handleOpen, cardItem, availableOffline
 
     const date = new Date();
     const item: LibraryItemInterface = {
+      ...cardItem,
       arrayBufferBlob: result?.data,
-      basename: cardItem.basename,
       id,
-      size: cardItem.size,
-      mime: cardItem.mime,
-      filename: cardItem.filename,
-      aliasFilename: cardItem.aliasFilename,
       type: "file",
       environment: EnvironmentEnum.BOTH,
       createdAt: date,
@@ -118,25 +113,23 @@ export default function SyncModal({ open, handleOpen, cardItem, availableOffline
       extension: getExtensionFilename(cardItem.basename),
     };
 
-    dispatch(removeLibraryFile(cardItem.id));
-    dispatch(addLibraryFile(item));
-  }, [
-    cardItem.aliasFilename,
-    cardItem.basename,
-    cardItem.filename,
-    cardItem.id,
-    cardItem.mime,
-    cardItem.size,
-    dispatch,
-    t,
-    timeDescription,
-    userRdx.user.id,
-  ]);
+    await cardItem.onChange(
+      item,
+      ContextMenuEventEnum.UPDATE,
+      ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+      { oldId: cardItem.id },
+    );
+  }, [cardItem, t, timeDescription, userRdx.user.id]);
 
   const deleteOfflinePath = useCallback(async () => {
     await remove(cardItem.id, userRdx.user.id);
-    dispatch(editLibraryFile({ ...cardItem, environment: EnvironmentEnum.REMOTE }));
-  }, [cardItem, dispatch, userRdx.user.id]);
+    await cardItem.onChange(
+      { ...cardItem, environment: EnvironmentEnum.REMOTE },
+      ContextMenuEventEnum.UPDATE,
+      ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+      { oldId: cardItem.id },
+    );
+  }, [cardItem, userRdx.user.id]);
 
   return (
     <>

@@ -83,8 +83,7 @@ const ContextMenuOptions = ({ blob, data, filename }: Props) => {
       await moveFile(userRdx.user.id, filename, finalPath);
 
       dispatch(
-        editLibraryFile({
-          id: data.id,
+        editLibraryFile(data.id, {
           customtitle: values.customtitle,
           basename: `${values.customtitle}.${extension}`,
           filename: finalPath,

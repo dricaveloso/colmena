@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 import { moveFile, existFile } from "@/services/webdav/files";
 import { existDirectory } from "@/services/webdav/directories";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
@@ -22,15 +22,22 @@ import {
   handleDirectoryName,
   handleFileName,
   convertUsernameToPrivate,
+  getPath,
 } from "@/utils/directory";
 import { toast } from "@/utils/notifications";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
-import { ButtonColorEnum, ButtonVariantEnum, EnvironmentEnum } from "@/enums/*";
-import { editLibraryFile } from "@/store/actions/library";
+import {
+  ButtonColorEnum,
+  ButtonVariantEnum,
+  ContextMenuEventEnum,
+  ContextMenuOptionEnum,
+  EnvironmentEnum,
+} from "@/enums/*";
 import { updateFile } from "@/store/idb/models/files";
 import { Box } from "@material-ui/core";
 import ActionConfirm from "@/components/ui/ActionConfirm";
+import { LibraryItemContextMenuInterface, LibraryItemInterface } from "@/interfaces/index";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -44,28 +51,15 @@ const useStyles = makeStyles(() => ({
 }));
 
 type Props = {
-  id: string;
-  open: boolean;
   handleOpen: (opt: boolean) => void;
-  filename: string;
-  aliasFilename: string;
-  basename: string;
-  type: string;
-  environment: EnvironmentEnum;
+  open: boolean;
+  cardItem: LibraryItemContextMenuInterface;
 };
 
 let requestCancel = false;
 
-export default function RenameItemModal({
-  id,
-  open,
-  handleOpen,
-  filename,
-  aliasFilename,
-  basename,
-  type,
-  environment,
-}: Props) {
+export default function RenameItemModal({ cardItem, open, handleOpen }: Props) {
+  const { id, filename, aliasFilename, basename, type, environment, onChange } = cardItem;
   const { t } = useTranslation("common");
   const { t: l } = useTranslation("library");
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -77,73 +71,77 @@ export default function RenameItemModal({
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
   const [cancelIsLoading, setCancelIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const initialValues = {
     name: getOnlyFilename(basename),
     path: finalPath,
   };
   const extension = useMemo(() => getExtensionFilename(basename), [basename]);
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = async (values: any) => {
     setIsLoading(true);
-    (async () => {
-      try {
-        let moved = false;
-        const userId = userRdx.user.id;
-        let name = values.name.trim();
-        if (extension) {
-          name += `.${extension}`;
-        }
-
-        if (requestCancel) {
-          return;
-        }
-
-        switch (environment) {
-          case EnvironmentEnum.REMOTE:
-            moved = await renameRemoteItem(userId);
-            break;
-          case EnvironmentEnum.LOCAL:
-            moved = await renameLocalItem(name);
-            break;
-          case EnvironmentEnum.BOTH:
-            moved = await renameRemoteItem(userId);
-            if (moved) {
-              moved = await renameLocalItem(name);
-            }
-            break;
-          default:
-            throw new Error(l("messages.unidentifiedEnvironment"));
-        }
-
-        if (requestCancel) {
-          if (moved) {
-            undoChange(userId);
-          }
-
-          return;
-        }
-
-        if (!moved) {
-          throw new Error(l("messages.unableToCompleteRequest"));
-        }
-
-        setShowConfirmCancel(false);
-
-        if (type === "directory") {
-          toast(l("messages.directorySuccessfullyRenamed"), "success");
-        } else {
-          toast(l("messages.fileSuccessfullyRenamed"), "success");
-        }
-
-        dispatch(editLibraryFile({ id, filename: finalPath, basename: name }));
-        setIsLoading(false);
-        handleOpen(false);
-      } catch (e) {
-        toast(e.message, "error");
-        setIsLoading(false);
+    try {
+      let moved = false;
+      const userId = userRdx.user.id;
+      let name = values.name.trim();
+      if (extension) {
+        name += `.${extension}`;
       }
-    })();
+
+      if (requestCancel) {
+        return;
+      }
+
+      switch (environment) {
+        case EnvironmentEnum.REMOTE:
+          moved = await renameRemoteItem(userId);
+          break;
+        case EnvironmentEnum.LOCAL:
+          moved = await renameLocalItem(name);
+          break;
+        case EnvironmentEnum.BOTH:
+          moved = await renameRemoteItem(userId);
+          if (moved) {
+            moved = await renameLocalItem(name);
+          }
+          break;
+        default:
+          throw new Error(l("messages.unidentifiedEnvironment"));
+      }
+
+      if (requestCancel) {
+        if (moved) {
+          undoChange(userId);
+        }
+
+        return;
+      }
+
+      if (!moved) {
+        throw new Error(l("messages.unableToCompleteRequest"));
+      }
+
+      setShowConfirmCancel(false);
+
+      if (type === "directory") {
+        toast(l("messages.directorySuccessfullyRenamed"), "success");
+      } else {
+        toast(l("messages.fileSuccessfullyRenamed"), "success");
+      }
+
+      const updatedItem = {
+        ...cardItem,
+        id,
+        filename: finalPath,
+        basename: name,
+      } as LibraryItemInterface;
+
+      await onChange(updatedItem, ContextMenuEventEnum.UPDATE, ContextMenuOptionEnum.RENAME);
+      setIsLoading(false);
+      handleOpen(false);
+    } catch (e) {
+      toast(e.message, "error");
+      setIsLoading(false);
+    }
   };
 
   const undoChange = useCallback(
@@ -223,7 +221,7 @@ export default function RenameItemModal({
   });
 
   const defineFinalPath = (name: any) => {
-    let aliasPath = `${trailingSlash(definePath(path))}${treatName(name)}`;
+    let aliasPath = `${trailingSlash(definePath(getPath(cardItem.filename)))}${treatName(name)}`;
     if (extension) {
       aliasPath += `.${extension}`;
     }

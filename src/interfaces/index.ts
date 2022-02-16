@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-cycle
 import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
 import React from "react";
-import { ListTypeEnum } from "../enums";
+import { ContextMenuEventEnum, ContextMenuOptionEnum, ListTypeEnum } from "../enums";
 
 export interface I18nInterface {
   locale: string;
@@ -195,6 +195,17 @@ export interface LibraryCardItemInterface extends LibraryItemInterface {
   handleOpenCard: (item: LibraryItemInterface) => void;
   isDisabled?: boolean;
 }
+
+export interface LibraryItemContextMenuInterface extends LibraryItemInterface {
+  availableOptions: Array<ContextMenuOptionEnum>;
+  onChange: (
+    cardItem: LibraryItemInterface,
+    event: ContextMenuEventEnum,
+    option: ContextMenuOptionEnum,
+    extraInfo?: any,
+  ) => void | Promise<void>;
+}
+
 export interface BreadcrumbItemInterface {
   description: string | undefined;
   path: string;
