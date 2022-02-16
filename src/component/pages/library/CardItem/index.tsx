@@ -73,7 +73,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           secondary={subtitleVerticalItem}
           options={options && options(cardItem)}
           handleClick={handleClick}
-          isPlaying={library.currentAudioPlaying === filename}
+          isPlaying={library.currentAudioPlaying ? library.currentAudioPlaying === filename : false}
           environment={environment}
           filename={filename}
           size={size}
@@ -88,7 +88,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           topOptions={options && options(cardItem)}
           bottomOptions={bottomOptions && bottomOptions(cardItem, badgeStatusGrid)}
           handleClick={handleClick}
-          isPlaying={library.currentAudioPlaying === filename}
+          isPlaying={library.currentAudioPlaying ? library.currentAudioPlaying === filename : false}
           environment={environment}
           filename={filename}
           size={size}

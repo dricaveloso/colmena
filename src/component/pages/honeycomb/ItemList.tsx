@@ -7,7 +7,6 @@ import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { PropsHoneycombSelector } from "@/types/*";
-// import HeaderBar from "./HeaderBar";
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -32,7 +31,7 @@ function ItemList() {
       {items.length > 0 &&
         items.map((item: RoomItemInterface) => (
           <ListItem key={uuid()} disableGutters className={classes.verticalList}>
-            <VerticalItemList data={item} backgroundColor="#fff" />
+            <VerticalItemList data={item} />
           </ListItem>
         ))}
     </List>

@@ -493,3 +493,15 @@ export function fileSizeConvert(bytes: number) {
 
   return result;
 }
+
+export async function getAccessedPages(): Promise<string[]> {
+  const pages = await localStorage.getItem("accessedPages");
+
+  if (!pages) return [];
+
+  return JSON.parse(pages);
+}
+
+export async function setAccessedPages(pages: string[]) {
+  await localStorage.setItem("accessedPages", JSON.stringify(pages.slice(0, 2)));
+}

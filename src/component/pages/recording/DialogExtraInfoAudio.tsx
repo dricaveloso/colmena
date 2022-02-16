@@ -13,7 +13,6 @@ import {
   PropsAudioSave,
   SelectOptionItem,
   PropsUserSelector,
-  PropsConfigSelector,
   PropsLibrarySelector,
 } from "@/types/index";
 import Chip from "@material-ui/core/Chip";
@@ -35,6 +34,7 @@ import Modal from "@/components/ui/Modal";
 import ButtonCore from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import { getAccessedPages } from "@/utils/utils";
 
 type Props = {
   open: boolean;
@@ -58,7 +58,6 @@ export default function DialogExtraInfoAudio({
   tempFileName,
 }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const { t } = useTranslation("recording");
   const [changeLocationModal, setChangeLocationModal] = useState(false);
@@ -83,22 +82,25 @@ export default function DialogExtraInfoAudio({
     tags: [],
   };
 
+  const init = async () => {
+    const pathUp = await prepareUploadPath();
+    setUploadLocation(pathUp);
+    try {
+      const res = await listTags();
+      const optionsTag: SelectOptionItem[] = res
+        .filter((_, idx) => idx !== 0)
+        .map((item: any | SystemTagsInterface) => ({
+          id: item.propstat.prop.id,
+          value: item.propstat.prop["display-name"].toLowerCase(),
+        }));
+      setOptionsTag(optionsTag);
+    } catch (e) {
+      console.log("erro ao consultar as tags", e);
+    }
+  };
+
   useEffect(() => {
-    setUploadLocation(prepareUploadPath());
-    (async () => {
-      try {
-        const res = await listTags();
-        const optionsTag: SelectOptionItem[] = res
-          .filter((_, idx) => idx !== 0)
-          .map((item: any | SystemTagsInterface) => ({
-            id: item.propstat.prop.id,
-            value: item.propstat.prop["display-name"].toLowerCase(),
-          }));
-        setOptionsTag(optionsTag);
-      } catch (e) {
-        console.log("erro ao consultar as tags", e);
-      }
-    })();
+    init();
 
     return () => {
       setOptionsTag([]);
@@ -106,10 +108,11 @@ export default function DialogExtraInfoAudio({
     };
   }, []);
 
-  function prepareUploadPath() {
+  async function prepareUploadPath() {
     if (pathLocationSave) return pathLocationSave;
 
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    const accessedPages = await getAccessedPages();
+    const urlOrigin = accessedPages[1] || accessedPages[0];
     let url = "";
 
     if (/^[/]library/.test(urlOrigin)) {

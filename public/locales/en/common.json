@@ -148,5 +148,6 @@
   "bannerMessage1": "Colmena is a productivity suite for local media, safe, free and 100% free",
   "bannerMessage2": "Designed to work in areas of low connectivity.",
   "bannerMessage3": "Record, edit and publish audio from your cell phone with multiple people in recording rooms.",
-  "bannerMessage4": "Save your files with our specialized cloud service for media."
+  "bannerMessage4": "Save your files with our specialized cloud service for media.",
+  "doneMessage": "Done!"
 }

@@ -66,11 +66,17 @@ const CardItemAvatar = ({
     return (
       <IconButton
         key={`${basename}-playpause`}
-        icon={library.currentAudioPlaying === filename ? "stop" : "play"}
+        icon={
+          library.currentAudioPlaying && library.currentAudioPlaying === filename ? "stop" : "play"
+        }
         iconColor={theme.palette.primary.main}
         iconStyle={{ fontSize: 45 }}
         fontSizeIcon="small"
-        handleClick={() => playPauseAudioHandle(library.currentAudioPlaying === filename)}
+        handleClick={() =>
+          playPauseAudioHandle(
+            library.currentAudioPlaying ? library.currentAudioPlaying === filename : false,
+          )
+        }
       />
     );
   }

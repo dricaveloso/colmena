@@ -58,7 +58,9 @@ export function createNewConversation(roomName: string): Promise<RoomCreateInter
   });
 }
 
-export function deleteConversation(token: string): Promise<DeleteConversationInterface> {
+export function removeYourselfFromAConversation(
+  token: string,
+): Promise<DeleteConversationInterface> {
   return talkInstance(version).delete(`room/${token}/participants/self${responseFormat}`);
 }
 

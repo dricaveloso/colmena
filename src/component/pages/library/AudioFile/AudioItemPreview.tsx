@@ -75,6 +75,7 @@ export default function AudioItemVertical({
         }
       }
     } catch (e) {
+      console.log(e);
       toast(c("genericErrorMessage"), "error");
     } finally {
       setLoading(false);

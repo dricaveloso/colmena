@@ -54,11 +54,6 @@ export default function Btn({
 
   const styleBtn2 =
     !color && variant === "outlined" && !disabled
-      ? { borderColor: theme.palette.variation1.main, color: theme.palette.variation1.main }
-      : {};
-
-  const styleBtn3 =
-    variant === "outlined" && !disabled
       ? { borderColor: theme.palette.variation8.main, color: theme.palette.variation8.main }
       : {};
 
@@ -72,7 +67,7 @@ export default function Btn({
       size={size}
       // className="width-based-device"
       type={type}
-      style={{ textTransform: "lowercase", ...style, ...styleBtn1, ...styleBtn2, ...styleBtn3 }}
+      style={{ textTransform: "lowercase", ...style, ...styleBtn1, ...styleBtn2 }}
       endIcon={endIcon}
       disabled={disabled}
       component="a"
@@ -94,7 +89,7 @@ export default function Btn({
       className={className}
       // className="width-based-device"
       type={type}
-      style={{ textTransform: "lowercase", ...style, ...styleBtn1, ...styleBtn2, ...styleBtn3 }}
+      style={{ textTransform: "lowercase", ...style, ...styleBtn1, ...styleBtn2 }}
       variant={variant}
       color={color}
       size={size}
@@ -103,6 +98,7 @@ export default function Btn({
       disabled={disabled}
       component={component}
       fullWidth={fullWidth}
+      {...props}
     >
       {isLoading ? (
         <>

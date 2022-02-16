@@ -26,7 +26,6 @@ import {
   PropsAudioSave,
   PropsAudioData,
   SelectOptionItem,
-  PropsConfigSelector,
   PropsLibrarySelector,
 } from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
@@ -57,6 +56,7 @@ import {
   findGroupFolderByPath,
   getBackAfterFinishRecording,
   setBackAfterFinishRecording,
+  getAccessedPages,
 } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
@@ -66,6 +66,21 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
     ...(await serverSideTranslations(locale, ["recording", "library"])),
   },
 });
+
+export async function findTokenChatByPath(path: string): Promise<string | boolean> {
+  const arr = path.split("/");
+  const honeycombName = arr[0];
+  const response = await getUsersConversationsAxios();
+  const rooms = response.data.ocs.data;
+  // eslint-disable-next-line max-len
+  const token = rooms.find(
+    (item) => item.name.toLowerCase() === honeycombName.toLowerCase(),
+  )?.token;
+
+  if (!token) return false;
+
+  return token;
+}
 
 function Recording() {
   const { t } = useTranslation("recording");
@@ -81,7 +96,6 @@ function Recording() {
   const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
   const cookies = parseCookies();
   const language = cookies.NEXT_LOCALE || "en";
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const dispatch = useDispatch();
 
@@ -244,18 +258,6 @@ function Recording() {
     setOpenContinueRecording(false);
   };
 
-  async function findTokenChatByPath(path: string): Promise<string | boolean> {
-    const arr = path.split("/");
-    const honeycombName = arr[0];
-    const response = await getUsersConversationsAxios();
-    const rooms = response.data.ocs.data;
-    const token = rooms.find((item) => item.name === honeycombName)?.token;
-
-    if (!token) return false;
-
-    return token;
-  }
-
   async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
     const response = await getSingleConversationAxios(token);
     const { data } = response.data.ocs;
@@ -282,7 +284,7 @@ function Recording() {
     if (getBackAfterFinishRecording() === "yes") {
       router.back();
     } else {
-      const urlBack = redirectToLastAccessedPage();
+      const urlBack = await redirectToLastAccessedPage();
       if (amountAudiosRecorded === 1) {
         if (urlBack) router.push(urlBack);
         else router.push(`/file/${filename}`);
@@ -292,8 +294,9 @@ function Recording() {
     }
   };
 
-  function redirectToLastAccessedPage(): string | null {
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1] || "home";
+  async function redirectToLastAccessedPage(): Promise<string | null> {
+    const accessedPages = await getAccessedPages();
+    const urlOrigin = accessedPages[1] || accessedPages[0];
 
     if (/^[/]library/.test(urlOrigin)) {
       if ((urlOrigin.match(/[/]/g) || []).length > 1) {
