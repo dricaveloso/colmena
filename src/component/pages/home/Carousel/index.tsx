@@ -20,7 +20,7 @@ interface IContent {
 }
 
 const Content: React.FC<IContent> = ({ iconName, text }) => (
-  <div
+  <Grid
     style={{
       display: "flex",
       flexDirection: "row",
@@ -37,18 +37,18 @@ const Content: React.FC<IContent> = ({ iconName, text }) => (
     >
       {text}
     </Text>
-  </div>
+  </Grid>
 );
 
 const Carousel = () => {
   const { t } = useTranslation("intro");
 
   return (
-    <AutoplaySlider play bullets className="ui-carousel" organicArrows={false}>
+    <AutoplaySlider play interval={7000} bullets className="ui-carousel" organicArrows={false}>
       <Grid
         style={{
           backgroundColor: theme.palette.variation1.main,
-          height: "85px",
+          height: "90px",
           color: "#fff",
         }}
       >
@@ -57,7 +57,7 @@ const Carousel = () => {
       <Grid
         style={{
           backgroundColor: theme.palette.variation1.main,
-          height: "85px",
+          height: "90px",
           color: "#fff",
         }}
       >
@@ -66,7 +66,7 @@ const Carousel = () => {
       <Grid
         style={{
           backgroundColor: theme.palette.variation1.main,
-          height: "85px",
+          height: "90px",
           color: "#fff",
         }}
       >
@@ -75,7 +75,7 @@ const Carousel = () => {
       <Grid
         style={{
           backgroundColor: theme.palette.variation1.main,
-          height: "85px",
+          height: "90px",
           color: "#fff",
         }}
       >

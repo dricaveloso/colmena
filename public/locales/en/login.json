@@ -5,5 +5,5 @@
     "userDeactivated": "User disabled",
     "mediaNotFound": "Error fetching your media",
     "profileNotFound": "Error accessing your user file",
-    "loginSuccesfully": "Successfully logged in"
+    "loginSuccesfully": "Logged in"
 }

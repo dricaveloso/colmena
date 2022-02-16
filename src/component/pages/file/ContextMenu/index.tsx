@@ -98,7 +98,7 @@ const ContextMenuOptions = ({ blob, data, filename }: Props) => {
       });
     } catch (error) {
       console.log(error);
-      toast(error.message, "error");
+      toast(c("genericErrorMessage"), "error");
     } finally {
       setLoading(false);
       setOpenModalRenameTitle(false);

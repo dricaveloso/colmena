@@ -29,7 +29,7 @@ export default function ActionConfirm({
   onOk,
   isLoading = false,
   showMessage = true,
-  showIcon = true,
+  showIcon = false,
   ...props
 }: Props) {
   const { t: c } = useTranslation("common");
@@ -59,7 +59,7 @@ export default function ActionConfirm({
         <Divider marginTop={5} />
         {showMessage && (
           <Text variant={TextVariantEnum.BODY1} style={{ textAlign: "center" }}>
-            {!message ? c("confirmMessageDelete") : message}
+            {message}
           </Text>
         )}
         <Divider marginTop={6} />
@@ -84,7 +84,7 @@ export default function ActionConfirm({
             title={c("yesTitle")}
             style={{
               textTransform: "capitalize",
-              marginLeft: 5,
+              marginLeft: 25,
             }}
             disabled={isLoading}
             isLoading={isLoading}
