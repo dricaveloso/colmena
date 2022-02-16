@@ -16,7 +16,7 @@
     "recordingOrientation": "Audios are locally stored if there is no internet. Private synch by default with the possibility of sharing.",
     "audioSavedSuccessfully": "Audio has been saved",
     "audioDiscardedSuccessfully": "Audio has been discarded",
-    "audioConfirmationToKeep": "Would you like to record another audio?",
+    "audioConfirmationToKeep": "Record another audio?",
     "uploadLocationTitle": "Upload location",
     "changeUploadLocationTitle": "change",
     "availableWithoutInternetTitle": "Available offline",
