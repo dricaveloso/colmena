@@ -21,8 +21,9 @@ export default function GalleryHorizontalScroll() {
     <Box width="100%">
       <div className="scrollingContainer" style={!match ? { width: "95vw" } : { width: "90%" }}>
         {items.slice(0, 6).map(({ displayName, token, canDeleteConversation }) => (
-          <div
+          <Box
             key={uuid()}
+            marginRight={2}
             onClick={() =>
               router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`)
             }
@@ -31,7 +32,7 @@ export default function GalleryHorizontalScroll() {
               title={displayName}
               image={`/images/honeycombs/honeycomb${getRandomInt(0, 13)}.png`}
             />
-          </div>
+          </Box>
         ))}
       </div>
     </Box>
