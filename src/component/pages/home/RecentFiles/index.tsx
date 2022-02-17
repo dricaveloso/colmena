@@ -57,10 +57,10 @@ const RecentFiles: React.FC = () => {
     };
   }, []);
 
-  const handleItemClick = ({ type, aliasFilename, filename, mime }: LibraryCardItemInterface) => {
+  const handleItemClick = ({ type, aliasFilename, filename }: LibraryCardItemInterface) => {
     if (type === "directory" && router.query.path !== aliasFilename) {
       router.push(`/library/${aliasFilename}`);
-    } else if (type === "file" && isAudioFile(mime)) {
+    } else if (type === "file") {
       router.push(`/file/${btoa(filename)}`);
     }
   };
@@ -109,6 +109,7 @@ const RecentFiles: React.FC = () => {
             ContextMenuOptionEnum.MOVE,
             ContextMenuOptionEnum.DETAILS,
             ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+            ContextMenuOptionEnum.DOWNLOAD,
             ContextMenuOptionEnum.DELETE,
             ContextMenuOptionEnum.DUPLICATE,
             ContextMenuOptionEnum.PUBLISH,

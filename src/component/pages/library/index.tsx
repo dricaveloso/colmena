@@ -72,35 +72,41 @@ export async function getLocalFiles(
   const localFiles = await getFilesByPath(userId, currentDirectory);
   if (localFiles.length > 0) {
     localFiles.forEach((file: any) => {
-      const item: LibraryItemInterface = {
-        filename: file.filename,
-        basename: getFilename(file.filename),
-        aliasFilename: file.aliasFilename,
-        id: file.id,
-        type: "file",
-        environment: EnvironmentEnum.LOCAL,
-        createdAt: file.createdAt,
-        createdAtDescription: dateDescription(file.createdAt, timeDescription),
-        updatedAt: file.createdAt,
-        updatedAtDescription: dateDescription(file.createdAt, timeDescription),
-        size: file?.size,
-        sizeFormatted: file?.size ? formatBytes(file.size) : undefined,
-        mime: "audio/webm",
-        arrayBufferBlob: file.arrayBufferBlob,
-        ownerId: file?.userId,
-        ownerName: file?.userId,
-        fileId: file?.nextcloudId,
-        language: file?.language,
-        tags: [],
-        title: file?.title,
-        description: file?.description,
-      };
+      const item = applyLocalItemInterface(file, timeDescription);
 
       items.push(item);
     });
   }
 
   return items;
+}
+
+export function applyLocalItemInterface(file: any, timeDescription: TimeDescriptionInterface) {
+  const item: LibraryItemInterface = {
+    filename: file.filename,
+    basename: getFilename(file.filename),
+    aliasFilename: file.aliasFilename,
+    id: file.id,
+    type: "file",
+    environment: EnvironmentEnum.LOCAL,
+    createdAt: file.createdAt,
+    createdAtDescription: dateDescription(file.createdAt, timeDescription),
+    updatedAt: file.createdAt,
+    updatedAtDescription: dateDescription(file.createdAt, timeDescription),
+    size: file?.size,
+    sizeFormatted: file?.size ? formatBytes(file.size) : undefined,
+    mime: file?.type,
+    arrayBufferBlob: file.arrayBufferBlob,
+    ownerId: file?.userId,
+    ownerName: file?.userId,
+    fileId: file?.nextcloudId,
+    language: file?.language,
+    tags: [],
+    title: file?.title,
+    description: file?.description,
+  };
+
+  return item;
 }
 
 export function filterItems(filter: string, items: Array<LibraryItemInterface>) {
@@ -206,14 +212,14 @@ export async function getItems(
   let mountedItems = items.map((item: LibraryItemInterface) => {
     let updatedItem = item;
     if (item.environment === EnvironmentEnum.LOCAL && item.type === "file") {
-      const remoteItem = remoteItems.find(
-        (remoteItem) => item.aliasFilename === remoteItem.aliasFilename,
-      );
+      const remoteItem = remoteItems.find((remoteItem) => item.filename === remoteItem.filename);
 
       if (remoteItem) {
-        updatedItem = { ...item, ...remoteItem, id: item.id };
-        updatedItem.environment = EnvironmentEnum.BOTH;
-        deleteItems.push(remoteItem.id);
+        const mergeItems = mergeEnvItems(item, remoteItem);
+        if (mergeItems) {
+          updatedItem = mergeItems;
+          deleteItems.push(remoteItem.id);
+        }
       }
     }
 
@@ -232,6 +238,30 @@ export async function getItems(
   return mountedItems;
 }
 
+export function mergeEnvItems(
+  localItem: LibraryItemInterface | null,
+  remoteItem: LibraryItemInterface | null,
+) {
+  if (localItem && remoteItem) {
+    return {
+      ...localItem,
+      ...remoteItem,
+      id: localItem.id,
+      environment: EnvironmentEnum.BOTH,
+    };
+  }
+
+  if (localItem) {
+    return localItem;
+  }
+
+  if (remoteItem) {
+    return remoteItem;
+  }
+
+  return false;
+}
+
 export default function Library({
   items = [],
   listType = ListTypeEnum.LIST,
@@ -240,6 +270,7 @@ export default function Library({
   options,
   bottomOptions,
   handleItemClick,
+  itemsQuantitySkeleton = 4,
 }: LibraryInterface) {
   const classes = useStyles();
 
@@ -253,7 +284,7 @@ export default function Library({
   return (
     <>
       <List className={classes.list}>
-        {isLoading && <DirectoryList quantity={4} />}
+        {isLoading && <DirectoryList quantity={itemsQuantitySkeleton} />}
         {!isLoading &&
           items.length > 0 &&
           items.map((item: LibraryItemInterface) => (

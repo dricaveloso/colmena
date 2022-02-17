@@ -26,6 +26,7 @@ import { toast } from "@/utils/notifications";
 import IconButton from "@/components/ui/IconButton";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { v4 as uuid } from "uuid";
+import { useRouter } from "next/router";
 
 type Props = {
   conversationName: string;
@@ -33,6 +34,7 @@ type Props = {
 };
 
 function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
   const [rootPath, setRootPath] = useState("");
@@ -101,9 +103,11 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
   };
 
   const handleItemClick = (libraryCardItem: LibraryCardItemInterface) => {
-    const { type, aliasFilename } = libraryCardItem;
+    const { type, aliasFilename, filename } = libraryCardItem;
     if (type === "directory") {
       mountItems(aliasFilename);
+    } else if (type === "file") {
+      router.push(`/file/${btoa(filename)}`);
     }
   };
 
@@ -200,6 +204,7 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
           ContextMenuOptionEnum.MOVE,
           ContextMenuOptionEnum.DETAILS,
           ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+          ContextMenuOptionEnum.DOWNLOAD,
           ContextMenuOptionEnum.DELETE,
           ContextMenuOptionEnum.DUPLICATE,
           ContextMenuOptionEnum.PUBLISH,

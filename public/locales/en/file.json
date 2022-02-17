@@ -1,5 +1,6 @@
 {
   "audioTitle": "Audio",
+  "fileTitle": "File",
   "descriptionTitle": "Description",
   "tagTitle": "Tags",
   "contextMenuOptions": {
@@ -10,7 +11,8 @@
   },
   "messages": {
     "descriptionSuccessfullyUpdated": "Description has been updated.",
-    "tagsSuccessfullyCreated": "Tags has been created"
+    "tagsSuccessfullyCreated": "Tags has been created",
+    "fileNotFound": "File not found"
   },
   "editDescription": "Edit Description",
   "createTag": "Create Tag"
