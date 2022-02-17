@@ -38,6 +38,7 @@
         "searchUserPlaceholder": "Search user"
     },
     "newFolderTitle": "New folder",
+    "newFileTitle": "New File",
     "uploadTitle": "Upload",
     "loading": "Loading",
     "form": {
@@ -86,6 +87,7 @@
         "unableToUpdatePassword": "Unable to update your password",
         "passwordUpdatedSuccessfully": "Password has been updated",
         "directoryCreatedSuccessfully": "Directory has been created",
+        "fileCreatedSuccessfully": "File has been created",
         "fileUploadedSuccessfully": "File has been uploaded",
         "uploadCanceledSuccessfully": "File upload canceled.",
         "folderCreationCanceledSuccessfully": "Folder creation canceled."
