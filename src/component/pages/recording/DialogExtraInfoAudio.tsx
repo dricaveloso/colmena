@@ -121,7 +121,7 @@ export default function DialogExtraInfoAudio({
         .filter((_, idx) => idx !== 0)
         .map((item: any | SystemTagsInterface) => ({
           id: item.propstat.prop.id,
-          value: item.propstat.prop["display-name"].toLowerCase(),
+          value: String(item.propstat.prop["display-name"]).toLowerCase(),
         }));
       setOptionsTag(optionsTag);
     } catch (e) {
@@ -187,7 +187,7 @@ export default function DialogExtraInfoAudio({
             if (tagOnBlur) tagArray.push(tagOnBlur);
 
             const tagsFiltered = tagArray
-              .map((item: string) => item.replaceAll(separator, "").toLocaleLowerCase())
+              .map((item: string) => String(item).replaceAll(separator, "").toLocaleLowerCase())
               .filter((item: string) => item !== "");
 
             handleSubmit({

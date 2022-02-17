@@ -203,7 +203,7 @@ function Recording() {
             .filter((_, idx) => idx !== 0)
             .map((item: any | SystemTagsInterface) => ({
               id: item.propstat.prop.id,
-              value: item.propstat.prop["display-name"].toLowerCase(),
+              value: String(item.propstat.prop["display-name"]).toLowerCase(),
             }));
 
           const tagsFoundOnline = optionsTag
