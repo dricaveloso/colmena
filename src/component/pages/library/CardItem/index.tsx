@@ -2,16 +2,13 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useMemo, useCallback } from "react";
 import { LibraryCardItemInterface } from "@/interfaces/index";
-import IconButton from "@/components/ui/IconButton";
 import Box from "@material-ui/core/Box";
 import VerticalItemList from "@/components/ui/VerticalItemList";
 import GridItemList from "@/components/ui/GridItemList";
 import { PropsLibrarySelector } from "@/types/index";
-import { isAudioFile } from "@/utils/utils";
-import { setCurrentAudioPlaying } from "@/store/actions/library";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CardItemSubtitle from "./Subtitle";
 import CardItemAvatar from "./Avatar";
 import CardItemStatus from "./ItemStatus";
@@ -23,9 +20,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     basename,
     filename,
     environment,
-    type,
     orientation,
-    mime,
     size,
     options,
     bottomOptions,
@@ -35,7 +30,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
   } = cardItem;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const handleClick = useCallback(() => {
-    if (!isDisabled) {
+    if (!isDisabled && typeof handleOpenCard === "function") {
       handleOpenCard(cardItem);
     }
   }, [cardItem, handleOpenCard, isDisabled]);

@@ -32,7 +32,7 @@ import Library, { filterItems, getItems, orderItems } from "@/components/pages/l
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { toast } from "@/utils/notifications";
-import { removeCornerSlash, isAudioFile, removeFirstSlash } from "@/utils/utils";
+import { removeCornerSlash, removeFirstSlash } from "@/utils/utils";
 import IconButton from "@/components/ui/IconButton";
 import {
   getAudioPath,
@@ -145,6 +145,7 @@ function MyLibrary() {
             ContextMenuOptionEnum.MOVE,
             ContextMenuOptionEnum.DETAILS,
             ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+            ContextMenuOptionEnum.DOWNLOAD,
             ContextMenuOptionEnum.DELETE,
             ContextMenuOptionEnum.DUPLICATE,
             ContextMenuOptionEnum.PUBLISH,
@@ -248,10 +249,10 @@ function MyLibrary() {
     setItems(orderItems(order, filterItems(filter, rawItems)));
   };
 
-  const handleItemClick = ({ type, aliasFilename, filename, mime }: LibraryCardItemInterface) => {
+  const handleItemClick = ({ type, aliasFilename, filename }: LibraryCardItemInterface) => {
     if (type === "directory" && router.query.path !== aliasFilename) {
       router.push(`/library/${aliasFilename}`);
-    } else if (type === "file" && isAudioFile(mime)) {
+    } else if (type === "file") {
       router.push(`/file/${btoa(filename)}`);
     }
   };

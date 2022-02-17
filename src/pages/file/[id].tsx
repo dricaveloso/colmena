@@ -9,15 +9,14 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface, LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
-import { JustifyContentEnum } from "@/enums/index";
+import { EnvironmentEnum, JustifyContentEnum } from "@/enums/index";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import { getDataFile } from "@/services/webdav/files";
 import IconButton from "@/components/ui/IconButton";
 import { toast } from "@/utils/notifications";
-import { MemoizedAudioFile } from "@/components/pages/file/AudioFile";
-import { getFilename } from "@/utils/directory";
+import { getPath } from "@/utils/directory";
 import theme from "@/styles/theme";
 import { Grid } from "@material-ui/core";
 import Avatar from "@/components/ui/Avatar";
@@ -26,7 +25,9 @@ import TagsSection from "@/components/pages/file/Sections/Tags";
 import DescriptionSection from "@/components/pages/file/Sections/Description";
 import DetailsSection from "@/components/pages/file/Sections/Details";
 import DownloadModal from "@/components/pages/library/contextMenu/DownloadModal";
-// import getBlobDuration from "get-blob-duration";
+import FileSection from "@/components/pages/file/Sections/File";
+import { applyLocalItemInterface, mergeEnvItems } from "@/components/pages/library";
+import { findByFilename } from "@/store/idb/models/files";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -43,24 +44,57 @@ function File() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
   const { id } = router.query;
-  const filename = atob(String(id));
+  const [filename, setFilename] = useState<string | null>(null);
   const [data, setData] = useState<LibraryItemInterface>({} as LibraryItemInterface);
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
 
   const { t: c } = useTranslation("common");
+  const { t } = useTranslation("file");
   const [loading, setLoading] = useState(false);
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
-  // const [duration, setDuration] = useState(0);
 
   const getFile = async () => {
+    if (!filename) {
+      return;
+    }
+
+    setLoading(true);
+    let remoteItem = null;
+    let localItem = null;
     try {
-      setLoading(true);
-      const result: any = await getDataFile(userRdx.user.id, filename, timeDescription);
-      setData(result);
+      const localResult = await findByFilename(filename);
+      if (localResult) {
+        localItem = applyLocalItemInterface(localResult, timeDescription);
+      }
     } catch (e) {
       console.log(e);
-    } finally {
+    }
+
+    try {
+      const remoteResult = await getDataFile(userRdx.user.id, filename, timeDescription);
+      if (remoteResult) {
+        remoteItem = remoteResult;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    const item = mergeEnvItems(localItem, remoteItem);
+    if (item) {
+      console.log(item);
+      setData(item);
       setLoading(false);
+    } else {
+      errorNotFound();
+    }
+  };
+
+  const errorNotFound = () => {
+    toast(t("messages.fileNotFound"), "error");
+    if (filename) {
+      router.push(`/library/${getPath(filename)}`);
+    } else {
+      router.push("/library");
     }
   };
 
@@ -69,8 +103,15 @@ function File() {
   };
 
   useEffect(() => {
-    getFile();
+    try {
+      setFilename(atob(String(id)));
+      getFile();
+    } catch (e) {
+      errorNotFound();
+    }
   }, [filename]);
+
+  if (!filename) return null;
 
   return (
     <>
@@ -115,7 +156,7 @@ function File() {
                     textAlign: "left",
                   }}
                 >
-                  {getFilename(decodeURIComponent(filename))}
+                  {data.basename}
                 </Typography>
                 <IconButton
                   icon="download"
@@ -126,10 +167,9 @@ function File() {
                 />
               </Grid>
             </div>
-            <MemoizedAudioFile filename={filename} data={data} />
-
+            <FileSection data={data} setData={setData} loading={loading} />
             <DescriptionSection data={data} setData={setData} loading={loading} />
-            <TagsSection data={data} />
+            {data.environment !== EnvironmentEnum.LOCAL && <TagsSection data={data} />}
             <DetailsSection data={data} />
           </Box>
         </FlexBox>

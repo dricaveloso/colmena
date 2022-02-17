@@ -151,7 +151,8 @@ export interface LibraryInterface {
     cardItem: LibraryCardItemInterface,
     badgeStatusGrid?: React.ReactNode | undefined,
   ) => React.ReactNode;
-  handleItemClick: (item: LibraryItemInterface) => void;
+  handleItemClick?: (item: LibraryItemInterface) => void;
+  itemsQuantitySkeleton?: number;
 }
 export interface LibraryItemInterface {
   id: string;
@@ -192,7 +193,7 @@ export interface LibraryCardItemInterface extends LibraryItemInterface {
     item: LibraryItemInterface,
     badgeStatusGrid?: React.ReactNode | undefined,
   ) => React.ReactNode;
-  handleOpenCard: (item: LibraryItemInterface) => void;
+  handleOpenCard?: (item: LibraryItemInterface) => void;
   isDisabled?: boolean;
 }
 
