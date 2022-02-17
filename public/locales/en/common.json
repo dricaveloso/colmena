@@ -29,6 +29,7 @@
     "titleSwitchLanguage": "Switch language",
     "noItemsFound": "No items found",
     "reservedNameError": "Name not available for registration",
+    "textEditor": "Text editor",
     "honeycombModal": {
         "chatRoomSuccess": "Chat room has been created",
         "chatRoomFailed": "Unable to create chat room",
@@ -88,6 +89,7 @@
         "passwordUpdatedSuccessfully": "Password has been updated",
         "directoryCreatedSuccessfully": "Directory has been created",
         "fileCreatedSuccessfully": "File has been created",
+        "fileSaveSuccessfully": "File has been saved",
         "fileUploadedSuccessfully": "File has been uploaded",
         "uploadCanceledSuccessfully": "File upload canceled.",
         "folderCreationCanceledSuccessfully": "Folder creation canceled."

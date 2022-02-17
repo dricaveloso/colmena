@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import Button from "@/components/ui/Button";
@@ -11,8 +12,13 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { GetStaticProps, GetStaticPaths } from "next";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/*";
+import { getFileContents, putFile } from "@/services/webdav/files";
+import { toast } from "@/utils/notifications";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill"));
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -43,13 +49,57 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 
 const TextEditor = () => {
   const classes = useStyles();
-  const [content] = useState<string>("");
-  const { t: c } = useTranslation("common");
+  const [content, setContent] = useState<any>();
 
-  // const onChange = (value: string) => {
-  //   console.log(value);
-  //   setContent(value);
-  // };
+  const { t: c } = useTranslation("common");
+  const { t: l } = useTranslation("library");
+  const router = useRouter();
+  const { id } = router.query;
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const filename = `private/${id}.md`;
+
+  const onChange = (content: string) => {
+    setContent(content);
+  };
+
+  const updateText = async () => {
+    try {
+      await putFile(userRdx.user.id, filename, content, {
+        username: userRdx.user.id,
+        password: userRdx.user.password,
+      });
+      toast(c("messages.fileSaveSuccessfully"), "success");
+    } catch (error) {
+      toast(c("genericErrorMessage"), "error");
+      console.log(error);
+    }
+  };
+
+  const getContent = async () => getFileContents(userRdx.user.id, filename);
+  const setInitialData = async () => {
+    let newData;
+
+    try {
+      const result: any = await getContent();
+      const teste = await result.data;
+      newData = teste;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      const buffer = Buffer.from(newData, "utf8");
+      setContent(buffer.toString());
+    }
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      setInitialData();
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const modules = {
     toolbar: [
@@ -61,7 +111,7 @@ const TextEditor = () => {
   };
 
   return (
-    <LayoutApp title="Editor">
+    <LayoutApp title={c("textEditor")}>
       <FlexBox
         justifyContent={JustifyContentEnum.FLEXSTART}
         extraStyle={{
@@ -72,17 +122,17 @@ const TextEditor = () => {
           <ReactQuill
             className={classes.editor}
             theme="snow"
-            defaultValue={content}
+            value={content}
             modules={modules}
-            onChange={(e) => console.log(e)}
-            preserveWhitespace
+            onChange={(content) => onChange(content)}
           />
         </Grid>
         <Grid container justifyContent="flex-end" className={classes.gridButton}>
           <Button
             variant={ButtonVariantEnum.CONTAINED}
             color={ButtonColorEnum.PRIMARY}
-            title={c("saveButton")}
+            title={l("saveButton")}
+            handleClick={() => updateText()}
           />
         </Grid>
       </FlexBox>
