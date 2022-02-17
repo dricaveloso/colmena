@@ -81,8 +81,8 @@ const TextEditor = () => {
 
     try {
       const result: any = await getContent();
-      const teste = await result.data;
-      newData = teste;
+      const bufferValue = await result.data;
+      newData = bufferValue;
     } catch (error) {
       console.log(error);
     } finally {
