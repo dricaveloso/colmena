@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/tabindex-no-positive */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import Button from "@/components/ui/Button";
@@ -54,7 +54,6 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 const TextEditor = () => {
   const classes = useStyles();
   const [content, setContent] = useState("");
-  const editor = useRef(null);
 
   const { t: c } = useTranslation("common");
   const { t: l } = useTranslation("library");
@@ -112,12 +111,10 @@ const TextEditor = () => {
       >
         <Grid container className={classes.gridContainer}>
           <JoditEditor
-            ref={editor}
             value={content}
             config={{
               readonly: false,
             }}
-            tabIndex={1}
             onBlur={(newContent) => setContent(newContent)}
           />
         </Grid>
