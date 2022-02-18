@@ -1,11 +1,11 @@
+/* eslint-disable jsx-a11y/tabindex-no-positive */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import Button from "@/components/ui/Button";
 import { JustifyContentEnum, ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
 import { I18nInterface } from "@/interfaces/index";
-import "react-quill/dist/quill.snow.css";
 import FlexBox from "@/components/ui/FlexBox";
 import { Grid } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
@@ -18,7 +18,10 @@ import { PropsUserSelector } from "@/types/*";
 import { getFileContents, putFile } from "@/services/webdav/files";
 import { toast } from "@/utils/notifications";
 
-const ReactQuill = dynamic(() => import("react-quill"));
+const importJodit = () => import("jodit-react");
+const JoditEditor = dynamic(importJodit, {
+  ssr: false,
+});
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -32,6 +35,7 @@ const useStyles = makeStyles(() =>
     },
     gridButton: {
       marginBottom: "20px",
+      marginTop: "20px",
     },
   }),
 );
@@ -49,7 +53,8 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 
 const TextEditor = () => {
   const classes = useStyles();
-  const [content, setContent] = useState<any>();
+  const [content, setContent] = useState("");
+  const editor = useRef(null);
 
   const { t: c } = useTranslation("common");
   const { t: l } = useTranslation("library");
@@ -57,10 +62,6 @@ const TextEditor = () => {
   const { id } = router.query;
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const filename = `private/${id}.md`;
-
-  const onChange = (content: string) => {
-    setContent(content);
-  };
 
   const updateText = async () => {
     try {
@@ -83,11 +84,11 @@ const TextEditor = () => {
       const result: any = await getContent();
       const bufferValue = await result.data;
       newData = bufferValue;
-    } catch (error) {
-      console.log(error);
-    } finally {
       const buffer = Buffer.from(newData, "utf8");
       setContent(buffer.toString());
+    } catch (error) {
+      console.log(error);
+      toast(c("genericErrorMessage"), "error");
     }
   };
 
@@ -101,15 +102,6 @@ const TextEditor = () => {
     };
   }, []);
 
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote", "font"],
-      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
-      ["clean"],
-    ],
-  };
-
   return (
     <LayoutApp title={c("textEditor")}>
       <FlexBox
@@ -119,12 +111,14 @@ const TextEditor = () => {
         }}
       >
         <Grid container className={classes.gridContainer}>
-          <ReactQuill
-            className={classes.editor}
-            theme="snow"
+          <JoditEditor
+            ref={editor}
             value={content}
-            modules={modules}
-            onChange={(content) => onChange(content)}
+            config={{
+              readonly: false,
+            }}
+            tabIndex={1}
+            onBlur={(newContent) => setContent(newContent)}
           />
         </Grid>
         <Grid container justifyContent="flex-end" className={classes.gridButton}>
