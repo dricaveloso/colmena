@@ -38,7 +38,7 @@
     },
     "messages": {
         "couldNotRemove": "No se ha podido eliminar.",
-        "fileAlreadyExists": "Ya existe un archivo con ese nombre",
+        "fileAlreadyExists": "Ya existe un archivo con ese nombre.",
         "cannotDownloadFile": "No se puede descargar este archivo.",
         "unidentifiedEnvironment": "Entorno no identificado.",
         "unableToCompleteRequest": "No se puede completar la solicitud.",
@@ -51,7 +51,9 @@
         "directorySuccessfullyRenamed": "El directorio se renombró con éxito.",
         "fileSuccessfullyRenamed": "El archivo se renombró con éxito.",
         "directorySuccessfullyRemoved": "El directorio se eliminó con éxito.",
-        "fileSuccessfullyRemoved": "El archivo se eliminó con éxito."
+        "fileSuccessfullyRemoved": "El archivo ha sido eliminado.",
+        "itemDuplicationCanceledSuccessfully": "La duplicación ha sido cancelada.",
+        "itemRenamingCanceledSuccessfully": "Se ha cancelado el cambio de nombre del contenido."
     },
     "renameTitle": "Renombrar",
     "saveButton": "Guardar",
@@ -72,10 +74,17 @@
         "fileId": "ID del archivo",
         "tags": "Etiquetas",
         "language": "Idioma",
-        "description": "Descripción"
+        "description": "Descripción",
+        "createdAt": "Creado en"
     },
     "downloading": "Descargando",
     "synchronizing": "Sincronizando",
     "cancel": "Cancelar",
-    "moveButton": "Mueve aquí"
+    "moveButton": "Mueve aquí",
+    "confirmCancelItemDuplication": "¿Realmente quieres cancelar la duplicación del contenido?",
+    "confirmCancelItemRenaming": "¿Realmente quieres cancelar el cambio de nombre del contenido?",
+    "itemStatus": {
+        "availableOffline": "Disponible sin conexión"
+    },
+    "talkFolderName": "compartido conmigo"
 }

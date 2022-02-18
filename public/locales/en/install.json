@@ -3,7 +3,7 @@
     "compatibleInstallationTitle": "Your browser is compatible for installation",
     "notCompatibleInstallationTitle": "Your browser is not compatible for installation",
     "alreadyInstalledTitle": "Colmena app is already installed",
-    "buttonInstall": "Install colmena",
+    "buttonInstall": "Install Colmena",
     "browserCompability": "Browser compability",
     "browserMinVersion": "Minimum version",
     "browserDetected": "Browser detected: {{browser}} version {{version}}",

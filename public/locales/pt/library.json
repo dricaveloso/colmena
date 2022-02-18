@@ -1,5 +1,5 @@
 {
-    "title": "Minha biblioteca",
+    "title": "Biblioteca",
     "sort": {
         "title": "Ordenação",
         "newest": "Novo",
@@ -18,7 +18,7 @@
         "texts": "Textos"
     },
     "messages": {
-        "fileAlreadyExists": "nome de arquivo já existente",
+        "fileAlreadyExists": "Nome de arquivo já existente.",
         "cannotDownloadFile": "Não é possível baixar esse arquivo.",
         "couldNotRemove": "Não é possível remover.",
         "unidentifiedEnvironment": "Entorno não identificado.",
@@ -32,7 +32,9 @@
         "directorySuccessfullyRenamed": "Diretório renomeado com sucesso.",
         "fileSuccessfullyRenamed": "Arquivo renomeado com sucesso.",
         "directorySuccessfullyRemoved": "Diretório removido com sucesso.",
-        "fileSuccessfullyRemoved": "Arquivo removido com sucesso."
+        "fileSuccessfullyRemoved": "Arquivo removido.",
+        "itemDuplicationCanceledSuccessfully": "Duplicação de item foi cancelada.",
+        "itemRenamingCanceledSuccessfully": "Renomeação do item foi cancelada."
     },
     "contextMenuOptions": {
         "availableOffline": "Disponível offline",
@@ -54,7 +56,7 @@
         "french": "Francês"
     },
     "renameTitle": "Renomear",
-    "saveButton": "Save",
+    "saveButton": "Salvo",
     "duplicateTitle": "Duplicar",
     "duplicateButton": "Duplicar",
     "copyModalTitle": "Escolher destino",
@@ -72,12 +74,17 @@
         "fileId": "ID do arquivo",
         "tags": "Etiquetas",
         "language": "Idioma",
-        "description": "Descrição"
+        "description": "Descrição",
+        "createdAt": "Criado em"
     },
     "downloading": "Baixando",
     "synchronizing": "Sincronizando",
     "cancel": "Cancelar",
     "moveButton": "Mover aqui",
     "confirmCancelItemDuplication": "Você tem certeza que deseja cancelar a duplicação do item?",
-    "confirmCancelItemRenaming": "Você tem certeza que deseja cancelar a renomeação?"
+    "confirmCancelItemRenaming": "Você tem certeza que deseja cancelar a renomeação?",
+    "itemStatus": {
+        "availableOffline": "Disponível Offline"
+    },
+    "talkFolderName": "compartilhado comigo"
 }

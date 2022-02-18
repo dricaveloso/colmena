@@ -1,6 +1,6 @@
 {
     "greeting": "Hello",
-    "description": "DW Akademie and Redes A.C. invite you to be part of colmena, a space for community and local media to work together: create, collaborate, share.",
+    "description": "DW Akademie and Redes A.C. invite you to be part of Colmena, a space for community and local media to work together: create, collaborate, share.",
     "invalidTokenTitle": "Wrong invitation code. Please request a new one.",
     "forms": {
         "button1": "Accept invitation",

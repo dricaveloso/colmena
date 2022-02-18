@@ -1,12 +1,12 @@
 {
-  "welcomeTitle": "Bem vindo(a)",
-  "greetingTitle": "Olá",
-  "myFilesLabel": "Meus arquivos",
-  "sharedLabel": "Compartilhados",
-  "publicLabel": "Público",
-  "section3Title": "Favos Favoritos",
-  "section4Title": "Arquivo recentes",
-  "exampleHoneycombTitle": "Favo {{num}}",
-  "exampleFileTitle": "Arquivo {{num}}",
-  "seeAllTitle": "Ver todos"
+    "welcomeTitle": "Bem vindo(a)",
+    "greetingTitle": "Olá",
+    "myFilesLabel": "Meus arquivos",
+    "sharedLabel": "Compartilhados",
+    "publicLabel": "Público",
+    "section3Title": "Favos de mel",
+    "section4Title": "Arquivo recentes",
+    "exampleHoneycombTitle": "Favo {{num}}",
+    "exampleFileTitle": "Arquivo {{num}}",
+    "seeAllTitle": "Ver todos"
 }
