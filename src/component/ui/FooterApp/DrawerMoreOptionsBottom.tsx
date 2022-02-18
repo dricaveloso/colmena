@@ -143,7 +143,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
                 fontSizeIcon={defaultConfigButton.fontSizeIcon}
                 textStyle={{
                   fontSize: defaultConfigButton.fontSize,
-                  color: defaultConfigButton.color.light,
+                  color: defaultConfigButton.color.main,
                 }}
                 title={t("textDrawerBottomTitle")}
                 handleClick={handleOpenEditorModal}

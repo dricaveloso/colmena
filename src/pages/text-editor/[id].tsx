@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import Button from "@/components/ui/Button";
-import { JustifyContentEnum, ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
+import { JustifyContentEnum, ButtonVariantEnum } from "@/enums/*";
 import { I18nInterface } from "@/interfaces/index";
 import FlexBox from "@/components/ui/FlexBox";
 import { Grid } from "@material-ui/core";
@@ -64,10 +64,7 @@ const TextEditor = () => {
 
   const updateText = async () => {
     try {
-      await putFile(userRdx.user.id, filename, content, {
-        username: userRdx.user.id,
-        password: userRdx.user.password,
-      });
+      await putFile(userRdx.user.id, filename, content);
       toast(c("messages.fileSaveSuccessfully"), "success");
     } catch (error) {
       toast(c("genericErrorMessage"), "error");
@@ -121,7 +118,6 @@ const TextEditor = () => {
         <Grid container justifyContent="flex-end" className={classes.gridButton}>
           <Button
             variant={ButtonVariantEnum.CONTAINED}
-            color={ButtonColorEnum.PRIMARY}
             title={l("saveButton")}
             handleClick={() => updateText()}
           />

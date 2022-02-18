@@ -66,12 +66,12 @@ export default function NewEditorModal({ open, handleClose }: Props) {
       });
       setShowConfirmCancel(false);
 
-      toast(t("messages.fileCreatedSuccessfully"), "success", { timer });
       router.push(`/text-editor/${removeFirstSlash(filename)}`);
     } catch (error) {
       toast(error.message, "error");
     } finally {
       setIsLoading(false);
+      toast(t("messages.fileCreatedSuccessfully"), "success", { timer });
     }
   };
 
@@ -147,13 +147,13 @@ export default function NewEditorModal({ open, handleClose }: Props) {
                   <Button
                     handleClick={confirmClose}
                     title={t("form.cancelButton")}
-                    data-cy="cancel"
+                    data-testid="cancel"
                     color={ButtonColorEnum.DEFAULT}
                     variant={ButtonVariantEnum.OUTLINED}
                   />
                 )}
                 <Button
-                  data-cy="submit"
+                  data-testid="submit"
                   title={t("form.create")}
                   type="submit"
                   className={classes.submit}
