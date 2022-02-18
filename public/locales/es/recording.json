@@ -18,7 +18,11 @@
     "audioDiscardedSuccessfully": "Audio descartado con éxito",
     "audioConfirmationToKeep": "¿Te gustaría grabar otro audio?",
     "uploadLocationTitle": "Subir ubicación",
-    "changeUploadLocationTitle": "cambio",
+    "changeUploadLocationTitle": "Cambiar",
     "availableWithoutInternetTitle": "Disponible sin conexión a Internet",
-    "tagsRequiredTitle": "Se requiere al menos una etiqueta"
+    "tagsRequiredTitle": "Se requiere al menos una etiqueta",
+    "newRecordingTitle": "Nueva grabación",
+    "recordingTitle": "Grabando...",
+    "pausingTitle": "Grabación en pausa",
+    "stopingTitle": "Grabación detenida"
 }

@@ -59,7 +59,6 @@
         "searchUserPlaceholder": "Procurar usuário"
     },
     "administratorTitle": "Administrador(a)",
-    "invitationGreeting": "Olá {{name}}",
     "confirmTitleDelete": "Você tem certeza?",
     "backToLogin": "Voltar ao login",
     "socialMediaTitle": "Coloque o link das suas redes sociais para que fiquem visíveis no perfil público de mídia",
@@ -67,7 +66,6 @@
     "uploadDrawerBottomTitle": "Carregar",
     "resetPasswordTitle": "Altere sua senha atual",
     "collaboratorTitle": "Título do(a) colaborador(a)",
-    "chooseAnOption": "Escolha uma opção",
     "uploadFileDrawerBottomTitle": "Carregar",
     "addFolderTitle": "Nova pasta",
     "addHoneycombDrawerBottomTitle": "Favo de mel",
@@ -93,7 +91,9 @@
         "unableToUpdatePassword": "Não foi possível atualizar sua senha",
         "passwordUpdatedSuccessfully": "Senha atualizada com sucesso",
         "directoryCreatedSuccessfully": "Diretório criado com sucesso",
-        "fileUploadedSuccessfully": "Arquivo carregado com sucesso"
+        "fileUploadedSuccessfully": "Arquivo carregado com sucesso",
+        "uploadCanceledSuccessfully": "Carregamento de arquivo cancelado",
+        "folderCreationCanceledSuccessfully": "Criação de pasta cancelada"
     },
     "timeDescription": {
         "singularYear": "ano",
@@ -122,5 +122,30 @@
     "changeLocationModalTitle": "Escolha novo local/ favo de mel",
     "changeLocationButton": "Escolha o local",
     "noPrivilegesAccessTitle": "Sem privilégio de acesso",
-    "confirmCancelUpload": "Você quer mesmo cancelar?"
+    "confirmCancelUpload": "Você quer mesmo cancelar?",
+    "bannerMessage1": "Colmena é um site de produção seguro, livre e 100% gratuito para mídias locais e comunitárias",
+    "bannerMessage2": "Elaborado para funcionar em áreas de baixa conectividade",
+    "languagesAllowed": {
+        "ar": "Árabe",
+        "en": "Inglês",
+        "fr": "Francês",
+        "es": "Espanhol",
+        "pt": "Português (Brasil)",
+        "sw": "Swahili"
+    },
+    "chooseLocationButton": "Escolha aqui",
+    "confirmCancelFolderCreation": "Tem certeza que deseja cancelar a criação da pasta?",
+    "uploadRuleFileSize": "Imagem não pode ser maior que 20mb",
+    "uploadRuleFileType": "São permitidas apenas extensões PNG e JPG",
+    "uploadUserAvatarSuccessfully": "Imagem de perfil carregada com sucesso",
+    "contextMenuUserAvatar": {
+        "remove": "Remover",
+        "upload": "Selecionar imagem"
+    },
+    "used": "Usado",
+    "confirmationDeleteFile": "Deletar arquivo?",
+    "bannerMessage3": "Gravar, editar e publicar áudio do seu aparelho de celular com múltiplas pessoas na sala de gravação",
+    "bannerMessage4": "Salve seu arquivos com nosso serviço de nuvem especializado para mídias.",
+    "addFolderDrawerBottomTitle": "Pasta",
+    "recordingDrawerBottomTitle": "Gravar"
 }

@@ -6,7 +6,7 @@
     "profileText": "Mi perfil",
     "textUseApp": "Usar la aplicación",
     "featureUnavailable": "Esta función aún no está disponible",
-    "messageOffline": "Por favor acceda a esta página, al menos una vez, con Internet activado.",
+    "messageOffline": "Por favor acceda a esta página, al menos una vez, con Internet activado",
     "welcomeUserMessage": "Bienvenido/a {{userName}}",
     "invitationGreeting": "Hola {{name}}",
     "welcomeRadioMessage": "Radio {{mediaName}}",
@@ -82,7 +82,9 @@
         "passwordUpdatedSuccessfully": "Contraseña actualizada con éxito",
         "directoryCreatedSuccessfully": "Directorio creado con éxito",
         "fileUploadedSuccessfully": "Documento cargado con éxito",
-        "fileTooLarg": "El archivo  {{fileName}}  es demasiado pesado para subir"
+        "fileTooLarg": "El archivo  {{fileName}}  es demasiado pesado para subir",
+        "uploadCanceledSuccessfully": "Carga de archivo cancelada.",
+        "folderCreationCanceledSuccessfully": "Creación de carpeta cancelada."
     },
     "timeDescription": {
         "singularYear": "año",
@@ -122,6 +124,28 @@
     "textDrawerBottomTitle": "Texto",
     "uploadDrawerBottomTitle": "Subir",
     "streamDrawerBottomTitle": "Transmisión",
-    "audioEditorDrawerBottomTitle": "Editor"
+    "audioEditorDrawerBottomTitle": "Editor",
+    "uploadRuleFileType": "Sólo se permitirán las extensiones PNG y JPG",
+    "chooseLocationButton": "Elige aquí",
+    "confirmCancelFolderCreation": "¿Realmente quieres cancelar la creación de la carpeta?",
+    "languagesAllowed": {
+        "en": "Inglés",
+        "ar": "Árabe",
+        "fr": "Francés",
+        "pt": "Portugués (Brasil)",
+        "es": "Español",
+        "sw": "Suajili"
+    },
+    "uploadRuleFileSize": "La imagen no puede ser mayor de 20mb",
+    "uploadUserAvatarSuccessfully": "Imagen de perfil actualizada con éxito",
+    "bannerMessage1": "Colmena es una caja de herramientas de colaboración para los medios de comunicación locales, segura, libre y 100% gratuita",
+    "confirmationDeleteFile": "¿Eliminar archivo?",
+    "bannerMessage2": "Diseñado para trabajar en zonas con baja conectividad.",
+    "contextMenuUserAvatar": {
+        "remove": "Eliminar",
+        "upload": "Selecciona la imagen"
+    },
+    "used": "Usado",
+    "bannerMessage3": "Graba, edita y publica audio desde tu móvil con varias personas en salas de grabación.",
+    "bannerMessage4": "Guarda tus archivos con nuestro servicio especializado en la nube para medios de comunicación."
 }
-

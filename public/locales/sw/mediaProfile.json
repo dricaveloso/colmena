@@ -3,7 +3,7 @@
     "name": "Vyombo vya habari",
     "textSaveButton": "Hifadhi",
     "descriptionTitle": "Maelezo",
-    "textEditCollaborators": "Hariri timu",
+    "textEditCollaborators": "Timu ya kuhariri",
     "textInviteCollaborators": "Alika timu yako",
     "user1": "Mtumiaji 1 (Ruhusa)",
     "user2": "Mtumiaji 2 (Ruhusa)",
@@ -23,5 +23,18 @@
     "welcomeErrorUser": "Mtumiaji ameundwa lakini barua pepe haijatumwa",
     "buttonCancelModalDialogInvite": "Ghairi",
     "inviteCollaboratorTitle": "Mshiriki wa kazi",
-    "inviteAdministratorTitle": "Msimamizi"
+    "inviteAdministratorTitle": "Msimamizi",
+    "contextMenuOptions": {
+        "settings": "Mipangilio",
+        "edit": "Hariri",
+        "deactivate": "Zima akaunti"
+    },
+    "mediaProfileAvatarSaved": "Picha imehifadhiwa",
+    "titleEditMediaModal": "Hariri media",
+    "editForm": {
+        "name": "Jina la media",
+        "slogan": "Maelezo",
+        "url": "URL"
+    },
+    "mediaProfileInfoSaved": "Media imesasishwa"
 }

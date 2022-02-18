@@ -6,7 +6,7 @@
     "buttonInstall": "Sakinisha Colmena",
     "browserCompability": "Utangamano wa kivinjari",
     "browserMinVersion": "Toleo la chini",
-    "browserDetected": "Kivinjari kimegunduliwa: toleo",
+    "browserDetected": "Kivinjari kimegunduliwa: {{browser}} toleo {{version}}",
     "browserCompatibility": "Utangamano wa kivinjari",
     "minimumVersionBrowserCompatibility": "Toleo la kiwango cha chini"
 }
