@@ -505,3 +505,9 @@ export async function getAccessedPages(): Promise<string[]> {
 export async function setAccessedPages(pages: string[]) {
   await localStorage.setItem("accessedPages", JSON.stringify(pages.slice(0, 2)));
 }
+
+export function decodeURI(encodedURI: string | null | undefined) {
+  if (!encodedURI) return encodedURI;
+
+  return decodeURIComponent(encodedURI);
+}
