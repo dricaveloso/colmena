@@ -15,8 +15,9 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
-import { getFileContents, putFile } from "@/services/webdav/files";
+import { existFile, getFileContents, putFile } from "@/services/webdav/files";
 import { toast } from "@/utils/notifications";
+import { getAccessedPages } from "@/utils/utils";
 
 const importJodit = () => import("jodit-react");
 const JoditEditor = dynamic(importJodit, {
@@ -54,7 +55,8 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 const TextEditor = () => {
   const classes = useStyles();
   const [content, setContent] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [lastPath, setLastPath] = useState<string>("");
   const { t: c } = useTranslation("common");
   const { t: l } = useTranslation("library");
   const router = useRouter();
@@ -62,36 +64,62 @@ const TextEditor = () => {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const filename = `private/${id}.md`;
 
-  const updateText = async () => {
+  const createFileText = async () => {
+    const finalFilename = `private/${id}.md`;
     try {
+      await putFile(userRdx.user.id, finalFilename, content);
+    } catch (error) {
+      toast(error.message, "error");
+    }
+  };
+
+  const save = async () => {
+    try {
+      setIsLoading(true);
+      await createFileText();
       await putFile(userRdx.user.id, filename, content);
       toast(c("messages.fileSaveSuccessfully"), "success");
     } catch (error) {
       toast(c("genericErrorMessage"), "error");
       console.log(error);
+    } finally {
+      setIsLoading(false);
+      router.push(lastPath);
     }
   };
 
   const getContent = async () => getFileContents(userRdx.user.id, filename);
-  const setInitialData = async () => {
-    let newData;
 
-    try {
-      const result: any = await getContent();
-      const bufferValue = await result.data;
-      newData = bufferValue;
-      const buffer = Buffer.from(newData, "utf8");
-      setContent(buffer.toString());
-    } catch (error) {
-      console.log(error);
-      toast(c("genericErrorMessage"), "error");
+  const setInitialData = async () => {
+    const exists = await existFile(userRdx.user.id, `private/${id}.md`);
+    if (exists) {
+      let newData;
+      try {
+        const result: any = await getContent();
+        const bufferValue = await result.data;
+        newData = bufferValue;
+        const buffer = Buffer.from(newData, "utf8");
+        setContent(buffer.toString());
+      } catch (error) {
+        console.log(error);
+        toast(c("genericErrorMessage"), "error");
+      }
+    } else {
+      setContent("");
     }
+  };
+
+  const getLastPath = async () => {
+    const accessedPages = await getAccessedPages();
+    setLastPath(accessedPages[1]);
   };
 
   useEffect(() => {
     let isMounted = true;
+
     if (isMounted) {
       setInitialData();
+      getLastPath();
     }
     return () => {
       isMounted = false;
@@ -115,11 +143,18 @@ const TextEditor = () => {
             onBlur={(newContent) => setContent(newContent)}
           />
         </Grid>
-        <Grid container justifyContent="flex-end" className={classes.gridButton}>
+        <Grid container justifyContent="space-between" className={classes.gridButton}>
+          <Button
+            variant={ButtonVariantEnum.OUTLINED}
+            title={l("cancel")}
+            handleClick={() => router.back()}
+          />
           <Button
             variant={ButtonVariantEnum.CONTAINED}
             title={l("saveButton")}
-            handleClick={() => updateText()}
+            handleClick={() => save()}
+            disabled={isLoading}
+            isLoading={isLoading}
           />
         </Grid>
       </FlexBox>

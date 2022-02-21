@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@/components/ui/Modal";
 import TextField from "@material-ui/core/TextField";
 import Button from "@/components/ui/Button";
-import { PropsUserSelector } from "@/types/index";
-import { useSelector } from "react-redux";
+// import { PropsUserSelector } from "@/types/index";
+// import { useSelector } from "react-redux";
 import { Formik, Form, Field, FieldProps, ErrorMessage } from "formik";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
@@ -16,7 +16,6 @@ import router from "next/router";
 import { Box } from "@material-ui/core";
 import { ButtonVariantEnum, ButtonColorEnum } from "@/enums/*";
 import ActionConfirm from "../../ActionConfirm";
-import { putFile } from "@/services/webdav/files";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -42,8 +41,6 @@ interface IForm {
 
 export default function NewEditorModal({ open, handleClose }: Props) {
   const { t } = useTranslation("common");
-  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const userId = userRdx.user.id;
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
@@ -53,26 +50,11 @@ export default function NewEditorModal({ open, handleClose }: Props) {
   };
 
   const createFileText = async (values: IForm) => {
-    const timer = 5000;
-
-    const { filename } = values;
-    const finalFilename = `private/${filename}.md`;
     setIsLoading(true);
-
-    try {
-      await putFile(userId, finalFilename, "", {
-        username: userRdx.user.id,
-        password: userRdx.user.password,
-      });
-      setShowConfirmCancel(false);
-
+    const { filename } = values;
+    setTimeout(() => {
       router.push(`/text-editor/${removeFirstSlash(filename)}`);
-    } catch (error) {
-      toast(error.message, "error");
-    } finally {
-      setIsLoading(false);
-      toast(t("messages.fileCreatedSuccessfully"), "success", { timer });
-    }
+    }, 2000);
   };
 
   // eslint-disable-next-line no-unused-vars
