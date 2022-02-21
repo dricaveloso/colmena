@@ -84,18 +84,18 @@ function AppTab({ page }: Props) {
         </Grid>
         <Grid item xs={2}>
           <IconButton
-            icon="library"
-            url="/library"
-            fontSizeIcon={iconSize}
-            iconColor={handleMenuColor("library")}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <IconButton
             icon="panal"
             fontSizeIcon={iconSize}
             url="/honeycomb"
             iconColor={handleMenuColor("honeycomb")}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <IconButton
+            icon="library"
+            url="/library"
+            fontSizeIcon={iconSize}
+            iconColor={handleMenuColor("library")}
           />
         </Grid>
         <Grid item xs={2}>
