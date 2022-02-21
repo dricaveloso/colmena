@@ -11,9 +11,14 @@
   },
   "messages": {
     "descriptionSuccessfullyUpdated": "Description has been updated.",
+    "titleSuccessfullyUpdated": "Title has been updated.",
     "tagsSuccessfullyCreated": "Tags has been created",
     "fileNotFound": "File not found"
   },
-  "editDescription": "Edit Description",
-  "createTag": "Create Tag"
+  "title": "Title",
+  "editTitle": "Edit title",
+  "editDescription": "Edit description",
+  "createTag": "Create tag",
+  "addFileDescription": "Add file description",
+  "addTitle": "Add a title"
 }

@@ -17,6 +17,7 @@ import {
   getExtensionFilename,
   dateDescription,
   formatBytes,
+  decodeURI,
 } from "@/utils/utils";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { arrayBufferToBlob, blobToArrayBuffer, createObjectURL } from "blob-util";
@@ -299,7 +300,7 @@ const itemPayload = (
   item: DAVResultResponse,
   timeDescription: TimeDescriptionInterface,
 ) => {
-  const filename = decodeURI(removeCornerSlash(item.href.replace(/^.+?\/.+?(\/|$)/, "")));
+  const filename = decodeURIComponent(removeCornerSlash(item.href.replace(/^.+?\/.+?(\/|$)/, "")));
   const basename = removeCornerSlash(filename.replace(/^.*\/(.*)$/, "$1"));
   const aliasFilename = convertPrivateToUsername(filename, userId);
   const prop = item.propstat.prop as DAVResultResponseProps | any;
@@ -340,8 +341,8 @@ const itemPayload = (
     ownerId: typeof prop["owner-id"] !== "undefined" ? prop["owner-id"] : null,
     ownerName:
       typeof prop["owner-display-name"] !== "undefined" ? prop["owner-display-name"] : null,
-    title: prop?.customtitle,
-    description: prop?.customdescription,
+    title: decodeURI(prop?.customtitle) || undefined,
+    description: decodeURI(prop?.customdescription) || undefined,
     language: prop?.language,
   };
 
