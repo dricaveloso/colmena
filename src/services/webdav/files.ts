@@ -25,7 +25,12 @@ import davAxiosConnection from "@/services/webdav/axiosConnection";
 import axiosBase from "@/services/webdav/axiosBase";
 import getConfig from "next/config";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
-import { convertPrivateToUsername, getPrivatePath, getTalkPath } from "@/utils/directory";
+import {
+  convertPrivateToUsername,
+  getPrivatePath,
+  getPublicPath,
+  getTalkPath,
+} from "@/utils/directory";
 import { EnvironmentEnum } from "@/enums/*";
 import { TFunction } from "next-i18next";
 
@@ -369,8 +374,17 @@ const handleItems = (
     .map((item: LibraryItemInterface) => {
       const newItem = item;
       const { type, filename } = newItem;
-      if (type === "directory" && removeCornerSlash(filename) === getTalkPath()) {
-        newItem.basename = libraryTranslation("talkFolderName");
+      if (type === "directory") {
+        switch (removeCornerSlash(filename)) {
+          case getTalkPath():
+            newItem.basename = libraryTranslation("talkFolderName");
+            break;
+          case getPublicPath():
+            newItem.basename = libraryTranslation("publicFolderName");
+            break;
+          default:
+            break;
+        }
       }
 
       if (filename === "") {
@@ -383,10 +397,17 @@ const handleItems = (
 
       return newItem;
     })
-    .filter(
-      (item: LibraryItemInterface, index) =>
-        index > 0 && item.basename !== "" && item.basename[0] !== ".",
-    );
+    .filter(({ basename, type, filename }: LibraryItemInterface, index) => {
+      if (index === 0 || basename === "" || basename[0] === ".") {
+        return false;
+      }
+
+      if (type === "directory" && removeCornerSlash(filename) === getPublicPath()) {
+        return false;
+      }
+
+      return true;
+    });
 
   const isRoot = path === "/" || path === "";
   if (isRoot) {
