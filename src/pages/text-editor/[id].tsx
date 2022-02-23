@@ -26,9 +26,6 @@ const JoditEditor = dynamic(importJodit, {
 
 const useStyles = makeStyles(() =>
   createStyles({
-    gridContainer: {
-      height: "70%",
-    },
     editor: {
       width: "100%",
       height: "80%",
@@ -74,17 +71,18 @@ const TextEditor = () => {
   };
 
   const save = async () => {
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
       await createFileText();
       await putFile(userRdx.user.id, filename, content);
       toast(c("messages.fileSaveSuccessfully"), "success");
+      router.push(lastPath);
     } catch (error) {
       toast(c("genericErrorMessage"), "error");
       console.log(error);
     } finally {
       setIsLoading(false);
-      router.push(lastPath);
     }
   };
 
@@ -134,11 +132,43 @@ const TextEditor = () => {
           marginBottom: "10px",
         }}
       >
-        <Grid container className={classes.gridContainer}>
+        <Grid container>
           <JoditEditor
             value={content}
             config={{
               readonly: false,
+              toolbarAdaptive: false,
+              toolbarButtonSize: "small",
+              minWidth: "100%",
+              buttons: [
+                "|",
+                "italic",
+                "bold",
+                "|",
+                "ul",
+                "ol",
+                "|",
+                "fontsize",
+                "brush",
+                "paragraph",
+                "|",
+                "table",
+                "link",
+                "undo",
+                "redo",
+                "eraser",
+                "fullsize",
+              ],
+              removeButtons: [
+                "fullsize",
+                "file",
+                "link",
+                "image",
+                "brush",
+                "table",
+                "font",
+                "eraser",
+              ],
             }}
             onBlur={(newContent) => setContent(newContent)}
           />
