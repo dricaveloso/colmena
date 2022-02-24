@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { PropsRecordingSelector } from "@/types/*";
 import IconButton from "@/components/ui/IconButton";
@@ -8,6 +8,8 @@ import Box from "@material-ui/core/Box";
 import theme from "@/styles/theme";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
+import { getAudioStream } from "@/components/pages/recording/AudioRecorder";
+import { getMicrophonePermission } from "@/utils/utils";
 
 type Props = {
   handleStop: () => void;
@@ -18,10 +20,19 @@ type Props = {
 export default function AudioControls({ handleStop, handleStart, handlePause }: Props) {
   const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
+  const [recordButtonActive, setRecordButtonActive] = useState("yes");
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
   const state = recordingRdx.activeRecordingState;
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const micPer = await getMicrophonePermission();
+      console.log(micPer);
+      setRecordButtonActive(micPer);
+    }, 1000);
+  }, []);
 
   const _handleStart = () => {
     if (state !== "START") {
@@ -30,8 +41,19 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
     }
   };
 
+  const handleStartIntern = async () => {
+    const micPermission = await getMicrophonePermission();
+    if (micPermission === "no") {
+      const res = await getAudioStream();
+      if (res) {
+        _handleStart();
+      }
+    } else {
+      _handleStart();
+    }
+  };
+
   const _handleStart2 = () => {
-    // dispatch(updatePlayingAudioPreview(true));
     toast(c("featureUnavailable"), "warning");
   };
 
@@ -49,6 +71,14 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
     }
   };
 
+  const iconButtonStyle = {
+    fontSize: 50,
+  };
+  const iconButtonRecordStyle = {
+    fontSize: 70,
+    marginBottom: 30,
+  };
+
   return (
     <Box
       display="flex"
@@ -63,7 +93,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
           icon="play_outlined"
           iconColor={state === "START" ? theme.palette.variation5.light : "#fff"}
           disabled={state === "START"}
-          iconStyle={{ fontSize: 50 }}
+          iconStyle={iconButtonStyle}
           handleClick={_handleStart2}
         />
       )}
@@ -71,25 +101,18 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
       {["NONE", "START", "PAUSE"].includes(state) && (
         <IconButton
           icon="record_outlined"
-          iconStyle={{ fontSize: 70, marginBottom: 30 }}
-          handleClick={state === "START" ? _handlePause : _handleStart}
+          iconColor={recordButtonActive === "no" ? "gray" : "#F65B3A"}
+          disabled={recordButtonActive === "no"}
+          iconStyle={iconButtonRecordStyle}
+          handleClick={state === "START" ? _handlePause : handleStartIntern}
         />
       )}
-
-      {/* {["START", "PAUSE"].includes(state) && (
-        <IconButton
-          icon="pause_outlined"
-          iconColor={state === "PAUSE" ? theme.palette.variation5.light : "#fff"}
-          iconStyle={{ fontSize: 70, marginBottom: 30 }}
-          handleClick={_handlePause}
-        />
-      )} */}
 
       {["START", "PAUSE"].includes(state) && (
         <IconButton
           icon="stop_outlined"
           iconColor="#fff"
-          iconStyle={{ fontSize: 50 }}
+          iconStyle={iconButtonStyle}
           handleClick={_handleStop}
         />
       )}

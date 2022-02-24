@@ -505,3 +505,15 @@ export async function getAccessedPages(): Promise<string[]> {
 export async function setAccessedPages(pages: string[]) {
   await localStorage.setItem("accessedPages", JSON.stringify(pages.slice(0, 2)));
 }
+
+export async function getMicrophonePermission(): Promise<string> {
+  const permission = await localStorage.getItem("micPermission");
+
+  if (!permission) return "yes";
+
+  return permission;
+}
+
+export async function setMicrophonePermission(permission: "yes" | "no") {
+  await localStorage.setItem("micPermission", permission);
+}

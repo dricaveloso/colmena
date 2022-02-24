@@ -16,7 +16,7 @@ import {
   DefaultAudioTypeEnum,
   DirectoryNamesNCEnum,
 } from "@/enums/index";
-import AudioRecorder from "@/components/pages/recording/AudioRecorder";
+import AudioRecorder, { getAudioStream } from "@/components/pages/recording/AudioRecorder";
 import DialogExtraInfoAudio from "@/components/pages/recording/DialogExtraInfoAudio";
 import Timer from "@/components/pages/recording/Timer";
 import Divider from "@/components/ui/Divider";
@@ -57,6 +57,7 @@ import {
   getBackAfterFinishRecording,
   setBackAfterFinishRecording,
   getAccessedPages,
+  getMicrophonePermission,
 } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
@@ -98,14 +99,7 @@ function Recording() {
   const language = cookies.NEXT_LOCALE || "en";
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const dispatch = useDispatch();
-
-  async function getAudioStream() {
-    try {
-      return await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (e) {
-      return null;
-    }
-  }
+  const [micPermission, setMicPermission] = useState("yes");
 
   async function askForAudioPermission() {
     const stream = await getAudioStream();
@@ -117,8 +111,11 @@ function Recording() {
   useEffect(() => {
     dispatch(updateRecordingState("NONE"));
     setBackAfterFinishRecording("no");
-
-    askForAudioPermission();
+    (async () => {
+      await askForAudioPermission();
+      const micPer = await getMicrophonePermission();
+      setMicPermission(micPer);
+    })();
   }, []);
 
   const handleCloseExtraInfo = async (event: any, reason: string) => {
@@ -355,7 +352,11 @@ function Recording() {
         justifyContent={JustifyContentEnum.SPACEBETWEEN}
         alignItems={AlignItemsEnum.CENTER}
       >
-        <AudioRecorder onStopRecording={onStopRecording} tempFileName={tempFileName} />
+        <AudioRecorder
+          onStopRecording={onStopRecording}
+          tempFileName={tempFileName}
+          micPermission={micPermission}
+        />
         <Divider marginTop={25} />
         <Timer />
         {openDialogAudioName && (

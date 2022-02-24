@@ -17,7 +17,7 @@ import {
 } from "@/types/index";
 import { useSelector } from "react-redux";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme, makeStyles, Theme } from "@material-ui/core/styles";
 import { useTranslation } from "next-i18next";
 import IconButton from "@/components/ui/IconButton";
 import Button from "@/components/ui/Button";
@@ -29,19 +29,54 @@ import theme from "@/styles/theme";
 import { format } from "date-fns";
 import { convertPrivateToUsername, getPrivatePath } from "@/utils/directory";
 import Waves from "@/components/pages/file/AudioWave/Waves";
-import { getAccessedPages } from "@/utils/utils";
+import { getAccessedPages, setMicrophonePermission } from "@/utils/utils";
+import SvgIcon from "@/components/ui/SvgIcon";
+
+const useStyles = makeStyles((theme: Theme) => ({
+  permissionInformation: {
+    color: theme.palette.variation3.light,
+    fontSize: 16,
+    width: "100%",
+  },
+  recordingStateTitle: {
+    color: theme.palette.variation7.light,
+    fontSize: 16,
+    width: "100%",
+  },
+  boxInformationPermission: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  boxHeaderInformation: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+  },
+}));
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
   tempFileName: string;
+  micPermission?: string;
 };
 
-// type StyleProps = {
-//   width: string;
-//   height: string;
-// };
+export async function getAudioStream() {
+  try {
+    const res = await navigator.mediaDevices.getUserMedia({ audio: true });
+    await setMicrophonePermission("yes");
+    return res;
+  } catch (e) {
+    await setMicrophonePermission("no");
+    return null;
+  }
+}
 
-function AudioRecorder({ onStopRecording, tempFileName }: Props) {
+function AudioRecorder({ onStopRecording, tempFileName, micPermission = "yes" }: Props) {
+  const classes = useStyles();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
   const { t } = useTranslation("recording");
@@ -148,14 +183,6 @@ function AudioRecorder({ onStopRecording, tempFileName }: Props) {
     init(state);
   }, [state]);
 
-  async function getAudioStream() {
-    try {
-      return await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (e) {
-      return null;
-    }
-  }
-
   const getInformationRecordingState = () => {
     switch (recordingRdx.activeRecordingState) {
       case "NONE":
@@ -222,13 +249,19 @@ function AudioRecorder({ onStopRecording, tempFileName }: Props) {
 
   return (
     <>
-      <Box>
-        <Text
-          variant={TextVariantEnum.CAPTION}
-          style={{ color: theme.palette.variation7.light, fontSize: 16, width: "100%" }}
-        >
-          {getInformationRecordingState()}
-        </Text>
+      <Box className={classes.boxHeaderInformation}>
+        {micPermission === "yes" ? (
+          <Text variant={TextVariantEnum.CAPTION} className={classes.recordingStateTitle}>
+            {getInformationRecordingState()}
+          </Text>
+        ) : (
+          <Box className={classes.boxInformationPermission}>
+            <SvgIcon icon="warning" htmlColor={theme.palette.variation3.light} />
+            <Text variant={TextVariantEnum.CAPTION} className={classes.permissionInformation}>
+              To start a recording, you need to allow the use of the microphone in the browser.
+            </Text>
+          </Box>
+        )}
       </Box>
       <Box
         width="100%"
