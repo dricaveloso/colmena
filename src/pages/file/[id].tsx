@@ -18,7 +18,7 @@ import IconButton from "@/components/ui/IconButton";
 import { toast } from "@/utils/notifications";
 import { getPath } from "@/utils/directory";
 import theme from "@/styles/theme";
-import { Grid } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import Avatar from "@/components/ui/Avatar";
 import Typography from "@material-ui/core/Typography";
 import TagsSection from "@/components/pages/file/Sections/Tags";
@@ -40,7 +40,19 @@ export const getStaticPaths: GetStaticPaths = async () => ({
   fallback: "blocking",
 });
 
+const useStyles = makeStyles((theme) => ({
+  customHeader: {
+    backgroundColor: theme.palette.primary.main,
+    height: 140,
+    display: "flex",
+    padding: "0 16px",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+}));
+
 function File() {
+  const classes = useStyles();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
   const { id } = router.query;
@@ -81,7 +93,6 @@ function File() {
 
     const item = mergeEnvItems(localItem, remoteItem);
     if (item) {
-      console.log(item);
       setData(item);
       setLoading(false);
     } else {
@@ -134,19 +145,8 @@ function File() {
           extraStyle={{ padding: 0, margin: 0 }}
         >
           <Box width="100%">
-            <div
-              style={{
-                backgroundColor: theme.palette.primary.main,
-                height: "140px",
-                display: "flex",
-                padding: "0 16px",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <div>
-                <Avatar size={10} borderRadius="8px!important" />
-              </div>
+            <Box className={classes.customHeader}>
+              <Avatar size={10} borderRadius="8px!important" />
               <Grid container alignItems="baseline" direction="column">
                 <Typography
                   style={{
@@ -166,7 +166,7 @@ function File() {
                   style={{ minWidth: 25, marginLeft: "4px", marginTop: "8px" }}
                 />
               </Grid>
-            </div>
+            </Box>
             <FileSection data={data} setData={setData} loading={loading} />
             <DescriptionSection data={data} setData={setData} loading={loading} />
             {data.environment !== EnvironmentEnum.LOCAL && <TagsSection data={data} />}

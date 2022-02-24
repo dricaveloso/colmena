@@ -301,7 +301,16 @@ export type AllIconProps =
   | "banner_4"
   | "gradient_plus"
   | "delete"
-  | "sync";
+  | "stop_flat"
+  | "forward"
+  | "rewind"
+  | "zoomin"
+  | "zoomout"
+  | "sync"
+  | "cursor_select"
+  | "audio_shift"
+  | "save"
+  | "audio_settings";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 

@@ -3,7 +3,7 @@ import React from "react";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import GlobalLayout from "@/components/layout/GlobalLayout";
+import GlobalLayout from "@/components/ui/GlobalLayout";
 import { appWithTranslation } from "next-i18next";
 import type { AppProps } from "next/app";
 import theme from "@/styles/theme";
@@ -14,6 +14,7 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as NextAuthProvider } from "next-auth/client";
 import CenterProgress from "@/components/ui/CenterProgress";
+import "waveform-playlist/styles/playlist.css";
 import "@/styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {

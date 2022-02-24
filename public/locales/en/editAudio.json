@@ -1,6 +1,13 @@
-{ 
-  "title": "Edit recording", 
-  "description": "Program name and metadata", 
-  "textEditButton": "Edit", 
-  "textShareButton": "Share" 
-} 
+{
+  "title": "Audio editor",
+  "rotateYourDeviceTitle": "For a better experience, please rotate your device.",
+  "contextOptions": {
+    "zoomInTitle": "Zoom in",
+    "zoomOutTitle": "Zoom out",
+    "shiftAudioTitle": "Shift audio in time",
+    "cutAudioRegionTitle": "Cut an audio region",
+    "selectAudioRegionTitle": "Select audio region",
+    "saveTitle": "Save",
+    "downloadTitle": "Download"
+  }
+}
