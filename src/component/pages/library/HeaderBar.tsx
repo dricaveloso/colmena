@@ -8,7 +8,7 @@ import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import { AllIconProps } from "@/types/index";
 import TemporaryFiltersDrawer from "./FiltersDrawer";
-import { getTalkPath, isRootPath } from "@/utils/directory";
+import { getPublicPath, getTalkPath, isRootPath } from "@/utils/directory";
 import { useDispatch } from "react-redux";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 import { toast } from "@/utils/notifications";
@@ -110,6 +110,8 @@ function HeaderBar({
       const newItem = item;
       if (newItem.path === `/library/${getTalkPath()}`) {
         newItem.description = t("talkFolderName");
+      } else if (newItem.path === `/library/${getPublicPath()}`) {
+        newItem.description = t("publicFolderName");
       }
 
       return newItem;

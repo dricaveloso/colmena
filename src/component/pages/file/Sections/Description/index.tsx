@@ -22,7 +22,7 @@ export default function DescriptionSection({ data, setData, loading }: Props) {
   };
 
   const description = useMemo(() => {
-    if (data) {
+    if (data.description) {
       return <ListItemText id="description-item" primary={data.description} />;
     }
 
@@ -30,10 +30,10 @@ export default function DescriptionSection({ data, setData, loading }: Props) {
       <ListItemText
         id="description-item"
         primaryTypographyProps={{ style: { color: "gray" } }}
-        primary="Update file description"
+        primary={t("addFileDescription")}
       />
     );
-  }, [data]);
+  }, [data.description, t]);
 
   return (
     <>

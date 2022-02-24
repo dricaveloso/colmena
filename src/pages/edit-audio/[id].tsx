@@ -27,8 +27,8 @@ import { MemoizedPlaylist } from "@/components/pages/edit-audio/WaveformPlaylist
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Backdrop from "@/components/ui/Backdrop";
 import EventEmitter from "events";
-import ContextMenu from "@/components/pages/edit-audio/ContextMenu";
-import HeaderControls from "@/components/pages/edit-audio/HeaderControls";
+import HeaderPortraitControls from "@/components/pages/edit-audio/HeaderPortraitControls";
+import HeaderLandscapeControls from "@/components/pages/edit-audio/HeaderLandscapeControls";
 
 const useStyles = makeStyles((theme: Theme) => ({
   frameWaveform: {
@@ -164,7 +164,6 @@ function EditAudio() {
   };
 
   const handleSelectAudioRegion = (type: string) => {
-    console.log(type);
     ee.emit("statechange", type);
   };
 
@@ -178,13 +177,13 @@ function EditAudio() {
       drawer={false}
       extraElement={
         isPortraitView ? (
-          <ContextMenu
+          <HeaderPortraitControls
             handleZoomIn={handleZoomIn}
             handleZoomOut={handleZoomOut}
             handleSelectAudioRegion={handleSelectAudioRegion}
           />
         ) : (
-          <HeaderControls
+          <HeaderLandscapeControls
             handleZoomIn={handleZoomIn}
             handleZoomOut={handleZoomOut}
             handleSelectAudioRegion={handleSelectAudioRegion}

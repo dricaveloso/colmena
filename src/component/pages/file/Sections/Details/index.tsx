@@ -15,7 +15,6 @@ export default function DetailsSection({ data }: Props) {
   return (
     <Accordion
       style={{
-        marginTop: "16px",
         boxShadow: "none",
       }}
     >
