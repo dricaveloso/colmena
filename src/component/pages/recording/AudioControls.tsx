@@ -8,7 +8,6 @@ import Box from "@material-ui/core/Box";
 import theme from "@/styles/theme";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
-import { getAudioStream } from "@/components/pages/recording/AudioRecorder";
 import { getMicrophonePermission } from "@/utils/utils";
 
 type Props = {
@@ -20,7 +19,7 @@ type Props = {
 export default function AudioControls({ handleStop, handleStart, handlePause }: Props) {
   const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
-  const [recordButtonActive, setRecordButtonActive] = useState("yes");
+  const [recordButtonActive, setRecordButtonActive] = useState("no");
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
@@ -29,7 +28,6 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
   useEffect(() => {
     setTimeout(async () => {
       const micPer = await getMicrophonePermission();
-      console.log(micPer);
       setRecordButtonActive(micPer);
     }, 1000);
   }, []);
@@ -43,12 +41,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
 
   const handleStartIntern = async () => {
     const micPermission = await getMicrophonePermission();
-    if (micPermission === "no") {
-      const res = await getAudioStream();
-      if (res) {
-        _handleStart();
-      }
-    } else {
+    if (micPermission === "yes") {
       _handleStart();
     }
   };
@@ -101,7 +94,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
       {["NONE", "START", "PAUSE"].includes(state) && (
         <IconButton
           icon="record_outlined"
-          iconColor={recordButtonActive === "no" ? "gray" : "#F65B3A"}
+          iconColor="#F65B3A"
           disabled={recordButtonActive === "no"}
           iconStyle={iconButtonRecordStyle}
           handleClick={state === "START" ? _handlePause : handleStartIntern}
