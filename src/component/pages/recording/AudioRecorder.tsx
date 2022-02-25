@@ -67,10 +67,10 @@ type Props = {
 export async function getAudioStream() {
   try {
     const res = await navigator.mediaDevices.getUserMedia({ audio: true });
-    await setMicrophonePermission("yes");
+    // await setMicrophonePermission("yes");
     return res;
   } catch (e) {
-    await setMicrophonePermission("no");
+    // await setMicrophonePermission("no");
     return null;
   }
 }
@@ -111,6 +111,8 @@ function AudioRecorder({ onStopRecording, tempFileName, micPermission = "yes" }:
       setAudioStream(stream);
       setMediaRcdr(mediaRecorder);
     }
+
+    console.log(mediaRecorder);
 
     const chunks: any[] = [];
     mediaRecorder.ondataavailable = ({ data }) => {

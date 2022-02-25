@@ -21,6 +21,8 @@ export default function VUMeter({ stream, removeCanvas = false, width, height }:
     return canvas;
   }
 
+  console.log("stream", stream);
+
   const init = useCallback(() => {
     if (removeCanvas) {
       const canvas = document.getElementById("canvas");
