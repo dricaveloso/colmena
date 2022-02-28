@@ -149,5 +149,6 @@
   "bannerMessage2": "Designed to work in areas of low connectivity.",
   "bannerMessage3": "Record, edit and publish audio from your cell phone with multiple people in recording rooms.",
   "bannerMessage4": "Save your files with our specialized cloud service for media.",
-  "doneMessage": "Done!"
+  "doneMessage": "Done!",
+  "microphonePermissionTitle": "You need to allow the use of the microphone"
 }

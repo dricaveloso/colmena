@@ -36,6 +36,8 @@ export default function Waves({ blob = null, config = undefined, play = false }:
   const wavesurfer: WavesurferInterface | any = useRef(null);
   const dispatch = useDispatch();
 
+  console.log("Waves", blob);
+
   const formWaveSurferOptions = (ref: any) => ({
     container: ref,
     waveColor: "#eee",

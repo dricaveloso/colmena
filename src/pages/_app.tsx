@@ -14,6 +14,7 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as NextAuthProvider } from "next-auth/client";
 import CenterProgress from "@/components/ui/CenterProgress";
+import { verifyIndexedDBBrowserEnable } from "@/utils/utils";
 import "@/styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -23,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   React.useEffect(() => {
+    verifyIndexedDBBrowserEnable();
     const jssStyles: Element | null = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentElement) {
       jssStyles.parentElement.removeChild(jssStyles);

@@ -506,6 +506,40 @@ export async function setAccessedPages(pages: string[]) {
   await localStorage.setItem("accessedPages", JSON.stringify(pages.slice(0, 2)));
 }
 
+export async function getMicrophonePermission(): Promise<string> {
+  const permission = await localStorage.getItem("micPermission");
+
+  if (!permission) return "yes";
+
+  return permission;
+}
+
+export async function setMicrophonePermission(permission: "yes" | "no") {
+  await localStorage.setItem("micPermission", permission);
+}
+
+export async function setIDBEnable(enable: "yes" | "no") {
+  await localStorage.setItem("idbEnable", enable);
+}
+
+export async function getIDBEnable(): Promise<string> {
+  const res = await localStorage.getItem("idbEnable");
+
+  if (!res) return "no";
+
+  return res;
+}
+
+export function verifyIndexedDBBrowserEnable() {
+  const db = indexedDB.open("colmenaDatabase");
+  db.onerror = async () => {
+    await setIDBEnable("no");
+  };
+  db.onsuccess = async () => {
+    await setIDBEnable("yes");
+  };
+}
+
 export function decodeURI(encodedURI: string | null | undefined) {
   if (!encodedURI) return encodedURI;
 
