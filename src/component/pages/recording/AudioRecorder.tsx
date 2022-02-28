@@ -50,32 +50,32 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: "flex-start",
     alignItems: "center",
   },
-  boxHeaderInformation: {
-    display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-  },
 }));
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
   tempFileName: string;
   micPermission?: string;
+  idbEnable?: string;
 };
 
 export async function getAudioStream() {
   try {
     const res = await navigator.mediaDevices.getUserMedia({ audio: true });
-    // await setMicrophonePermission("yes");
+    await setMicrophonePermission("yes");
     return res;
   } catch (e) {
-    // await setMicrophonePermission("no");
+    await setMicrophonePermission("no");
     return null;
   }
 }
 
-function AudioRecorder({ onStopRecording, tempFileName, micPermission = "yes" }: Props) {
+function AudioRecorder({
+  onStopRecording,
+  tempFileName,
+  micPermission = "yes",
+  idbEnable = "yes",
+}: Props) {
   const classes = useStyles();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
@@ -111,8 +111,6 @@ function AudioRecorder({ onStopRecording, tempFileName, micPermission = "yes" }:
       setAudioStream(stream);
       setMediaRcdr(mediaRecorder);
     }
-
-    console.log(mediaRecorder);
 
     const chunks: any[] = [];
     mediaRecorder.ondataavailable = ({ data }) => {
@@ -249,22 +247,37 @@ function AudioRecorder({ onStopRecording, tempFileName, micPermission = "yes" }:
     return "flex-start";
   }
 
+  function displayHeaderInformation() {
+    if (micPermission === "no")
+      return (
+        <>
+          <SvgIcon icon="warning" htmlColor={theme.palette.variation3.light} />
+          <Text variant={TextVariantEnum.CAPTION} className={classes.permissionInformation}>
+            {t("micPermissionTitle")}
+          </Text>
+        </>
+      );
+
+    if (idbEnable === "no")
+      return (
+        <>
+          <SvgIcon icon="warning" htmlColor={theme.palette.variation3.light} />
+          <Text variant={TextVariantEnum.CAPTION} className={classes.permissionInformation}>
+            {t("idbEnableTitle")}
+          </Text>
+        </>
+      );
+
+    return (
+      <Text variant={TextVariantEnum.CAPTION} className={classes.recordingStateTitle}>
+        {getInformationRecordingState()}
+      </Text>
+    );
+  }
+
   return (
     <>
-      <Box className={classes.boxHeaderInformation}>
-        {micPermission === "yes" ? (
-          <Text variant={TextVariantEnum.CAPTION} className={classes.recordingStateTitle}>
-            {getInformationRecordingState()}
-          </Text>
-        ) : (
-          <Box className={classes.boxInformationPermission}>
-            <SvgIcon icon="warning" htmlColor={theme.palette.variation3.light} />
-            <Text variant={TextVariantEnum.CAPTION} className={classes.permissionInformation}>
-              To start a recording, you need to allow the use of the microphone in the browser.
-            </Text>
-          </Box>
-        )}
-      </Box>
+      <Box className={classes.boxInformationPermission}>{displayHeaderInformation()}</Box>
       <Box
         width="100%"
         display="flex"

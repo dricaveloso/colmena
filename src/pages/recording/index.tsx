@@ -58,6 +58,7 @@ import {
   setBackAfterFinishRecording,
   getAccessedPages,
   getMicrophonePermission,
+  getIDBEnable,
 } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
@@ -100,6 +101,7 @@ function Recording() {
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const dispatch = useDispatch();
   const [micPermission, setMicPermission] = useState("yes");
+  const [idbEnable, setIdbEnable] = useState("yes");
 
   async function askForAudioPermission() {
     const stream = await getAudioStream();
@@ -115,6 +117,8 @@ function Recording() {
       await askForAudioPermission();
       const micPer = await getMicrophonePermission();
       setMicPermission(micPer);
+      const idbEnable = await getIDBEnable();
+      setIdbEnable(idbEnable);
     })();
   }, []);
 
@@ -327,9 +331,13 @@ function Recording() {
       createdAt: new Date(),
       userId: userRdx.user.id,
     };
-    const audioId = await createFile(recording);
-    setAudioId(audioId);
-    dispatch(updateRecordingState("NONE"));
+    try {
+      const audioId = await createFile(recording);
+      setAudioId(audioId);
+      dispatch(updateRecordingState("NONE"));
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async function onStopRecording(audioData: PropsAudioData) {
@@ -356,6 +364,7 @@ function Recording() {
           onStopRecording={onStopRecording}
           tempFileName={tempFileName}
           micPermission={micPermission}
+          idbEnable={idbEnable}
         />
         <Divider marginTop={25} />
         <Timer />

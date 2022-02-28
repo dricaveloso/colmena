@@ -8,7 +8,7 @@ import Box from "@material-ui/core/Box";
 import theme from "@/styles/theme";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
-import { getMicrophonePermission } from "@/utils/utils";
+import { getMicrophonePermission, getIDBEnable } from "@/utils/utils";
 
 type Props = {
   handleStop: () => void;
@@ -41,7 +41,8 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
 
   const handleStartIntern = async () => {
     const micPermission = await getMicrophonePermission();
-    if (micPermission === "yes") {
+    const idbEnable = await getIDBEnable();
+    if (micPermission === "yes" && idbEnable === "yes") {
       _handleStart();
     }
   };
@@ -88,6 +89,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
           disabled={state === "START"}
           iconStyle={iconButtonStyle}
           handleClick={_handleStart2}
+          data-testid="play-button"
         />
       )}
 
@@ -98,6 +100,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
           disabled={recordButtonActive === "no"}
           iconStyle={iconButtonRecordStyle}
           handleClick={state === "START" ? _handlePause : handleStartIntern}
+          data-testid="record-and-pause-button"
         />
       )}
 
@@ -107,6 +110,7 @@ export default function AudioControls({ handleStop, handleStart, handlePause }: 
           iconColor="#fff"
           iconStyle={iconButtonStyle}
           handleClick={_handleStop}
+          data-testid="stop-button"
         />
       )}
     </Box>

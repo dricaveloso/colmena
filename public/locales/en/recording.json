@@ -26,5 +26,7 @@
     "newRecordingTitle": "New recording",
     "stopingTitle": "Recording stopped",
     "advancedOptionsTitle": "Advanced options",
-    "tagInformationTitle": "Separate with commas or with the Enter key"
+    "tagInformationTitle": "Separate with commas or with the Enter key",
+    "micPermissionTitle": "To start a recording, you need to allow the use of the microphone in the browser.",
+    "idbEnableTitle": "Local storage is not available in this browser, preventing recording from running."
 }
