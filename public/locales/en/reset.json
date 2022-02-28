@@ -1,6 +1,6 @@
 {
-    "titleCreated": "Create your password.",
-    "titleUpdated": "Updated Password",
+    "titleCreated": "Create your password",
+    "titleUpdated": "Password updated successfully",
     "errorMessagePassword": "Passwords do not match",
     "errorUpdatingPassword": "Unable to update your password",
     "errorCreatingPassword": "Unable to create your password",

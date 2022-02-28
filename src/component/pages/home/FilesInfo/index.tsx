@@ -66,7 +66,7 @@ const FilesInfoSection = () => {
           <a onClick={() => router.push("/library/Talk")}>
             <Item title={h("sharedLabel")} amount={sharedData.length} />
           </a>
-          <Item title={h("publicLabel")} amount={0} />
+          {/* <Item title={h("publicLabel")} amount={0} /> */}
         </Box>
       </Box>
     </Box>

@@ -20,5 +20,9 @@
     "uploadLocationTitle": "Pakia eneo",
     "changeUploadLocationTitle": "Mabadiliko",
     "availableWithoutInternetTitle": "Inapatikana nje ya mtandao",
-    "tagsRequiredTitle": "Angalau lebo moja inahitajika"
+    "tagsRequiredTitle": "Angalau lebo moja inahitajika",
+    "recordingTitle": "Kurekodi...",
+    "pausingTitle": "Kurekodi kumesitishwa",
+    "newRecordingTitle": "Rekodi mpya",
+    "stopingTitle": "Kurekodi kumesimamishwa"
 }

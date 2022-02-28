@@ -102,8 +102,8 @@ export function applyLocalItemInterface(file: any, timeDescription: TimeDescript
     fileId: file?.nextcloudId,
     language: file?.language,
     tags: [],
-    title: file?.title,
-    description: file?.description,
+    title: decodeURI(file?.title) || undefined,
+    description: decodeURI(file?.description) || undefined,
   };
 
   return item;

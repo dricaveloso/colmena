@@ -38,8 +38,8 @@
     },
     "messages": {
         "couldNotRemove": "Haikuweza kuondoka.",
-        "fileAlreadyExists": "Faili tayari ipo",
-        "cannotDownloadFile": "Haiwezi kupakua faili hii",
+        "fileAlreadyExists": "Faili tayari ipo.",
+        "cannotDownloadFile": "Haiwezi kupakua faili hii.",
         "unidentifiedEnvironment": "Mazingira yasiyojulikana.",
         "unableToCompleteRequest": "Imeshindwa kukamilisha ombi.",
         "directorySuccessfullyCopied": "Saraka imenakiliwa.",
@@ -51,7 +51,9 @@
         "directorySuccessfullyRenamed": "Saraka imepewa jina jipya.",
         "fileSuccessfullyRenamed": "Faili imebadilishwa jina tena.",
         "directorySuccessfullyRemoved": "Saraka imeondolewa.",
-        "fileSuccessfullyRemoved": "Faili imeondolewa kwa ufanisi."
+        "fileSuccessfullyRemoved": "Faili imeondolewa.",
+        "itemRenamingCanceledSuccessfully": "Kubadilisha jina kwa kipengee kumeghairiwa.",
+        "itemDuplicationCanceledSuccessfully": "Nakala ya kipengee imeghairiwa."
     },
     "renameTitle": "Badilisha jina",
     "saveButton": "Hifadhi",
@@ -72,10 +74,17 @@
         "fileId": "Kitambulisho cha faili",
         "tags": "Vitambulisho",
         "language": "Lugha",
-        "description": "Maelezo"
+        "description": "Maelezo",
+        "createdAt": "Imeundwa saa"
     },
     "downloading": "Kupakua",
     "synchronizing": "Kusawazisha",
     "cancel": "Ghairi",
-    "moveButton": "Songesha hapa"
+    "moveButton": "Songesha hapa",
+    "confirmCancelItemDuplication": "Unataka kughairi nakala ua kipengee?",
+    "confirmCancelItemRenaming": "Unataka kughairi kubadilisha jina la kipengee?",
+    "itemStatus": {
+        "availableOffline": "Inapatikana nje ya mtandao"
+    },
+    "talkFolderName": "Pamoja nami"
 }

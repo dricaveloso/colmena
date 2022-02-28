@@ -1,14 +1,15 @@
 {
-  "welcomeTitle": "Bienvenida/o",
-  "myFilesLabel": "Mis archivos",
-  "sharedLabel": "Compartidos",
-  "publicLabel": "Publicos",
-  "section2Title": "Ultimas publicaciones",
-  "section3Title": "Panales favoritos",
-  "section4Title": "Recientes",
-  "seeAllTitle": "ver todos",
-  "exampleHoneycombTitle": "Panal {{num}}",
-  "exampleFileTitle": "Archivo {{num}}",
-  "examplePostTitle": "Mostrar {{num}} Radio Boca de Pólen",
-  "examplePostSubtitle": "5 dias | 12mb"
+    "welcomeTitle": "Bienvenida/o",
+    "myFilesLabel": "Mis archivos",
+    "sharedLabel": "Compartidos",
+    "publicLabel": "Publicos",
+    "section2Title": "Ultimas publicaciones",
+    "section3Title": "Panales",
+    "section4Title": "Archivos recientes",
+    "seeAllTitle": "ver todos",
+    "exampleHoneycombTitle": "Panal {{num}}",
+    "exampleFileTitle": "Archivo {{num}}",
+    "examplePostTitle": "Mostrar {{num}} Radio Boca de Pólen",
+    "examplePostSubtitle": "5 dias | 12mb",
+    "greetingTitle": "Hola"
 }

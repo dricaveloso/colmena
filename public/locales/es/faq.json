@@ -3,16 +3,16 @@
     "subtitle": "12 preguntas frecuentes sobre Colmena",
     "faq": {
         "question1": "1 - ¿Qué es Colmena?",
-        "answer1": "Colmena es un software 100% libre y gratuito. Una aplicación de productividad segura para medios locales y comunitarios. Colmena es mantenido por REDES A.C. y DW Akademie",
+        "answer1": "Colmena es una caja de herramientas de comunicación colaborativos 100% gratuita y segura para los medios locales y comunitarios. Colmena es mantenido por REDES A.C. y DW Akademie.",
         "question2": "2 - ¿Cuáles son las tecnologías detrás de Colmena?",
         "answer2": "Es una solución de aplicación web progresiva (PWA) de software libre integrada para entornos móviles y de escritorio que funciona tanto en línea como sin conectividad a Internet.",
-        "question3": "3 - ¿Para quién está diseñado Colmena?",
-        "answer3": "Una herramienta segura, privada y gratuita para los medios locales, comunitarios y activistas de derechos humanos que promueven la igualdad de género, diversidad y comunicación de base.",
+        "question3": "3 - ¿Quiénes son los usuarios de Colmena?",
+        "answer3": "Medios de comunicación locales y comunitarios y activistas de los derechos humanos que promueven la igualdad de género, la diversidad y la comunicación de base que buscan una herramienta segura, privada y gratuita.",
         "question4": "4 – ¿Cómo puedo acceder a Colmena?",
         "answer4": "Para unirse a Colmena se debe solicitar una clave de acceso y es necesario aceptar el código de conducta/términos de uso basados en los derechos humanos digitales y la diversidad.",
-        "question5": "5 –  ¿Puedo tener mi propia instancia de Colmena?",
-        "answer5": "¡Sí, es un software libre! Puedes instalar Colmena en tu propio servidor y así tener tu propia instancia. Consulta la documentación.",
-        "question6": "¿Cuáles son las principales características de Colmena?",
+        "question5": "5 – ¿Puedo tener mi propia instancia de Colmena?",
+        "answer5": "¡Sí, es software libre! Puedes instalar Colmena en tu propio servidor y así tener tu propia instancia. Consulta la documentación.",
+        "question6": "6 - ¿Cuáles son las principales características de Colmena?",
         "answer6": "Es una aplicación de productividad para radios comunitarias. Reúne en una sola aplicación: grabación, edición, intercambio, entrevistas remotas, transmisión, reuniones de equipo, intercambio de archivos, colaboración remota, publicación y transmisión; diseñado para una amplia gama de dispositivos y totalmente funcional con baja o nula conectividad a Internet. Garantiza la sincronización segura de contenidos a la nube de colmena siempre que se disponga de conexión a Internet.",
         "question7": "7 - ¿Cuales son las herramientas de audio?",
         "answer7": "Los más importantes son la grabadora de audio, el editor y la transmisión en vivo, incluidas las conferencias de audio (con personas de sus medios o invitados externos).",
@@ -24,7 +24,7 @@
         "answer10": "50 GB por cada medio para compartir entre tu equipo. Si necesitas más capacidad, ¡escríbenos!",
         "question11": "11 – ¿Tiene Colmena una sección para publicar audios o noticias?",
         "answer11": "Sí, hay un área para publicaciones: audio, texto e imágenes. Una vez publicado, cualquiera puede compartir en redes sociales o tomar el código para incrustar el audio en su sitio web.  ",
-        "question12": "12 – ¿Qué tipo de licencia estará disponible?",
+        "question12": "12 - ¿Cuáles son los requisitos legales para compartir y publicar contenidos en Colmena? (¿Qué tipo de licencia está disponible?)",
         "answer12": "Por defecto, las publicaciones tienen una licencia Creative Commons BY-SA-NC. Pero podrá elegir otra licencia en cada publicación: tanto las demás licencias CC como la Licencia P2P."
     }
 }

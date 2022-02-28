@@ -1,4 +1,5 @@
 import FlexBox from "@/components/ui/FlexBox";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
@@ -26,19 +27,51 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
   },
 });
 
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    header: {
+      backgroundColor: theme.palette.primary.main,
+      width: "100%",
+    },
+    userName: {
+      color: theme.palette.primary.contrastText,
+      fontSize: 16,
+      margin: 0,
+      padding: 0,
+      textAlign: "center",
+      fontWeight: "bold",
+    },
+    mediaName: {
+      color: theme.palette.primary.light,
+      fontSize: 13,
+    },
+    avatar: {
+      backgroundColor: theme.palette.primary.main,
+      height: "60px",
+      width: "100%",
+      display: "flex",
+      justifyContent: "center",
+      paddingTop: "20px",
+    },
+    sliderQuota: {
+      marginLeft: 15,
+      paddingRight: 25,
+      marginTop: 20,
+      width: "100%",
+      marginBottom: "20px",
+    },
+  }),
+);
+
 function Home() {
+  const classes = useStyles();
   const { t } = useTranslation("home");
 
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   return (
     <LayoutApp title={t("welcomeTitle")}>
-      <div
-        style={{
-          backgroundColor: theme.palette.primary.main,
-          width: "100%",
-        }}
-      >
+      <Box className={classes.header}>
         <Box
           height={28}
           style={{
@@ -46,32 +79,15 @@ function Home() {
           }}
           width="100%"
         >
-          <Text
-            style={{
-              color: theme.palette.primary.light,
-              fontSize: 14,
-              margin: 0,
-              padding: 0,
-              textAlign: "center",
-            }}
-            variant={TextVariantEnum.CAPTION}
-          >
+          <Text className={classes.userName} variant={TextVariantEnum.CAPTION}>
             {t("greetingTitle")} {getFirstname(userRdx.user.name)}
           </Text>
+          <Text className={classes.mediaName}>{userRdx.user?.media?.name}</Text>
         </Box>
-        <div
-          style={{
-            backgroundColor: theme.palette.primary.main,
-            height: "60px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "10px",
-          }}
-        >
+        <Box className={classes.avatar}>
           <Avatar size={10} showEditImage />
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <FilesInfoSection />
@@ -79,17 +95,9 @@ function Home() {
         <Carousel />
         <RecentFiles />
         <HoneyCombsList />
-        <div
-          style={{
-            marginLeft: 15,
-            paddingRight: 25,
-            marginTop: 20,
-            width: "100%",
-            marginBottom: "20px",
-          }}
-        >
+        <Box className={classes.sliderQuota}>
           <SliderQuota />
-        </div>
+        </Box>
       </FlexBox>
     </LayoutApp>
   );

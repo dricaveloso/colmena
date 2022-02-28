@@ -539,3 +539,9 @@ export function verifyIndexedDBBrowserEnable() {
     await setIDBEnable("yes");
   };
 }
+
+export function decodeURI(encodedURI: string | null | undefined) {
+  if (!encodedURI) return encodedURI;
+
+  return decodeURIComponent(encodedURI);
+}

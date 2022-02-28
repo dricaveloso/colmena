@@ -17,17 +17,13 @@ import { getDataFile } from "@/services/webdav/files";
 import IconButton from "@/components/ui/IconButton";
 import { toast } from "@/utils/notifications";
 import { getPath } from "@/utils/directory";
-import theme from "@/styles/theme";
-import { Grid } from "@material-ui/core";
-import Avatar from "@/components/ui/Avatar";
-import Typography from "@material-ui/core/Typography";
 import TagsSection from "@/components/pages/file/Sections/Tags";
 import DescriptionSection from "@/components/pages/file/Sections/Description";
 import DetailsSection from "@/components/pages/file/Sections/Details";
-import DownloadModal from "@/components/pages/library/contextMenu/DownloadModal";
 import FileSection from "@/components/pages/file/Sections/File";
 import { applyLocalItemInterface, mergeEnvItems } from "@/components/pages/library";
 import { findByFilename } from "@/store/idb/models/files";
+import FileHeader from "@/components/pages/file/Header";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -46,7 +42,6 @@ function File() {
   const { id } = router.query;
   const [filename, setFilename] = useState<string | null>(null);
   const [data, setData] = useState<LibraryItemInterface>({} as LibraryItemInterface);
-  const [openDownloadModal, setOpenDownloadModal] = useState(false);
 
   const { t: c } = useTranslation("common");
   const { t } = useTranslation("file");
@@ -81,7 +76,6 @@ function File() {
 
     const item = mergeEnvItems(localItem, remoteItem);
     if (item) {
-      console.log(item);
       setData(item);
       setLoading(false);
     } else {
@@ -96,10 +90,6 @@ function File() {
     } else {
       router.push("/library");
     }
-  };
-
-  const handleOpenDownloadModal = (opt: boolean) => {
-    setOpenDownloadModal(opt);
   };
 
   useEffect(() => {
@@ -134,39 +124,7 @@ function File() {
           extraStyle={{ padding: 0, margin: 0 }}
         >
           <Box width="100%">
-            <div
-              style={{
-                backgroundColor: theme.palette.primary.main,
-                height: "140px",
-                display: "flex",
-                padding: "0 16px",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <div>
-                <Avatar size={10} borderRadius="8px!important" />
-              </div>
-              <Grid container alignItems="baseline" direction="column">
-                <Typography
-                  style={{
-                    color: theme.palette.primary.contrastText,
-                    fontWeight: "bold",
-                    marginLeft: "12px",
-                    textAlign: "left",
-                  }}
-                >
-                  {data.basename}
-                </Typography>
-                <IconButton
-                  icon="download"
-                  fontSizeIcon="small"
-                  iconColor="#fff"
-                  handleClick={() => handleOpenDownloadModal(true)}
-                  style={{ minWidth: 25, marginLeft: "4px", marginTop: "8px" }}
-                />
-              </Grid>
-            </div>
+            <FileHeader data={data} setData={setData} loading={loading} />
             <FileSection data={data} setData={setData} loading={loading} />
             <DescriptionSection data={data} setData={setData} loading={loading} />
             {data.environment !== EnvironmentEnum.LOCAL && <TagsSection data={data} />}
@@ -174,17 +132,6 @@ function File() {
           </Box>
         </FlexBox>
       </LayoutApp>
-      {data && (
-        <DownloadModal
-          key={`${data.basename}-download-modal`}
-          open={openDownloadModal}
-          handleOpen={() => handleOpenDownloadModal(false)}
-          filename={data.filename}
-          basename={data.basename}
-          mime={data.mime}
-          arrayBufferBlob={data.arrayBufferBlob}
-        />
-      )}
     </>
   );
 }
