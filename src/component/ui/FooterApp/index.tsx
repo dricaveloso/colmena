@@ -24,7 +24,7 @@ function FooterApp() {
 
   return (
     <>
-      <Box width="100%" pb={3} />
+      <Box style={{ width: "100%", paddingBottom: 48 }} />
       <div className="footer" style={{ backgroundColor: "#fff", margin: 0, padding: 2 }}>
         <Box
           display="flex"

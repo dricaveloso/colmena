@@ -31,6 +31,7 @@ export type PropsUserSelector = {
 
 export type PropsHoneycombSelector = {
   honeycombs: RoomItemInterface[];
+  clearChatMessages: string[];
   chatMessages: ChatMessageItemInterface[];
   chatMessagesBlockLoad: MessageBlockLoadInterface[];
   reloadChatLocalMessage: boolean;
@@ -39,6 +40,7 @@ export type PropsHoneycombSelector = {
 export type PropsConfigSelector = {
   currentPage: string;
   lastTwoPagesAccessed: string[];
+  isChangedLanguage: boolean;
 };
 
 export type PropsAudioData = {
@@ -77,6 +79,7 @@ export type PropsRecordingSelector = {
   activeRecordingState: string;
   allowBrowserRecording: boolean;
   backAfterFinishRecording: boolean;
+  isPlayingAudioPreview: boolean;
 };
 
 export type NotificationStatusProps =
@@ -275,6 +278,36 @@ export type AllIconProps =
   | "pause_flat"
   | "trash"
   | "html_tag"
-  | "update";
+  | "update"
+  | "disabled"
+  | "camera"
+  | "edit_circle"
+  | "facebook_rounded"
+  | "twitter_rounded"
+  | "sync_file"
+  | "generic_file"
+  | "play_outlined"
+  | "pause_outlined"
+  | "stop_outlined"
+  | "edit_filled"
+  | "copy"
+  | "duplicate"
+  | "move"
+  | "rename"
+  | "details"
+  | "banner_1"
+  | "banner_2"
+  | "banner_3"
+  | "banner_4"
+  | "gradient_plus"
+  | "delete"
+  | "sync";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
+
+export type LanguagesAvailableProps = "es" | "en" | "fr" | "pt" | "ar" | "sw";
+
+export type LanguageProps = {
+  abbr: LanguagesAvailableProps;
+  language: string;
+};

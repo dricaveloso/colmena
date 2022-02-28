@@ -13,14 +13,19 @@ import {
   PropsAudioSave,
   SelectOptionItem,
   PropsUserSelector,
-  PropsConfigSelector,
   PropsLibrarySelector,
 } from "@/types/index";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
-import { ButtonColorEnum, ButtonVariantEnum, TextVariantEnum, ButtonSizeEnum } from "@/enums/*";
+import {
+  ButtonColorEnum,
+  ButtonVariantEnum,
+  TextVariantEnum,
+  ButtonSizeEnum,
+  TextAlignEnum,
+} from "@/enums/*";
 import ChangeUploadLocationModal from "./ChangeUploadLocationModal";
 import {
   convertPrivateToUsername,
@@ -32,6 +37,13 @@ import { toast } from "@/utils/notifications";
 import { SystemTagsInterface } from "@/interfaces/tags";
 import { listTags } from "@/services/webdav/tags";
 import Modal from "@/components/ui/Modal";
+import ButtonCore from "@material-ui/core/Button";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import { getAccessedPages } from "@/utils/utils";
+import { parseCookies } from "nookies";
+import { v4 as uuid } from "uuid";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 
 type Props = {
   open: boolean;
@@ -39,6 +51,7 @@ type Props = {
   handleSubmit: (values: PropsAudioSave) => void;
   pathLocationSave: string;
   discardAudioHandle: () => void;
+  tempFileName: string;
 };
 
 type MyFormValues = {
@@ -46,15 +59,33 @@ type MyFormValues = {
   tags: string[];
 };
 
+const useStyles = makeStyles((theme: Theme) => ({
+  tagInformation: {
+    color: theme.palette.gray.main,
+  },
+  advancedOptionsTitle: {
+    fontSize: 12,
+    textTransform: "capitalize",
+  },
+  locationAudio: {
+    fontWeight: "bold",
+  },
+  marginButton: {
+    marginTop: 8,
+  },
+}));
+
 export default function DialogExtraInfoAudio({
   open,
-  handleClose,
   handleSubmit,
   pathLocationSave = "",
   discardAudioHandle,
+  tempFileName,
 }: Props) {
+  const classes = useStyles();
+  const cookies = parseCookies();
+  const lang = cookies.NEXT_LOCALE || "en";
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const { t } = useTranslation("recording");
   const [changeLocationModal, setChangeLocationModal] = useState(false);
@@ -62,6 +93,9 @@ export default function DialogExtraInfoAudio({
   const [availableOffline, setAvailableOffline] = useState(true);
   const [uploadLocation, setUploadLocation] = useState(pathLocationSave);
   const { t: c } = useTranslation("common");
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [autoFocusCustom, setAutoFocusCustom] = useState(false);
+  const [tagOnBlur, setTagOnBlur] = useState("");
 
   const chooseUploadLocationHandle = useCallback((path: string) => {
     setUploadLocation(path);
@@ -74,26 +108,29 @@ export default function DialogExtraInfoAudio({
   });
 
   const initialValues: MyFormValues = {
-    name: new Date().toISOString(),
+    name: tempFileName,
     tags: [],
   };
 
+  const init = async () => {
+    const pathUp = await prepareUploadPath();
+    setUploadLocation(pathUp);
+    try {
+      const res = await listTags();
+      const optionsTag: SelectOptionItem[] = res
+        .filter((_, idx) => idx !== 0)
+        .map((item: any | SystemTagsInterface) => ({
+          id: item.propstat.prop.id,
+          value: String(item.propstat.prop["display-name"]).toLowerCase(),
+        }));
+      setOptionsTag(optionsTag);
+    } catch (e) {
+      console.log("erro ao consultar as tags", e);
+    }
+  };
+
   useEffect(() => {
-    setUploadLocation(prepareUploadPath());
-    (async () => {
-      try {
-        const res = await listTags();
-        const optionsTag: SelectOptionItem[] = res
-          .filter((_, idx) => idx !== 0)
-          .map((item: any | SystemTagsInterface) => ({
-            id: item.propstat.prop.id,
-            value: item.propstat.prop["display-name"].toLowerCase(),
-          }));
-        setOptionsTag(optionsTag);
-      } catch (e) {
-        console.log("erro ao consultar as tags", e);
-      }
-    })();
+    init();
 
     return () => {
       setOptionsTag([]);
@@ -101,10 +138,11 @@ export default function DialogExtraInfoAudio({
     };
   }, []);
 
-  function prepareUploadPath() {
+  async function prepareUploadPath() {
     if (pathLocationSave) return pathLocationSave;
 
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1];
+    const accessedPages = await getAccessedPages();
+    const urlOrigin = accessedPages[1] || accessedPages[0];
     let url = "";
 
     if (/^[/]library/.test(urlOrigin)) {
@@ -128,6 +166,8 @@ export default function DialogExtraInfoAudio({
     setAvailableOffline(event.target.checked);
   };
 
+  const separator = lang === "ar" ? "،" : ",";
+
   return (
     <>
       <Formik
@@ -142,7 +182,14 @@ export default function DialogExtraInfoAudio({
                 }),
               );
             }
-            const tagsFiltered = values.tags.map((item: string) => item.toLocaleLowerCase());
+            const tagArray = values.tags;
+
+            if (tagOnBlur) tagArray.push(tagOnBlur);
+
+            const tagsFiltered = tagArray
+              .map((item: string) => String(item).replaceAll(separator, "").toLocaleLowerCase())
+              .filter((item: string) => item !== "");
+
             handleSubmit({
               ...values,
               tags: tagsFiltered,
@@ -156,36 +203,36 @@ export default function DialogExtraInfoAudio({
       >
         {({ submitForm, errors, touched, setFieldValue, values }: any) => (
           <Modal
-            title={t("recordingFinishDescription")}
-            handleClose={handleClose}
+            title={t("recordingFinishTitle")}
             open={open}
             aria-labelledby="form-dialog-title"
             actions={
               <Box display="flex" flex="1" flexDirection="row" justifyContent="space-between">
                 <Button
                   handleClick={discardAudioHandle}
-                  style={{ margin: 8 }}
+                  className={classes.marginButton}
                   variant={ButtonVariantEnum.OUTLINED}
                   color={ButtonColorEnum.SECONDARY}
                   title={t("discardButton")}
+                  data-testid="discard-audio"
                 />
                 <Button
                   handleClick={submitForm}
-                  style={{ margin: 8 }}
                   variant={ButtonVariantEnum.CONTAINED}
-                  color={ButtonColorEnum.PRIMARY}
+                  className={classes.marginButton}
                   title={t("submitButton")}
+                  data-testid="save-audio"
                 />
               </Box>
             }
           >
             <Form>
-              <Field name="name" InputProps={{ notched: true }}>
+              <Field name="name" data-testid="audio-name" InputProps={{ notched: true }}>
                 {({ field }: FieldProps) => (
                   <TextField
-                    autoFocus
                     margin="dense"
                     variant="outlined"
+                    onFocus={() => setAutoFocusCustom(false)}
                     autoComplete="off"
                     id="name"
                     label={t("recordingFinishLabelForm")}
@@ -196,69 +243,121 @@ export default function DialogExtraInfoAudio({
                 )}
               </Field>
               {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
-              <Autocomplete
-                multiple
-                value={values.tags}
-                id="tags-filled"
-                options={optionsTag.map((option) => option.value)}
-                defaultValue={["asd"]}
-                onChange={(e, value) => setFieldValue("tags", value)}
-                freeSolo
-                renderTags={(value: string[], getTagProps) =>
-                  value.map((option: string, index: number) => (
-                    <Chip
-                      variant="outlined"
-                      label={option.toLocaleLowerCase()}
-                      {...getTagProps({ index })}
-                    />
-                  ))
-                }
-                renderInput={(params) => (
-                  <TextField {...params} margin="dense" variant="outlined" label={t("tagsTitle")} />
-                )}
-              />
-              {errors.tags && touched.tags ? <ErrorMessageForm message={errors.tags} /> : null}
-              <Box marginTop={1} marginBottom={2}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={availableOffline}
-                      onChange={handleChange}
-                      name="availableOffline"
-                    />
-                  }
-                  label={
-                    <Text variant={TextVariantEnum.BODY2}>
-                      {t("availableWithoutInternetTitle")}
+
+              <Box display="flex" flex={1} justifyContent="flex-start">
+                <ButtonCore
+                  size="small"
+                  data-testid="advanced-options-button"
+                  onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+                  startIcon={showAdvancedOptions ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                >
+                  <Text variant={TextVariantEnum.CAPTION} className={classes.advancedOptionsTitle}>
+                    {t("advancedOptionsTitle")}
+                  </Text>
+                </ButtonCore>
+              </Box>
+              {showAdvancedOptions && (
+                <>
+                  <Autocomplete
+                    key={uuid()}
+                    onBlur={(e: any) => setTagOnBlur(e.target.value)}
+                    data-testid="audio-tags"
+                    multiple
+                    value={values.tags}
+                    id="tags-filled"
+                    options={optionsTag.map((option) => option.value)}
+                    defaultValue={["asd"]}
+                    onChange={(e, value) => {
+                      setAutoFocusCustom(true);
+                      setFieldValue("tags", value);
+                    }}
+                    onInputChange={(event, value) => {
+                      const arr = values.tags;
+                      if (value.split("").every((item) => item.indexOf(separator) !== -1)) return;
+
+                      if (value.indexOf(separator) !== -1) {
+                        const res = value.split(",")[0];
+                        if (res) {
+                          arr.push(res.replace(separator, ""));
+                          setFieldValue("tags", arr);
+                          setAutoFocusCustom(true);
+                        }
+                      }
+                    }}
+                    freeSolo
+                    renderTags={(value: string[], getTagProps) =>
+                      value.map((option: string, index: number) => (
+                        <Chip
+                          variant="outlined"
+                          label={option.toLocaleLowerCase()}
+                          {...getTagProps({ index })}
+                        />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        margin="dense"
+                        variant="outlined"
+                        autoFocus={autoFocusCustom}
+                        label={t("tagsTitle")}
+                      />
+                    )}
+                  />
+                  <Box width="100%">
+                    <Text
+                      className={classes.tagInformation}
+                      align={TextAlignEnum.LEFT}
+                      variant={TextVariantEnum.CAPTION}
+                    >
+                      {t("tagInformationTitle")}
                     </Text>
-                  }
-                />
-              </Box>
-              <Box
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-                paddingLeft={1}
-                paddingTop={1}
-              >
-                <Box display="flex" flexDirection="column">
-                  <Text variant={TextVariantEnum.BODY1} style={{ fontWeight: "bold" }}>
-                    {t("uploadLocationTitle")}
-                  </Text>
-                  <Text variant={TextVariantEnum.BODY2}>
-                    {`/${convertPrivateToUsername(uploadLocation, userRdx.user.id)}`}
-                  </Text>
-                </Box>
-                <Button
-                  handleClick={() => setChangeLocationModal(true)}
-                  style={{ margin: 8 }}
-                  variant={ButtonVariantEnum.TEXT}
-                  color={ButtonColorEnum.PRIMARY}
-                  title={t("changeUploadLocationTitle")}
-                  size={ButtonSizeEnum.SMALL}
-                />
-              </Box>
+                  </Box>
+                  <Box marginTop={1} marginBottom={2}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={availableOffline}
+                          onChange={handleChange}
+                          name="availableOffline"
+                          data-testid="switch-available-offline"
+                        />
+                      }
+                      label={
+                        <Text variant={TextVariantEnum.BODY2}>
+                          {t("availableWithoutInternetTitle")}
+                        </Text>
+                      }
+                    />
+                  </Box>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    paddingLeft={1}
+                    paddingTop={1}
+                  >
+                    <Box display="flex" flexDirection="column">
+                      <Text variant={TextVariantEnum.BODY1} className={classes.locationAudio}>
+                        {t("uploadLocationTitle")}
+                      </Text>
+                      <Text variant={TextVariantEnum.BODY2}>
+                        {`/${convertPrivateToUsername(uploadLocation, userRdx.user.id)}`}
+                      </Text>
+                    </Box>
+                    <Button
+                      handleClick={() => setChangeLocationModal(true)}
+                      className={classes.marginButton}
+                      variant={ButtonVariantEnum.TEXT}
+                      color={ButtonColorEnum.PRIMARY}
+                      title={t("changeUploadLocationTitle")}
+                      size={ButtonSizeEnum.SMALL}
+                      data-testid="change-location-audio"
+                    />
+                  </Box>
+                </>
+              )}
             </Form>
           </Modal>
         )}

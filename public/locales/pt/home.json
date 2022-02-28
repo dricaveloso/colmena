@@ -1,11 +1,12 @@
 {
-  "greeting": "Olá",
-  "question": "O que deseja fazer agora ?",
-  "inviteText": "Convidar colaborador",
-  "mediaName": "Nome do meio",
-  "recentPublicationsTitle": "Publicações Recentes",
-  "recentPublicationsDescription": "Descrição de exemplo",
-  "mediaCloudName": "Minha nuvem",
-  "recordText": "Gravar",
-  "profileText": "Editar Perfil"
+    "welcomeTitle": "Bem vindo(a)",
+    "greetingTitle": "Olá",
+    "myFilesLabel": "Meus arquivos",
+    "sharedLabel": "Compartilhados",
+    "publicLabel": "Público",
+    "section3Title": "Favos de mel",
+    "section4Title": "Arquivo recentes",
+    "exampleHoneycombTitle": "Favo {{num}}",
+    "exampleFileTitle": "Arquivo {{num}}",
+    "seeAllTitle": "Ver todos"
 }

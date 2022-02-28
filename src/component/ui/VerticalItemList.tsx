@@ -4,7 +4,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
 import { VerticalItemListInterface } from "@/interfaces/index";
-import AudioItemVertical from "@/components/pages/library/AudioFile/AudioItemVertical";
+import AudioItemPreview from "@/components/pages/library/AudioFile/AudioItemPreview";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -15,6 +15,8 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     background: "#fff",
     padding: 8,
+    borderRadius: 5,
+    border: "1px solid #eee",
   },
   description: {
     flexDirection: "column",
@@ -33,21 +35,23 @@ const useStyles = makeStyles(() => ({
   avatar: {
     minHeight: 50,
     display: "flex",
-    alignItems: "flex-end",
+    alignItems: "center",
   },
 }));
 
-const VerticalItemList = ({
-  avatar,
-  primary,
-  secondary,
-  options,
-  handleClick,
-  isPlaying = false,
-  filename,
-  environment,
-  size = 0,
-}: VerticalItemListInterface) => {
+const VerticalItemList = (cardItem: VerticalItemListInterface) => {
+  const {
+    avatar,
+    primary,
+    secondary,
+    options,
+    handleClick,
+    isPlaying = false,
+    filename,
+    environment,
+    size = 0,
+    arrayBufferBlob,
+  } = cardItem;
   const classes = useStyles();
 
   return (
@@ -57,12 +61,15 @@ const VerticalItemList = ({
         <ListItemText
           data-testid="title"
           className={classes.description}
+          onClick={handleClick}
           primary={
-            <AudioItemVertical
+            <AudioItemPreview
               primary={primary}
               size={size}
               filename={filename}
               environment={environment}
+              type="vertical"
+              arrayBufferBlob={arrayBufferBlob}
             />
           }
         />
@@ -72,7 +79,6 @@ const VerticalItemList = ({
           className={classes.description}
           primary={primary}
           secondary={secondary}
-          onClick={handleClick}
         />
       )}
       <Box className={classes.options}>{options}</Box>

@@ -1,9 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { useEffect, useRef } from "react";
 import theme from "@/styles/theme";
 import { v4 as uuid } from "uuid";
-import { toast } from "@/utils/notifications";
+import { useDispatch } from "react-redux";
+import { setCurrentAudioPlaying } from "@/store/actions/library";
 
 interface WavesurferInterface {
   current: {
@@ -24,14 +26,15 @@ type WaveProps = {
 };
 
 type Props = {
-  blob: Blob | null;
+  blob?: Blob | null;
   config?: WaveProps | undefined;
   play?: boolean;
 };
 
-export default function Waves({ blob, config = undefined, play = false }: Props) {
+export default function Waves({ blob = null, config = undefined, play = false }: Props) {
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
+  const dispatch = useDispatch();
 
   const formWaveSurferOptions = (ref: any) => ({
     container: ref,
@@ -75,8 +78,14 @@ export default function Waves({ blob, config = undefined, play = false }: Props)
           }
         });
 
+        wavesurfer?.current.on("finish", () => {
+          wavesurfer?.current?.setPlayEnd(0);
+          dispatch(setCurrentAudioPlaying(""));
+        });
+
         wavesurfer?.current.on("error", (error: string) => {
-          toast(error, "error");
+          console.log(error);
+          // toast(error, "error");
         });
       }
     } catch (e) {

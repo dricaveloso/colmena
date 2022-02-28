@@ -3,6 +3,9 @@ import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
 import { withStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { useSelector } from "react-redux";
+import { PropsUserSelector } from "@/types/index";
+import { useTranslation } from "next-i18next";
 
 const BorderLinearProgress = withStyles(() => ({
   root: {
@@ -16,12 +19,25 @@ const BorderLinearProgress = withStyles(() => ({
 }))(LinearProgress);
 
 export default function DiscreteSlider() {
+  const { t } = useTranslation("common");
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   return (
-    <div>
-      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#666" }}>
-        Usado 16GB (60%)
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#666", textAlign: "left" }}>
+        {t("used")}
+        <> {(userRdx.user.quota.used / (1000 * 1000 * 1000)).toFixed(2)} GB </>
+        {`(${Math.round((userRdx.user.quota.used / userRdx.user.quota.total) * 100)}%)`}
       </Text>
-      <BorderLinearProgress variant="determinate" color="secondary" value={60} />
+      <BorderLinearProgress
+        variant="determinate"
+        color="secondary"
+        value={Math.round((userRdx.user.quota.used / userRdx.user.quota.total) * 100)}
+      />
     </div>
   );
 }

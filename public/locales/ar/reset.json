@@ -1,0 +1,10 @@
+{
+    "title": "",
+    "errorMessagePassword": "كلمتا المرور غير متطابقتين",
+    "errorUpdatingPassword": "تحديث كلمة المرور الخاصة بك غير ممكن",
+    "successUpdatingPassword": "تم تحديث كلمة المرور بنجاح",
+    "titleUpdated": "تم تحديث كلمة المرور الخاصة بك",
+    "titleCreated": "إنشاء كلمتك المرور",
+    "errorCreatingPassword": "انشاء كلمة المرور الخاصة بك غير ممكن",
+    "successCreatingPassword": "تم إنشاء كلمة المرور الخاصة بك بنجاح"
+}

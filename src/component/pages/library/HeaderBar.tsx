@@ -8,9 +8,11 @@ import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import { AllIconProps } from "@/types/index";
 import TemporaryFiltersDrawer from "./FiltersDrawer";
-import { isRootPath } from "@/utils/directory";
+import { getPublicPath, getTalkPath, isRootPath } from "@/utils/directory";
 import { useDispatch } from "react-redux";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
+import { toast } from "@/utils/notifications";
+import { useTranslation } from "next-i18next";
 
 const useStyles = makeStyles(() => ({
   breadcrumb: {
@@ -43,6 +45,7 @@ type Props = {
   canChangeList?: boolean;
   firstBreadcrumbItem?: BreadcrumbItemInterface;
   isDisabled?: boolean;
+  rootPath?: string;
 };
 
 const defineIconListType = (type: string) => (type === ListTypeEnum.LIST ? "grid" : "checklist");
@@ -62,32 +65,57 @@ function HeaderBar({
   canChangeList = true,
   firstBreadcrumbItem,
   isDisabled = false,
+  rootPath = "/",
 }: Props) {
   const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
   const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { t } = useTranslation("library");
+  const { t: c } = useTranslation("common");
   const [breadcrumb, setBreadcrumb] = useState<Array<BreadcrumbItemInterface>>(
     [] as Array<BreadcrumbItemInterface>,
   );
 
   useEffect(() => {
+    let currentPath = path;
+    if (rootPath !== "/" && currentPath) {
+      if (typeof currentPath === "object") {
+        currentPath = currentPath.join("/");
+      }
+
+      const regex = new RegExp(`^${rootPath}`);
+      currentPath = currentPath.replace(regex, "").split("/");
+    }
+
     if (firstBreadcrumbItem) {
-      const generatedBreadcrumb = generateBreadcrumb(path, firstBreadcrumbItem.path);
+      const generatedBreadcrumb = generateBreadcrumb(currentPath, firstBreadcrumbItem.path);
       const newBreadcrumbItem = {
         ...firstBreadcrumbItem,
         isCurrent: generatedBreadcrumb.length === 0,
         description: generatedBreadcrumb.length === 0 ? firstBreadcrumbItem.description : undefined,
       };
 
-      setBreadcrumb([newBreadcrumbItem, ...generatedBreadcrumb]);
+      setBreadcrumb(handleBreadcrumb([newBreadcrumbItem, ...generatedBreadcrumb]));
     } else {
-      const generatedBreadcrumb = generateBreadcrumb(path);
-      setBreadcrumb(generatedBreadcrumb);
+      const generatedBreadcrumb = generateBreadcrumb(currentPath);
+      setBreadcrumb(handleBreadcrumb(generatedBreadcrumb));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path]);
+
+  const handleBreadcrumb = (items: Array<BreadcrumbItemInterface>) =>
+    items.map((item) => {
+      const newItem = item;
+      if (newItem.path === `/library/${getTalkPath()}`) {
+        newItem.description = t("talkFolderName");
+      } else if (newItem.path === `/library/${getPublicPath()}`) {
+        newItem.description = t("publicFolderName");
+      }
+
+      return newItem;
+    });
 
   const changeListType = () => {
     dispatch(setCurrentAudioPlaying(""));
@@ -113,6 +141,10 @@ function HeaderBar({
     setOpenFilterDrawer(true);
   };
 
+  const unavailable = () => {
+    toast(c("featureUnavailable"), "warning");
+  };
+
   return (
     <Box
       bgcolor="#F9F9F9"
@@ -122,15 +154,32 @@ function HeaderBar({
       display="flex"
       width="100%"
     >
+      {pathExists && canChangeList && (
+        <IconButton color="primary" component="span" onClick={changeListType} disabled={isDisabled}>
+          <SvgIcon icon={iconListType} htmlColor="#292929" fontSize="small" />
+        </IconButton>
+      )}
       <Box className={classes.breadcrumb}>
-        <Breadcrumb
-          breadcrumbs={breadcrumb}
-          handleNavigate={handleNavigate}
-          isDisabled={isDisabled}
-        />
+        {breadcrumb.length > 1 && (
+          <Breadcrumb
+            breadcrumbs={breadcrumb}
+            handleNavigate={handleNavigate}
+            isDisabled={isDisabled}
+          />
+        )}
       </Box>
       {pathExists && (
         <Box className={classes.options}>
+          <IconButton
+            color="primary"
+            component="span"
+            onClick={unavailable}
+            aria-controls="filter-menu"
+            aria-haspopup="true"
+            disabled={isDisabled}
+          >
+            <SvgIcon icon="search" htmlColor="#292929" fontSize="small" />
+          </IconButton>
           {hasFilter && (
             <IconButton
               color="primary"
@@ -141,17 +190,6 @@ function HeaderBar({
               disabled={isDisabled}
             >
               <SvgIcon icon="settings_adjust" htmlColor="#292929" fontSize="small" />
-            </IconButton>
-          )}
-
-          {canChangeList && (
-            <IconButton
-              color="primary"
-              component="span"
-              onClick={changeListType}
-              disabled={isDisabled}
-            >
-              <SvgIcon icon={iconListType} htmlColor="#292929" fontSize="small" />
             </IconButton>
           )}
         </Box>

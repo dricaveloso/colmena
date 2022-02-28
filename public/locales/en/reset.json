@@ -1,10 +1,9 @@
 {
-  "titleCreated": "Create your password.",
-  "titleUpdated": "Update your password.",
-  "errorMessagePassword": "Passwords do not match",
-  "errorUpdatingPassword": "Unable to update your password.",
-  "errorCreatingPassword": "Unable to create your password.",
-  "successCreatingPassword": "Password created successfully.",
-  "successUpdatingPassword": "Password updated successfully."
+    "titleCreated": "Create your password",
+    "titleUpdated": "Password updated successfully",
+    "errorMessagePassword": "Passwords do not match",
+    "errorUpdatingPassword": "Unable to update your password",
+    "errorCreatingPassword": "Unable to create your password",
+    "successCreatingPassword": "Created password",
+    "successUpdatingPassword": "Updated password "
 }
-

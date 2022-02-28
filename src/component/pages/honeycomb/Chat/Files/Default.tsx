@@ -71,12 +71,12 @@ export default function Default({ filename, mimetype, name, size, canDeleteConve
       display="flex"
       flex={1}
       flexDirection="row"
-      padding={1}
+      // padding={1}
       borderRadius={4}
       // border={2}
       bgcolor="#f5f5f5"
       alignContent="center"
-      minHeight={70}
+      minHeight={50}
       alignItems="center"
     >
       {avatar}

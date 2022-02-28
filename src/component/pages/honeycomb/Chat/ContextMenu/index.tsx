@@ -13,12 +13,22 @@ import UsersList from "@/components/ui/FooterApp/ModalTools/NewHoneycombModal/Us
 import { listUsersByGroup } from "@/services/ocs/groups";
 import { getUserGroup } from "@/utils/permissions";
 import Button from "@/components/ui/Button";
-import { ButtonColorEnum, ButtonVariantEnum, PermissionTalkMemberEnum } from "@/enums/*";
+import {
+  ButtonColorEnum,
+  ButtonVariantEnum,
+  PermissionTalkMemberEnum,
+  HoneycombContextOptions,
+} from "@/enums/*";
 import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
-import { addParticipantToConversation, getRoomParticipants } from "@/services/talk/room";
+import {
+  addParticipantToConversation,
+  getRoomParticipants,
+  removeYourselfFromAConversation,
+} from "@/services/talk/room";
 import Backdrop from "@/components/ui/Backdrop";
 import { RoomParticipant } from "@/interfaces/talk";
+import theme from "@/styles/theme";
 
 type PositionProps = {
   mouseX: null | number;
@@ -27,10 +37,19 @@ type PositionProps = {
 
 type Props = {
   token: string;
-  reloadChatList: () => void;
+  handleFallbackParticipants?: (() => void) | null;
+  handleFallbackLeaveConversation?: (() => void) | null;
+  iconColor?: string;
+  blackList?: string[];
 };
 
-const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
+const ContextMenuOptions = ({
+  token,
+  handleFallbackParticipants = null,
+  handleFallbackLeaveConversation = null,
+  iconColor = "#fff",
+  blackList = [],
+}: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
@@ -83,6 +102,21 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
     setOpenAddParticipant(false);
   };
 
+  async function handleLeaveConversation() {
+    try {
+      setShowBackdrop(true);
+      handleCloseContextMenu();
+      await removeYourselfFromAConversation(token);
+      toast(c("doneMessage"), "success");
+      if (handleFallbackLeaveConversation) handleFallbackLeaveConversation();
+    } catch (e) {
+      console.log(e);
+      toast(c("genericErrorMessage"), "error");
+    } finally {
+      setShowBackdrop(false);
+    }
+  }
+
   async function handleInviteParticipants() {
     try {
       handleCloseAddParticipant();
@@ -93,7 +127,7 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
         await addParticipantToConversation(token, participant);
       }
       toast(t("contextMenuOptions.participantsAddedSuccessfully"), "success");
-      reloadChatList();
+      if (handleFallbackParticipants) handleFallbackParticipants();
     } catch (e) {
       console.log(e);
       toast(c("genericErrorMessage"), "error");
@@ -102,22 +136,30 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
     }
   }
 
-  const handleOpenParticipantModal = () => {
-    if (!part) return;
-
-    const isModerator = participantsAddedHoneycomb.find(
+  const isModerator = () => {
+    const result = participantsAddedHoneycomb.find(
       (item) =>
         item.actorId === userRdx.user.id &&
         (item.participantType === PermissionTalkMemberEnum.OWNER ||
           item.participantType === PermissionTalkMemberEnum.MODERATOR),
     );
-    if (!isModerator) {
-      toast(c("noPrivilegesAccessTitle"), "error");
-      return;
-    }
+    return result;
+  };
+
+  const handleOpenParticipantModal = () => {
+    if (!isModerator()) return;
 
     handleCloseContextMenu();
     setOpenAddParticipant(true);
+  };
+
+  const unavailable = () => {
+    toast(c("featureUnavailable"), "warning");
+  };
+
+  const ButtonStep1Style = {
+    color: "#fff",
+    margin: 8,
   };
 
   return (
@@ -126,7 +168,7 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
       <IconButton
         key={uuid()}
         icon="more_vertical"
-        iconColor="#fff"
+        iconColor={iconColor}
         style={{ padding: 0, margin: 0, minWidth: 30 }}
         fontSizeIcon="small"
         handleClick={handleOpenContextMenu}
@@ -145,9 +187,48 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
         }
         onClose={handleCloseContextMenu}
       >
-        <MenuItem key="add" onClick={handleOpenParticipantModal}>
-          <ContextMenuItem icon="user" title={t("contextMenuOptions.addParticipantContextTitle")} />
-        </MenuItem>
+        {!blackList.includes(HoneycombContextOptions.ADD_PARTICIPANT) && (
+          <MenuItem
+            key={HoneycombContextOptions.ADD_PARTICIPANT}
+            data-testid={HoneycombContextOptions.ADD_PARTICIPANT}
+            onClick={handleOpenParticipantModal}
+          >
+            <ContextMenuItem
+              icon="user"
+              iconColor={
+                !isModerator() ? theme.palette.variation6.light : theme.palette.variation6.main
+              }
+              title={t("contextMenuOptions.addParticipantContextTitle")}
+            />
+          </MenuItem>
+        )}
+        {!blackList.includes(HoneycombContextOptions.LEAVE_CONVERSATION) && !isModerator() && (
+          <MenuItem
+            key={HoneycombContextOptions.LEAVE_CONVERSATION}
+            data-testid={HoneycombContextOptions.LEAVE_CONVERSATION}
+            onClick={handleLeaveConversation}
+          >
+            <ContextMenuItem
+              icon="close"
+              iconColor={theme.palette.variation6.main}
+              title={t("contextMenuOptions.leaveConversationContextTitle")}
+              style={{ fontSize: 15 }}
+            />
+          </MenuItem>
+        )}
+        {!blackList.includes(HoneycombContextOptions.REMOVE_CONVERSATION) && isModerator() && (
+          <MenuItem
+            key={HoneycombContextOptions.REMOVE_CONVERSATION}
+            data-testid={HoneycombContextOptions.REMOVE_CONVERSATION}
+            onClick={unavailable}
+          >
+            <ContextMenuItem
+              icon="trash"
+              iconColor="tomato"
+              title={t("contextMenuOptions.removeConversationContextTitle")}
+            />
+          </MenuItem>
+        )}
       </Menu>
       <Modal
         title={t("contextMenuOptions.addParticipantContextTitle")}
@@ -165,9 +246,10 @@ const ContextMenuOptions = ({ token, reloadChatList }: Props) => {
             <Button
               handleClick={handleInviteParticipants}
               disabled={participants.length === 0}
-              style={{ margin: 8 }}
-              variant={ButtonVariantEnum.CONTAINED}
-              color={ButtonColorEnum.PRIMARY}
+              style={participants.length > 0 ? ButtonStep1Style : { margin: 8 }}
+              variant={
+                participants.length > 0 ? ButtonVariantEnum.CONTAINED : ButtonVariantEnum.OUTLINED
+              }
               title={c("form.submitSaveTitle")}
             />
           </Box>

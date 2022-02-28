@@ -1,9 +1,10 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { ButtonColorProps, ButtonVariantProps, ButtonSizeProps } from "@/types/index";
-import { ButtonColorEnum, ButtonVariantEnum, ButtonSizeEnum } from "@/enums/index";
+import { ButtonVariantEnum, ButtonSizeEnum } from "@/enums/index";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useTranslation } from "next-i18next";
+import theme from "@/styles/theme";
 
 type Props = {
   title: string | React.ReactNode;
@@ -22,11 +23,13 @@ type Props = {
   type?: string;
   className?: string;
   download?: string;
+  target?: string;
+  [x: string]: any;
 };
 
 export default function Btn({
   title,
-  color = ButtonColorEnum.SECONDARY,
+  color = undefined,
   variant = ButtonVariantEnum.CONTAINED,
   handleClick,
   style = {},
@@ -39,9 +42,21 @@ export default function Btn({
   isLoading = false,
   className,
   type,
+  target = "",
   download,
+  ...props
 }: Props) {
   const { t } = useTranslation("common");
+
+  const styleBtn1 =
+    !color && variant === "contained" && !disabled
+      ? { backgroundColor: theme.palette.variation1.main, color: "#fff" }
+      : {};
+
+  const styleBtn2 =
+    !color && variant === "outlined" && !disabled
+      ? { borderColor: theme.palette.variation8.main, color: theme.palette.variation8.main }
+      : {};
 
   return url !== "no-navigation" ? (
     <Button
@@ -53,11 +68,13 @@ export default function Btn({
       size={size}
       // className="width-based-device"
       type={type}
-      style={{ textTransform: "lowercase", ...style }}
+      style={{ textTransform: "lowercase", ...style, ...styleBtn1, ...styleBtn2 }}
       endIcon={endIcon}
       disabled={disabled}
       component="a"
       fullWidth={fullWidth}
+      target={target}
+      {...props}
     >
       {isLoading ? (
         <>
@@ -73,7 +90,7 @@ export default function Btn({
       className={className}
       // className="width-based-device"
       type={type}
-      style={{ textTransform: "lowercase", ...style }}
+      style={{ textTransform: "lowercase", ...style, ...styleBtn1, ...styleBtn2 }}
       variant={variant}
       color={color}
       size={size}
@@ -82,6 +99,7 @@ export default function Btn({
       disabled={disabled}
       component={component}
       fullWidth={fullWidth}
+      {...props}
     >
       {isLoading ? (
         <>

@@ -13,10 +13,12 @@ import {
   ADD_BLOCK_ID_CHAT_CONTROL,
   REMOVE_BLOCK_ID_CHAT_CONTROL_BY_TOKEN,
   RELOAD_CHAT_LOCAL_MESSAGES,
+  ADD_TOKEN_CHAT_CLEAR_MESSAGES,
 } from "@/store/actions/index";
 
 type initialStateProps = {
   honeycombs: RoomItemInterface[];
+  clearChatMessages: string[];
   chatMessages: ChatMessageItemInterface[];
   chatMessagesBlockLoad: MessageBlockLoadInterface[];
   reloadChatLocalMessage: boolean;
@@ -24,6 +26,7 @@ type initialStateProps = {
 
 const myInitialState: initialStateProps = {
   honeycombs: [],
+  clearChatMessages: [],
   chatMessages: [],
   chatMessagesBlockLoad: [],
   reloadChatLocalMessage: false,
@@ -42,6 +45,8 @@ const reducer = (state = myInitialState, action: any) => {
       return { ...state, chatMessages: action.chatMessages };
     case ADD_HONEYCOMB:
       return { ...state, honeycombs: state.honeycombs.concat(action.honeycomb) };
+    case ADD_TOKEN_CHAT_CLEAR_MESSAGES:
+      return { ...state, clearChatMessages: state.clearChatMessages.concat(action.honeycomb) };
     case ADD_CHAT_MESSAGE:
       return { ...state, chatMessages: state.chatMessages.concat(action.message) };
     case EDIT_HONEYCOMB:

@@ -1,7 +1,7 @@
 import Box from "@material-ui/core/Box";
 import SvgIcon from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
-import { ButtonColorEnum, ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
+import { ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 import Dialog from "@material-ui/core/Dialog";
@@ -16,6 +16,8 @@ type Props = {
   onClose?: () => void;
   onOk?: () => void;
   isLoading?: boolean;
+  showMessage?: boolean;
+  showIcon?: boolean;
 };
 
 export default function ActionConfirm({
@@ -26,11 +28,21 @@ export default function ActionConfirm({
   onClose,
   onOk,
   isLoading = false,
+  showMessage = true,
+  showIcon = false,
+  ...props
 }: Props) {
   const { t: c } = useTranslation("common");
 
   return (
-    <Dialog fullWidth maxWidth="xs" onClose={onClose} aria-labelledby="simple-dialog-title" open>
+    <Dialog
+      fullWidth
+      maxWidth="xs"
+      onClose={onClose}
+      aria-labelledby="simple-dialog-title"
+      open
+      {...props}
+    >
       <Box
         padding={2}
         display="flex"
@@ -39,15 +51,17 @@ export default function ActionConfirm({
         justifyContent="center"
         alignItems="center"
       >
-        <SvgIcon icon={icon} htmlColor={iconColor} style={{ fontSize: 58 }} />
+        {showIcon && <SvgIcon icon={icon} htmlColor={iconColor} style={{ fontSize: 58 }} />}
         <Divider marginTop={22} />
-        <Text variant={TextVariantEnum.H5} style={{ fontWeight: "bold", textAlign: "center" }}>
+        <Text variant={TextVariantEnum.H6} style={{ fontWeight: "bold", textAlign: "center" }}>
           {!title ? c("confirmTitleDelete") : title}
         </Text>
         <Divider marginTop={5} />
-        <Text variant={TextVariantEnum.BODY1} style={{ textAlign: "center" }}>
-          {!message ? c("confirmMessageDelete") : message}
-        </Text>
+        {showMessage && (
+          <Text variant={TextVariantEnum.BODY1} style={{ textAlign: "center" }}>
+            {message}
+          </Text>
+        )}
         <Divider marginTop={6} />
         <Box
           display="flex"
@@ -60,7 +74,6 @@ export default function ActionConfirm({
           <Button
             handleClick={onClose}
             variant={ButtonVariantEnum.OUTLINED}
-            color={ButtonColorEnum.SECONDARY}
             title={c("noTitle")}
             style={{ textTransform: "capitalize" }}
             disabled={isLoading}
@@ -68,9 +81,11 @@ export default function ActionConfirm({
           <Button
             handleClick={onOk}
             variant={ButtonVariantEnum.CONTAINED}
-            color={ButtonColorEnum.PRIMARY}
             title={c("yesTitle")}
-            style={{ textTransform: "capitalize", marginLeft: 5 }}
+            style={{
+              textTransform: "capitalize",
+              marginLeft: 25,
+            }}
             disabled={isLoading}
             isLoading={isLoading}
           />

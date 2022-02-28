@@ -23,11 +23,13 @@ import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { Box } from "@material-ui/core";
-import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
+import { ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum, ButtonColorEnum } from "@/enums/*";
 import LibraryModal from "@/components/ui/LibraryModal";
 import { LibraryItemInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
 import { shareInChat } from "@/services/share/share";
+import ActionConfirm from "../../ActionConfirm";
+import { deleteFile } from "@/services/webdav/files";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -36,7 +38,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   submit: {
-    float: "right",
+    marginLeft: 10,
   },
 }));
 
@@ -44,6 +46,8 @@ type Props = {
   open: boolean;
   handleClose: () => void;
 };
+
+let requestCancel = false;
 
 export default function NewFolderModal({ open, handleClose }: Props) {
   const { t } = useTranslation("common");
@@ -59,6 +63,8 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const [finalPath, setFinalPath] = useState(path);
   const [isLoading, setIsLoading] = useState(false);
   const [openLibrary, setOpenLibrary] = useState(false);
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
+  const [cancelIsLoading, setCancelIsLoading] = useState(false);
   const initialValues = {
     folderName: "",
   };
@@ -70,6 +76,11 @@ export default function NewFolderModal({ open, handleClose }: Props) {
       try {
         const realPath = convertUsernameToPrivate(finalPath, userId);
         const directoryExists = await existDirectory(userId, realPath);
+
+        if (requestCancel) {
+          return;
+        }
+
         if (directoryExists) {
           throw new Error(t("messages.directoryAlreadyExists"));
         }
@@ -79,8 +90,20 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           throw new Error(t("messages.directoryAlreadyExists"));
         }
 
+        if (requestCancel) {
+          return;
+        }
+
         const create = await createDirectory(userId, realPath);
         if (create) {
+          if (requestCancel) {
+            await deleteFile(userId, realPath);
+
+            return;
+          }
+
+          setShowConfirmCancel(false);
+
           if (isPanal(realPath)) {
             await shareInChat(realPath, realPath);
           }
@@ -91,6 +114,10 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           router.push(`/library/${removeFirstSlash(finalPath)}`);
         }
       } catch (e) {
+        if (requestCancel) {
+          return;
+        }
+
         toast(e.message, "error");
         setIsLoading(false);
       }
@@ -117,7 +144,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
       // return (
       //   <Button
       //     handleClick={() => handleChangeLocation(item.aliasFilename)}
-      //     title={t("changeLocationButton")}
+      //     title={t("chooseLocationButton")}
       //     size={ButtonSizeEnum.SMALL}
       //   />
       // );
@@ -129,7 +156,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
   const footerActions = (item: LibraryItemInterface) => (
     <Button
       handleClick={() => handleChangeLocation(item.aliasFilename)}
-      title={t("changeLocationButton")}
+      title={t("chooseLocationButton")}
       size={ButtonSizeEnum.SMALL}
     />
   );
@@ -143,6 +170,21 @@ export default function NewFolderModal({ open, handleClose }: Props) {
     setOpenLibrary(false);
   };
 
+  const confirmClose = useCallback(() => {
+    if (isLoading) {
+      setShowConfirmCancel(true);
+    } else {
+      handleClose();
+    }
+  }, [handleClose, isLoading]);
+
+  const requestAbortUpload = () => {
+    setCancelIsLoading(true);
+    requestCancel = true;
+    toast(t("messages.folderCreationCanceledSuccessfully"), "success");
+    handleClose();
+  };
+
   useEffect(() => {
     defineFinalPath();
 
@@ -154,7 +196,12 @@ export default function NewFolderModal({ open, handleClose }: Props) {
 
   return (
     <>
-      <Modal title={t("addFolderTitle")} handleClose={handleClose} open={open}>
+      <Modal
+        data-testid="modal-new-folder"
+        title={t("addFolderTitle")}
+        open={open}
+        handleClose={isLoading ? undefined : handleClose}
+      >
         <Formik
           initialValues={initialValues}
           validationSchema={NewFolderSchema}
@@ -218,13 +265,25 @@ export default function NewFolderModal({ open, handleClose }: Props) {
                 />
               </Box>
               <Divider marginTop={20} />
-              <Button
-                title={t("form.create")}
-                type="submit"
-                className={classes.submit}
-                disabled={isLoading}
-                isLoading={isLoading}
-              />
+              <Box display="flex" justifyContent="flex-end" width="100%">
+                {isLoading && (
+                  <Button
+                    handleClick={confirmClose}
+                    title={t("form.cancelButton")}
+                    data-cy="cancel"
+                    color={ButtonColorEnum.DEFAULT}
+                    variant={ButtonVariantEnum.OUTLINED}
+                  />
+                )}
+                <Button
+                  data-cy="submit"
+                  title={t("form.create")}
+                  type="submit"
+                  className={classes.submit}
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                />
+              </Box>
             </Form>
           )}
         </Formik>
@@ -236,6 +295,14 @@ export default function NewFolderModal({ open, handleClose }: Props) {
         options={libraryOptions}
         footerActions={footerActions}
       />
+      {showConfirmCancel && (
+        <ActionConfirm
+          title={t("confirmCancelFolderCreation")}
+          onOk={requestAbortUpload}
+          onClose={() => setShowConfirmCancel(false)}
+          isLoading={cancelIsLoading}
+        />
+      )}
     </>
   );
 }

@@ -7,7 +7,14 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { createObjectURL } from "blob-util";
 import VUMeter from "@/components/ui/VUMeter";
-import { PropsAudioData, PropsRecordingSelector, PropsUserSelector } from "@/types/index";
+import Sinewaves from "@/components/ui/Sinewaves";
+import {
+  PropsAudioData,
+  PropsRecordingSelector,
+  PropsUserSelector,
+  PropsConfigSelector,
+  PropsLibrarySelector,
+} from "@/types/index";
 import { useSelector } from "react-redux";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
@@ -15,19 +22,26 @@ import { useTranslation } from "next-i18next";
 import IconButton from "@/components/ui/IconButton";
 import Button from "@/components/ui/Button";
 import Box from "@material-ui/core/Box";
-import { ButtonVariantEnum } from "@/enums/*";
+import { ButtonVariantEnum, TextVariantEnum, DefaultAudioTypeEnum } from "@/enums/*";
 import { useRouter } from "next/router";
+import Text from "@/components/ui/Text";
+import theme from "@/styles/theme";
+import { format } from "date-fns";
+import { convertPrivateToUsername, getPrivatePath } from "@/utils/directory";
+import Waves from "@/components/pages/file/AudioWave/Waves";
+import { getAccessedPages } from "@/utils/utils";
 
 type Props = {
   onStopRecording: (audioData: PropsAudioData) => void;
+  tempFileName: string;
 };
 
-type StyleProps = {
-  width: string;
-  height: string;
-};
+// type StyleProps = {
+//   width: string;
+//   height: string;
+// };
 
-function AudioRecorder({ onStopRecording }: Props) {
+function AudioRecorder({ onStopRecording, tempFileName }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
   const { t } = useTranslation("recording");
@@ -35,23 +49,18 @@ function AudioRecorder({ onStopRecording }: Props) {
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
   const state = recordingRdx.activeRecordingState;
+  const { isPlayingAudioPreview } = recordingRdx;
   const [audioStream, setAudioStream] = useState<MediaStream | undefined>(undefined);
   const [mediaRcdr, setMediaRcdr] = useState<MediaRecorder | null>(null);
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isStop, setIsStop] = useState(false);
   const [removeCanvas, setRemoveCanvas] = useState(false);
   const theme = useTheme();
-  const matchXs = useMediaQuery(theme.breakpoints.down("sm"));
-  const styleMatchXs = {
-    width: "5em",
-    height: "20em",
-  };
-  const styleMatchRest = {
-    width: "5em",
-    height: "20em",
-  };
-  const style: StyleProps = matchXs ? styleMatchXs : styleMatchRest;
+  const [pathLocationSave, setPathLocationSave] = useState("");
+  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
+  const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
 
   const startRecording = useCallback(async () => {
     let mediaRecorder: MediaRecorder | null = mediaRcdr;
@@ -101,12 +110,15 @@ function AudioRecorder({ onStopRecording }: Props) {
       setIsStop(true);
       setIsRecording(false);
       setRemoveCanvas(true);
-      audioStream.getTracks().forEach((track) => {
-        track.stop();
-      });
+      if (mediaRcdr) {
+        mediaRcdr.stop();
+      }
+      // audioStream.getTracks().forEach((track) => {
+      //   track.stop();
+      // });
       setMediaRcdr(null);
     }
-  }, [audioStream]);
+  }, [audioStream, mediaRcdr]);
 
   const pauseRecording = useCallback(() => {
     if (mediaRcdr) {
@@ -114,7 +126,7 @@ function AudioRecorder({ onStopRecording }: Props) {
       setIsPaused(true);
       setIsStop(false);
       setIsRecording(false);
-      setRemoveCanvas(true);
+      // setRemoveCanvas(true);
     }
   }, [mediaRcdr]);
 
@@ -129,6 +141,10 @@ function AudioRecorder({ onStopRecording }: Props) {
   );
 
   useEffect(() => {
+    (async () => {
+      const pathUp = await prepareUploadPath();
+      setPathLocationSave(pathUp);
+    })();
     init(state);
   }, [state]);
 
@@ -140,32 +156,125 @@ function AudioRecorder({ onStopRecording }: Props) {
     }
   }
 
-  const navigate = () => {
-    router.push(`/library/${userRdx.user.id}/audios`);
+  const getInformationRecordingState = () => {
+    switch (recordingRdx.activeRecordingState) {
+      case "NONE":
+        return t("recordingOrientation");
+      case "START":
+        return t("recordingTitle");
+      case "PAUSE":
+        return t("pausingTitle");
+      case "STOP":
+        return t("stopingTitle");
+      default:
+        return t("recordingOrientation");
+    }
   };
 
+  async function prepareUploadPath() {
+    if (pathLocationSave) return pathLocationSave;
+
+    const accessedPages = await getAccessedPages();
+    const urlOrigin = accessedPages[1] || accessedPages[0];
+    let url = "";
+
+    if (/^[/]library/.test(urlOrigin)) {
+      if ((urlOrigin.match(/[/]/g) || []).length > 1) {
+        const path = libraryRdx.currentPath;
+        url = convertPrivateToUsername(path, userRdx.user.id).replace(/[/]library[/]/, "");
+      }
+    }
+
+    if (/^[/]honeycomb/.test(urlOrigin)) {
+      const url_ = urlOrigin.split("/");
+      if (url_.length > 4) {
+        url = decodeURI(url_[url_.length - 2]);
+      }
+    }
+
+    return url || convertPrivateToUsername(getPrivatePath(), userRdx.user.id);
+  }
+
+  function showRecordingInformation() {
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="flex-start">
+        <Text
+          variant={TextVariantEnum.CAPTION}
+          style={{ color: theme.palette.variation5.light, fontSize: 16 }}
+        >
+          {format(new Date(), "dd/MM/yyyy")}
+        </Text>
+        <Text
+          variant={TextVariantEnum.CAPTION}
+          style={{ color: theme.palette.variation5.light, fontSize: 16 }}
+        >
+          /{pathLocationSave}
+        </Text>
+      </Box>
+    );
+  }
+
+  function getJustifyContentBasedOnRecordingStatus() {
+    if (isRecording) return "center";
+    if (isPaused) return "cener";
+    return "flex-start";
+  }
+
   return (
-    <div style={{ width: style.width, height: style.height }}>
-      {isRecording ? (
-        <VUMeter stream={audioStream} removeCanvas={removeCanvas} canvasSize={style} />
-      ) : (
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <IconButton
-            icon="folder_outlined"
-            textStyle={{ color: "#9A9A9A", fontSize: 14, width: 200 }}
-            title={t("recordingOrientation")}
-            iconStyle={{ fontSize: 90 }}
-            iconColor="#EBEBEB"
-          />
-          {/* <Button
-            title="Show my recordings"
-            style={{ width: 200 }}
-            variant={ButtonVariantEnum.TEXT}
-            handleClick={navigate}
-          /> */}
-        </Box>
-      )}
-    </div>
+    <>
+      <Box>
+        <Text
+          variant={TextVariantEnum.CAPTION}
+          style={{ color: theme.palette.variation7.light, fontSize: 16, width: "100%" }}
+        >
+          {getInformationRecordingState()}
+        </Text>
+      </Box>
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        flex={1}
+        justifyContent={getJustifyContentBasedOnRecordingStatus()}
+      >
+        {(isRecording || isPaused) && (
+          <Box display="flex" flex={1} width="100%" flexDirection="column" justifyContent="center">
+            <Text
+              variant={TextVariantEnum.CAPTION}
+              style={{ color: theme.palette.variation7.light, fontSize: 14 }}
+            >
+              {tempFileName}.{DefaultAudioTypeEnum.type}
+            </Text>
+            {!isPlayingAudioPreview ? (
+              <Sinewaves
+                stream={audioStream}
+                removeCanvas={removeCanvas}
+                height="190px"
+                backgroundColor={theme.palette.variation7.dark}
+                foregroundColor={theme.palette.secondary.main}
+              />
+            ) : (
+              <Waves blob={audioBlob} play config={{ height: 190 }} />
+            )}
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-around"
+            >
+              {showRecordingInformation()}
+              <VUMeter
+                stream={audioStream}
+                removeCanvas={removeCanvas}
+                width="70px"
+                height="150px"
+              />
+            </Box>
+          </Box>
+        )}
+      </Box>
+    </>
   );
 }
 

@@ -13,15 +13,34 @@ import { useSelector, useDispatch } from "react-redux";
 import FlexBox from "@/components/ui/FlexBox";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { JustifyContentEnum, ListTypeEnum, OrderEnum } from "@/enums/index";
-import { setLibraryFiles, setLibraryPathExists, setLibraryPath } from "@/store/actions/library";
+import {
+  ContextMenuEventEnum,
+  ContextMenuOptionEnum,
+  JustifyContentEnum,
+  ListTypeEnum,
+  OrderEnum,
+} from "@/enums/index";
+import {
+  setLibraryFiles,
+  setLibraryPathExists,
+  setLibraryPath,
+  editLibraryFile,
+  addLibraryFile,
+  removeLibraryFile,
+} from "@/store/actions/library";
 import Library, { filterItems, getItems, orderItems } from "@/components/pages/library";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/*";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { toast } from "@/utils/notifications";
-import { removeCornerSlash, isAudioFile } from "@/utils/utils";
+import { removeCornerSlash, removeFirstSlash } from "@/utils/utils";
 import IconButton from "@/components/ui/IconButton";
-import { getAudioPath, hasExclusivePath, isRootPath, pathIsInFilename } from "@/utils/directory";
+import {
+  getAudioPath,
+  getPath,
+  hasExclusivePath,
+  isRootPath,
+  pathIsInFilename,
+} from "@/utils/directory";
 import HeaderBar from "@/components/pages/library/HeaderBar";
 import { Button } from "@material-ui/core";
 import Image from "next/image";
@@ -59,11 +78,44 @@ function MyLibrary() {
     toast(t("featureUnavailable"), "warning");
   };
 
+  const handleContextMenuUpdate = async (
+    item: LibraryItemInterface,
+    event: ContextMenuEventEnum,
+    option: ContextMenuOptionEnum,
+    extraInfo: any,
+  ) => {
+    switch (event) {
+      case ContextMenuEventEnum.UPDATE:
+        if (option === ContextMenuOptionEnum.AVAILABLE_OFFLINE) {
+          await dispatch(editLibraryFile(extraInfo.oldId, item));
+
+          return;
+        }
+
+        await dispatch(editLibraryFile(item.id, item));
+        break;
+      case ContextMenuEventEnum.CREATE:
+        if (option === ContextMenuOptionEnum.DUPLICATE) {
+          await dispatch(addLibraryFile(item));
+
+          return;
+        }
+
+        router.push(`/library/${removeFirstSlash(getPath(item.aliasFilename))}`);
+        break;
+      case ContextMenuEventEnum.DELETE:
+        await dispatch(removeLibraryFile(item.id));
+        break;
+      default:
+        break;
+    }
+  };
+
   const options = (
     cardItem: LibraryCardItemInterface,
     playIconComp: React.ReactNode | undefined = undefined,
   ) => {
-    const { filename, basename, orientation, mime } = cardItem;
+    const { filename, basename, orientation } = cardItem;
     const options = [];
     const shareOption = (
       <IconButton
@@ -80,12 +132,28 @@ function MyLibrary() {
 
     if (!hasExclusivePath(filename) && removeCornerSlash(filename).split("/").length > 1) {
       if (!pathIsInFilename(getAudioPath(), filename) && orientation === "vertical") {
-        if (!isAudioFile(mime)) {
-          options.push(shareOption);
-        }
+        options.push(shareOption);
       }
 
-      options.push(<ContextMenuOptions key={`${basename}-more-options`} {...cardItem} />);
+      options.push(
+        <ContextMenuOptions
+          key={`${basename}-more-options`}
+          {...cardItem}
+          availableOptions={[
+            ContextMenuOptionEnum.EDIT,
+            ContextMenuOptionEnum.COPY,
+            ContextMenuOptionEnum.MOVE,
+            ContextMenuOptionEnum.DETAILS,
+            ContextMenuOptionEnum.AVAILABLE_OFFLINE,
+            ContextMenuOptionEnum.DOWNLOAD,
+            ContextMenuOptionEnum.DELETE,
+            ContextMenuOptionEnum.DUPLICATE,
+            ContextMenuOptionEnum.PUBLISH,
+            ContextMenuOptionEnum.RENAME,
+          ]}
+          onChange={handleContextMenuUpdate}
+        />,
+      );
     }
 
     return options;
@@ -129,7 +197,7 @@ function MyLibrary() {
           setIsLoading(true);
         }
 
-        const items = await getItems(path, userRdx.user.id, timeDescription);
+        const items = await getItems(path, userRdx.user.id, timeDescription, l);
 
         dispatch(setLibraryPathExists(true));
         dispatch(setLibraryFiles(items));
@@ -142,7 +210,7 @@ function MyLibrary() {
 
       setIsLoading(false);
     },
-    [currentDirectory, dispatch, timeDescription, userRdx.user.id],
+    [currentDirectory, dispatch, l, timeDescription, userRdx.user.id],
   );
 
   useEffect(() => {
@@ -181,10 +249,10 @@ function MyLibrary() {
     setItems(orderItems(order, filterItems(filter, rawItems)));
   };
 
-  const handleItemClick = ({ type, aliasFilename, filename, mime }: LibraryCardItemInterface) => {
+  const handleItemClick = ({ type, aliasFilename, filename }: LibraryCardItemInterface) => {
     if (type === "directory" && router.query.path !== aliasFilename) {
       router.push(`/library/${aliasFilename}`);
-    } else if (type === "file" && isAudioFile(mime)) {
+    } else if (type === "file") {
       router.push(`/file/${btoa(filename)}`);
     }
   };

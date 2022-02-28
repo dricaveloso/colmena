@@ -1,19 +1,18 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import {
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@material-ui/core";
+import Button from "@/components/ui/Button";
+import { TextField, Box } from "@material-ui/core";
 import Select from "@/components/ui/Select";
 import { useTranslation } from "next-i18next";
 import { toast } from "@/utils/notifications";
-import { SelectVariantEnum, RoleUserEnum, ConfigFilesNCEnum } from "@/enums/index";
+import {
+  SelectVariantEnum,
+  RoleUserEnum,
+  ConfigFilesNCEnum,
+  ButtonVariantEnum,
+  ButtonColorEnum,
+} from "@/enums/index";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
@@ -24,6 +23,9 @@ import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import getConfig from "next/config";
 import { UserProfileInterface } from "@/interfaces/index";
+import Divider from "@/components/ui/Divider";
+import Modal from "@/components/ui/Modal";
+import { findTokenChatByPath } from "@/pages/recording";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -67,13 +69,13 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
   }
 
   return (
-    <div>
-      <Dialog
-        open={openInviteForm}
-        onClose={handleCloseInviteForm}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">{t("textInviteCollaborators")}</DialogTitle>
+    <Modal
+      title={t("textInviteCollaborators")}
+      description={t("descriptionModalDialogInvite")}
+      handleClose={handleCloseInviteForm}
+      open={openInviteForm}
+    >
+      <div>
         <Backdrop open={showBackdrop} />
         <Formik
           initialValues={initialValues}
@@ -101,6 +103,20 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
                   file = JSON.parse(String(userProfileFile));
                   file.medias.push(group);
                   await createOrUpdateFile(userId, file);
+                  const tokenChat = await findTokenChatByPath(group);
+                  if (typeof tokenChat === "string") {
+                    const response = await fetch("/api/add-participant-conversation", {
+                      method: "POST",
+                      body: JSON.stringify({ token: tokenChat, newParticipant: userId }),
+                      headers: {
+                        "Content-type": "application/json",
+                      },
+                    });
+                    const data = await response.json();
+                    if (!data.success) {
+                      console.log("erro ao adicionar o participante em um chat");
+                    }
+                  }
                 } catch (e) {
                   console.log("Arquivo .profile.json não encontrado", e);
                 }
@@ -120,105 +136,121 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
         >
           {({ submitForm, isSubmitting, errors, touched }: any) => (
             <>
-              <DialogContent>
-                <DialogContentText>{t("descriptionModalDialogInvite")}</DialogContentText>
-                <Form autoComplete="off">
-                  <Field name="name" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        inputProps={{
+              <Form autoComplete="off">
+                <Field name="name" data-testid="media-name" InputProps={{ notched: true }}>
+                  {({ field }: FieldProps) => (
+                    <TextField
+                      id="name"
+                      variant="outlined"
+                      inputProps={{
+                        autoComplete: "off",
+                        form: {
                           autoComplete: "off",
-                          form: {
-                            autoComplete: "off",
-                          },
-                        }}
-                        label={t("placeholderName")}
-                        type="text"
-                        fullWidth
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
-                  <Field name="emailCol" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <TextField
-                        margin="dense"
-                        inputProps={{
+                        },
+                      }}
+                      label={t("placeholderName")}
+                      type="text"
+                      fullWidth
+                      {...field}
+                    />
+                  )}
+                </Field>
+                {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
+                <Divider marginTop={20} />
+                <Field name="emailCol" data-testid="media-email" InputProps={{ notched: true }}>
+                  {({ field }: FieldProps) => (
+                    <TextField
+                      variant="outlined"
+                      inputProps={{
+                        autoComplete: "off",
+                        form: {
                           autoComplete: "off",
-                          form: {
-                            autoComplete: "off",
-                          },
-                        }}
-                        id="emailCol"
-                        label={t("placeholderEmail")}
-                        type="email"
-                        fullWidth
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  {errors.emailCol && touched.emailCol ? (
-                    <ErrorMessageForm message={errors.emailCol} />
-                  ) : null}
-                  <Field name="group" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <Select
-                        label={t("placeholderGroup")}
-                        variant={SelectVariantEnum.STANDARD}
-                        options={userRdx.user.subadmin.map((item) => ({
-                          id: item,
-                          value: item,
-                        }))}
-                        id="group"
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  {errors.group && touched.group ? (
-                    <ErrorMessageForm message={errors.group} />
-                  ) : null}
-                  <Field name="permission" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <Select
-                        label={t("placeholderPermission")}
-                        variant={SelectVariantEnum.STANDARD}
-                        options={[
-                          {
-                            id: RoleUserEnum.COLLABORATOR,
-                            value: t("inviteCollaboratorTitle"),
-                            disabled: true,
-                          },
-                          {
-                            id: RoleUserEnum.ADMIN,
-                            value: t("inviteAdministratorTitle"),
-                          },
-                        ]}
-                        id="permission"
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  {errors.permission && touched.permission ? (
-                    <ErrorMessageForm message={errors.permission} />
-                  ) : null}
-                </Form>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseInviteForm} color="primary">
-                  {t("buttonCancelModalDialogInvite")}
-                </Button>
-                <Button disabled={isSubmitting} onClick={submitForm} color="primary">
-                  {t("buttonOkModalDialogInvite")}
-                </Button>
-              </DialogActions>
+                        },
+                      }}
+                      id="emailCol"
+                      label={t("placeholderEmail")}
+                      type="email"
+                      fullWidth
+                      {...field}
+                    />
+                  )}
+                </Field>
+                {errors.emailCol && touched.emailCol ? (
+                  <ErrorMessageForm message={errors.emailCol} />
+                ) : null}
+                <Divider marginTop={20} />
+                <Field name="group" data-testid="media-group" InputProps={{ notched: true }}>
+                  {({ field }: FieldProps) => (
+                    <Select
+                      label={t("placeholderGroup")}
+                      variant={SelectVariantEnum.OUTLINED}
+                      options={userRdx.user.subadmin.map((item) => ({
+                        id: item,
+                        value: item,
+                      }))}
+                      id="group"
+                      {...field}
+                    />
+                  )}
+                </Field>
+                {errors.group && touched.group ? <ErrorMessageForm message={errors.group} /> : null}
+                <Divider marginTop={20} />
+                <Field
+                  name="permission"
+                  data-testid="media-permission"
+                  InputProps={{ notched: true }}
+                >
+                  {({ field }: FieldProps) => (
+                    <Select
+                      label={t("placeholderPermission")}
+                      variant={SelectVariantEnum.OUTLINED}
+                      options={[
+                        {
+                          id: RoleUserEnum.COLLABORATOR,
+                          value: t("inviteCollaboratorTitle"),
+                          disabled: true,
+                        },
+                        {
+                          id: RoleUserEnum.ADMIN,
+                          value: t("inviteAdministratorTitle"),
+                        },
+                      ]}
+                      id="permission"
+                      {...field}
+                    />
+                  )}
+                </Field>
+                {errors.permission && touched.permission ? (
+                  <ErrorMessageForm message={errors.permission} />
+                ) : null}
+              </Form>
+              <Box
+                display="flex"
+                marginTop={2}
+                flex={1}
+                flexDirection="row"
+                justifyContent="space-between"
+              >
+                <Button
+                  handleClick={handleCloseInviteForm}
+                  title={t("buttonCancelModalDialogInvite")}
+                  data-testid="close-modal-invite"
+                  color={ButtonColorEnum.SECONDARY}
+                  variant={ButtonVariantEnum.OUTLINED}
+                />
+                <Button
+                  handleClick={submitForm}
+                  title={t("buttonOkModalDialogInvite")}
+                  disabled={isSubmitting}
+                  isLoading={isSubmitting}
+                  data-testid="submit-invite"
+                  type="submit"
+                />
+              </Box>
             </>
           )}
         </Formik>
-      </Dialog>
-    </div>
+      </div>
+    </Modal>
   );
 }

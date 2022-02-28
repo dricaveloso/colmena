@@ -4,16 +4,8 @@ export function addSingleMessage(file) {
   return db.chatMessages.add(file);
 }
 
-export function addSingleLocalMessage(file) {
-  return db.chatLocalMessages.add(file);
-}
-
-export function getAllLocalMessages(token) {
-  return db.chatLocalMessages.where("token").equals(token).toArray();
-}
-
-export function deleteAllLocalMessages(token) {
-  return db.chatLocalMessages.where("token").equals(token).delete();
+export function updateMessage(chatId, message) {
+  return db.chatMessages.update(chatId, { message });
 }
 
 export function addAllMessages(file) {

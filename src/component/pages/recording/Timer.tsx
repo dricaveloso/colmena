@@ -5,6 +5,8 @@ import AudioControls from "./AudioControls";
 import TimerDisplay from "./TimerDisplay";
 import { useDispatch } from "react-redux";
 import { updateRecordingState } from "@/store/actions/recordings/index";
+import Box from "@material-ui/core/Box";
+import Divider from "@/components/ui/Divider";
 
 export default function Timer() {
   const dispatch = useDispatch();
@@ -28,10 +30,11 @@ export default function Timer() {
   };
 
   return (
-    <div>
+    <Box width="100%">
       <TimerDisplay seconds={seconds} minutes={minutes} />
+      <Divider marginTop={3} />
       {/* eslint-disable-next-line react/jsx-no-bind */}
       <AudioControls handleStart={handleStart} handleStop={handleStop} handlePause={handlePause} />
-    </div>
+    </Box>
   );
 }

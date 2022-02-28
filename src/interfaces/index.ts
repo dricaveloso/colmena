@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-cycle
 import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
 import React from "react";
-import { ListTypeEnum } from "../enums";
+import { ContextMenuEventEnum, ContextMenuOptionEnum, ListTypeEnum } from "../enums";
 
 export interface I18nInterface {
   locale: string;
@@ -146,16 +146,13 @@ export interface LibraryInterface {
   items?: LibraryItemInterface[];
   isLoading?: boolean;
   isDisabled?: boolean;
-  options?: (
-    cardItem: LibraryCardItemInterface,
-    playButton?: React.ReactNode | undefined,
-  ) => React.ReactNode;
+  options?: (cardItem: LibraryCardItemInterface) => React.ReactNode;
   bottomOptions?: (
     cardItem: LibraryCardItemInterface,
-    playButton?: React.ReactNode | undefined,
     badgeStatusGrid?: React.ReactNode | undefined,
   ) => React.ReactNode;
-  handleItemClick: (item: LibraryItemInterface) => void;
+  handleItemClick?: (item: LibraryItemInterface) => void;
+  itemsQuantitySkeleton?: number;
 }
 export interface LibraryItemInterface {
   id: string;
@@ -166,30 +163,50 @@ export interface LibraryItemInterface {
   type?: string;
   tags?: NXTagsProps[] | string[];
   arrayBufferBlob?: ArrayBuffer;
-  updatedAt?: Date;
   createdAt?: Date;
-  createdAtDescription?: string | undefined;
+  createdAtDescription?: string | null;
+  updatedAt?: Date;
+  updatedAtDescription?: string | null;
   environment: Environment;
   path?: string;
   image?: string;
   mime?: string;
   size?: number;
+  sizeFormatted?: string;
+  contentLength?: number;
+  ownerId?: string;
+  ownerName?: string;
+  title?: string;
+  description?: string;
+  language?: string;
+  favorite?: number;
+  commentsUnread?: number;
+  fileId?: number;
+  nextcloudId?: string;
+  eTag?: string;
 }
 
 export interface LibraryCardItemInterface extends LibraryItemInterface {
   orientation: string | ["vertical", "horizontal"];
-  options?: (
-    item: LibraryItemInterface,
-    playButton?: React.ReactNode | undefined,
-  ) => React.ReactNode;
+  options?: (item: LibraryItemInterface) => React.ReactNode;
   bottomOptions?: (
     item: LibraryItemInterface,
-    playButton?: React.ReactNode | undefined,
     badgeStatusGrid?: React.ReactNode | undefined,
   ) => React.ReactNode;
-  handleOpenCard: (item: LibraryItemInterface) => void;
+  handleOpenCard?: (item: LibraryItemInterface) => void;
   isDisabled?: boolean;
 }
+
+export interface LibraryItemContextMenuInterface extends LibraryItemInterface {
+  availableOptions: Array<ContextMenuOptionEnum>;
+  onChange: (
+    cardItem: LibraryItemInterface,
+    event: ContextMenuEventEnum,
+    option: ContextMenuOptionEnum,
+    extraInfo?: any,
+  ) => void | Promise<void>;
+}
+
 export interface BreadcrumbItemInterface {
   description: string | undefined;
   path: string;
@@ -221,6 +238,7 @@ export interface VerticalItemListInterface {
   filename: string;
   environment: Environment;
   size?: number;
+  arrayBufferBlob?: ArrayBuffer;
 }
 
 export interface TagInterface {

@@ -84,7 +84,7 @@ export default function AudioItemGrid({ filename, environment, primary, size }: 
       <CircularProgress size={20} />
     </Box>
   ) : (
-    <Box display="flex" flex={1} marginBottom={2} style={{ width: "100%" }} flexDirection="column">
+    <Box display="flex" flex={1} style={{ width: "100%" }} flexDirection="column">
       <Text variant={TextVariantEnum.BODY1} style={{ fontSize: 12.5, textAlign: "center" }}>
         {primary}
       </Text>

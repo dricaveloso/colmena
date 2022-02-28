@@ -1,15 +1,15 @@
 {
-  "audioTitle": "Audio",
-  "descriptionTitle": "Description",
-  "tagTitle": "Tags",
-  "contextMenuOptions": {
-    "downloadTitle": "Download",
-    "renameTitle": "Rename title",
-    "editAudio": "Edit audio",
-    "deleteAudio": "Delete audio"
-  },
-  "messages": {
-    "descriptionSuccessfullyUpdated": "Description successfully updated"
-  },
-  "editDescription": "Éditer la description"
+    "audioTitle": "Audio",
+    "descriptionTitle": "Description",
+    "tagTitle": "Étiquettes",
+    "contextMenuOptions": {
+        "downloadTitle": "Télécharger",
+        "renameTitle": "Renommer le titre",
+        "editAudio": "Éditer l'audio",
+        "deleteAudio": "Supprimer l'audio"
+    },
+    "messages": {
+        "descriptionSuccessfullyUpdated": "Description correctement mise à jour"
+    },
+    "editDescription": "Éditer la description"
 }

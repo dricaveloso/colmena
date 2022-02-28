@@ -3,12 +3,15 @@ import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import reducers from "./reducers";
+// eslint-disable-next-line import/no-cycle
+import reducers from "@/store/reducers/index";
 
 let store: any;
 
+export const persistConfigKey = "rootv2.1";
+
 const persistConfig = {
-  key: "rootv2",
+  key: persistConfigKey,
   // eslint-disable-next-line no-undef
   storage,
   // whitelist: ['exampleData'], // place to select which state you want to persist

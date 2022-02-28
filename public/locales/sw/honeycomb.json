@@ -1,0 +1,15 @@
+{
+    "title": "Sega la asali",
+    "memberTitle": "Mwanachama",
+    "membersTitle": "Wanachama",
+    "noMemberTitle": "Hakuna mwanachama",
+    "tab1Title": "Chati",
+    "tab2Title": "Maktaba",
+    "emptyTalkDescription": "Bonyeza ikoni ya kuongeza hapa chini kubuni sega la asali",
+    "downloadAudioFailed": "Haiwezi kupakua sauti",
+    "downloadFileFailed": "Haiwezekani kutoa faili",
+    "contextMenuOptions": {
+        "addParticipantContextTitle": "Ongeza mshiriki",
+        "participantsAddedSuccessfully": "Washiriki wameongezwa kwa mafanikio"
+    }
+}

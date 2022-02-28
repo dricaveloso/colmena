@@ -1,24 +1,22 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
 import Button from "@/components/ui/Button";
 import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
+import { ButtonVariantEnum } from "@/enums/*";
 import { useTranslation } from "next-i18next";
 import { toast } from "@/utils/notifications";
 import { useDispatch, useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
 import { updateUser } from "@/services/ocs/users";
 import { userInfoUpdate } from "@/store/actions/users";
-import BackdropModal from "@/components/ui/Backdrop";
+import Backdrop from "@/components/ui/Backdrop";
 import { signOut } from "next-auth/client";
 import { useRouter } from "next/router";
 import PasswordField from "@/components/statefull/PasswordField";
+import Modal from "@/components/ui/Modal";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -80,118 +78,108 @@ export default function ResetPasswordModal({ open, handleClose }: Props) {
 
   return (
     <>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h4 id="transition-modal-title" className={classes.title}>
-              {c("resetPasswordTitle")}
-            </h4>
-            {showBackdrop && <BackdropModal open={showBackdrop} />}
-            <Formik
-              initialValues={initialValues}
-              validationSchema={schemaValidation}
-              onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-                const { currentPassword, newPassword } = values;
-                (async () => {
-                  try {
-                    if (currentPassword !== currentPasswordRdx) {
-                      throw new Error(c("form.currentPasswordInvalidTitle"));
-                    }
-                    setSubmitting(true);
-                    setShowBackdrop(true);
+      <Modal title={c("resetPasswordTitle")} handleClose={handleClose} open={open}>
+        {showBackdrop && <Backdrop open={showBackdrop} />}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={schemaValidation}
+          onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
+            const { currentPassword, newPassword } = values;
+            (async () => {
+              try {
+                if (currentPassword !== currentPasswordRdx) {
+                  throw new Error(c("form.currentPasswordInvalidTitle"));
+                }
+                setSubmitting(true);
+                setShowBackdrop(true);
 
-                    const result = await updateUser<string | number>("password", newPassword);
-                    if (result.data.ocs.meta.statuscode !== 200) {
-                      throw new Error(c("messages.unableToUpdatePassword"));
-                    }
-                    dispatch(userInfoUpdate({ password: newPassword }));
+                const result = await updateUser<string | number>("password", newPassword);
+                if (result.data.ocs.meta.statuscode !== 200) {
+                  throw new Error(c("messages.unableToUpdatePassword"));
+                }
+                dispatch(userInfoUpdate({ password: newPassword }));
 
-                    setSubmitting(false);
-                    setShowBackdrop(false);
+                setSubmitting(false);
+                setShowBackdrop(false);
 
-                    handleClose();
-                    toast(c("messages.passwordUpdatedSuccessfully"), "success");
-                    await signOut({ redirect: false });
-                    router.push("/login");
-                  } catch (e) {
-                    console.log(e);
-                    const msg = e.message ? e.message : c("messages.unableToUpdatePassword");
-                    toast(msg, "error");
-                  } finally {
-                    setShowBackdrop(false);
-                    setSubmitting(false);
-                  }
-                })();
+                handleClose();
+                toast(c("messages.passwordUpdatedSuccessfully"), "success");
+                await signOut({ redirect: false });
+                router.push("/login");
+              } catch (e) {
+                console.log(e);
+                const msg = e.message ? e.message : c("messages.unableToUpdatePassword");
+                toast(msg, "error");
+              } finally {
+                setShowBackdrop(false);
+                setSubmitting(false);
+              }
+            })();
+          }}
+        >
+          {({ submitForm, isSubmitting, errors, touched, setFieldValue }: any) => (
+            <Form
+              autoComplete="off"
+              className={classes.form}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  submitForm();
+                }
               }}
             >
-              {({ submitForm, isSubmitting, errors, touched, setFieldValue }: any) => (
-                <Form
-                  autoComplete="off"
-                  className={classes.form}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      submitForm();
-                    }
-                  }}
-                >
-                  <Field name="currentPassword" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <PasswordField
-                        label={c("form.placeholderCurrentPassword")}
-                        handleChangePassword={(value: string) => {
-                          setFieldValue("currentPassword", value);
-                        }}
-                        placeholder=""
-                        required
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  {errors.currentPassword && touched.currentPassword ? (
-                    <ErrorMessageForm message={errors.currentPassword} />
-                  ) : null}
-                  <Divider marginTop={20} />
-                  <Field name="newPassword" InputProps={{ notched: true }}>
-                    {({ field }: FieldProps) => (
-                      <PasswordField
-                        label={c("form.placeholderNewPassword")}
-                        handleChangePassword={(value: string) => {
-                          setFieldValue("newPassword", value);
-                        }}
-                        placeholder=""
-                        required
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  {errors.newPassword && touched.newPassword ? (
-                    <ErrorMessageForm message={errors.newPassword} />
-                  ) : null}
-                  <Divider marginTop={20} />
-                  <Button
-                    handleClick={submitForm}
-                    color={ButtonColorEnum.PRIMARY}
-                    variant={ButtonVariantEnum.CONTAINED}
-                    disabled={isSubmitting}
-                    style={{ float: "right" }}
-                    title={c("form.submitSaveTitle")}
+              <Field
+                name="currentPassword"
+                data-testid="current-password-field"
+                InputProps={{ notched: true }}
+              >
+                {({ field }: FieldProps) => (
+                  <PasswordField
+                    label={c("form.placeholderCurrentPassword")}
+                    handleChangePassword={(value: string) => {
+                      setFieldValue("currentPassword", value);
+                    }}
+                    placeholder=""
+                    required
+                    {...field}
                   />
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </Fade>
+                )}
+              </Field>
+              {errors.currentPassword && touched.currentPassword ? (
+                <ErrorMessageForm message={errors.currentPassword} />
+              ) : null}
+              <Divider marginTop={20} />
+              <Field
+                name="newPassword"
+                data-testid="new-password-field"
+                InputProps={{ notched: true }}
+              >
+                {({ field }: FieldProps) => (
+                  <PasswordField
+                    label={c("form.placeholderNewPassword")}
+                    handleChangePassword={(value: string) => {
+                      setFieldValue("newPassword", value);
+                    }}
+                    placeholder=""
+                    required
+                    {...field}
+                  />
+                )}
+              </Field>
+              {errors.newPassword && touched.newPassword ? (
+                <ErrorMessageForm message={errors.newPassword} />
+              ) : null}
+              <Divider marginTop={20} />
+              <Button
+                handleClick={submitForm}
+                variant={ButtonVariantEnum.CONTAINED}
+                disabled={isSubmitting}
+                style={{ float: "right" }}
+                title={c("form.submitSaveTitle")}
+                data-testid="submit-reset-password"
+              />
+            </Form>
+          )}
+        </Formik>
       </Modal>
     </>
   );

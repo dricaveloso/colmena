@@ -1,10 +1,9 @@
 {
-  "title": "Enter your email and password to login.",
-  "loginInvalid": "Incorrect username or password",
-  "permissionDenied": "User profile not allowed for access.",
-  "userDeactivated": "Your user is disabled.",
-  "mediaNotFound": "Error fetching your media",
-  "profileNotFound": "Error accessing your user file",
-  "loginSuccesfully": "Successfully logged in"
+    "title": "Enter your email and password to login",
+    "loginInvalid": "Incorrect username or password",
+    "permissionDenied": "Access denied",
+    "userDeactivated": "User disabled",
+    "mediaNotFound": "Error fetching your media",
+    "profileNotFound": "Error accessing your user file",
+    "loginSuccesfully": "Logged in"
 }
-

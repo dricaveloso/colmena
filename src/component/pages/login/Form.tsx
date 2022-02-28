@@ -1,14 +1,21 @@
 /* eslint-disable camelcase */
 import React from "react";
 import Button from "@/components/ui/Button";
-import { LinearProgress, TextField } from "@material-ui/core";
+import {
+  // LinearProgress,
+  InputAdornment,
+  OutlinedInput,
+  FormControl,
+  InputLabel,
+} from "@material-ui/core";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import PasswordField from "@/components/statefull/PasswordField";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { toast } from "@/utils/notifications";
 import { Formik, Form, Field, FieldProps } from "formik";
 import Divider from "@/components/ui/Divider";
-import { SelectVariantEnum, ButtonVariantEnum, ConfigFilesNCEnum } from "@/enums/index";
+import { ButtonVariantEnum, ConfigFilesNCEnum } from "@/enums/index";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
 import { signIn, getSession } from "next-auth/client";
@@ -19,11 +26,34 @@ import { UserInfoInterface, MediaInfoInterface, UserProfileInterface } from "@/i
 import Box from "@material-ui/core/Box";
 import { listFile } from "@/services/webdav/files";
 import { v4 as uuid } from "uuid";
+import { makeStyles } from "@material-ui/core/styles";
+import Backdrop from "@/components/ui/Backdrop";
 
 type MyFormValues = {
   emlLogin: string;
   psdLogin: string;
 };
+
+// const useStyles = makeStyles(() =>
+//   createStyles({
+//     cssLabel: {
+//       color: "white !important",
+//     },
+
+//     cssOutlinedInput: {
+//       "&$cssFocused $notchedOutline": {
+//         borderColor: `white !important`,
+//       },
+//     },
+
+//     cssFocused: {},
+
+//     notchedOutline: {
+//       borderWidth: 1,
+//       borderColor: "white !important",
+//     },
+//   }),
+// );
 
 export default function WrapperForm() {
   const dispatch = useDispatch();
@@ -32,10 +62,19 @@ export default function WrapperForm() {
   const cookies = parseCookies();
   const router = useRouter();
 
-  // const errorsAuth = new Map();
-  // errorsAuth.set(ErrorAuthEnum.ERR001, t("loginInvalid"));
-  // errorsAuth.set(ErrorAuthEnum.ERR002, t("permissionDenied"));
-  // errorsAuth.set(ErrorAuthEnum.ERR003, t("userDeactivated"));
+  const color = `white !important`;
+  const useOutlinedInputStyles = makeStyles(() => ({
+    input: {
+      color,
+    },
+    focused: {
+      borderColor: color,
+    },
+    notchedOutline: {
+      borderColor: color,
+    },
+  }));
+  const outlinedInputClasses = useOutlinedInputStyles();
 
   function trimEmail(value: string, originalValue: string) {
     return originalValue.trim();
@@ -71,12 +110,11 @@ export default function WrapperForm() {
           const email = emailv.trim();
           setSubmitting(true);
           (async () => {
-            const lang = cookies.NEXT_LOCALE || "en";
+            const langCookie = cookies.NEXT_LOCALE || "en";
             const result: any | null = await signIn("credentials", {
               redirect: false,
               email,
               password,
-              lang,
             });
 
             if (!result.error) {
@@ -125,20 +163,23 @@ export default function WrapperForm() {
                 return;
               }
 
+              const { language } = user;
+              if (language !== langCookie) {
+                user.language = langCookie;
+              }
+
               dispatch(
                 userUpdate({
                   user,
                 }),
               );
-              const { language: locale } = user;
-              setCookie(null, "NEXT_LOCALE", locale, {
+
+              setCookie(null, "NEXT_LOCALE", user.language, {
                 maxAge: 30 * 24 * 60 * 60,
                 path: "/",
               });
-
-              toast(t("loginSuccesfully"), "success");
-              router.push("/library", "", {
-                locale,
+              router.push("/home", "", {
+                locale: user.language,
               });
               setSubmitting(false);
               return;
@@ -153,75 +194,99 @@ export default function WrapperForm() {
         }}
       >
         {({ submitForm, isSubmitting, setFieldValue, errors, touched }: any) => (
-          <Form
-            autoComplete="off"
-            style={{ width: "100%" }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                submitForm();
-              }
-            }}
-          >
-            <Field name="emlLogin" InputProps={{ notched: true }}>
-              {({ field }: FieldProps) => (
-                <TextField
-                  id={uuid()}
-                  label={c("form.placeholderEmail")}
-                  inputProps={{
-                    autoComplete: "off",
-                    form: {
-                      autoComplete: "off",
-                    },
-                  }}
-                  variant={SelectVariantEnum.OUTLINED}
-                  fullWidth
-                  {...field}
-                />
-              )}
-            </Field>
-            {errors.emlLogin && touched.emlLogin ? (
-              <ErrorMessageForm message={errors.emlLogin} />
-            ) : null}
-            <Divider marginTop={20} />
-            <Field name="psdLogin" InputProps={{ notched: true }}>
-              {({ field }: FieldProps) => (
-                <PasswordField
-                  label={c("form.placeholderPassword")}
-                  placeholder={c("form.placeholderPassword")}
-                  handleChangePassword={(value: string) => {
-                    setFieldValue("psdLogin", value);
-                  }}
-                  required
-                  {...field}
-                />
-              )}
-            </Field>
-            {errors.psdLogin && touched.psdLogin ? (
-              <ErrorMessageForm message={errors.psdLogin} />
-            ) : null}
-            <Divider marginTop={20} />
-            {isSubmitting && <LinearProgress />}
-            <Divider marginTop={20} />
-            <Box
-              flexDirection="row"
-              display="flex"
-              alignContent="center"
-              justifyContent="space-between"
+          <>
+            <Backdrop open={isSubmitting} />
+            <Form
+              id="loginForm"
+              autoComplete="off"
+              style={{ width: "100%" }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  submitForm();
+                }
+              }}
             >
-              <Button
-                title={c("form.forgetPasswordTitle")}
-                style={{ fontSize: 12 }}
-                variant={ButtonVariantEnum.TEXT}
-                handleClick={navigateToForgotPassword}
-              />
-              <Button
-                title={c("form.submitLoginTitle")}
-                disabled={isSubmitting}
-                handleClick={submitForm}
-                style={{ width: "40%" }}
-              />
-            </Box>
-          </Form>
+              <Field
+                name="emlLogin"
+                InputProps={{
+                  notched: true,
+                }}
+              >
+                {({ field }: FieldProps) => (
+                  <FormControl style={{ width: "100%" }} variant="outlined">
+                    <InputLabel htmlFor={`outlined-adornment-${c("form.placeholderEmail")}`}>
+                      {c("form.placeholderEmail")}
+                    </InputLabel>
+                    <OutlinedInput
+                      id={uuid()}
+                      label={c("form.placeholderEmail")}
+                      classes={outlinedInputClasses}
+                      inputProps={{
+                        autoComplete: "off",
+                      }}
+                      fullWidth
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <MailOutlineIcon style={{ color: "#fff" }} />
+                        </InputAdornment>
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                )}
+              </Field>
+              {errors.emlLogin && touched.emlLogin ? (
+                <ErrorMessageForm message={errors.emlLogin} color="#fff" />
+              ) : null}
+              <Divider marginTop={20} />
+              <Field name="psdLogin" InputProps={{ notched: true }}>
+                {({ field }: FieldProps) => (
+                  <PasswordField
+                    mainColor="#fff"
+                    label={c("form.placeholderPassword")}
+                    placeholder={c("form.placeholderPassword")}
+                    handleChangePassword={(value: string) => {
+                      setFieldValue("psdLogin", value);
+                    }}
+                    required
+                    {...field}
+                  />
+                )}
+              </Field>
+              {errors.psdLogin && touched.psdLogin ? (
+                <ErrorMessageForm message={errors.psdLogin} color="#fff" />
+              ) : null}
+              <Divider marginTop={20} />
+              {/* {isSubmitting && <LinearProgress />} */}
+              <Divider marginTop={20} />
+              <Box
+                flexDirection="column"
+                display="flex"
+                alignContent="center"
+                alignItems="center"
+                justifyContent="center"
+                flex={1}
+              >
+                <Button
+                  title={c("form.forgetPasswordTitle")}
+                  style={{ color: "#fff" }}
+                  variant={ButtonVariantEnum.TEXT}
+                  handleClick={navigateToForgotPassword}
+                />
+                <Button
+                  title={c("form.submitLoginTitle")}
+                  disabled={isSubmitting}
+                  handleClick={submitForm}
+                  style={{
+                    width: 200,
+                    marginTop: 15,
+                    marginBottom: 30,
+                    textTransform: "uppercase",
+                  }}
+                />
+              </Box>
+            </Form>
+          </>
         )}
       </Formik>
     </>

@@ -26,7 +26,6 @@ import {
   PropsAudioSave,
   PropsAudioData,
   SelectOptionItem,
-  PropsConfigSelector,
   PropsLibrarySelector,
 } from "@/types/index";
 import { blobToArrayBuffer } from "blob-util";
@@ -57,6 +56,7 @@ import {
   findGroupFolderByPath,
   getBackAfterFinishRecording,
   setBackAfterFinishRecording,
+  getAccessedPages,
 } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
@@ -66,6 +66,21 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
     ...(await serverSideTranslations(locale, ["recording", "library"])),
   },
 });
+
+export async function findTokenChatByPath(path: string): Promise<string | boolean> {
+  const arr = path.split("/");
+  const honeycombName = arr[0];
+  const response = await getUsersConversationsAxios();
+  const rooms = response.data.ocs.data;
+  // eslint-disable-next-line max-len
+  const token = rooms.find(
+    (item) => item.name.toLowerCase() === honeycombName.toLowerCase(),
+  )?.token;
+
+  if (!token) return false;
+
+  return token;
+}
 
 function Recording() {
   const { t } = useTranslation("recording");
@@ -81,13 +96,29 @@ function Recording() {
   const [amountAudiosRecorded, setAmountAudiosRecorded] = useState(0);
   const cookies = parseCookies();
   const language = cookies.NEXT_LOCALE || "en";
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const dispatch = useDispatch();
+
+  async function getAudioStream() {
+    try {
+      return await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function askForAudioPermission() {
+    const stream = await getAudioStream();
+    if (!stream) {
+      // return;
+    }
+  }
 
   useEffect(() => {
     dispatch(updateRecordingState("NONE"));
     setBackAfterFinishRecording("no");
+
+    askForAudioPermission();
   }, []);
 
   const handleCloseExtraInfo = async (event: any, reason: string) => {
@@ -172,7 +203,7 @@ function Recording() {
             .filter((_, idx) => idx !== 0)
             .map((item: any | SystemTagsInterface) => ({
               id: item.propstat.prop.id,
-              value: item.propstat.prop["display-name"].toLowerCase(),
+              value: String(item.propstat.prop["display-name"]).toLowerCase(),
             }));
 
           const tagsFoundOnline = optionsTag
@@ -227,18 +258,6 @@ function Recording() {
     setOpenContinueRecording(false);
   };
 
-  async function findTokenChatByPath(path: string): Promise<string | boolean> {
-    const arr = path.split("/");
-    const honeycombName = arr[0];
-    const response = await getUsersConversationsAxios();
-    const rooms = response.data.ocs.data;
-    const token = rooms.find((item) => item.name === honeycombName)?.token;
-
-    if (!token) return false;
-
-    return token;
-  }
-
   async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
     const response = await getSingleConversationAxios(token);
     const { data } = response.data.ocs;
@@ -265,7 +284,7 @@ function Recording() {
     if (getBackAfterFinishRecording() === "yes") {
       router.back();
     } else {
-      const urlBack = redirectToLastAccessedPage();
+      const urlBack = await redirectToLastAccessedPage();
       if (amountAudiosRecorded === 1) {
         if (urlBack) router.push(urlBack);
         else router.push(`/file/${filename}`);
@@ -275,8 +294,9 @@ function Recording() {
     }
   };
 
-  function redirectToLastAccessedPage(): string | null {
-    const urlOrigin = configRdx.lastTwoPagesAccessed[1] || "home";
+  async function redirectToLastAccessedPage(): Promise<string | null> {
+    const accessedPages = await getAccessedPages();
+    const urlOrigin = accessedPages[1] || accessedPages[0];
 
     if (/^[/]library/.test(urlOrigin)) {
       if ((urlOrigin.match(/[/]/g) || []).length > 1) {
@@ -320,10 +340,22 @@ function Recording() {
     setOpenDialogAudioName(true);
   }
 
+  const tempFileName = new Date().toISOString();
+
   return (
-    <LayoutApp title={t("title")} showFooter={false} back>
-      <FlexBox justifyContent={JustifyContentEnum.SPACEAROUND} alignItems={AlignItemsEnum.CENTER}>
-        <AudioRecorder onStopRecording={onStopRecording} />
+    <LayoutApp
+      templateHeader="variation3"
+      backgroundColor={theme.palette.variation7.dark}
+      title={t("title")}
+      showFooter={false}
+      back
+    >
+      <FlexBox
+        extraStyle={{ backgroundColor: theme.palette.variation7.dark }}
+        justifyContent={JustifyContentEnum.SPACEBETWEEN}
+        alignItems={AlignItemsEnum.CENTER}
+      >
+        <AudioRecorder onStopRecording={onStopRecording} tempFileName={tempFileName} />
         <Divider marginTop={25} />
         <Timer />
         {openDialogAudioName && (
@@ -333,12 +365,14 @@ function Recording() {
             handleSubmit={saveAudioHandle}
             pathLocationSave={pathLocationSave}
             discardAudioHandle={discardAudio}
+            tempFileName={tempFileName}
           />
         )}
         <Backdrop open={showBackdrop} />
       </FlexBox>
       {openContinueRecording && (
         <ActionConfirm
+          showIcon={false}
           title={t("audioConfirmationToKeep")}
           icon="info"
           iconColor={theme.palette.primary.dark}

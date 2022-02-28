@@ -1,0 +1,40 @@
+{
+    "title": "Wasifu wa vyombo vya habari",
+    "name": "Vyombo vya habari",
+    "textSaveButton": "Hifadhi",
+    "descriptionTitle": "Maelezo",
+    "textEditCollaborators": "Timu ya kuhariri",
+    "textInviteCollaborators": "Alika timu yako",
+    "user1": "Mtumiaji 1 (Ruhusa)",
+    "user2": "Mtumiaji 2 (Ruhusa)",
+    "placeholderName": "Jina",
+    "placeholderEmail": "Barua pepe",
+    "placeholderPermission": "Jukumu",
+    "placeholderGroup": "Kikundi",
+    "messageSuccessInvite": "Mwaliko umetumwa kwa mafanikio",
+    "messageSuccessInformation": "Habari imehifadhiwa kwa mafanikio",
+    "socialMediaTitle": "Unganisha mitandao ya kijamii ya chombo cha habari yako ili ionekane kwenye wasifu wa umma.",
+    "titleModalDialogInvite": "Alika mshirikishi",
+    "descriptionModalDialogInvite": "Weka jina, barua pepe, na ufikiaji wa wasifu wa mfanyakazi unayemwalika",
+    "buttonOkModalDialogInvite": "Tuma",
+    "messageOkModalDialogInvite": "Mtumiaji umebuniwa kwa mafanikio",
+    "messageErrorModalDialogInvite": "Mtumiaji tayari yupo",
+    "createdErrorUser": "Kosa kubuni mtumiaji",
+    "welcomeErrorUser": "Mtumiaji ameundwa lakini barua pepe haijatumwa",
+    "buttonCancelModalDialogInvite": "Ghairi",
+    "inviteCollaboratorTitle": "Mshiriki wa kazi",
+    "inviteAdministratorTitle": "Msimamizi",
+    "contextMenuOptions": {
+        "settings": "Mipangilio",
+        "edit": "Hariri",
+        "deactivate": "Zima akaunti"
+    },
+    "mediaProfileAvatarSaved": "Picha imehifadhiwa",
+    "titleEditMediaModal": "Hariri media",
+    "editForm": {
+        "name": "Jina la media",
+        "slogan": "Maelezo",
+        "url": "URL"
+    },
+    "mediaProfileInfoSaved": "Media imesasishwa"
+}

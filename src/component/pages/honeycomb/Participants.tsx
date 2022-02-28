@@ -1,4 +1,3 @@
-import Skeleton from "@material-ui/lab/Skeleton";
 import { getRoomParticipants } from "@/services/talk/room";
 import { RoomParticipant } from "@/interfaces/talk";
 import { useTranslation } from "next-i18next";
@@ -24,5 +23,5 @@ export default function Participants({ token }: Props) {
     return <b>{`${qty} ${t("members")}`}</b>;
   }
 
-  return !data ? <Skeleton variant="text" width="20%" /> : prepareParticipantsString(data.ocs.data);
+  return !data ? <b>...</b> : prepareParticipantsString(data.ocs.data);
 }

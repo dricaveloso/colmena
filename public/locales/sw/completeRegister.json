@@ -1,0 +1,10 @@
+{
+    "description": "Chagua neno siri",
+    "messagePasswordCreated": "Nenosiri limeundwa",
+    "invalidToken": "Kiungo cha kuweka upya nenosiri lako kimekwisha muda. Tafadhali omba nenosiri jipya tena.",
+    "forms": {
+        "placeholderPassword": "Neno siri",
+        "placeholderPasswordConfirmation": "Thibitisha neno siri",
+        "submitButton": ""
+    }
+}

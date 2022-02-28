@@ -6,8 +6,6 @@ import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum } from "@/enums/index";
 import WhiteSpaceFooter from "@/components/ui/WhiteSpaceFooter";
 import HeaderMediaProfile from "@/components/pages/media-profile/Header";
-import IconButton from "@/components/ui/IconButton";
-import LatestPosts from "@/components/pages/home/Section2";
 import Members from "@/components/pages/media-profile/Members";
 import SocialMedia from "@/components/pages/media-profile/SocialMedia";
 import Divider from "@/components/ui/Divider";
@@ -15,6 +13,7 @@ import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import { isSubadminProfile } from "@/utils/permissions";
+import ContextMenuMediaProfile from "@/components/pages/media-profile/ContextMenu";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -27,17 +26,15 @@ function MediaProfile() {
   return (
     <LayoutApp
       title={userRdx.user.media?.name || ""}
-      drawer={false}
       back
-      extraElement={<IconButton icon="more_vertical" iconColor="#fff" fontSizeIcon="medium" />}
+      extraElement={<ContextMenuMediaProfile />}
     >
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <HeaderMediaProfile />
         <FlexBox
           justifyContent={JustifyContentEnum.FLEXSTART}
-          extraStyle={{ paddingTop: 8, marginTop: 0 }}
+          extraStyle={{ padding: 0, margin: 0 }}
         >
-          <LatestPosts />
           {isSubadminProfile() && (
             <>
               <Divider marginTop={8} />

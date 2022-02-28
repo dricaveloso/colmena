@@ -1,0 +1,12 @@
+{
+    "title": "Instalação",
+    "compatibleInstallationTitle": "Seu navegador é compatível para instalação",
+    "notCompatibleInstallationTitle": "Seu navegador não é compatível para instalação",
+    "alreadyInstalledTitle": "O aplicativo Colmena já está instalado",
+    "buttonInstall": "Instalar Colmena",
+    "browserCompability": "Compatibilidade do navegador",
+    "browserMinVersion": "Versão mínima",
+    "browserDetected": "Navegador detectado: {{browser}} versão {{version}}",
+    "browserCompatibility": "Compatibilidade do navegador",
+    "minimumVersionBrowserCompatibility": "Versão mínima"
+}

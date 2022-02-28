@@ -1,19 +1,90 @@
 {
-  "title": "My library",
-  "sort": {
-    "title": "Sorting",
-    "newest": "Newest",
-    "oldest": "Oldest",
-    "alphabeticalOrder": "Alphabetical order",
-    "descendingAlphabeticalOrder": "Descending alphabetical order"
-  },
-  "filter": {
-    "title": "Filters",
-    "all": "All",
-    "availableOffline": "Available offline",
-    "synchronized": "Synchronized",
-    "audios": "Audios",
-    "images": "Images",
-    "texts": "Texts"
-  }
+    "title": "Biblioteca",
+    "sort": {
+        "title": "Ordenação",
+        "newest": "Novo",
+        "oldest": "Antigo",
+        "alphabeticalOrder": "Ordem alfabética",
+        "descendingAlphabeticalOrder": "Ordem alfabética descendente",
+        "highlights": "Destaques"
+    },
+    "filter": {
+        "title": "Filtros",
+        "all": "Todos",
+        "availableOffline": "Disponível offline",
+        "synchronized": "Sincronizado",
+        "audios": "Áudios",
+        "images": "Imagens",
+        "texts": "Textos"
+    },
+    "messages": {
+        "fileAlreadyExists": "Nome de arquivo já existente.",
+        "cannotDownloadFile": "Não é possível baixar esse arquivo.",
+        "couldNotRemove": "Não é possível remover.",
+        "unidentifiedEnvironment": "Entorno não identificado.",
+        "unableToCompleteRequest": "Não foi possível completar a solicitação.",
+        "directorySuccessfullyCopied": "Diretório copiado com sucesso.",
+        "fileSuccessfullyCopied": "Arquivo copiado com sucesso.",
+        "directorySuccessfullyMoved": "Diretório movido com sucesso.",
+        "fileSuccessfullyMoved": "Arquivo movido com sucesso.",
+        "directorySuccessfullyDuplicated": "Diretório duplicado com sucesso.",
+        "fileSuccessfullyDuplicated": "Arquivo duplicado com sucesso.",
+        "directorySuccessfullyRenamed": "Diretório renomeado com sucesso.",
+        "fileSuccessfullyRenamed": "Arquivo renomeado com sucesso.",
+        "directorySuccessfullyRemoved": "Diretório removido com sucesso.",
+        "fileSuccessfullyRemoved": "Arquivo removido.",
+        "itemDuplicationCanceledSuccessfully": "Duplicação de item foi cancelada.",
+        "itemRenamingCanceledSuccessfully": "Renomeação do item foi cancelada."
+    },
+    "contextMenuOptions": {
+        "availableOffline": "Disponível offline",
+        "edit": "Editar",
+        "copy": "Copiar",
+        "move": "Mover",
+        "duplicate": "Duplicar",
+        "download": "Baixar",
+        "rename": "Renomear",
+        "details": "Detalhes",
+        "synchronize": "Sincronizar",
+        "publish": "Publicar",
+        "delete": "Deletar"
+    },
+    "language": {
+        "title": "Idioma",
+        "english": "Inglês",
+        "spanish": "Espanhol",
+        "french": "Francês"
+    },
+    "renameTitle": "Renomear",
+    "saveButton": "Salvo",
+    "duplicateTitle": "Duplicar",
+    "duplicateButton": "Duplicar",
+    "copyModalTitle": "Escolher destino",
+    "pasteButton": "Cole aqui",
+    "moveModalTitle": "Escolher destino",
+    "chooseButton": "Escolha aqui",
+    "detailsTitle": "Detalhes",
+    "detailsModal": {
+        "name": "Nome",
+        "path": "Caminho",
+        "lastUpdate": "Última atualização em",
+        "size": "Tamanho",
+        "type": "Tipo",
+        "creator": "Criar",
+        "fileId": "ID do arquivo",
+        "tags": "Etiquetas",
+        "language": "Idioma",
+        "description": "Descrição",
+        "createdAt": "Criado em"
+    },
+    "downloading": "Baixando",
+    "synchronizing": "Sincronizando",
+    "cancel": "Cancelar",
+    "moveButton": "Mover aqui",
+    "confirmCancelItemDuplication": "Você tem certeza que deseja cancelar a duplicação do item?",
+    "confirmCancelItemRenaming": "Você tem certeza que deseja cancelar a renomeação?",
+    "itemStatus": {
+        "availableOffline": "Disponível Offline"
+    },
+    "talkFolderName": "compartilhado comigo"
 }

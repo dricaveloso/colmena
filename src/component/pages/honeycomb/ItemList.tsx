@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "stretch",
   },
   verticalList: {
-    padding: 1,
+    padding: "2px 10px",
   },
 }));
 
@@ -29,9 +29,9 @@ function ItemList() {
   return (
     <List className={classes.list}>
       {items.length > 0 &&
-        items.map((item: RoomItemInterface, idx: number) => (
+        items.map((item: RoomItemInterface) => (
           <ListItem key={uuid()} disableGutters className={classes.verticalList}>
-            <VerticalItemList data={item} backgroundColor={idx % 2 === 0 ? "#fff" : "#F9F9F9"} />
+            <VerticalItemList data={item} />
           </ListItem>
         ))}
     </List>

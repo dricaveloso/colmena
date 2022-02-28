@@ -1,14 +1,17 @@
 import React, { useState, useCallback } from "react";
 import LibraryModal from "@/components/ui/LibraryModal";
 import Button from "@/components/ui/Button";
-import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
-import { ButtonSizeEnum, EnvironmentEnum } from "@/enums/*";
+import { LibraryItemContextMenuInterface, LibraryItemInterface } from "@/interfaces/index";
+import {
+  ButtonSizeEnum,
+  ContextMenuEventEnum,
+  ContextMenuOptionEnum,
+  EnvironmentEnum,
+} from "@/enums/*";
 import { pathIsInFilename, convertPrivateToUsername, getPath, isPanal } from "@/utils/directory";
 import { moveFile, getUniqueName } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
-import { removeFirstSlash } from "@/utils/utils";
-import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/utils/notifications";
 import { updateFile } from "@/store/idb/models/files";
@@ -17,14 +20,13 @@ import { shareInChat } from "@/services/share/share";
 type Props = {
   open: boolean;
   handleOpen: (opt: boolean) => void;
-  cardItem: LibraryCardItemInterface;
+  cardItem: LibraryItemContextMenuInterface;
 };
 export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [isDisabled, setIsDisabled] = useState(false);
   const [itemIsLoading, setItemIsLoading] = useState({} as LibraryItemInterface);
   const { t } = useTranslation("library");
-  const router = useRouter();
   const options = (item: LibraryItemInterface) => {
     if (
       (cardItem.type !== "directory" ||
@@ -59,57 +61,70 @@ export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
     handleOpen(false);
   };
 
-  const handleClick = (item: LibraryItemInterface) => {
+  const handleClick = async (item: LibraryItemInterface) => {
     setItemIsLoading(item);
     setIsDisabled(true);
-    (async () => {
-      try {
-        if (cardItem.filename && cardItem.basename) {
-          const uniqueName = await handleFileName(cardItem.basename, item.filename);
-          const destination = `${item.filename}/${uniqueName}`;
-          let moved = false;
+    try {
+      if (cardItem.filename && cardItem.basename) {
+        const uniqueName = await handleFileName(cardItem.basename, item.filename);
+        const destination = `${item.filename}/${uniqueName}`;
+        let moved = false;
 
-          switch (cardItem.environment) {
-            case EnvironmentEnum.REMOTE:
-              moved = await moveRemoteItem(destination);
-              break;
-            case EnvironmentEnum.LOCAL:
+        switch (cardItem.environment) {
+          case EnvironmentEnum.REMOTE:
+            moved = await moveRemoteItem(destination);
+            break;
+          case EnvironmentEnum.LOCAL:
+            moved = await moveLocalFile(destination);
+            break;
+          case EnvironmentEnum.BOTH:
+            moved = await moveRemoteItem(destination);
+            if (moved) {
               moved = await moveLocalFile(destination);
-              break;
-            case EnvironmentEnum.BOTH:
-              moved = await moveRemoteItem(destination);
-              if (moved) {
-                moved = await moveLocalFile(destination);
-              }
-              break;
-
-            default:
-              break;
-          }
-
-          if (moved) {
-            if (isPanal(item.filename)) {
-              await shareInChat(item.filename, cardItem.filename);
             }
-
-            const timer = 5000;
-
-            if (cardItem.type === "directory") {
-              toast(t("messages.directorySuccessfullyMoved"), "success", { timer });
-            } else {
-              toast(t("messages.fileSuccessfullyMoved"), "success", { timer });
-            }
-
-            router.push(`/library/${removeFirstSlash(item.aliasFilename)}`);
-          }
+            break;
+          default:
+            break;
         }
-      } catch (e) {
-        toast(e.message, "error");
 
-        setItemIsLoading({} as LibraryItemInterface);
-        setIsDisabled(false);
+        if (moved) {
+          if (
+            isPanal(item.filename) &&
+            (cardItem.environment === EnvironmentEnum.REMOTE ||
+              cardItem.environment === EnvironmentEnum.BOTH)
+          ) {
+            await shareInChat(item.filename, cardItem.filename);
+          }
+
+          const timer = 5000;
+
+          if (cardItem.type === "directory") {
+            toast(t("messages.directorySuccessfullyMoved"), "success", { timer });
+          } else {
+            toast(t("messages.fileSuccessfullyMoved"), "success", { timer });
+          }
+
+          const updatedItem = {
+            ...cardItem,
+            filename: destination,
+            aliasFilename: convertPrivateToUsername(destination, userRdx.user.id),
+            basename: uniqueName,
+          } as LibraryItemInterface;
+          await cardItem.onChange(
+            updatedItem,
+            ContextMenuEventEnum.CREATE,
+            ContextMenuOptionEnum.MOVE,
+            { oldItem: cardItem },
+          );
+          closeModal();
+        }
       }
-    })();
+    } catch (e) {
+      toast(e.message, "error");
+
+      setItemIsLoading({} as LibraryItemInterface);
+      setIsDisabled(false);
+    }
   };
 
   const moveRemoteItem = useCallback(

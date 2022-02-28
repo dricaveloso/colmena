@@ -1,8 +1,8 @@
 {
-  "title": "Llamada",
-  "textInvite": "Agregar a la llamada",
-  "pressToStartTitle": "Pulsa para iniciar",
-  "pressToStopTitle": "Pulsa para terminar",
-  "titleShareLink": "Compartir enlace",
-  "goLiveTitle": "Transmitir"
+    "title": "Llamada",
+    "textInvite": "Agregar a la llamada",
+    "pressToStartTitle": "Pulsa para iniciar la grabación",
+    "pressToStopTitle": "Pulsa para terminar la grabación",
+    "titleShareLink": "Compartir enlace",
+    "goLiveTitle": "Transmitir en vivo"
 }

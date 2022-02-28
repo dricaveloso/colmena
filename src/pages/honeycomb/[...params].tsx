@@ -20,6 +20,7 @@ import ReloadChatMessages from "@/components/pages/honeycomb/Chat/ReloadChatMess
 import Subtitle from "@/components/pages/honeycomb/Subtitle";
 import { sendChatMessage } from "@/services/talk/chat";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
+import HoneycombLibrary from "@/components/pages/honeycomb/HoneycombLibrary";
 import SvgIcon from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
 import { AllIconProps } from "@/types/*";
@@ -28,7 +29,7 @@ import { v4 as uuid } from "uuid";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["honeycomb"])),
+    ...(await serverSideTranslations(locale, ["honeycomb", "library"])),
   },
 });
 
@@ -100,9 +101,16 @@ function Honeycomb() {
   }
 
   const getTabOption = (title: string, icon: AllIconProps) => (
-    <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center">
+    <Box
+      display="flex"
+      flexDirection="row"
+      padding={0}
+      margin={0}
+      justifyContent="center"
+      alignItems="center"
+    >
       <SvgIcon icon={icon} htmlColor="#727272" fontSize="small" />
-      <Text variant={TextVariantEnum.CAPTION} style={{ marginLeft: 6 }}>
+      <Text variant={TextVariantEnum.CAPTION} style={{ marginLeft: 4 }}>
         {title}
       </Text>
     </Box>
@@ -112,21 +120,38 @@ function Honeycomb() {
     <LayoutApp
       back
       title={displayName}
+      fontSizeTitle={16}
       subtitle={<Subtitle token={token} />}
-      drawer={false}
-      extraElement={<ContextMenu token={token} reloadChatList={() => setTokenUuid(uuid())} />}
+      fontSizeSubtitle={12}
+      extraElement={
+        <ContextMenu
+          token={token}
+          handleFallbackLeaveConversation={() => router.push("/honeycomb")}
+          handleFallbackParticipants={() => setTokenUuid(uuid())}
+        />
+      }
     >
       <FlexBox
         justifyContent={JustifyContentEnum.FLEXSTART}
         extraStyle={{ padding: 0, margin: 0, backgroundColor: "#fff" }}
       >
         <Box width="100vw" style={{ paddingTop: 55 }}>
-          <AppBar position="fixed" elevation={0} style={{ marginTop: 70 }}>
+          <AppBar
+            position="fixed"
+            elevation={0}
+            style={{ marginTop: 70, height: 40, backgroundColor: theme.palette.primary.main }}
+          >
             <Tabs
               value={value}
               onChange={handleChange}
               indicatorColor="primary"
-              style={{ backgroundColor: "#fff", width: "100vw", color: theme.palette.icon.main }}
+              style={{
+                backgroundColor: "#fff",
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                width: "100vw",
+                color: theme.palette.icon.main,
+              }}
               variant="fullWidth"
             >
               <Tab label={getTabOption(t("tab1Title"), "chat")} {...a11yProps(0)} />
@@ -147,7 +172,14 @@ function Honeycomb() {
                 canDeleteConversation={canDeleteConversation}
               />
             </TabPanel>
-            <TabPanel value={value} index={1}></TabPanel>
+            <TabPanel value={value} index={1}>
+              {value === 1 && (
+                <HoneycombLibrary
+                  conversationName={displayName}
+                  canDeleteConversation={canDeleteConversation}
+                />
+              )}
+            </TabPanel>
           </SwipeableViews>
           {showInputMessage && (
             <InputSendMessage token={token} handleSendMessage={sendMessageAPI} />

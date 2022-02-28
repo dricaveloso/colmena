@@ -1,0 +1,33 @@
+{
+    "title": "Gravar",
+    "pressToStartTitle": "Toque para iniciar a gravação",
+    "pressToStopTitle": "Toque para encerrar a gravação",
+    "recordingFinishLabelForm": "Título",
+    "recordingFinishTitle": "Gravação finalizada",
+    "recordingFinishDescription": "Título da gravação",
+    "submitButton": "Finalizar",
+    "discardButton": "Descartar",
+    "cancelButton": "Cancelar",
+    "errorStorageMessage": "Não foi possível salvar essa gravação",
+    "errorGetAudioStreamMessage": "É necessário habilitar a captura de áudio para começar a gravar",
+    "audioTitle": "Áudio",
+    "audioSaveTitle": "Salvo",
+    "tagsTitle": "Etiquetas",
+    "recordingOrientation": "Áudios são armazenados localmente se não há internet. Sincronização privada por padrão com possibilidade de compartilhamento.",
+    "audioSavedSuccessfully": "Áudio salvo com sucesso",
+    "audioDiscardedSuccessfully": "Áudio descartado com sucesso",
+    "audioConfirmationToKeep": "Gostaria de gravar outro áudio?",
+    "uploadLocationTitle": "Carregar localização",
+    "changeUploadLocationTitle": "mudar",
+    "availableWithoutInternetTitle": "Disponível sem conexão à internet",
+    "tagsRequiredTitle": "Ao menos uma etiqueta é necessária",
+    "confirmCancelItemDuplication": "Do you really want to cancel the item duplication?",
+    "confirmCancelItemRenaming": "Do you really want to cancel the item renaming?",
+    "itemStatus": {
+        "availableOffline": "Available Offline"
+    },
+    "recordingTitle": "Gravando...",
+    "pausingTitle": "Gravação pausada",
+    "newRecordingTitle": "Nova gravação",
+    "stopingTitle": "Gravação interrompida"
+}

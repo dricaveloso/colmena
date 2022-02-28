@@ -10,42 +10,58 @@ import { PropsUserSelector } from "@/types/index";
 import { PositionEnum } from "@/enums/index";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentPage } from "@/store/actions/config/index";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
 import { updateRecordingState } from "@/store/actions/recordings/index";
-// import DownloadPWA from "@/components/ui/InstallPWA";
+import { getAccessedPages, setAccessedPages } from "@/utils/utils";
 
 interface LayoutInterface extends AppBarInterface {
   showFooter?: boolean;
+  backgroundColor?: string;
   children: React.ReactNode;
 }
 
 function LayoutApp({
   title,
+  fontSizeTitle = 20,
   subtitle = "",
+  fontSizeSubtitle = 15,
   drawer = true,
   back = false,
   headerPosition = PositionEnum.FIXED,
   templateHeader = "variation2",
   showFooter = true,
   extraElement = undefined,
+  backgroundColor = "#F9F9F9",
   children,
 }: LayoutInterface) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const updateAccessedPages = async () => {
+    const pages = await getAccessedPages();
+    if (pages.length > 0) {
+      pages.unshift(router.asPath);
+      const pagesAcR = [...new Set(pages)];
+      await setAccessedPages(pagesAcR);
+    } else {
+      await setAccessedPages([router.asPath]);
+    }
+  };
+
   useEffect(() => {
     dispatch(setCurrentAudioPlaying(""));
     dispatch(updateRecordingState("NONE"));
-    if (router.asPath !== "/profile") dispatch(setCurrentPage(router.asPath));
+    // dispatch(setCurrentPage(router.asPath));
+    // dispatch(setChangedLanguage(false));
+    updateAccessedPages();
     if (navigator.onLine) {
       (async () => {
         try {
           const session = await getSession();
           if (!session || !userRdx.user) {
             await signOut({ redirect: false });
-            router.push("/login");
+            router.push("/login?out");
           }
         } catch (e) {
           console.log(e);
@@ -55,12 +71,13 @@ function LayoutApp({
   }, []);
 
   return (
-    <Container extraStyle={{ padding: 0, backgroundColor: "#F9F9F9" }}>
+    <Container extraStyle={{ padding: 0, backgroundColor }}>
       <FlexBox extraStyle={{ margin: 0, padding: 0 }}>
-        {/* <DownloadPWA /> */}
         <AppBar
           title={title}
+          fontSizeTitle={fontSizeTitle}
           subtitle={subtitle}
+          fontSizeSubtitle={fontSizeSubtitle}
           headerPosition={headerPosition}
           drawer={drawer}
           templateHeader={templateHeader}

@@ -1,0 +1,9 @@
+{
+    "greeting": "Jambo",
+    "description": "Akademia ya DW na Redes A.C. inakukaribisha uwe sehemu ya Colmena, ukumbi wa mashirika ya vyombo vya habari vya mashinani ili kufanya kazi pamoja, kubuni na kushirikiana.",
+    "invalidTokenTitle": "Kasoro kwenye kanuni ya mwaliko. Tafadhali omba nyingine.",
+    "forms": {
+        "button1": "Kubali mwaliko",
+        "button2": "Kuhusu Colmena"
+    }
+}

@@ -1,11 +1,15 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable import/no-duplicates */
 import { differenceInMinutes, differenceInCalendarMonths, formatDistanceToNow } from "date-fns";
-import { enUS, es, fr } from "date-fns/locale";
+import { enUS, es, fr, ptBR, arDZ } from "date-fns/locale";
 import {
   UserInvitationInterface,
   BreadcrumbItemInterface,
   TimeDescriptionInterface,
 } from "@/interfaces/index";
+import constants from "@/constants/index";
+import { LanguageProps, LanguagesAvailableProps } from "@/types/*";
 
 export function formatBytes(bytes: number, decimals = 2) {
   if (bytes === 0) return "0 Bytes";
@@ -43,14 +47,29 @@ export const isAudioFile = (mime: string | undefined) => {
   return /^audio/.test(mime);
 };
 
+export const isPNGImage = (mime: string | undefined) => {
+  if (!mime) return false;
+
+  return mime === "image/png";
+};
+
+export const isJPGImage = (mime: string | undefined) => {
+  if (!mime) return false;
+
+  return mime === "image/jpeg" || mime === "image/jpg";
+};
+
 export const isValidUrl = (url: string) => {
-  try {
-    // eslint-disable-next-line no-new
-    new URL(url);
-  } catch (e) {
-    return false;
-  }
-  return true;
+  const pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i",
+  ); // fragment locator
+  return !!pattern.test(url);
 };
 
 export function parseJwt<Type>(token: string | undefined): Type | undefined {
@@ -211,7 +230,7 @@ export function dateDescription(date: Date | undefined, timeDescription: TimeDes
 
   const today = new Date();
   const months = differenceInCalendarMonths(today, date);
-  if (months > 0) {
+  if (months > 0 && months <= 12) {
     const monthDescription = months > 1 ? pluralMonthDescription : singularMonthDescription;
 
     return `${months} ${monthDescription}`;
@@ -289,37 +308,43 @@ export function getRandomInt(min: number, max: number) {
 }
 
 export function getFormattedDistanceDateFromNow(timestamp: number, locale = "en") {
-  let lce;
-  switch (locale) {
-    case "en":
-      lce = enUS;
-      break;
-    case "es":
-      lce = es;
-      break;
-    case "fr":
-      lce = fr;
-      break;
-    default:
-      lce = enUS;
-      break;
-  }
+  const byPassObject = new Map();
+  byPassObject.set("en", enUS);
+  byPassObject.set("pt", ptBR);
+  byPassObject.set("ar", arDZ);
+  byPassObject.set("fr", fr);
+  byPassObject.set("es", es);
+  byPassObject.set("sw", enUS);
 
   if (!timestamp) return "";
 
   return formatDistanceToNow(new Date(timestamp * 1000), {
-    locale: lce,
+    locale: byPassObject.get(locale) || enUS,
   });
 }
 
-export function formatCookies(cookies: string[]) {
+export function formatCookies(cookies: string[], existentCookies = "") {
   if (!cookies || cookies.length === 0) return "";
 
-  const cookiesKeys = cookies
-    .map((item: string) => item.split(";")[0])
-    .map((item: string) => item.split("=")[0]);
+  let cookiesKeys: string[] = [];
 
-  const cookiesPre = cookies.map((item: string) => item.split(";")[0]).reverse();
+  if (existentCookies) {
+    cookiesKeys = existentCookies.split(";").map((item: string) => item.split("=")[0]);
+  }
+
+  cookiesKeys = [
+    ...cookiesKeys,
+    ...cookies.map((item: string) => item.split(";")[0]).map((item: string) => item.split("=")[0]),
+  ];
+
+  let cookiesPre: string[] = [];
+  if (existentCookies) {
+    cookiesPre = existentCookies.split(";");
+  }
+
+  cookiesPre = [...cookiesPre, ...cookies.map((item: string) => item.split(";")[0])];
+
+  cookiesPre = cookiesPre.reverse();
 
   const cookiesMap = new Map();
   cookiesKeys.forEach((element: string) => {
@@ -401,4 +426,88 @@ export function getBackAfterFinishRecording() {
 
 export function treatTagName(value: string) {
   return value.toLowerCase();
+}
+
+export function getSystemLanguages(t: any): LanguageProps[] {
+  const locales = Object.values(constants.LOCALES);
+  return locales
+    .map((item: LanguagesAvailableProps) => ({
+      abbr: item,
+      language: t(`languagesAllowed.${item}`),
+    }))
+    .sort((a, b) => {
+      if (a.language > b.language) return 1;
+
+      if (a.language < b.language) return -1;
+
+      return 0;
+    });
+}
+
+export function fileSizeConvert(bytes: number) {
+  const sizes = [
+    {
+      unit: "TB",
+      // eslint-disable-next-line no-restricted-properties
+      value: Math.pow(1024, 4),
+    },
+    {
+      unit: "GB",
+      // eslint-disable-next-line no-restricted-properties
+      value: Math.pow(1024, 3),
+    },
+    {
+      unit: "MB",
+      // eslint-disable-next-line no-restricted-properties
+      value: Math.pow(1024, 2),
+    },
+    {
+      unit: "KB",
+      // eslint-disable-next-line no-restricted-properties
+      value: 1024,
+    },
+    {
+      unit: "B",
+      // eslint-disable-next-line no-restricted-properties
+      value: 1,
+    },
+  ];
+
+  type Props = {
+    size?: number | null;
+    unit?: string | null;
+    description?: string | null;
+  };
+  const result: Props = {
+    size: 0,
+    unit: null,
+    description: "0 B",
+  };
+
+  const size = sizes.find((item) => bytes >= item.value);
+  if (size) {
+    result.size = bytes / size.value;
+    result.unit = size.unit;
+    result.description = `${Math.round(result.size)} ${size.unit}`;
+  }
+
+  return result;
+}
+
+export async function getAccessedPages(): Promise<string[]> {
+  const pages = await localStorage.getItem("accessedPages");
+
+  if (!pages) return [];
+
+  return JSON.parse(pages);
+}
+
+export async function setAccessedPages(pages: string[]) {
+  await localStorage.setItem("accessedPages", JSON.stringify(pages.slice(0, 2)));
+}
+
+export function decodeURI(encodedURI: string | null | undefined) {
+  if (!encodedURI) return encodedURI;
+
+  return decodeURIComponent(encodedURI);
 }

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@/components/ui/Modal";
-import { getUniqueName, chunkFileUpload } from "@/services/webdav/files";
+import { getUniqueName, chunkFileUpload, abortUpload } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
 import Divider from "@/components/ui/Divider";
@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   submit: {
-    float: "right",
+    marginLeft: 10,
   },
 }));
 
@@ -52,6 +52,8 @@ interface FileInProgressInterface {
   status: FileStatusEnum;
 }
 
+let requestCancel = false;
+
 export default function Upload({ open, handleClose }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -61,6 +63,7 @@ export default function Upload({ open, handleClose }: Props) {
   const pathExists = library.currentPathExists;
   const classes = useStyles();
   const router = useRouter();
+  const [cancelIsLoading, setCancelIsLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [openLibrary, setOpenLibrary] = useState(false);
   const [path, setPath] = useState(currentLibraryPath);
@@ -68,92 +71,8 @@ export default function Upload({ open, handleClose }: Props) {
   const [filesInProgress, setFilesInProgress] = useState<FileInProgressInterface[]>([]);
   const { t } = useTranslation("common");
 
-  const handleUpload = (event: any) => {
-    prepareFiles(event.target.files);
-  };
-
-  const prepareFiles = (files: FileList) => {
-    setIsLoading(true);
-    const newFiles: Array<FileInProgressInterface> = [];
-    // eslint-disable-next-line no-plusplus
-    for (let index = 0; index < files.length; index++) {
-      newFiles.push({
-        id: uuid(),
-        file: files[index],
-        status: FileStatusEnum.PENDING,
-      });
-    }
-
-    setFilesInProgress([...filesInProgress, ...newFiles]);
-    processUploadFiles(newFiles);
-  };
-
-  const processUploadFiles = async (files: FileInProgressInterface[]) => {
-    setIsLoading(true);
-
-    // eslint-disable-next-line no-plusplus
-    for (let index = 0; index < files.length; index++) {
-      const fileInProgress: FileInProgressInterface = files[index];
-      const { file } = fileInProgress;
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        // const content = await blobToArrayBuffer(file);
-        updateFileInProgress(fileInProgress, {
-          status: FileStatusEnum.UPLOADING,
-        });
-
-        // eslint-disable-next-line no-await-in-loop
-        await uploadFile(file);
-        updateFileInProgress(fileInProgress, {
-          status: FileStatusEnum.DONE,
-        });
-      } catch (e) {
-        let message = "";
-        const fileName: string = file.name;
-        switch (e?.response?.status) {
-          case 413:
-            message = t("messages.fileTooLarge", { fileName });
-            break;
-          default:
-            message = t("messages.unableToProcessFile", { fileName });
-        }
-        toast(message, "error");
-      }
-    }
-
-    if (formRef.current) {
-      formRef.current.reset();
-    }
-
-    const timer = 5000;
-    toast(t("messages.fileUploadedSuccessfully"), "success", { timer });
-    setTimeout(() => {
-      router.push(`/library/${removeFirstSlash(handledPath())}`);
-    }, timer);
-  };
-
-  const uploadFile = async (file: File) => {
-    const fileName = await handleFileName(file.name);
-    const finalPath = `${trailingSlash(handledPath())}${fileName}`;
-    const realPath = convertUsernameToPrivate(handledPath(), userId);
-
-    await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
-    if (isPanal(realPath)) {
-      await shareInChat(realPath, finalPath);
-    }
-  };
-
-  const handleFileName = (name: string) => {
-    let handledName = name;
-    if (name[0] === ".") {
-      handledName = getRandomInt(1, 9999) + name;
-    }
-
-    const onlyName = handledName.replace(/\..*$/, "");
-    const extension = getExtensionFilename(handledName);
-    const finalName = `${onlyName.substr(0, 60)}.${extension}`;
-
-    return getUniqueName(userId, convertUsernameToPrivate(handledPath(), userId), finalName);
+  const handleUpload = async (event: any) => {
+    await prepareFiles(event.target.files);
   };
 
   const handledPath = useCallback(() => {
@@ -161,6 +80,28 @@ export default function Upload({ open, handleClose }: Props) {
 
     return !pathExists || !path || path === "/" ? convertPrivateToUsername(rootPath, userId) : path;
   }, [path, pathExists, userId]);
+
+  const handleFileName = useCallback(
+    (name: string) => {
+      let handledName = name;
+      if (name[0] === ".") {
+        handledName = getRandomInt(1, 9999) + name;
+      }
+
+      const onlyName = handledName.replace(/^(.*)\..*$/, "$1");
+      const extension = getExtensionFilename(handledName);
+      const finalName = `${onlyName.substr(0, 60)}.${extension}`;
+
+      return getUniqueName(userId, convertUsernameToPrivate(handledPath(), userId), finalName);
+    },
+    [handledPath, userId],
+  );
+
+  const cancelUpload = useCallback(() => {
+    abortUpload();
+    handleClose();
+    toast(t("messages.uploadCanceledSuccessfully"), "success");
+  }, [handleClose, t]);
 
   const updateFileInProgress = useCallback(
     (file: FileInProgressInterface, data) => {
@@ -178,6 +119,99 @@ export default function Upload({ open, handleClose }: Props) {
     [filesInProgress],
   );
 
+  const uploadFile = useCallback(
+    async (file: File) => {
+      const fileName = await handleFileName(file.name);
+      const finalPath = `${trailingSlash(handledPath())}${fileName}`;
+      const realPath = convertUsernameToPrivate(handledPath(), userId);
+
+      await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
+
+      if (isPanal(realPath)) {
+        await shareInChat(realPath, finalPath);
+      }
+    },
+    [handleFileName, handledPath, userId],
+  );
+
+  const resultMessage = useCallback(() => {
+    if (!requestCancel) {
+      if (formRef.current) {
+        formRef.current.reset();
+      }
+
+      const timer = 5000;
+      toast(t("messages.fileUploadedSuccessfully"), "success", { timer });
+      setTimeout(() => {
+        router.push(`/library/${removeFirstSlash(handledPath())}`);
+      }, timer);
+    }
+  }, [handledPath, router, t]);
+
+  const processUploadFiles = useCallback(
+    async (files: FileInProgressInterface[]) => {
+      setIsLoading(true);
+
+      // eslint-disable-next-line no-plusplus
+      for (let index = 0; index < files.length; index++) {
+        if (requestCancel) {
+          break;
+        }
+
+        const fileInProgress: FileInProgressInterface = files[index];
+        const { file } = fileInProgress;
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          // const content = await blobToArrayBuffer(file);
+          updateFileInProgress(fileInProgress, {
+            status: FileStatusEnum.UPLOADING,
+          });
+          // eslint-disable-next-line no-await-in-loop
+          await uploadFile(file);
+
+          updateFileInProgress(fileInProgress, {
+            status: FileStatusEnum.DONE,
+          });
+        } catch (e) {
+          let message = "";
+          const fileName: string = file.name;
+          switch (e?.response?.status) {
+            case 413:
+              message = t("messages.fileTooLarge", { fileName });
+              break;
+            default:
+              message = t("messages.unableToProcessFile", { fileName });
+          }
+
+          toast(message, "error");
+        }
+      }
+
+      setShowConfirmCancel(false);
+      resultMessage();
+    },
+    [t, updateFileInProgress, uploadFile, resultMessage],
+  );
+
+  const prepareFiles = useCallback(
+    async (files: FileList) => {
+      setIsLoading(true);
+      const newFiles: Array<FileInProgressInterface> = [];
+      // eslint-disable-next-line no-plusplus
+      for (let index = 0; index < files.length; index++) {
+        newFiles.push({
+          id: uuid(),
+          file: files[index],
+          status: FileStatusEnum.PENDING,
+        });
+      }
+
+      setFilesInProgress([...filesInProgress, ...newFiles]);
+      await processUploadFiles(newFiles);
+    },
+    [filesInProgress, processUploadFiles],
+  );
+
   const confirmClose = useCallback(() => {
     if (isLoading) {
       setShowConfirmCancel(true);
@@ -186,12 +220,18 @@ export default function Upload({ open, handleClose }: Props) {
     }
   }, [handleClose, isLoading]);
 
+  const requestAbortUpload = () => {
+    setCancelIsLoading(true);
+    cancelUpload();
+    requestCancel = true;
+  };
+
   const libraryOptions = (item: LibraryItemInterface) => {
     if (item.type === "directory") {
       // return (
       //   <Button
       //     handleClick={() => handleChangeLocation(item.aliasFilename)}
-      //     title={t("changeLocationButton")}
+      //     title={t("chooseLocationButton")}
       //     size={ButtonSizeEnum.SMALL}
       //   />
       // );
@@ -203,7 +243,7 @@ export default function Upload({ open, handleClose }: Props) {
   const footerActions = (item: LibraryItemInterface) => (
     <Button
       handleClick={() => handleChangeLocation(item.aliasFilename)}
-      title={t("changeLocationButton")}
+      title={t("chooseLocationButton")}
       size={ButtonSizeEnum.SMALL}
     />
   );
@@ -215,7 +255,12 @@ export default function Upload({ open, handleClose }: Props) {
 
   return (
     <>
-      <Modal title={t("uploadTitle")} handleClose={confirmClose} open={open}>
+      <Modal
+        data-testid="modal-file-upload"
+        title={t("uploadTitle")}
+        handleClose={isLoading ? undefined : confirmClose}
+        open={open}
+      >
         <form ref={formRef}>
           <input
             type="file"
@@ -246,15 +291,27 @@ export default function Upload({ open, handleClose }: Props) {
             />
           </Box>
           <Divider marginTop={20} />
-          <label htmlFor="upload-file">
-            <Button
-              component="span"
-              title={t("form.upload")}
-              className={classes.submit}
-              disabled={isLoading}
-              isLoading={isLoading}
-            />
-          </label>
+          <Box display="flex" justifyContent="flex-end" width="100%">
+            {isLoading && (
+              <Button
+                handleClick={confirmClose}
+                title={t("form.cancelButton")}
+                data-cy="cancel"
+                color={ButtonColorEnum.DEFAULT}
+                variant={ButtonVariantEnum.OUTLINED}
+              />
+            )}
+            <label htmlFor="upload-file">
+              <Button
+                data-cy="select-files"
+                component="span"
+                title={t("form.upload")}
+                className={classes.submit}
+                disabled={isLoading}
+                isLoading={isLoading}
+              />
+            </label>
+          </Box>
         </form>
       </Modal>
       <LibraryModal
@@ -267,8 +324,9 @@ export default function Upload({ open, handleClose }: Props) {
       {showConfirmCancel && (
         <ActionConfirm
           title={t("confirmCancelUpload")}
-          onOk={handleClose}
+          onOk={requestAbortUpload}
           onClose={() => setShowConfirmCancel(false)}
+          isLoading={cancelIsLoading}
         />
       )}
     </>

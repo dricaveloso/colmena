@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import Toolbar from "@material-ui/core/Toolbar";
 import SvgIcon from "@/components/ui/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
-import { PositionProps, PropsConfigSelector, PropsRecordingSelector } from "@/types/index";
+import { PositionProps, PropsRecordingSelector } from "@/types/index";
 import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,11 +16,13 @@ import { setBackAfterFinishRecording } from "@/utils/utils";
 
 export interface AppBarInterface {
   title: string;
+  fontSizeTitle?: number;
   subtitle?: string | React.ReactNode;
+  fontSizeSubtitle?: number;
   drawer?: boolean;
   back?: boolean;
   headerPosition?: PositionProps | undefined;
-  templateHeader?: "variation1" | "variation2";
+  templateHeader?: "variation1" | "variation2" | "variation3";
   extraElement?: React.ReactNode | undefined;
 }
 
@@ -31,12 +33,18 @@ tplHeader.set("variation1", {
 });
 tplHeader.set("variation2", {
   backgroundAppBar: theme.palette.primary.main,
-  textColor: "#fff",
+  textColor: theme.palette.primary.contrastText,
+});
+tplHeader.set("variation3", {
+  backgroundAppBar: theme.palette.variation7.dark,
+  textColor: theme.palette.variation5.contrastText,
 });
 
 function AppBarSys({
   title,
+  fontSizeTitle = 20,
   subtitle,
+  fontSizeSubtitle = 15,
   headerPosition = PositionEnum.FIXED,
   drawer = true,
   back = false,
@@ -44,7 +52,6 @@ function AppBarSys({
   extraElement = undefined,
 }: AppBarInterface) {
   const router = useRouter();
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
@@ -52,14 +59,34 @@ function AppBarSys({
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const handleBack = () => {
-    if (router.pathname === "/profile") router.push(configRdx.currentPage);
-    else if (router.pathname === "/recording") {
+  const backTo = (backPage: string | null) => {
+    if (backPage) router.push(backPage);
+    else router.back();
+  };
+
+  const handleBack = async () => {
+    let backPage: null | string = null;
+    const isChangedLanguage = await localStorage.getItem("isChangedLanguage");
+    if (isChangedLanguage === "yes") {
+      const pages = await localStorage.getItem("accessedPages");
+      const pagesAc: string[] = JSON.parse(String(pages));
+      // eslint-disable-next-line prefer-destructuring
+      backPage = pagesAc[1] || null;
+      await localStorage.setItem("isChangedLanguage", "no");
+    }
+
+    // if (router.pathname === "/profile") router.push(configRdx.currentPage);
+    if (router.pathname === "/recording") {
       if (recordingRdx.activeRecordingState === "START") {
         setBackAfterFinishRecording("yes");
         dispatch(updateRecordingState("STOP"));
-      } else router.back();
-    } else router.back();
+      } else {
+        backTo(backPage);
+      }
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      backTo(backPage);
+    }
   };
 
   return (
@@ -89,7 +116,7 @@ function AppBarSys({
                 variant={TextVariantEnum.H3}
                 align={TextAlignEnum.LEFT}
                 style={{
-                  fontSize: 20,
+                  fontSize: fontSizeTitle,
                   color: tplHeader.get(templateHeader).textColor,
                   fontWeight: 900,
                   fontFamily: "Nunito sans, sans-serif",
@@ -102,7 +129,7 @@ function AppBarSys({
                   variant={TextVariantEnum.H3}
                   align={TextAlignEnum.LEFT}
                   style={{
-                    fontSize: 15,
+                    fontSize: fontSizeSubtitle,
                     color: "#B4AEF5",
                     fontFamily: "Nunito sans, sans-serif",
                     paddingTop: 2,
@@ -120,6 +147,7 @@ function AppBarSys({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
+                style={{ marginLeft: 4 }}
                 onClick={() => setOpenDrawer(!openDrawer)}
               >
                 <SvgIcon

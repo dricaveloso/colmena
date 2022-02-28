@@ -20,7 +20,7 @@ import { ListTypeEnum, OrderEnum, ButtonSizeEnum, ButtonVariantEnum } from "@/en
 import { useTranslation } from "react-i18next";
 import HeaderBar from "../pages/library/HeaderBar";
 import { AllIconProps, PropsUserSelector } from "@/types/*";
-import { isRootPath, removeInitialPath } from "@/utils/directory";
+import { getTalkPath, isRootPath, removeInitialPath } from "@/utils/directory";
 import IconButton from "@/components/ui/IconButton";
 import AppBar, { tplHeader } from "@/components/statefull/AppBar";
 import Button from "@/components/ui/Button";
@@ -95,6 +95,7 @@ export default function LibraryModal({
   isDisabled = false,
   options,
   footerActions,
+  onlyDirectories = true,
 }: Props) {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
@@ -120,8 +121,9 @@ export default function LibraryModal({
         setIsLoading(true);
       }
 
-      const rawItems = await getItems(path, userRdx.user.id, timeDescription);
+      let rawItems = await getItems(path, userRdx.user.id, timeDescription, l);
       setCurrentItem(getCurrentItem());
+      rawItems = handleItems(rawItems);
 
       let currentOrder = order;
       if (isRootPath(path)) {
@@ -145,6 +147,19 @@ export default function LibraryModal({
 
     setIsLoading(false);
   };
+
+  const handleItems = (items: Array<LibraryItemInterface>) =>
+    items.filter((item) => {
+      if (onlyDirectories && item.type !== "directory") {
+        return false;
+      }
+
+      if (item.filename === getTalkPath()) {
+        return false;
+      }
+
+      return true;
+    });
 
   const prepareBreadcrumbPath = (path: string) => {
     if (path !== "" && path !== "/") {
@@ -192,6 +207,7 @@ export default function LibraryModal({
 
   return (
     <Modal
+      data-testid="library-modal"
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       className={classes.modal}

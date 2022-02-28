@@ -1,0 +1,21 @@
+{
+    "title": "lebo",
+    "editTagTitle": "Hariri lebo",
+    "createTagTitle": "Buni lebo",
+    "saveButton": "Hifadhi",
+    "form": {
+        "fields": {
+            "name": "Lebo"
+        }
+    },
+    "messages": {
+        "tagCreatedSuccessfully": "Lebo nimebuniwa!",
+        "tagRemovedSuccessfully": "Lebo limeondolewa kwa mafanikio!",
+        "tagUpdatedSuccessfully": "Lebo limesahihishwa kwa mafanikio!",
+        "forbidden": "Kitendo hiki ni marufuku",
+        "tagAlreadyExists": "Lebo tayari lipo"
+    },
+    "table": {
+        "tagTitle": "Lebo"
+    }
+}

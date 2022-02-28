@@ -1,10 +1,9 @@
 {
-  "titleCreated": "Crear su contraseña para continuar.",
-  "titleUpdated": "Actualice su contraseña para continuar.",
-  "errorMessagePassword": "Las contraseñas no coinciden",
-  "errorUpdatingPassword": "No se puede actualice la contraseña.",
-  "errorCreatingPassword": "No se puede crear la contraseña.",
-  "successCreatingPassword": "Contraseña creada.",
-  "successUpdatingPassword": "Contraseña actualizada."
+    "titleCreated": "Crea tu contraseña",
+    "titleUpdated": "Contraseña actualizada con éxito",
+    "errorMessagePassword": "Las contraseñas no coinciden",
+    "errorUpdatingPassword": "No se puede actualizar la contraseña.",
+    "errorCreatingPassword": "No se puede crear la contraseña",
+    "successCreatingPassword": "Contraseña creada con éxito",
+    "successUpdatingPassword": "Contraseña actualizada"
 }
-

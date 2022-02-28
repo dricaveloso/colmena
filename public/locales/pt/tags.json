@@ -1,0 +1,21 @@
+{
+    "title": "Etiquetas",
+    "editTagTitle": "Editar etiqueta",
+    "createTagTitle": "Criar etiqueta",
+    "saveButton": "Salvo",
+    "form": {
+        "fields": {
+            "name": "Nome da etiqueta"
+        }
+    },
+    "messages": {
+        "tagCreatedSuccessfully": "Etiqueta criada com sucesso!",
+        "tagRemovedSuccessfully": "Etiqueta removida com sucesso!",
+        "tagUpdatedSuccessfully": "Etiqueta atualizada com sucesso!",
+        "forbidden": "Esta ação é proibida",
+        "tagAlreadyExists": "Etiqueta já existe"
+    },
+    "table": {
+        "tagTitle": "Etiqueta"
+    }
+}

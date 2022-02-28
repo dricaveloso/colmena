@@ -1,0 +1,15 @@
+{
+    "audioTitle": "Sauti",
+    "descriptionTitle": "Maelezo",
+    "tagTitle": "Vitambulisho",
+    "contextMenuOptions": {
+        "downloadTitle": "Pakua",
+        "renameTitle": "Badilisha jina",
+        "editAudio": "Hariri sauti",
+        "deleteAudio": "Futa sauti"
+    },
+    "messages": {
+        "descriptionSuccessfullyUpdated": "Maelezo yalisasishwa kwa mafanikio"
+    },
+    "editDescription": "Hariri maelezo"
+}

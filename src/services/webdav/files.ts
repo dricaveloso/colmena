@@ -1,12 +1,38 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/ban-types */
 import webdav from "@/services/webdav";
-import { BufferLike, ResponseDataDetailed, DAVResultResponseProps } from "webdav";
-import { removeFirstSlash, getRandomInt, trailingSlash, removeCornerSlash } from "@/utils/utils";
+import {
+  BufferLike,
+  ResponseDataDetailed,
+  DAVResultResponseProps,
+  DAVResult,
+  DAVResultResponse,
+} from "webdav";
+import {
+  removeFirstSlash,
+  getRandomInt,
+  trailingSlash,
+  removeCornerSlash,
+  getExtensionFilename,
+  dateDescription,
+  formatBytes,
+  decodeURI,
+} from "@/utils/utils";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { arrayBufferToBlob, blobToArrayBuffer, createObjectURL } from "blob-util";
 import davAxiosConnection from "@/services/webdav/axiosConnection";
 import axiosBase from "@/services/webdav/axiosBase";
 import getConfig from "next/config";
+import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
+import {
+  convertPrivateToUsername,
+  getPrivatePath,
+  getPublicPath,
+  getTalkPath,
+} from "@/utils/directory";
+import { EnvironmentEnum } from "@/enums/*";
+import { TFunction } from "next-i18next";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -189,57 +215,207 @@ export async function getFileId(userId: string, path: string) {
   return false;
 }
 
-export async function getDataFile(path: string) {
-  const body = `<?xml version="1.0" encoding="utf-8" ?>
-                <d:propfind  xmlns:d="DAV:"
-                  xmlns:oc="http://owncloud.org/ns"
-                  xmlns:nc="http://nextcloud.org/ns"
-                  xmlns:ocs="http://open-collaboration-services.org/ns">
-                  <d:prop>
-                    <d:getlastmodified />
-                    <d:getetag />
-                    <d:getcontenttype />
-                    <d:resourcetype />
-                    <oc:fileid />
-                    <oc:permissions />
-                    <oc:size />
-                    <d:getcontentlength />
-                    <nc:has-preview />
-                    <nc:mount-type />
-                    <nc:is-encrypted />
-                    <ocs:share-permissions />
-                    <oc:tags />
-                    <oc:display-name/>
-                    <oc:user-visible/>
-                    <oc:user-assignable/>
-                    <oc:id/>
-                    <oc:favorite />
-                    <oc:comments-unread />
-                    <oc:owner-id />
-                    <oc:owner-display-name />
-                    <oc:share-types />
+const payloadRequest = `<?xml version="1.0" encoding="utf-8" ?>
+<d:propfind  xmlns:d="DAV:"
+  xmlns:oc="http://owncloud.org/ns"
+  xmlns:nc="http://nextcloud.org/ns"
+  xmlns:ocs="http://open-collaboration-services.org/ns">
+  <d:prop>
+    <d:getlastmodified />
+    <d:getetag />
+    <d:getcontenttype />
+    <d:resourcetype />
+    <oc:fileid />
+    <oc:permissions />
+    <oc:size />
+    <d:getcontentlength />
+    <nc:has-preview />
+    <nc:mount-type />
+    <nc:is-encrypted />
+    <ocs:share-permissions />
+    <oc:tags />
+    <oc:display-name/>
+    <oc:user-visible/>
+    <oc:user-assignable/>
+    <oc:id/>
+    <oc:favorite />
+    <oc:comments-unread />
+    <oc:owner-id />
+    <oc:owner-display-name />
+    <oc:share-types />
 
-                    <oc:created-at />
-                    <oc:customtitle />
-                    <oc:customdescription />
-                    <oc:description />
-                    <oc:language />
+    <oc:created-at />
+    <oc:customtitle />
+    <oc:customdescription />
+    <oc:description />
+    <oc:language />
 
-                  </d:prop>
-                </d:propfind>`;
+  </d:prop>
+</d:propfind>`;
+
+export async function getDataFile(
+  userId: string,
+  path: string,
+  timeDescription: TimeDescriptionInterface,
+) {
   const result = await davAxiosConnection(
-    body,
+    payloadRequest,
     `files/${removeCornerSlash(path)}`,
     undefined,
     undefined,
     true,
   );
+
   if (typeof result.multistatus.response[0].propstat.prop === "object") {
-    return result.multistatus.response[0].propstat.prop;
+    return itemPayload(userId, result.multistatus.response[0], timeDescription);
   }
 
   return false;
 }
+
+export async function getFiles(
+  userId: string,
+  path: string,
+  timeDescription: TimeDescriptionInterface,
+  libraryTranslation: TFunction,
+) {
+  const ncFiles = await davAxiosConnection(
+    payloadRequest,
+    `files/${removeCornerSlash(path)}`,
+    undefined,
+    undefined,
+    true,
+  );
+  if (!ncFiles) {
+    return false;
+  }
+
+  const files = ncFiles as DAVResult;
+
+  const items: Array<LibraryItemInterface> = [];
+  files.multistatus.response.forEach((item) => {
+    items.push(itemPayload(userId, item, timeDescription));
+  });
+
+  return handleItems(userId, items, path, libraryTranslation);
+}
+
+const itemPayload = (
+  userId: string,
+  item: DAVResultResponse,
+  timeDescription: TimeDescriptionInterface,
+) => {
+  const filename = decodeURIComponent(removeCornerSlash(item.href.replace(/^.+?\/.+?(\/|$)/, "")));
+  const basename = removeCornerSlash(filename.replace(/^.*\/(.*)$/, "$1"));
+  const aliasFilename = convertPrivateToUsername(filename, userId);
+  const prop = item.propstat.prop as DAVResultResponseProps | any;
+  const type = !prop?.getcontenttype ? "directory" : "file";
+  const lastModified = prop?.getlastmodified;
+  let updatedAt;
+  if (lastModified) {
+    updatedAt = new Date(lastModified);
+  }
+
+  const dateCreatedAt = typeof prop["created-at"] !== "undefined" ? prop["created-at"] : null;
+  let createdAt;
+  if (dateCreatedAt) {
+    createdAt = new Date(dateCreatedAt);
+  }
+
+  const newItem: LibraryItemInterface = {
+    basename,
+    id: filename,
+    filename,
+    aliasFilename,
+    type,
+    environment: EnvironmentEnum.REMOTE,
+    extension: getExtensionFilename(filename),
+    createdAt,
+    createdAtDescription: createdAt ? dateDescription(createdAt, timeDescription) : null,
+    updatedAt,
+    updatedAtDescription: updatedAt ? dateDescription(updatedAt, timeDescription) : null,
+    mime: prop?.getcontenttype,
+    size: prop?.size,
+    sizeFormatted: formatBytes(prop.size),
+    contentLength: prop?.getcontentlength,
+    fileId: prop?.fileid,
+    nextcloudId: prop?.id,
+    eTag: prop?.getetag,
+    favorite: prop?.favorite,
+    commentsUnread: typeof prop["comments-unread"] !== "undefined" ? prop["comments-unread"] : null,
+    ownerId: typeof prop["owner-id"] !== "undefined" ? prop["owner-id"] : null,
+    ownerName:
+      typeof prop["owner-display-name"] !== "undefined" ? prop["owner-display-name"] : null,
+    title: decodeURI(prop?.customtitle) || undefined,
+    description: decodeURI(prop?.customdescription) || undefined,
+    language: prop?.language,
+  };
+
+  return newItem;
+};
+
+let currentItem: LibraryItemInterface | null = null;
+
+function setCurrentFile(item: null | LibraryItemInterface) {
+  currentItem = item;
+}
+
+export function getCurrentFile(): null | LibraryItemInterface {
+  return currentItem;
+}
+
+const handleItems = (
+  userId: string,
+  items: Array<LibraryItemInterface>,
+  path: string,
+  libraryTranslation: TFunction,
+) => {
+  const handledItems = items
+    .map((item: LibraryItemInterface) => {
+      const newItem = item;
+      const { type, filename } = newItem;
+      if (type === "directory") {
+        switch (removeCornerSlash(filename)) {
+          case getTalkPath():
+            newItem.basename = libraryTranslation("talkFolderName");
+            break;
+          case getPublicPath():
+            newItem.basename = libraryTranslation("publicFolderName");
+            break;
+          default:
+            break;
+        }
+      }
+
+      if (filename === "") {
+        setCurrentFile(null);
+      } else if (filename === removeCornerSlash(path)) {
+        setCurrentFile(item);
+      } else if (filename === getPrivatePath()) {
+        newItem.basename = userId;
+      }
+
+      return newItem;
+    })
+    .filter(({ basename, type, filename }: LibraryItemInterface, index) => {
+      if (index === 0 || basename === "" || basename[0] === ".") {
+        return false;
+      }
+
+      if (type === "directory" && removeCornerSlash(filename) === getPublicPath()) {
+        return false;
+      }
+
+      return true;
+    });
+
+  const isRoot = path === "/" || path === "";
+  if (isRoot) {
+    return handledItems.filter(({ type }: LibraryItemInterface) => type === "directory");
+  }
+
+  return handledItems;
+};
 
 interface FileDataNCInterface {
   customtitle?: string;
@@ -278,15 +454,21 @@ export async function setDataFile(data: FileDataNCInterface, path: string) {
   return false;
 }
 
+let cancelUpload = false;
+
+export function abortUpload() {
+  cancelUpload = true;
+}
+
 export async function chunkFileUpload(userId: string | number, file: File, filename: string) {
   const maxChunkFile = 2 * 1000000; // 2mb
   const totalLength = file.size;
 
-  if (maxChunkFile >= totalLength) {
+  /* if (maxChunkFile >= totalLength) {
     const contentFile = await blobToArrayBuffer(file);
 
     return putFile(userId, filename, contentFile);
-  }
+  } */
 
   let tempFilename = "file";
   // eslint-disable-next-line no-plusplus
@@ -304,6 +486,12 @@ export async function chunkFileUpload(userId: string | number, file: File, filen
   let done = false;
   let chunkNumber = 0;
   while (done === false) {
+    if (cancelUpload) {
+      abortChunkFileUpload(userId, tempFilename);
+
+      return false;
+    }
+
     chunkNumber += 1;
     if (chunkNumber > 1) {
       initialChunk += maxChunkFile;
@@ -354,6 +542,12 @@ async function doneChunkFileUpload(
 ) {
   return axiosBase(null, `dav/uploads/${userId}/${tempFilename}/.file`, "MOVE", {
     Destination: `${publicRuntimeConfig.api.baseUrl}/remote.php/dav/files/${userId}/${destination}`,
+    "Content-Type": null,
+  });
+}
+
+async function abortChunkFileUpload(userId: string | number, tempFilename: string) {
+  return axiosBase(null, `dav/uploads/${userId}/${tempFilename}/`, "DELETE", {
     "Content-Type": null,
   });
 }

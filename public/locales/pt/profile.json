@@ -1,13 +1,26 @@
 {
-  "title": "Perfil",
-  "textEditButton": "Editar Perfil",
-  "textPhotoButton": "Subir foto",
-  "mediaTitle": "Meio",
-  "nameField": "Nome",
-  "emailField": "E-mail",
-  "urlField": "URL / BLOG",
-  "socialMediaTitle": "Mídias Sociais",
-  "editButton": "Editar",
-  "saveButton": "Salvar",
-  "resetPasswordButton": "Resetar senha"
+    "title": "Perfil",
+    "textEditButton": "Editar perfil",
+    "textPhotoButton": "Subir foto",
+    "mediaTitle": "Mídia",
+    "nameField": "Nome",
+    "lastnameField": "Último nome",
+    "emailField": "E-mail",
+    "urlField": "URL / BLOG",
+    "socialMediaTitle": "Coloque o link das suas redes sociais para que estejam visíveis na perfil público da mídia.",
+    "editButton": "Editar",
+    "saveButton": "Salvo",
+    "resetPasswordButton": "Resetar senha",
+    "manageTitle": "Gerenciar",
+    "switchLanguage": "Idioma",
+    "successMessage": "Informação salva com sucesso",
+    "contextMenuOptions": {
+        "settings": "Configurações",
+        "remove": "Excluir conta",
+        "deactivate": "Desativar conta"
+    },
+    "confirmationRemoveAccountMessage": "Essa ação deleta permanentemente o seu usuário, e consequentemente você não poderá mais ter acesso à Colmena.",
+    "messageSuccessAccountDeactivated": "Usuário(a) desabilitado(a) com sucesso.",
+    "messageSuccessAccountDeleted": "Usuário(a) removido(a) com sucesso.",
+    "confirmationSuspendAccountMessage": "Esta ação vai desativar sua conta de usuário(a), e só com a permissão do(a) administrador(a) será possível retornar ."
 }
