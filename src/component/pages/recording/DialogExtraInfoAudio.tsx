@@ -212,7 +212,6 @@ export default function DialogExtraInfoAudio({
                   handleClick={discardAudioHandle}
                   className={classes.marginButton}
                   variant={ButtonVariantEnum.OUTLINED}
-                  color={ButtonColorEnum.SECONDARY}
                   title={t("discardButton")}
                   data-testid="discard-audio"
                 />
