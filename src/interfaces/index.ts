@@ -195,6 +195,7 @@ export interface LibraryCardItemInterface extends LibraryItemInterface {
   ) => React.ReactNode;
   handleOpenCard?: (item: LibraryItemInterface) => void;
   isDisabled?: boolean;
+  subtitle?: string;
 }
 
 export interface LibraryItemContextMenuInterface extends LibraryItemInterface {

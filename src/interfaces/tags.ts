@@ -11,3 +11,12 @@ export interface SystemTagsPropInterface {
   "user-assignable"?: string;
   id?: string;
 }
+
+export interface TagInterface {
+  tagId: number | string;
+  tagName: string;
+  fileId: number | string;
+  fileName: string;
+  baseName: string;
+  quantity?: number;
+}
