@@ -190,7 +190,11 @@ export function generateBreadcrumb(
 
   if (path) {
     path.forEach((dir: string, index) => {
-      breadcrumb += `/${dir}`;
+      if (breadcrumb === "/") {
+        breadcrumb = `/${dir}`;
+      } else {
+        breadcrumb += `/${dir}`;
+      }
 
       const directory: BreadcrumbItemInterface = {
         description: dir,

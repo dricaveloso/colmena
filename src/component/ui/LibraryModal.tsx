@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -154,10 +154,6 @@ export default function LibraryModal({
         return false;
       }
 
-      if (item.filename === getTalkPath()) {
-        return false;
-      }
-
       return true;
     });
 
@@ -204,6 +200,14 @@ export default function LibraryModal({
     description: rootDescription ?? l("title"),
     path: rootPath,
   };
+
+  const renderFooter = useMemo(() => {
+    if (!footerActions || !currentItem || currentItem.filename === getTalkPath()) {
+      return null;
+    }
+
+    return footerActions(currentItem);
+  }, [currentItem, footerActions]);
 
   return (
     <Modal
@@ -281,7 +285,7 @@ export default function LibraryModal({
                 size={ButtonSizeEnum.SMALL}
               />
 
-              {footerActions && currentItem && footerActions(currentItem)}
+              {renderFooter}
             </div>
           )}
         </div>
