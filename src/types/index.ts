@@ -301,7 +301,9 @@ export type AllIconProps =
   | "banner_4"
   | "gradient_plus"
   | "delete"
-  | "sync";
+  | "sync"
+  | "recently_viewed"
+  | "arrow_up_left";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 

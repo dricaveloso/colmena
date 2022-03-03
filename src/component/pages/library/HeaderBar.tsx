@@ -11,8 +11,8 @@ import TemporaryFiltersDrawer from "./FiltersDrawer";
 import { getPublicPath, getTalkPath, isRootPath } from "@/utils/directory";
 import { useDispatch } from "react-redux";
 import { setCurrentAudioPlaying } from "@/store/actions/library/index";
-import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles(() => ({
   breadcrumb: {
@@ -69,10 +69,10 @@ function HeaderBar({
 }: Props) {
   const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
   const [iconListType, setIconListType] = useState<AllIconProps>(defineIconListType(listType));
+  const router = useRouter();
   const classes = useStyles();
   const dispatch = useDispatch();
   const { t } = useTranslation("library");
-  const { t: c } = useTranslation("common");
   const [breadcrumb, setBreadcrumb] = useState<Array<BreadcrumbItemInterface>>(
     [] as Array<BreadcrumbItemInterface>,
   );
@@ -141,10 +141,6 @@ function HeaderBar({
     setOpenFilterDrawer(true);
   };
 
-  const unavailable = () => {
-    toast(c("featureUnavailable"), "warning");
-  };
-
   return (
     <Box
       bgcolor="#F9F9F9"
@@ -173,7 +169,7 @@ function HeaderBar({
           <IconButton
             color="primary"
             component="span"
-            onClick={unavailable}
+            onClick={() => router.push("library-search")}
             aria-controls="filter-menu"
             aria-haspopup="true"
             disabled={isDisabled}

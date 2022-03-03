@@ -8,6 +8,7 @@ import {
   DAVResultResponseProps,
   DAVResult,
   DAVResultResponse,
+  FileStat,
 } from "webdav";
 import {
   removeFirstSlash,
@@ -452,6 +453,46 @@ export async function setDataFile(data: FileDataNCInterface, path: string) {
   }
 
   return false;
+}
+
+export async function getAllPaths(userId: string, timeDescription: TimeDescriptionInterface) {
+  const paths = await webdav().getDirectoryContents(`${removeFirstSlash(userId)}`, {
+    details: true,
+    deep: true,
+  });
+  const results = paths as ResponseDataDetailed<Array<FileStat>>;
+  const newItems: LibraryItemInterface[] = [];
+  results.data.forEach((item) => {
+    const filename = item.filename.replace(/^.+?\//, "");
+    const updatedAt = new Date(item.lastmod);
+    const newItem: LibraryItemInterface = {
+      id: filename,
+      basename: item.basename,
+      filename,
+      aliasFilename: convertPrivateToUsername(filename, userId),
+      updatedAt,
+      updatedAtDescription: dateDescription(updatedAt, timeDescription),
+      mime: item.mime,
+      size: item.size,
+      sizeFormatted: item.size > 0 ? formatBytes(item.size) : undefined,
+      type: item.type,
+      environment: EnvironmentEnum.REMOTE,
+    };
+
+    newItems.push(newItem);
+  });
+
+  return newItems;
+}
+
+export function searchItems(items: LibraryItemInterface[], userId: string, keyword: string) {
+  if (!items) {
+    return [];
+  }
+
+  const value = decodeURIComponent(keyword);
+
+  return items.filter((item: LibraryItemInterface) => item.basename.indexOf(value) >= 0);
 }
 
 let cancelUpload = false;
