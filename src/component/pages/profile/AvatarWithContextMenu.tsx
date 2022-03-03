@@ -225,7 +225,6 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
               handleClick={handleCloseModal}
               style={{ margin: 8 }}
               variant={ButtonVariantEnum.OUTLINED}
-              color={ButtonColorEnum.SECONDARY}
               title={c("form.cancelButton")}
               data-testid="close-modal-crop"
             />
