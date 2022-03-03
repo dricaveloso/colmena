@@ -18,19 +18,6 @@ export default function ChangeUploadLocationModal({
   handleClick,
 }: Props) {
   const { t } = useTranslation("library");
-  const options = (item: LibraryItemInterface) => {
-    if (item.type === "directory") {
-      return (
-        <Button
-          handleClick={() => handleClick(item.aliasFilename)}
-          title={t("chooseButton")}
-          size={ButtonSizeEnum.SMALL}
-        />
-      );
-    }
-
-    return null;
-  };
 
   const footerActions = (item: LibraryItemInterface) => (
     <Button
@@ -45,7 +32,6 @@ export default function ChangeUploadLocationModal({
       title={title}
       handleClose={handleClose}
       open={open}
-      options={options}
       footerActions={footerActions}
     />
   );

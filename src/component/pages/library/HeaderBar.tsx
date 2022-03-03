@@ -3,7 +3,7 @@ import { Box, makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@/components/ui/SvgIcon";
 import { FilterEnum, JustifyContentEnum, ListTypeEnum, OrderEnum } from "@/enums/index";
-import { generateBreadcrumb } from "@/utils/utils";
+import { generateBreadcrumb, removeCornerSlash } from "@/utils/utils";
 import { BreadcrumbItemInterface } from "@/interfaces/index";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import { AllIconProps } from "@/types/index";
@@ -108,9 +108,10 @@ function HeaderBar({
   const handleBreadcrumb = (items: Array<BreadcrumbItemInterface>) =>
     items.map((item) => {
       const newItem = item;
-      if (newItem.path === `/library/${getTalkPath()}`) {
+      const path = removeCornerSlash(newItem.path.replace(/^\/library\//, ""));
+      if (path === getTalkPath()) {
         newItem.description = t("talkFolderName");
-      } else if (newItem.path === `/library/${getPublicPath()}`) {
+      } else if (path === getPublicPath()) {
         newItem.description = t("publicFolderName");
       }
 
