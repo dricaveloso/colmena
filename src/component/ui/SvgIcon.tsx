@@ -11,6 +11,7 @@ type Props = {
   viewBox?: string;
   // eslint-disable-next-line @typescript-eslint/ban-types
   style?: object;
+  [x: string]: any;
 };
 
 function SvgIconAux({
@@ -19,6 +20,7 @@ function SvgIconAux({
   htmlColor = "#343A40",
   titleAccess = "",
   style = {},
+  ...props
 }: Props) {
   const [viewBox, setViewBox] = useState(undefined);
   const [path, setPath] = useState(undefined);
@@ -1138,7 +1140,7 @@ function SvgIconAux({
           />
           <path
             d="M61.5587 108.674C86.5453 108.674 106.801 88.2005 106.801 62.9445C106.801 37.6886 86.5453 17.2146 61.5587 17.2146C36.5721 17.2146 16.3165 37.6886 16.3165 62.9445C16.3165 88.2005 36.5721 108.674 61.5587 108.674Z"
-            fill="#F65B3A"
+            fill={htmlColor}
           />
         </>
       ),
@@ -1627,6 +1629,30 @@ function SvgIconAux({
       ),
     });
 
+    items.set("start_cursor", {
+      viewBox: "0 0 20 12",
+      path: () => (
+        <g fill="none">
+          <path
+            d="M12.59 1.41L16.17 5H4V7H16.17L12.58 10.59L14 12L20 6L14 0L12.59 1.41ZM0 0L0 12H2V0L0 0Z"
+            fill={htmlColor}
+          />
+        </g>
+      ),
+    });
+
+    items.set("end_cursor", {
+      viewBox: "0 0 20 12",
+      path: () => (
+        <g fill="none">
+          <path
+            d="M7.41 10.59L3.83 7L16 7V5L3.83 5L7.42 1.41L6 0L0 6L6 12L7.41 10.59ZM20 12V0H18V12H20Z"
+            fill={htmlColor}
+          />
+        </g>
+      ),
+    });
+
     items.set("cursor_select", {
       viewBox: "0 0 16 16",
       path: () => (
@@ -1667,6 +1693,7 @@ function SvgIconAux({
       titleAccess={titleAccess}
       data-testid={icon}
       style={typeof fontSize !== "number" ? style : { ...style, fontSize }}
+      {...props}
     >
       {path}
     </SvgIcon>

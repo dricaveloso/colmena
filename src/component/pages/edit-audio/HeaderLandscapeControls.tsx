@@ -2,12 +2,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState } from "react";
-import { useTranslation } from "next-i18next";
-import { toast } from "@/utils/notifications";
 import Box from "@material-ui/core/Box";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import IconButton from "@/components/ui/IconButton";
 import theme from "@/styles/theme";
+import IconButton from "@material-ui/core/IconButton";
+import SvgIcon from "@/components/ui/SvgIcon";
+import { useDispatch } from "react-redux";
+import { setCursorSelected } from "@/store/actions/audio-editor/index";
+import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles((theme: Theme) => ({
   extraElementWrapper: {
@@ -16,6 +18,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
   },
   verticalDivider: {
     width: 0.8,
@@ -24,77 +29,85 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 5,
     marginRight: 5,
   },
+  actionsButton: {
+    padding: 0,
+    "& svg": {
+      width: 25,
+      padding: 0,
+    },
+  },
 }));
 
 type Props = {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
+  handleTrim: () => void;
+  handleShift: () => void;
   handleSelectAudioRegion: (type: string) => void;
+  handleDownload: () => void;
+  handleSave: () => void;
 };
 
 export default function HeaderControls({
   handleZoomIn,
   handleZoomOut,
+  handleTrim,
+  handleShift,
   handleSelectAudioRegion,
+  handleDownload,
+  handleSave,
 }: Props) {
   const classes = useStyles();
-  const { t: c } = useTranslation("common");
-  const [isSelectedCursorActive, setIsSelectedCursorActive] = useState(false);
+  const [activeSelect, setActiveSelect] = useState(false);
+  const [activeShift, setActiveShift] = useState(false);
+  const dispatch = useDispatch();
 
-  const buttonHeaderStyle = {
-    width: 28,
+  const handleActiveSelected = () => {
+    setActiveSelect(!activeSelect);
+    setActiveShift(false);
+    if (!isMobile) {
+      handleSelectAudioRegion("select");
+      dispatch(setCursorSelected(false));
+    } else {
+      handleSelectAudioRegion("cursor");
+      dispatch(setCursorSelected(!activeSelect));
+    }
   };
 
-  const unavailable = () => {
-    toast(c("featureUnavailable"), "warning");
-  };
-
-  const handleSelectAudioRegionIntern = () => {
-    setIsSelectedCursorActive((isSelectedCursorActive) => {
-      handleSelectAudioRegion(!isSelectedCursorActive ? "select" : "cursor");
-      return !isSelectedCursorActive;
-    });
+  const handleActiveShift = () => {
+    setActiveShift(!activeShift);
+    setActiveSelect(false);
+    dispatch(setCursorSelected(false));
+    handleShift();
   };
 
   return (
     <Box className={classes.extraElementWrapper}>
-      <IconButton
-        icon="zoomin"
-        iconColor={theme.palette.icon.light}
-        handleClick={handleZoomIn}
-        iconStyle={buttonHeaderStyle}
-      />
-      <IconButton
-        icon="zoomout"
-        iconColor={theme.palette.icon.light}
-        handleClick={handleZoomOut}
-        iconStyle={buttonHeaderStyle}
-      />
-      <IconButton
-        icon="cut"
-        iconColor={theme.palette.icon.light}
-        handleClick={unavailable}
-        iconStyle={buttonHeaderStyle}
-      />
-      <IconButton
-        icon="cursor_select"
-        iconColor={isSelectedCursorActive ? "#fff" : theme.palette.icon.light}
-        handleClick={handleSelectAudioRegionIntern}
-        iconStyle={buttonHeaderStyle}
-      />
+      <IconButton onClick={handleZoomIn} className={classes.actionsButton}>
+        <SvgIcon icon="zoomin" htmlColor={theme.palette.icon.light} />
+      </IconButton>
+      <IconButton onClick={handleZoomOut} className={classes.actionsButton}>
+        <SvgIcon icon="zoomout" htmlColor={theme.palette.icon.light} />
+      </IconButton>
+      <IconButton onClick={handleActiveShift} className={classes.actionsButton}>
+        <SvgIcon icon="audio_shift" htmlColor={activeShift ? "#fff" : theme.palette.icon.light} />
+      </IconButton>
+      <IconButton onClick={handleTrim} className={classes.actionsButton}>
+        <SvgIcon icon="cut" htmlColor={theme.palette.icon.light} />
+      </IconButton>
+      <IconButton onClick={handleActiveSelected} className={classes.actionsButton}>
+        <SvgIcon
+          icon="cursor_select"
+          htmlColor={activeSelect ? "#fff" : theme.palette.icon.light}
+        />
+      </IconButton>
       <Box className={classes.verticalDivider}></Box>
-      <IconButton
-        icon="download"
-        iconColor={theme.palette.icon.light}
-        handleClick={unavailable}
-        iconStyle={buttonHeaderStyle}
-      />
-      <IconButton
-        icon="save"
-        iconColor={theme.palette.icon.light}
-        handleClick={unavailable}
-        iconStyle={buttonHeaderStyle}
-      />
+      <IconButton onClick={handleDownload} className={classes.actionsButton}>
+        <SvgIcon icon="download" htmlColor={theme.palette.icon.light} />
+      </IconButton>
+      <IconButton onClick={handleSave} className={classes.actionsButton}>
+        <SvgIcon icon="save" htmlColor={theme.palette.icon.light} />
+      </IconButton>
     </Box>
   );
 }

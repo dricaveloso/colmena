@@ -9,7 +9,7 @@ import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { JustifyContentEnum } from "@/enums/index";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 import { listFile } from "@/services/webdav/files";
@@ -29,6 +29,7 @@ import Backdrop from "@/components/ui/Backdrop";
 import EventEmitter from "events";
 import HeaderPortraitControls from "@/components/pages/edit-audio/HeaderPortraitControls";
 import HeaderLandscapeControls from "@/components/pages/edit-audio/HeaderLandscapeControls";
+import { setCursorSelected } from "@/store/actions/audio-editor/index";
 
 const useStyles = makeStyles((theme: Theme) => ({
   frameWaveform: {
@@ -87,6 +88,7 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 
 function EditAudio() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const router = useRouter();
   const [urlBlob, setUrlBlob] = useState<string | null>(null);
@@ -138,7 +140,7 @@ function EditAudio() {
       setIsPortraitView(true);
       setDynamicHeight(window.innerHeight * 0.6);
     } else {
-      setDynamicHeight(window.innerHeight * 0.5);
+      setDynamicHeight(window.innerHeight * 0.34);
       setIsPortraitView(false);
     }
   };
@@ -146,6 +148,7 @@ function EditAudio() {
   useEffect(() => {
     init();
     verifyScreenOrientation();
+    dispatch(setCursorSelected(false));
     window.addEventListener(
       "resize",
       () => {
@@ -163,8 +166,24 @@ function EditAudio() {
     ee.emit("zoomout");
   };
 
+  const handleTrim = () => {
+    ee.emit("trim");
+  };
+
+  const handleDownload = () => {
+    ee.emit("startaudiorendering", "wav");
+  };
+
+  const handleSave = () => {
+    ee.emit("startaudiorendering", "buffer");
+  };
+
   const handleSelectAudioRegion = (type: string) => {
     ee.emit("statechange", type);
+  };
+
+  const handleShift = () => {
+    ee.emit("statechange", "shift");
   };
 
   return (
@@ -180,13 +199,18 @@ function EditAudio() {
           <HeaderPortraitControls
             handleZoomIn={handleZoomIn}
             handleZoomOut={handleZoomOut}
+            handleTrim={handleTrim}
             handleSelectAudioRegion={handleSelectAudioRegion}
           />
         ) : (
           <HeaderLandscapeControls
             handleZoomIn={handleZoomIn}
             handleZoomOut={handleZoomOut}
+            handleTrim={handleTrim}
             handleSelectAudioRegion={handleSelectAudioRegion}
+            handleDownload={handleDownload}
+            handleShift={handleShift}
+            handleSave={handleSave}
           />
         )
       }
@@ -201,14 +225,12 @@ function EditAudio() {
               {loading || !urlBlob ? (
                 <Backdrop open={loading} />
               ) : (
-                <Box paddingLeft={2} paddingRight={2}>
-                  <MemoizedPlaylist
-                    urlBlob={urlBlob}
-                    waveHeight={dynamicHeight}
-                    filename={filename.split("/").reverse()[0]}
-                    ee={ee}
-                  />
-                </Box>
+                <MemoizedPlaylist
+                  urlBlob={urlBlob}
+                  waveHeight={dynamicHeight}
+                  filename={filename}
+                  ee={ee}
+                />
               )}
             </Orientation>
           </DeviceOrientation>

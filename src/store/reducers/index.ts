@@ -4,6 +4,7 @@ import recordingReducer from "./recordings";
 import configReducer from "./config";
 import libraryReducer from "./library";
 import honeycombReducer from "./honeycomb";
+import audioEditorReducer from "./audio-editor";
 // eslint-disable-next-line import/no-cycle
 import { persistConfigKey } from "@/store/index";
 
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   config: configReducer,
   library: libraryReducer,
   honeycomb: honeycombReducer,
+  audioEditor: audioEditorReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

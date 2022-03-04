@@ -9,5 +9,7 @@
     "selectAudioRegionTitle": "Select audio region",
     "saveTitle": "Save",
     "downloadTitle": "Download"
-  }
+  },
+  "regionSelectedTitle": "Region selected: {{startTime}} - {{endTime}}",
+  "audioSavedTitle": "Audio saved"
 }

@@ -1698,6 +1698,11 @@
   resolved "https://registry.npmjs.org/@types/estree/-/estree-0.0.39.tgz"
   integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
 
+"@types/file-saver@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.5.tgz#9ee342a5d1314bb0928375424a2f162f97c310c7"
+  integrity sha512-zv9kNf3keYegP5oThGLaPk8E081DFDuwfqjtiTzm6PoxChdJ1raSuADf2YGCVIyrSynLrgc8JWv296s7Q7pQSQ==
+
 "@types/glob@^7.1.1":
   version "7.1.4"
   resolved "https://registry.npmjs.org/@types/glob/-/glob-7.1.4.tgz"
@@ -9306,11 +9311,12 @@ watchpack@2.1.1:
     glob-to-regexp "^0.4.1"
     graceful-fs "^4.1.2"
 
-waveform-playlist@^4.2.3:
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/waveform-playlist/-/waveform-playlist-4.2.3.tgz#38b71124e0da076eb1da9f01dd19cb6aca832868"
-  integrity sha512-UfDuqDOvUChZiZtk/LmfyIPuclW+AhxtZt6nWreOsxlAbNba9Tfg+H6kLWP3ri7gucp2+eERuUXto7V4fEn8yg==
+waveform-playlist@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/waveform-playlist/-/waveform-playlist-4.3.3.tgz#a898befddff23c62014e326784cff8e623e43f98"
+  integrity sha512-s1UVWBg3t9fwhz8dAKQ2JLBJQc7jBtTjuPQ46FDjd8Q6wb9BOuNNZHl//Ud497yFliYlHE44Cioy8kqN+e5MTg==
   dependencies:
+    "@babel/runtime" "^7.17.2"
     event-emitter "^0.3.4"
     fade-curves "^1.0.2"
     fade-maker "^1.0.3"

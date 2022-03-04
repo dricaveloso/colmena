@@ -29,6 +29,10 @@ export type PropsUserSelector = {
   invitationToken?: string | undefined;
 };
 
+export type PropsAudioEditorSelector = {
+  isCursorSelected: boolean;
+};
+
 export type PropsHoneycombSelector = {
   honeycombs: RoomItemInterface[];
   clearChatMessages: string[];
@@ -310,7 +314,9 @@ export type AllIconProps =
   | "cursor_select"
   | "audio_shift"
   | "save"
-  | "audio_settings";
+  | "audio_settings"
+  | "start_cursor"
+  | "end_cursor";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 

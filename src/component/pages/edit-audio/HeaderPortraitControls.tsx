@@ -20,10 +20,16 @@ type PositionProps = {
 type Props = {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
+  handleTrim: () => void;
   handleSelectAudioRegion: (type: string) => void;
 };
 
-const ContextMenuOptions = ({ handleZoomIn, handleZoomOut, handleSelectAudioRegion }: Props) => {
+const ContextMenuOptions = ({
+  handleZoomIn,
+  handleZoomOut,
+  handleSelectAudioRegion,
+  handleTrim,
+}: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isSelectedCursorActive, setIsSelectedCursorActive] = useState(false);
 
@@ -58,6 +64,8 @@ const ContextMenuOptions = ({ handleZoomIn, handleZoomOut, handleSelectAudioRegi
     handleCloseContextMenu();
   };
 
+  const fontSizeIcon = { fontSize: 15 };
+
   return (
     <Box display="flex" justifyContent="flex-end">
       <IconButton
@@ -87,7 +95,7 @@ const ContextMenuOptions = ({ handleZoomIn, handleZoomOut, handleSelectAudioRegi
             icon="zoomin"
             iconColor={theme.palette.variation6.main}
             title={t("contextOptions.zoomInTitle")}
-            style={{ fontSize: 15 }}
+            style={fontSizeIcon}
           />
         </MenuItem>
         <MenuItem key="zoom-out-button" data-testid="zoom-out-button" onClick={handleZoomOut}>
@@ -95,15 +103,15 @@ const ContextMenuOptions = ({ handleZoomIn, handleZoomOut, handleSelectAudioRegi
             icon="zoomout"
             iconColor={theme.palette.variation6.main}
             title={t("contextOptions.zoomOutTitle")}
-            style={{ fontSize: 15 }}
+            style={fontSizeIcon}
           />
         </MenuItem>
-        <MenuItem key="cut-audio-button" data-testid="cut-audio-button" onClick={unavailable}>
+        <MenuItem key="cut-audio-button" data-testid="cut-audio-button" onClick={handleTrim}>
           <ContextMenuItem
             icon="cut"
             iconColor={theme.palette.variation6.main}
             title={t("contextOptions.cutAudioRegionTitle")}
-            style={{ fontSize: 15 }}
+            style={fontSizeIcon}
           />
         </MenuItem>
         <MenuItem
@@ -115,7 +123,7 @@ const ContextMenuOptions = ({ handleZoomIn, handleZoomOut, handleSelectAudioRegi
             icon="cursor_select"
             iconColor={theme.palette.variation6.main}
             title={t("contextOptions.selectAudioRegionTitle")}
-            style={{ fontSize: 15 }}
+            style={fontSizeIcon}
           />
         </MenuItem>
         <MenuItem key="save-audio-button" data-testid="save-audio-button" onClick={unavailable}>
@@ -123,7 +131,7 @@ const ContextMenuOptions = ({ handleZoomIn, handleZoomOut, handleSelectAudioRegi
             icon="save"
             iconColor={theme.palette.variation6.main}
             title={t("contextOptions.saveTitle")}
-            style={{ fontSize: 15 }}
+            style={fontSizeIcon}
           />
         </MenuItem>
         <MenuItem
@@ -135,7 +143,7 @@ const ContextMenuOptions = ({ handleZoomIn, handleZoomOut, handleSelectAudioRegi
             icon="download"
             iconColor={theme.palette.variation6.main}
             title={t("contextOptions.downloadTitle")}
-            style={{ fontSize: 15 }}
+            style={fontSizeIcon}
           />
         </MenuItem>
       </Menu>
