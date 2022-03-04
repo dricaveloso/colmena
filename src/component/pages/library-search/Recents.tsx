@@ -8,6 +8,7 @@ import SvgIconAux from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
 import Button from "@/components/ui/Button";
 import { ButtonSizeEnum } from "@/enums/*";
+import IconButton from "@/components/ui/IconButton";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -44,34 +45,55 @@ const useStyles = makeStyles((theme) =>
     recentsFooter: {
       textAlign: "center",
     },
+    arrowUpIcon: {
+      minWidth: "auto",
+    },
   }),
 );
 
-export default function Recents() {
+type Props = {
+  keywords: Array<string>;
+  clearRecentSearches: () => void;
+  searchByKeyword: (keyword: string) => void;
+};
+
+export default function Recents({ keywords, clearRecentSearches, searchByKeyword }: Props) {
   const { t } = useTranslation("librarySearch");
   const classes = useStyles();
   const theme = useTheme();
+
+  if (keywords.length === 0) {
+    return null;
+  }
 
   return (
     <Box className={classes.root}>
       <SectionTitle>{t("recentSearches")}</SectionTitle>
       <Box className={classes.keywords}>
-        <Box key={uuid()} className={classes.keywordContent}>
-          <SvgIconAux icon="recently_viewed" fontSize="small" htmlColor={theme.palette.gray.main} />
-          <Text className={classes.keyword}>DW</Text>
-          <SvgIconAux icon="arrow_up_left" fontSize={15} htmlColor={theme.palette.gray.main} />
-        </Box>
-        <Box key={uuid()} className={classes.keywordContent}>
-          <SvgIconAux icon="recently_viewed" fontSize="small" htmlColor={theme.palette.gray.main} />
-          <Text className={classes.keyword}>Teste</Text>
-          <SvgIconAux icon="arrow_up_left" fontSize={15} htmlColor={theme.palette.gray.main} />
-        </Box>
+        {keywords.map((keyword) => (
+          <Box key={uuid()} className={classes.keywordContent}>
+            <SvgIconAux
+              icon="recently_viewed"
+              fontSize="small"
+              htmlColor={theme.palette.gray.main}
+            />
+            <Text className={classes.keyword}>{keyword}</Text>
+            <IconButton
+              handleClick={() => searchByKeyword(keyword)}
+              icon="arrow_up_left"
+              fontSizeIcon={15}
+              iconColor={theme.palette.gray.main}
+              className={classes.arrowUpIcon}
+            />
+          </Box>
+        ))}
       </Box>
       <Box className={classes.recentsFooter}>
         <Button
           title={t("clearRecentSearches")}
           className={classes.clearButton}
           size={ButtonSizeEnum.SMALL}
+          handleClick={clearRecentSearches}
         />
       </Box>
     </Box>
