@@ -89,8 +89,10 @@ deployer-develop:
     - echo $CONTAINER_RELEASE_IMAGE
     - echo $CI_BUILD_REF_NAME
     - echo $CI_COMMIT_BRANCH
+    - apt install docker-compose
     - docker pull $IMAGE_TAG
-    - docker restart app-develop
+    #- docker restart app-develop
+    - docker-compose up -d app-develop
   only:
     - develop
 
