@@ -7,6 +7,7 @@ variables:
 stages:
   - prepare
   - build
+  - registry
   - deploy
   #- livetest
   # - cleanup
@@ -69,13 +70,28 @@ builder-production:
     - main
     - tags
 
-deployer:
+register:
+  tags:
+    - docker
+  stage: registry
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $IMAGE_TAG
+
+
+deployer-develop:
   tags:
     - docker
   stage: deploy
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker push $IMAGE_TAG
+    - echo $CONTAINER_RELEASE_IMAGE
+    - echo $CI_BUILD_REF_NAME
+    - echo $CI_COMMIT_BRANCH
+    - docker pull maia.press:5050/maia/frontend:develop
+    - docker restart app-develop
+  only:
+    - develop
+
 
 #configure cluster:
 # tags:

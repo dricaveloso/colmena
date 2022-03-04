@@ -116,6 +116,7 @@ const theme = createTheme({
       light: "#e1e1e1",
       main: "#9a9a9a",
       dark: "#7e7e7e",
+      contrastText: "#fff",
     },
 
     icon: {

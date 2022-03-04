@@ -316,7 +316,10 @@ export type AllIconProps =
   | "save"
   | "audio_settings"
   | "start_cursor"
-  | "end_cursor";
+  | "end_cursor"
+  | "sync"
+  | "recently_viewed"
+  | "arrow_up_left";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 

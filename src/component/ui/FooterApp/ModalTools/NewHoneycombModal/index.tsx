@@ -7,7 +7,7 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import Divider from "@/components/ui/Divider";
 import * as Yup from "yup";
-import { ButtonColorEnum, ButtonVariantEnum, EnvironmentEnum, TextVariantEnum } from "@/enums/*";
+import { ButtonVariantEnum, EnvironmentEnum, TextVariantEnum } from "@/enums/*";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useTranslation } from "next-i18next";
 import { createNewConversation, addParticipantToConversation } from "@/services/talk/room";
@@ -228,7 +228,6 @@ export default function NewHoneycombModal({ open, handleClose }: Props) {
                     >
                       <Button
                         handleClick={() => setStep(1)}
-                        color={ButtonColorEnum.SECONDARY}
                         variant={ButtonVariantEnum.OUTLINED}
                         title={c("form.backButton")}
                       />

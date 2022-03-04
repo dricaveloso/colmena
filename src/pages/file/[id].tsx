@@ -16,7 +16,6 @@ import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslat
 import { getDataFile } from "@/services/webdav/files";
 import IconButton from "@/components/ui/IconButton";
 import { toast } from "@/utils/notifications";
-import { getPath } from "@/utils/directory";
 import TagsSection from "@/components/pages/file/Sections/Tags";
 import DescriptionSection from "@/components/pages/file/Sections/Description";
 import DetailsSection from "@/components/pages/file/Sections/Details";
@@ -85,11 +84,7 @@ function File() {
 
   const errorNotFound = () => {
     toast(t("messages.fileNotFound"), "error");
-    if (filename) {
-      router.push(`/library/${getPath(filename)}`);
-    } else {
-      router.push("/library");
-    }
+    router.push("/library");
   };
 
   useEffect(() => {

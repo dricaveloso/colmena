@@ -26,7 +26,7 @@ export default function FileSection({ data, setData, loading }: Props) {
     router.push(`/library/${getPath(aliasFilename)}`);
 
   const redirectToFile = (filename: string) => {
-    router.push(`/file/${btoa(filename)}`, undefined, { shallow: true });
+    router.replace(`/file/${btoa(filename)}`, undefined, { shallow: true });
   };
 
   const handleContextMenuUpdate = async (
