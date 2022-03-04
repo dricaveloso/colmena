@@ -85,10 +85,11 @@ deployer-develop:
     - docker
   stage: deploy
   script:
+    - echo $CI_REGISTRY_IMAGE
     - echo $CONTAINER_RELEASE_IMAGE
     - echo $CI_BUILD_REF_NAME
     - echo $CI_COMMIT_BRANCH
-    - docker pull maia.press:5050/maia/frontend:develop
+    - docker pull $IMAGE_TAG
     - docker restart app-develop
   only:
     - develop
