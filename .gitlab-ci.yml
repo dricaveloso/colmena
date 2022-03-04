@@ -90,7 +90,7 @@ deployer-develop:
     - echo $CI_BUILD_REF_NAME
     - echo $CI_COMMIT_BRANCH
     - docker pull $IMAGE_TAG
-    - docker-compose up -d app-develop
+    - docker restart app-develop
   only:
     - develop
 
