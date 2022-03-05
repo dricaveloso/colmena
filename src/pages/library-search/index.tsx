@@ -9,7 +9,7 @@ import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslat
 import { useTranslation } from "next-i18next";
 import SearchInput from "@/components/pages/library-search/SearchInput";
 import Tags from "@/components/pages/library-search/Tags";
-// import Recents from "@/components/pages/library-search/Recents";
+import Recents from "@/components/pages/library-search/Recents";
 import SearchBar from "@/components/pages/library-search/SearchBar";
 import ListItems from "@/components/pages/library-search/ListItems";
 import { searchItems, getAllPaths } from "@/services/webdav/files";
@@ -32,6 +32,7 @@ function LibrarySearch() {
   const [rawTags, setRawTags] = useState<TagInterface[]>();
   const [items, setItems] = useState<LibraryItemInterface[]>([]);
   const [keyword, setKeyword] = useState<string>("");
+  const [recentSearches, setRecentSearches] = useState<Array<string>>([]);
   const [tag, setTag] = useState<number>();
   const [lastUrlKeyword, setLastUrlKeyword] = useState<undefined | string>();
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -39,9 +40,40 @@ function LibrarySearch() {
   const { t } = useTranslation("librarySearch");
   const { t: c } = useTranslation("common");
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
+  const recentSearchesKey = "recentSearches";
 
   const handleOpenTag = (tag: TagInterface) => {
     router.push(`/library-search/tags/${tag.tagId}`);
+  };
+
+  const saveRecentSearchesKeyword = async (keyword: string) => {
+    const lastRecentSearches = await getRecentSearchesKeywords();
+    if (lastRecentSearches.includes(keyword)) {
+      return;
+    }
+
+    localStorage.setItem(
+      recentSearchesKey,
+      JSON.stringify([keyword, ...lastRecentSearches].slice(0, 5)),
+    );
+  };
+
+  const getRecentSearchesKeywords = async () => {
+    const recentSearches = await localStorage.getItem(recentSearchesKey);
+    if (!recentSearches) {
+      return [];
+    }
+
+    try {
+      return JSON.parse(recentSearches);
+    } catch (e) {
+      return [];
+    }
+  };
+
+  const clearRecentSearches = () => {
+    setRecentSearches([]);
+    localStorage.setItem(recentSearchesKey, "");
   };
 
   const handleSearch = (keyword: string) => {
@@ -51,7 +83,7 @@ function LibrarySearch() {
       setItems([]);
     }
 
-    // search(keyword);
+    saveRecentSearchesKeyword(keyword);
     router.push(
       {
         pathname: "/library-search",
@@ -99,6 +131,10 @@ function LibrarySearch() {
     Promise.all([loadRawItems(), loadRawTags()]).then(() => {
       setIsLoading(false);
     });
+
+    (async () => {
+      setRecentSearches(await getRecentSearchesKeywords());
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -106,6 +142,9 @@ function LibrarySearch() {
     if (typeof urlKeyword === "string" && rawItems.length > 0) {
       setLastUrlKeyword(urlKeyword);
       search(decodeURIComponent(urlKeyword));
+      (async () => {
+        setRecentSearches(await getRecentSearchesKeywords());
+      })();
     } else if (lastUrlKeyword && rawItems.length > 0) {
       search("");
     }
@@ -125,7 +164,11 @@ function LibrarySearch() {
         )) || (
           <>
             <Tags rawItems={rawItems} rawTags={rawTags} openTag={handleOpenTag} />
-            {/* <Recents /> */}
+            <Recents
+              keywords={recentSearches}
+              clearRecentSearches={clearRecentSearches}
+              searchByKeyword={handleSearch}
+            />
           </>
         )}
       </FlexBox>
