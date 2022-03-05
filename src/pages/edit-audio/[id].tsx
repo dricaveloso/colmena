@@ -16,14 +16,18 @@ import { listFile } from "@/services/webdav/files";
 import { toast } from "@/utils/notifications";
 import dynamic from "next/dynamic";
 import {
-  findByBasename as findQuickBlobByBasename,
   createFile as createQuickBlob,
+  findByBasename as findByBasenameQuickBlob,
 } from "@/store/idb/models/filesQuickBlob";
+import { findByBasename } from "@/store/idb/models/files";
 import { removeSpecialCharacters } from "@/utils/utils";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
 import RotateYourDevice from "@/components/pages/edit-audio/RotateYourDevice";
 import Box from "@material-ui/core/Box";
-import { MemoizedPlaylist } from "@/components/pages/edit-audio/WaveformPlaylist";
+import Playlist, {
+  setTextInputValue,
+  SAVE_AUDIO_FLAG,
+} from "@/components/pages/edit-audio/WaveformPlaylist";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Backdrop from "@/components/ui/Backdrop";
 import EventEmitter from "events";
@@ -96,6 +100,8 @@ function EditAudio() {
   const filename = atob(String(id));
   const [dynamicHeight, setDynamicHeight] = useState(0);
   const [isPortraitView, setIsPortraitView] = useState(true);
+  const [localFileId, setLocalFileId] = useState(null);
+  const [localFileQuickId, setLocalFileQuickId] = useState(null);
   const [ee] = useState(new EventEmitter());
 
   const { t: c } = useTranslation("common");
@@ -110,11 +116,12 @@ function EditAudio() {
 
   const init = async () => {
     try {
-      const localFile = await findQuickBlobByBasename(
+      const localFile = await findByBasename(userRdx.user.id, removeSpecialCharacters(filename));
+      const localFileQuickBlob = await findByBasenameQuickBlob(
         userRdx.user.id,
         removeSpecialCharacters(filename),
       );
-      if (!localFile) {
+      if (!localFile && !localFileQuickBlob) {
         setLoading(true);
         const result: any = await listFile(userRdx.user.id, filename);
         await createQuickBlob({
@@ -124,7 +131,13 @@ function EditAudio() {
         });
         await prepareAudioBlob(result);
       } else {
-        await prepareAudioBlob(localFile?.arrayBufferBlob);
+        if (localFile) {
+          setLocalFileId(localFile.id);
+        }
+        if (localFileQuickBlob) {
+          setLocalFileQuickId(localFileQuickBlob.id);
+        }
+        await prepareAudioBlob(localFile?.arrayBufferBlob || localFileQuickBlob?.arrayBufferBlob);
       }
     } catch (e) {
       console.log(e);
@@ -175,6 +188,7 @@ function EditAudio() {
   };
 
   const handleSave = () => {
+    setTextInputValue(SAVE_AUDIO_FLAG, 1);
     ee.emit("startaudiorendering", "buffer");
   };
 
@@ -225,11 +239,13 @@ function EditAudio() {
               {loading || !urlBlob ? (
                 <Backdrop open={loading} />
               ) : (
-                <MemoizedPlaylist
+                <Playlist
                   urlBlob={urlBlob}
                   waveHeight={dynamicHeight}
                   filename={filename}
                   ee={ee}
+                  localFileId={localFileId}
+                  localFileQuickId={localFileQuickId}
                 />
               )}
             </Orientation>

@@ -20,12 +20,16 @@ import { PropsAudioEditorSelector, PropsUserSelector } from "@/types/*";
 import { putFile as putFileOnline } from "@/services/webdav/files";
 import { blobToArrayBuffer } from "blob-util";
 import { toast } from "@/utils/notifications";
+import { updateFile as updateFileLocal } from "@/store/idb/models/files";
+import { updateFile as updateFileQuickLocal } from "@/store/idb/models/filesQuickBlob";
 
 type Props = {
   urlBlob: string;
   filename: string;
   waveHeight: number;
   ee: EventEmitter;
+  localFileId: number | null;
+  localFileQuickId: number | null;
 };
 
 export function removeElement(id: string) {
@@ -48,7 +52,23 @@ export function createCursorElementSelectPosition(id: string, left: string) {
   document.getElementsByClassName("waveform")[0].appendChild(div);
 }
 
-const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
+export function getTextInputValue(id: string): number {
+  const elem = document.getElementById(id) as HTMLInputElement;
+
+  if (elem === null) return 0;
+
+  return Number(elem.value);
+}
+
+export function setTextInputValue(id: string, val: number | string) {
+  const elem = document.getElementById(id) as HTMLInputElement;
+
+  if (elem !== null) elem.value = String(val);
+}
+
+export const SAVE_AUDIO_FLAG = "save-audio-flag";
+
+const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQuickId }: Props) => {
   const { t } = useTranslation("editAudio");
   const { t: c } = useTranslation("common");
   const marginBoxContainer = 20;
@@ -58,6 +78,7 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   const END_CURSOR_SELECT = "end-cursor-select";
   const START_POSITION_SELECT = "start-position-select";
   const END_POSITION_SELECT = "end-position-select";
+  const LOADING_SAVE_AUDIO = "loading-save-audio";
 
   const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -134,6 +155,7 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   const classes = useStyles();
   const [showControls, setShowControls] = useState(false);
   const [playbackPosition, setPlaybackPosition] = useState(0);
+  const [loadingSaveAudio, setLoadingSaveAudio] = useState(false);
   const audioEditorRdx = useSelector(
     (state: { audioEditor: PropsAudioEditorSelector }) => state.audioEditor,
   );
@@ -144,170 +166,173 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
     document.getElementById(END_CURSOR_SELECT)?.remove();
   }
 
-  function getStartPositionSelect(): number {
-    const elem = document.getElementById(START_POSITION_SELECT) as HTMLInputElement;
-
-    if (elem === null) return 0;
-
-    return Number(elem.value);
-  }
-
-  function setStartPositionSelect(val: number) {
-    const elem = document.getElementById(START_POSITION_SELECT) as HTMLInputElement;
-
-    if (elem !== null) elem.value = String(val);
-  }
-
-  function setEndPositionSelect(val: number) {
-    const elem = document.getElementById(END_POSITION_SELECT) as HTMLInputElement;
-
-    if (elem !== null) elem.value = String(val);
-  }
-
-  function getEndPositionSelect() {
-    const elem = document.getElementById(END_POSITION_SELECT) as HTMLInputElement;
-
-    if (elem === null) return 0;
-
-    return Number(elem.value);
-  }
-
   const myStateCursorRef = React.useRef(false);
   myStateCursorRef.current = audioEditorRdx.isCursorSelected;
 
-  const loadingSaveRef = React.useRef(false);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (getTextInputValue(LOADING_SAVE_AUDIO) === 1) setLoadingSaveAudio(true);
+      else setLoadingSaveAudio(false);
+    }, 500);
 
-  function setLoadingSaveAudio(flag: boolean) {
-    loadingSaveRef.current = flag;
-  }
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     if (!audioEditorRdx.isCursorSelected) {
-      setStartPositionSelect(0);
-      setEndPositionSelect(0);
+      setTextInputValue(START_POSITION_SELECT, 0);
+      setTextInputValue(END_POSITION_SELECT, 0);
+      setTextInputValue(LOADING_SAVE_AUDIO, 0);
     }
   }, [audioEditorRdx.isCursorSelected]);
 
-  useEffect(() => {
-    ee.on("audiorenderingfinished", async (type, data) => {
-      if (type === "wav") {
-        const name = filename.split("/").reverse()[0];
-        const arr = name.split(".");
-        arr.pop();
-        saveAs(data, `${arr.join("")}.wav`);
-      }
-      if (type === "buffer") {
-        try {
-          const blob = createBlobFromAudioBuffer(data, data.length);
-          setLoadingSaveAudio(true);
-          const arrayBuffer = await blobToArrayBuffer(blob);
-          await putFileOnline(userRdx.user.id, filename, arrayBuffer);
-          toast(t("audioSavedTitle"), "success");
-        } catch (e) {
-          console.log(e);
-          toast(c("genericErrorMessage"), "error");
-        } finally {
-          setLoadingSaveAudio(false);
-        }
-      }
-    });
+  const container = useCallback(
+    (node) => {
+      if (node !== null) {
+        const playlist = WaveformPlaylist(
+          {
+            samplesPerPixel: 500,
+            mono: true,
+            waveHeight,
+            container: node,
+            timescale: true,
+            state: "cursor",
+            barWidth: 2,
+            isAutomaticScroll: true,
+            barGap: 1,
+            colors: {
+              waveOutlineColor: theme.palette.variation7.dark,
+              timeColor: "gray",
+              fadeColor: "black",
+            },
+            zoomLevels,
+          },
+          ee,
+        );
 
-    ee.on("timeupdate", (playbackPosition: number) => {
-      setPlaybackPosition(playbackPosition);
-    });
+        ee.on("timeupdate", (playbackPosition: number) => {
+          setPlaybackPosition(playbackPosition);
+        });
 
-    ee.on("audiosourcesloaded", () => {
-      setShowControls(true);
-    });
+        ee.on("audiosourcesloaded", () => {
+          setShowControls(true);
+        });
 
-    ee.on("select", (start, end, track) => {
-      if (track && track.state === "cursor" && myStateCursorRef.current) {
-        setTimeout(() => {
-          const currentCursor = document.getElementsByClassName(
-            "selection point",
-          )[0] as HTMLDivElement;
+        ee.on("select", (start, end, track) => {
+          if (track && track.state === "cursor" && myStateCursorRef.current) {
+            setTimeout(() => {
+              const currentCursor = document.getElementsByClassName(
+                "selection point",
+              )[0] as HTMLDivElement;
 
-          if (getStartPositionSelect() === 0 && getEndPositionSelect() === 0) {
-            setStartPositionSelect(start);
-            createCursorElementSelectPosition(INIT_CURSOR_SELECT, currentCursor.style.left);
-          } else if (getStartPositionSelect() > 0 && getEndPositionSelect() === 0) {
-            setEndPositionSelect(start);
-            createCursorElementSelectPosition(END_CURSOR_SELECT, currentCursor.style.left);
-            removeAllCustomCursorElements();
-            ee.emit("select", getStartPositionSelect(), start);
-          } else if (getStartPositionSelect() > 0 && getEndPositionSelect() > 0) {
-            const diffStart = Math.abs(getStartPositionSelect() - start);
-            const diffEnd = Math.abs(getEndPositionSelect() - start);
-            if (diffEnd < diffStart) {
-              removeElement(END_CURSOR_SELECT);
-              setEndPositionSelect(start);
-              createCursorElementSelectPosition(END_CURSOR_SELECT, currentCursor.style.left);
-              ee.emit("select", getStartPositionSelect(), start);
-              removeAllCustomCursorElements();
-            } else {
-              removeElement(INIT_CURSOR_SELECT);
-              setStartPositionSelect(start);
-              createCursorElementSelectPosition(INIT_CURSOR_SELECT, currentCursor.style.left);
-              ee.emit("select", start, getEndPositionSelect());
-              removeAllCustomCursorElements();
+              if (
+                getTextInputValue(START_POSITION_SELECT) === 0 &&
+                getTextInputValue(END_POSITION_SELECT) === 0
+              ) {
+                setTextInputValue(START_POSITION_SELECT, start);
+                createCursorElementSelectPosition(INIT_CURSOR_SELECT, currentCursor.style.left);
+              } else if (
+                getTextInputValue(START_POSITION_SELECT) > 0 &&
+                getTextInputValue(END_POSITION_SELECT) === 0
+              ) {
+                setTextInputValue(END_POSITION_SELECT, start);
+                createCursorElementSelectPosition(END_CURSOR_SELECT, currentCursor.style.left);
+                removeAllCustomCursorElements();
+                ee.emit("select", getTextInputValue(START_POSITION_SELECT), start);
+              } else if (
+                getTextInputValue(START_POSITION_SELECT) > 0 &&
+                getTextInputValue(END_POSITION_SELECT) > 0
+              ) {
+                const diffStart = Math.abs(getTextInputValue(START_POSITION_SELECT) - start);
+                const diffEnd = Math.abs(getTextInputValue(END_POSITION_SELECT) - start);
+                if (diffEnd < diffStart) {
+                  removeElement(END_CURSOR_SELECT);
+                  setTextInputValue(END_POSITION_SELECT, start);
+                  createCursorElementSelectPosition(END_CURSOR_SELECT, currentCursor.style.left);
+                  ee.emit("select", getTextInputValue(START_POSITION_SELECT), start);
+                  removeAllCustomCursorElements();
+                } else {
+                  removeElement(INIT_CURSOR_SELECT);
+                  setTextInputValue(START_POSITION_SELECT, start);
+                  createCursorElementSelectPosition(INIT_CURSOR_SELECT, currentCursor.style.left);
+                  ee.emit("select", start, getTextInputValue(END_POSITION_SELECT));
+                  removeAllCustomCursorElements();
+                }
+              }
+            }, 200);
+          }
+        });
+
+        ee.on("audiorenderingfinished", async (type, data) => {
+          if (type === "wav") {
+            const name = filename.split("/").reverse()[0];
+            const arr = name.split(".");
+            arr.pop();
+            saveAs(data, `${arr.join("")}.wav`);
+          }
+          if (type === "buffer") {
+            console.log("buffer");
+            if (getTextInputValue(SAVE_AUDIO_FLAG) === 1) {
+              try {
+                console.log("save_audio_flag -> 1");
+                setTextInputValue(LOADING_SAVE_AUDIO, 1);
+                const blob = createBlobFromAudioBuffer(data, data.length);
+                const arrayBuffer = await blobToArrayBuffer(blob);
+                await putFileOnline(userRdx.user.id, filename, arrayBuffer);
+
+                if (localFileId)
+                  await updateFileLocal(localFileId, { arrayBufferBlob: arrayBuffer });
+                if (localFileQuickId)
+                  await updateFileQuickLocal(localFileQuickId, { arrayBufferBlob: arrayBuffer });
+
+                console.log("fatioou!");
+                toast("Audio saved", "success");
+              } catch (e) {
+                console.log(e);
+                toast(c("genericErrorMessage"), "error");
+              } finally {
+                setTextInputValue(SAVE_AUDIO_FLAG, 0);
+                setTextInputValue(LOADING_SAVE_AUDIO, 0);
+              }
             }
           }
-        }, 200);
-      }
-    });
-  }, []);
-
-  const container = useCallback((node) => {
-    if (node !== null) {
-      const playlist = WaveformPlaylist(
-        {
-          samplesPerPixel: 500,
-          mono: true,
-          waveHeight,
-          container: node,
-          timescale: true,
-          state: "cursor",
-          barWidth: 2,
-          isAutomaticScroll: true,
-          barGap: 1,
-          colors: {
+        });
+        playlist.load([
+          {
+            src: urlBlob,
+            name: filename,
             waveOutlineColor: theme.palette.variation7.dark,
-            timeColor: "gray",
-            fadeColor: "black",
           },
-          zoomLevels,
-        },
-        ee,
-      );
-
-      playlist.load([
-        {
-          src: urlBlob,
-          name: filename,
-          waveOutlineColor: theme.palette.variation7.dark,
-        },
-      ]);
-
-      // initialize the WAV exporter.
-      playlist.initExporter();
-    }
-  }, []);
+        ]);
+        // initialize the WAV exporter.
+        playlist.initExporter();
+      }
+    },
+    [ee],
+  );
 
   const showSelectedRegion = () =>
-    getStartPositionSelect() > 0 && getEndPositionSelect() > 0 && audioEditorRdx.isCursorSelected;
+    getTextInputValue(START_POSITION_SELECT) > 0 &&
+    getTextInputValue(END_POSITION_SELECT) > 0 &&
+    audioEditorRdx.isCursorSelected;
 
   return (
     <Box className={classes.root}>
-      <input type="hidden" id="start-position-select" />
-      <input type="hidden" id="end-position-select" />
-      <Backdrop open={loadingSaveRef.current || !showControls} />
+      <input type="hidden" id={START_POSITION_SELECT} />
+      <input type="hidden" id={END_POSITION_SELECT} />
+      <input type="hidden" id={SAVE_AUDIO_FLAG} />
+      <input type="hidden" id={LOADING_SAVE_AUDIO} />
+      <Backdrop open={loadingSaveAudio} />
+      <Backdrop open={!showControls} />
       <Box className={classes.boxContainerNode}>
         <div ref={container}></div>
         {showSelectedRegion() && (
           <Text variant={TextVariantEnum.CAPTION} className={classes.textAudioSelected}>
             {t("regionSelectedTitle", {
-              startTime: clockFormatWaveformPlaylist(Number(getStartPositionSelect())),
-              endTime: clockFormatWaveformPlaylist(Number(getEndPositionSelect())),
+              startTime: clockFormatWaveformPlaylist(
+                Number(getTextInputValue(START_POSITION_SELECT)),
+              ),
+              endTime: clockFormatWaveformPlaylist(Number(getTextInputValue(END_POSITION_SELECT))),
             })}
           </Text>
         )}
@@ -365,4 +390,5 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
 
 const Playlist = (props: Props) => <Waveform {...props}></Waveform>;
 
-export const MemoizedPlaylist = React.memo(Playlist);
+// export const MemoizedPlaylist = React.memo(Playlist);
+export default Playlist;
