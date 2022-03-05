@@ -215,6 +215,9 @@ function EditAudio() {
             handleZoomOut={handleZoomOut}
             handleTrim={handleTrim}
             handleSelectAudioRegion={handleSelectAudioRegion}
+            handleDownload={handleDownload}
+            handleShift={handleShift}
+            handleSave={handleSave}
           />
         ) : (
           <HeaderLandscapeControls

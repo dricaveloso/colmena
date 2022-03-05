@@ -11,6 +11,9 @@ import { v4 as uuid } from "uuid";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import theme from "@/styles/theme";
 import { toast } from "@/utils/notifications";
+import { isMobile } from "react-device-detect";
+import { useDispatch } from "react-redux";
+import { setCursorSelected } from "@/store/actions/audio-editor/index";
 
 type PositionProps = {
   mouseX: null | number;
@@ -21,7 +24,10 @@ type Props = {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
   handleTrim: () => void;
+  handleShift: () => void;
   handleSelectAudioRegion: (type: string) => void;
+  handleDownload: () => void;
+  handleSave: () => void;
 };
 
 const ContextMenuOptions = ({
@@ -29,9 +35,14 @@ const ContextMenuOptions = ({
   handleZoomOut,
   handleSelectAudioRegion,
   handleTrim,
+  handleShift,
+  handleDownload,
+  handleSave,
 }: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isSelectedCursorActive, setIsSelectedCursorActive] = useState(false);
+  const [activeSelect, setActiveSelect] = useState(false);
+  const [activeShift, setActiveShift] = useState(false);
+  const dispatch = useDispatch();
 
   const { t } = useTranslation("editAudio");
   const { t: c } = useTranslation("common");
@@ -52,15 +63,39 @@ const ContextMenuOptions = ({
     setAnchorEl(null);
   };
 
-  const unavailable = () => {
-    toast(c("featureUnavailable"), "warning");
+  const handleActiveSelected = () => {
+    setActiveSelect(!activeSelect);
+    setActiveShift(false);
+    if (!isMobile) {
+      handleSelectAudioRegion("select");
+      dispatch(setCursorSelected(false));
+    } else {
+      handleSelectAudioRegion("cursor");
+      dispatch(setCursorSelected(!activeSelect));
+    }
+    handleCloseContextMenu();
   };
 
-  const handleSelectAudioRegionIntern = () => {
-    setIsSelectedCursorActive((isSelectedCursorActive) => {
-      handleSelectAudioRegion(!isSelectedCursorActive ? "select" : "cursor");
-      return !isSelectedCursorActive;
-    });
+  const handleActiveShift = () => {
+    setActiveShift(!activeShift);
+    setActiveSelect(false);
+    dispatch(setCursorSelected(false));
+    handleShift();
+    handleCloseContextMenu();
+  };
+
+  const handleSaveIntern = () => {
+    handleCloseContextMenu();
+    handleSave();
+  };
+
+  const handleDownloadIntern = () => {
+    handleDownload();
+    handleCloseContextMenu();
+  };
+
+  const handleTrimIntern = () => {
+    handleTrim();
     handleCloseContextMenu();
   };
 
@@ -72,7 +107,7 @@ const ContextMenuOptions = ({
         key={uuid()}
         icon="audio_settings"
         style={{ padding: 0, margin: 0, minWidth: 30 }}
-        iconColor="white"
+        iconColor="#fff"
         fontSizeIcon="small"
         handleClick={handleOpenContextMenu}
       />
@@ -106,7 +141,7 @@ const ContextMenuOptions = ({
             style={fontSizeIcon}
           />
         </MenuItem>
-        <MenuItem key="cut-audio-button" data-testid="cut-audio-button" onClick={handleTrim}>
+        <MenuItem key="cut-audio-button" data-testid="cut-audio-button" onClick={handleTrimIntern}>
           <ContextMenuItem
             icon="cut"
             iconColor={theme.palette.variation6.main}
@@ -115,18 +150,34 @@ const ContextMenuOptions = ({
           />
         </MenuItem>
         <MenuItem
+          key="shift-audio-button"
+          data-testid="shift-audio-button"
+          onClick={handleActiveShift}
+        >
+          <ContextMenuItem
+            icon="audio_shift"
+            htmlColor={activeShift ? theme.palette.variation6.dark : theme.palette.variation6.main}
+            title={t("contextOptions.shiftAudioTitle")}
+            style={fontSizeIcon}
+          />
+        </MenuItem>
+        <MenuItem
           key="select-audio-button"
           data-testid="select-audio-button"
-          onClick={handleSelectAudioRegionIntern}
+          onClick={handleActiveSelected}
         >
           <ContextMenuItem
             icon="cursor_select"
-            iconColor={theme.palette.variation6.main}
+            htmlColor={activeSelect ? theme.palette.variation6.dark : theme.palette.variation6.main}
             title={t("contextOptions.selectAudioRegionTitle")}
             style={fontSizeIcon}
           />
         </MenuItem>
-        <MenuItem key="save-audio-button" data-testid="save-audio-button" onClick={unavailable}>
+        <MenuItem
+          key="save-audio-button"
+          data-testid="save-audio-button"
+          onClick={handleSaveIntern}
+        >
           <ContextMenuItem
             icon="save"
             iconColor={theme.palette.variation6.main}
@@ -137,7 +188,7 @@ const ContextMenuOptions = ({
         <MenuItem
           key="download-audio-button"
           data-testid="download-audio-button"
-          onClick={unavailable}
+          onClick={handleDownloadIntern}
         >
           <ContextMenuItem
             icon="download"

@@ -271,10 +271,8 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQui
             saveAs(data, `${arr.join("")}.wav`);
           }
           if (type === "buffer") {
-            console.log("buffer");
             if (getTextInputValue(SAVE_AUDIO_FLAG) === 1) {
               try {
-                console.log("save_audio_flag -> 1");
                 setTextInputValue(LOADING_SAVE_AUDIO, 1);
                 const blob = createBlobFromAudioBuffer(data, data.length);
                 const arrayBuffer = await blobToArrayBuffer(blob);
@@ -285,8 +283,7 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQui
                 if (localFileQuickId)
                   await updateFileQuickLocal(localFileQuickId, { arrayBufferBlob: arrayBuffer });
 
-                console.log("fatioou!");
-                toast("Audio saved", "success");
+                toast(t("audioSavedTitle"), "success");
               } catch (e) {
                 console.log(e);
                 toast(c("genericErrorMessage"), "error");
