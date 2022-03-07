@@ -91,6 +91,7 @@ deployer-develop:
     - echo $CI_COMMIT_BRANCH
     - apk add docker-compose
     - docker pull $IMAGE_TAG
+    - pwd
     #- docker restart app-develop
     - docker-compose up -d app-develop
   only:
