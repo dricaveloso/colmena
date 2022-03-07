@@ -38,11 +38,11 @@
     },
     "messages": {
         "couldNotRemove": "Impossible de le supprimer",
-        "fileAlreadyExists": "Un fichier portant ce nom existe déjà",
-        "cannotDownloadFile": "Ce fichier ne peut pas être téléchargé",
+        "fileAlreadyExists": "Un fichier portant ce nom existe déjà.",
+        "cannotDownloadFile": "Ce fichier ne peut pas être téléchargé.",
         "unidentifiedEnvironment": "Environnement non identifié",
-        "unableToCompleteRequest": "Impossible de remplir la demande",
-        "directorySuccessfullyCopied": "Répertoire copié avec succès",
+        "unableToCompleteRequest": "Impossible de remplir la demande.",
+        "directorySuccessfullyCopied": "Répertoire copié avec succès.",
         "fileSuccessfullyCopied": "Fichier copié avec succès",
         "directorySuccessfullyMoved": "Répertoire déplacé avec succès",
         "fileSuccessfullyMoved": "Fichier déplacé avec succès",
@@ -51,31 +51,40 @@
         "directorySuccessfullyRenamed": "Répertoire renommé avec succès",
         "fileSuccessfullyRenamed": "Fichier renommé avec succès",
         "directorySuccessfullyRemoved": "Répertoire supprimé avec succès",
-        "fileSuccessfullyRemoved": "Fichier supprimé avec succès"
+        "fileSuccessfullyRemoved": "Fichier supprimé avec succès",
+        "itemDuplicationCanceledSuccessfully": "La duplication a été annulée.",
+        "itemRenamingCanceledSuccessfully": "Le changement de nom du contenu a été annulé."
     },
     "renameTitle": "Renommer",
     "saveButton": "Sauvegarder",
     "duplicateTitle": "Dupliquer",
     "duplicateButton": "Dupliquer",
-    "copyModalTitle": "Choisissez la destination",
+    "copyModalTitle": "Choisir la destination",
     "pasteButton": "Coller ici",
-    "moveModalTitle": "Choisissez la destination",
-    "chooseButton": "Choisissez ici",
+    "moveModalTitle": "Choisir la destination",
+    "chooseButton": "Choisir ici",
     "detailsTitle": "Détails",
     "detailsModal": {
         "name": "Nom",
         "path": "Chemin",
-        "lastUpdate": "Dernière mise à jour",
+        "lastUpdate": "Dernière mise à jour à",
         "size": "Taille",
         "type": "Type",
-        "creator": "Créés par",
-        "fileId": "Archive ID",
+        "creator": "Créateur/Créatrice",
+        "fileId": "ID du fichier",
         "tags": "Étiquettes",
         "language": "Langue",
-        "description": "Description"
+        "description": "Description",
+        "createdAt": "Créé en"
     },
     "downloading": "Téléchargement",
     "synchronizing": "Synchronisation",
     "cancel": "Annuler",
-    "moveButton": "Déplacer ici"
+    "moveButton": "Déplacer ici",
+    "confirmCancelItemRenaming": "Veux-tu vraiment annuler le renommage du contenu ?",
+    "confirmCancelItemDuplication": "Veux-tu vraiment annuler la duplication du contenu ?",
+    "talkFolderName": "Partagé avec moi",
+    "itemStatus": {
+        "availableOffline": "Disponible hors ligne"
+    }
 }

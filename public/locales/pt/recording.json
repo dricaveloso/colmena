@@ -9,7 +9,7 @@
     "discardButton": "Descartar",
     "cancelButton": "Cancelar",
     "errorStorageMessage": "Não foi possível salvar essa gravação",
-    "errorGetAudioStreamMessage": "É necessário habilitar a captura de áudio para começar a gravar",
+    "errorGetAudioStreamMessage": "É necessário habilitar a captura de áudio para começar a gravar.",
     "audioTitle": "Áudio",
     "audioSaveTitle": "Salvo",
     "tagsTitle": "Etiquetas",

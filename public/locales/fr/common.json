@@ -102,7 +102,7 @@
     "seeAllTitle": "Voir tous",
     "examplePostTitle": "Afficher {{num}} Radio Colmena",
     "examplePostSubtitle": "5 jours | 12 MB",
-    "membersTitle": "Membres",
+    "membersTitle": "Partenaires",
     "manageTitle": "Gérer",
     "socialMediaTitle": "Reliez les réseaux sociaux de votre média afin qu'ils soient visibles dans le profil public du média.",
     "resetPasswordTitle": "Mettre à jour le mot de passe",
@@ -122,6 +122,13 @@
     "uploadDrawerBottomTitle": "Télécharger",
     "textDrawerBottomTitle": "Texte",
     "streamDrawerBottomTitle": "Transmission",
-    "audioEditorDrawerBottomTitle": "Éditeur"
+    "audioEditorDrawerBottomTitle": "Éditeur",
+    "used": "Utilisé",
+    "contextMenuUserAvatar": {
+        "upload": "Sélectionner l'image",
+        "remove": "Supprimer"
+    },
+    "confirmCancelFolderCreation": "Veux-tu vraiment annuler la création du dossier ?",
+    "bannerMessage3": "Enregistrer, éditer et publier de l'audio depuis votre téléphone portable avec plusieurs personnes dans des salles d'enregistrement.",
+    "bannerMessage4": "Sauvegarder tes fichiers avec notre service de cloud spécialisé pour les médias."
 }
-

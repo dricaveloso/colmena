@@ -13,15 +13,28 @@
     "placeholderPermission": "Autorisation",
     "placeholderGroup": "Groupe",
     "messageSuccessInvite": "Invitation envoyée avec succès",
-    "messageSuccessInformation": "Informations sauvegardées avec succès",
+    "messageSuccessInformation": "Information sauvegardée",
     "titleModalDialogInvite": "Inviter Collaborateur / Collaboratrice",
-    "descriptionModalDialogInvite": "Saisissez le nom, l'adresse électronique et le profil de connexion de la personne que vous souhaitez inviter.",
+    "descriptionModalDialogInvite": "Saisissez le nom, l'adresse électronique et le profil de connexion de la personne que tu veux inviter.",
     "buttonOkModalDialogInvite": "Envoyer",
-    "messageOkModalDialogInvite": "Utilisateur créé avec succès",
+    "messageOkModalDialogInvite": "Utilisateur créé",
     "messageErrorModalDialogInvite": "L'utilisateur existe déjà",
     "createdErrorUser": "Erreur lors de la création d'un utilisateur",
     "welcomeErrorUser": "Utilisateur créé mais courriel ne pas envoyé",
     "buttonCancelModalDialogInvite": "Annuler",
     "inviteCollaboratorTitle": "Collaborateur / Collaboratrice",
-    "inviteAdministratorTitle": "Administrateur"
+    "inviteAdministratorTitle": "Administrateur",
+    "contextMenuOptions": {
+        "settings": "Paramètres",
+        "edit": "Editer",
+        "deactivate": "Désactiver le compte"
+    },
+    "titleEditMediaModal": "Edit Media",
+    "editForm": {
+        "name": "Nom du média",
+        "slogan": "Description",
+        "url": "URL"
+    },
+    "mediaProfileAvatarSaved": "Image sauvegardée",
+    "mediaProfileInfoSaved": "Média mis à jour"
 }

@@ -9,9 +9,9 @@
         }
     },
     "messages": {
-        "tagCreatedSuccessfully": "¡Etiqueta creada con éxito!",
-        "tagRemovedSuccessfully": "¡Etiqueta eliminada con éxito!",
-        "tagUpdatedSuccessfully": "¡Etiqueta creada correctamente!",
+        "tagCreatedSuccessfully": "Etiqueta creada",
+        "tagRemovedSuccessfully": "Etiqueta eliminada",
+        "tagUpdatedSuccessfully": "Etiqueta actualizada",
         "forbidden": "Esta acción está prohibida",
         "tagAlreadyExists": "La etiqueta ya existe"
     },

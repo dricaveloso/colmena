@@ -103,7 +103,7 @@
     "featureUnavailable": "هذه الميزة غير متوفرة في الوقت الحالي",
     "messageOffline": "تاكد من انك متصل بالانترنت لعرض هذه الصفحة",
     "welcomeUserMessage": "مرحبا",
-    "invitationGreeting": "مرحبا {{اسم}}",
+    "invitationGreeting": "مرحبا {{name}}",
     "welcomeRadioMessage": "",
     "notFoundPageText": "الصفحة غير موجودة",
     "internErrorPageText": "",
