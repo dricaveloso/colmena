@@ -5,8 +5,8 @@
     "publicLabel": "عام",
     "section3Title": "الخليات النحل المفضلة",
     "section4Title": "الأخيرة",
-    "exampleHoneycombTitle": "خلية النحل",
-    "exampleFileTitle": "ملف",
+    "exampleHoneycombTitle": "لية النحل{{num}}",
+    "exampleFileTitle": "ملف {{num}}",
     "greetingTitle": "مرحبا",
     "seeAllTitle": "عرض الكل"
 }

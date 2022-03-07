@@ -2,7 +2,7 @@
     "title": "Etiquetas",
     "editTagTitle": "Editar etiqueta",
     "createTagTitle": "Criar etiqueta",
-    "saveButton": "Salvo",
+    "saveButton": "Salvar",
     "form": {
         "fields": {
             "name": "Nome da etiqueta"

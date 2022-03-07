@@ -15,7 +15,7 @@
     "messageSuccessInformation": "Saved information",
     "socialMediaTitle": "Link your media's social networks so that they are visible in the media's public profile.",
     "titleModalDialogInvite": "Invite collaborator",
-    "descriptionModalDialogInvite": "Enter the name, email and access profile for the employee you want to invite.",
+    "descriptionModalDialogInvite": "Enter the name, email and access profile for the person you want to invite.",
     "buttonOkModalDialogInvite": "Send",
     "messageOkModalDialogInvite": "Created user",
     "messageErrorModalDialogInvite": "User already exists",
@@ -24,17 +24,17 @@
     "buttonCancelModalDialogInvite": "Cancel",
     "inviteCollaboratorTitle": "Colleague",
     "inviteAdministratorTitle": "Administrator",
-	"contextMenuOptions": {
-    "settings": "Settings",
-    "edit": "Edit",
-    "deactivate": "Deactivate account"
-  },
-  "titleEditMediaModal": "Edit Media",
-  "editForm": {
-    "name": "Media name",
-    "slogan": "Description",
-    "url": "URL"
-  },
-  "mediaProfileAvatarSaved": "Image saved",
-  "mediaProfileInfoSaved": "Media updated"
+    "contextMenuOptions": {
+        "settings": "Settings",
+        "edit": "Edit",
+        "deactivate": "Deactivate account"
+    },
+    "titleEditMediaModal": "Edit Media",
+    "editForm": {
+        "name": "Media name",
+        "slogan": "Description",
+        "url": "URL"
+    },
+    "mediaProfileAvatarSaved": "Image saved",
+    "mediaProfileInfoSaved": "Media updated"
 }

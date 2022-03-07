@@ -1,9 +1,9 @@
 {
-    "greeting": "",
-    "description": "",
-    "invalidTokenTitle": "",
+    "greeting": "Bonjour",
+    "description": "DW Akademie et Redes A.C. vous invite à faire partie de Colmena, un espace où la communauté et les médias locaux peuvent travailler ensemble : créer, collaborer, partager.",
+    "invalidTokenTitle": "Code d’invitation incorrect. Veuillez en demander un nouveau.",
     "forms": {
-        "button1": "",
-        "button2": ""
+        "button1": "Accepter l'invitation",
+        "button2": "À propos de Colmena"
     }
 }

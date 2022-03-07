@@ -5,10 +5,11 @@
     "publicLabel": "Publics",
     "section2Title": "Derniers messages",
     "section3Title": "Nids d'abeille préférés",
-    "section4Title": "Récent",
-    "seeAllTitle": "voir tout",
+    "section4Title": "Fichiers récents",
+    "seeAllTitle": "Voir tous",
     "exampleHoneycombTitle": "Nid d'abeille {{num}}",
     "exampleFileTitle": "Fichier {{num}}",
     "examplePostTitle": "Afficher {{num}} Radio Colmena",
-    "examplePostSubtitle": "5 jours | 12mb"
+    "examplePostSubtitle": "5 jours | 12mb",
+    "greetingTitle": "Bonjour"
 }

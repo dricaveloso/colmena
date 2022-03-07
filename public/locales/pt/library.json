@@ -3,7 +3,7 @@
     "sort": {
         "title": "Ordenação",
         "newest": "Novo",
-        "oldest": "Antigo",
+        "oldest": "Mais antigo",
         "alphabeticalOrder": "Ordem alfabética",
         "descendingAlphabeticalOrder": "Ordem alfabética descendente",
         "highlights": "Destaques"
@@ -11,7 +11,7 @@
     "filter": {
         "title": "Filtros",
         "all": "Todos",
-        "availableOffline": "Disponível offline",
+        "availableOffline": "Disponível fora de linha",
         "synchronized": "Sincronizado",
         "audios": "Áudios",
         "images": "Imagens",
@@ -32,12 +32,12 @@
         "directorySuccessfullyRenamed": "Diretório renomeado com sucesso.",
         "fileSuccessfullyRenamed": "Arquivo renomeado com sucesso.",
         "directorySuccessfullyRemoved": "Diretório removido com sucesso.",
-        "fileSuccessfullyRemoved": "Arquivo removido.",
+        "fileSuccessfullyRemoved": "Arquivo removido",
         "itemDuplicationCanceledSuccessfully": "Duplicação de item foi cancelada.",
         "itemRenamingCanceledSuccessfully": "Renomeação do item foi cancelada."
     },
     "contextMenuOptions": {
-        "availableOffline": "Disponível offline",
+        "availableOffline": "Disponível fora de linha",
         "edit": "Editar",
         "copy": "Copiar",
         "move": "Mover",
@@ -47,7 +47,7 @@
         "details": "Detalhes",
         "synchronize": "Sincronizar",
         "publish": "Publicar",
-        "delete": "Deletar"
+        "delete": "Eliminar"
     },
     "language": {
         "title": "Idioma",
@@ -56,11 +56,11 @@
         "french": "Francês"
     },
     "renameTitle": "Renomear",
-    "saveButton": "Salvo",
+    "saveButton": "Salvar",
     "duplicateTitle": "Duplicar",
     "duplicateButton": "Duplicar",
     "copyModalTitle": "Escolher destino",
-    "pasteButton": "Cole aqui",
+    "pasteButton": "Colar aqui",
     "moveModalTitle": "Escolher destino",
     "chooseButton": "Escolha aqui",
     "detailsTitle": "Detalhes",
@@ -70,7 +70,7 @@
         "lastUpdate": "Última atualização em",
         "size": "Tamanho",
         "type": "Tipo",
-        "creator": "Criar",
+        "creator": "Criador/a",
         "fileId": "ID do arquivo",
         "tags": "Etiquetas",
         "language": "Idioma",
@@ -84,7 +84,7 @@
     "confirmCancelItemDuplication": "Você tem certeza que deseja cancelar a duplicação do item?",
     "confirmCancelItemRenaming": "Você tem certeza que deseja cancelar a renomeação?",
     "itemStatus": {
-        "availableOffline": "Disponível Offline"
+        "availableOffline": "Disponível fora de linha"
     },
-    "talkFolderName": "compartilhado comigo"
+    "talkFolderName": "Compartilhado comigo"
 }

@@ -21,5 +21,6 @@
     "changeUploadLocationTitle": "Changement",
     "availableWithoutInternetTitle": "Disponible hors ligne",
     "tagsRequiredTitle": "Au moins une étiquette est requise",
-    "newRecordingTitle": "New recording"
+    "newRecordingTitle": "New recording",
+    "pausingTitle": "Enregistrement en pause"
 }

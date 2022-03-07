@@ -9,7 +9,7 @@
     "discardButton": "Discard",
     "cancelButton": "Cancel",
     "errorStorageMessage": "Could not save this recording",
-    "errorGetAudioStreamMessage": "You need to enable audio capture to start recording",
+    "errorGetAudioStreamMessage": "You need to enable audio capture to start recording.",
     "audioTitle": "Audio",
     "audioSaveTitle": "Saved",
     "tagsTitle": "Tags",

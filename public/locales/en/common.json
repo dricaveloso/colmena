@@ -2,7 +2,7 @@
     "agreeWithTerms": "I agree with",
     "termsOfUse": "Terms of use",
     "termsOfUseText": "All human beings are born free and equal in dignity and rights. Everyone has the right to life, liberty and security of person. No one shall be subjected to torture or to cruel, inhuman or degrading treatment or punishment. Everyone has the right to recognition everywhere as a person before the law.",
-    "aboutMaia": "About colmena",
+    "aboutMaia": "About Colmena",
     "profileText": "My profile",
     "textUseApp": "Use the app",
     "featureUnavailable": "This feature is not available at the moment",
@@ -89,7 +89,6 @@
         "fileUploadedSuccessfully": "File has been uploaded",
         "uploadCanceledSuccessfully": "File upload canceled.",
         "folderCreationCanceledSuccessfully": "Folder creation canceled."
-
     },
     "timeDescription": {
         "singularYear": "year",
@@ -106,7 +105,7 @@
     },
     "typeYourMessage": "Type your message",
     "latestPostTitle": "Latest posts",
-    "seeAllTitle": "see all",
+    "seeAllTitle": "See all",
     "examplePostTitle": "Show {{num}} Radio Colmena",
     "examplePostSubtitle": "5 days | 12 MB",
     "membersTitle": "Members",

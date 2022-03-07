@@ -1,18 +1,18 @@
 {
-  "title": "Honeycomb",
-  "memberTitle": "member",
-  "membersTitle": "members",
-  "noMemberTitle": "no member",
-  "tab1Title": "Chat",
-  "tab2Title": "Library",
-  "emptyTalkDescription": "Click on the plus icon below to create a honeycomb",
-  "downloadAudioFailed": "Unable to download audio",
-  "contextMenuOptions": {
-    "addParticipantContextTitle": "Add participant",
-    "participantsAddedSuccessfully": "Participants has been added",
-    "leaveConversationContextTitle": "Leave conversation",
-    "removeConversationContextTitle": "Delete conversation"
-  },
-  "downloadFileFailed": "Unable to download file",
-  "youTitle": "You"
+    "title": "Honeycomb",
+    "memberTitle": "Member",
+    "membersTitle": "Members",
+    "noMemberTitle": "No member",
+    "tab1Title": "Chat",
+    "tab2Title": "Library",
+    "emptyTalkDescription": "Click on the plus icon below to create a honeycomb.",
+    "downloadAudioFailed": "Unable to download audio",
+    "contextMenuOptions": {
+        "addParticipantContextTitle": "Add participant",
+        "participantsAddedSuccessfully": "Participants have been added",
+        "leaveConversationContextTitle": "Leave conversation",
+        "removeConversationContextTitle": "Delete conversation"
+    },
+    "downloadFileFailed": "Unable to download file",
+    "youTitle": "You"
 }

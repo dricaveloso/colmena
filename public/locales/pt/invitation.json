@@ -1,9 +1,9 @@
 {
     "greeting": "Olá",
-    "description": "DW Akademie e Redes A.C. convidam você para ser parte de colmena, um espaço para mídias locais e comunitárias trabalharem juntas: criar, colaborar, compartilhar.",
+    "description": "DW Akademie e Redes A.C. convidam você para ser parte de Colmena, um espaço para mídias locais e comunitárias trabalharem juntas: criar, colaborar, compartilhar.",
     "forms": {
         "button1": "Aceitar convite",
-        "button2": "Sobre colmena"
+        "button2": "Sobre Colmena"
     },
     "invalidTokenTitle": "Código de convite inválido. Por favor solicite um novo."
 }

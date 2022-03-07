@@ -2,14 +2,17 @@
     "title": "Favo de mel",
     "memberTitle": "Integrante",
     "membersTitle": "Integrantes",
-    "noMemberTitle": "sem integrantes",
+    "noMemberTitle": "Sem integrantes",
     "tab1Title": "Bate-papo",
     "tab2Title": "Biblioteca",
-    "emptyTalkDescription": "Clique no ícone mais para criar um favo de mel",
-    "downloadAudioFailed": "Não foi possível baixar o áudio",
-    "downloadFileFailed": "Não foi possível baixar esse arquivo",
+    "emptyTalkDescription": "Clique no ícone mais para criar um favo de mel.",
+    "downloadAudioFailed": "Não foi possível baixar o áudio.",
+    "downloadFileFailed": "Não foi possível baixar esse arquivo.",
     "contextMenuOptions": {
         "addParticipantContextTitle": "Adicionar participante",
-        "participantsAddedSuccessfully": "Participantes adicionados com sucesso"
-    }
+        "participantsAddedSuccessfully": "Participantes adicionados com sucesso.",
+        "removeConversationContextTitle": "Borrar a conversação",
+        "leaveConversationContextTitle": "Abandonar a conversação"
+    },
+    "youTitle": "Você"
 }
