@@ -14,6 +14,7 @@ import { toast } from "@/utils/notifications";
 import { isMobile } from "react-device-detect";
 import { useDispatch } from "react-redux";
 import { setCursorSelected } from "@/store/actions/audio-editor/index";
+import Backdrop from "@/components/ui/Backdrop";
 
 type PositionProps = {
   mouseX: null | number;
@@ -42,6 +43,7 @@ const ContextMenuOptions = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [activeSelect, setActiveSelect] = useState(false);
   const [activeShift, setActiveShift] = useState(false);
+  const [loadingSave, setLoadingSave] = useState(false);
   const dispatch = useDispatch();
 
   const { t } = useTranslation("editAudio");
@@ -85,8 +87,9 @@ const ContextMenuOptions = ({
   };
 
   const handleSaveIntern = () => {
-    handleCloseContextMenu();
+    setLoadingSave(!loadingSave);
     handleSave();
+    handleCloseContextMenu();
   };
 
   const handleDownloadIntern = () => {
@@ -103,6 +106,7 @@ const ContextMenuOptions = ({
 
   return (
     <Box display="flex" justifyContent="flex-end">
+      <Backdrop open={loadingSave} />
       <IconButton
         key={uuid()}
         icon="audio_settings"
@@ -183,6 +187,7 @@ const ContextMenuOptions = ({
             iconColor={theme.palette.variation6.main}
             title={t("contextOptions.saveTitle")}
             style={fontSizeIcon}
+            loading={loadingSave}
           />
         </MenuItem>
         <MenuItem

@@ -231,39 +231,33 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
                 "selection point",
               )[0] as HTMLDivElement;
 
-              if (
-                getTextInputValue(START_POSITION_SELECT) === 0 &&
-                getTextInputValue(END_POSITION_SELECT) === 0
-              ) {
+              const startPosition = getTextInputValue(START_POSITION_SELECT);
+              const endPosition = getTextInputValue(END_POSITION_SELECT);
+
+              if (startPosition === 0 && endPosition === 0) {
                 setTextInputValue(START_POSITION_SELECT, start);
                 createCursorElementSelectPosition(INIT_CURSOR_SELECT, currentCursor.style.left);
-              } else if (
-                getTextInputValue(START_POSITION_SELECT) > 0 &&
-                getTextInputValue(END_POSITION_SELECT) === 0
-              ) {
-                setTextInputValue(END_POSITION_SELECT, start);
-                createCursorElementSelectPosition(END_CURSOR_SELECT, currentCursor.style.left);
-                removeAllCustomCursorElements();
-                ee.emit("select", getTextInputValue(START_POSITION_SELECT), start);
-              } else if (
-                getTextInputValue(START_POSITION_SELECT) > 0 &&
-                getTextInputValue(END_POSITION_SELECT) > 0
-              ) {
-                const diffStart = Math.abs(
-                  Number(getTextInputValue(START_POSITION_SELECT)) - start,
-                );
-                const diffEnd = Math.abs(Number(getTextInputValue(END_POSITION_SELECT)) - start);
+              } else if (startPosition > 0 && endPosition === 0) {
+                if (end > startPosition) {
+                  setTextInputValue(END_POSITION_SELECT, end);
+                  createCursorElementSelectPosition(END_CURSOR_SELECT, currentCursor.style.left);
+                  removeAllCustomCursorElements();
+                  ee.emit("select", startPosition, end);
+                }
+              } else if (startPosition > 0 && endPosition > 0) {
+                const diffStart = Math.abs(Number(startPosition) - start);
+                const diffEnd = Math.abs(Number(endPosition) - start);
                 if (diffEnd < diffStart) {
                   removeElement(END_CURSOR_SELECT);
                   setTextInputValue(END_POSITION_SELECT, start);
                   createCursorElementSelectPosition(END_CURSOR_SELECT, currentCursor.style.left);
-                  ee.emit("select", getTextInputValue(START_POSITION_SELECT), start);
+                  ee.emit("select", startPosition, start);
                   removeAllCustomCursorElements();
                 } else {
                   removeElement(INIT_CURSOR_SELECT);
                   setTextInputValue(START_POSITION_SELECT, start);
                   createCursorElementSelectPosition(INIT_CURSOR_SELECT, currentCursor.style.left);
-                  ee.emit("select", start, getTextInputValue(END_POSITION_SELECT));
+                  ee.emit("select", start, endPosition);
                   removeAllCustomCursorElements();
                 }
               }
