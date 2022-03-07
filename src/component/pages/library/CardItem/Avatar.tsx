@@ -14,6 +14,7 @@ import IconButton from "@/components/ui/IconButton";
 import { isAudioFile } from "@/utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentAudioPlaying } from "@/store/actions/library";
+import Clickable from "@/components/ui/Clickable";
 
 interface LibraryCardItemAvatarInterface extends LibraryCardItemInterface {
   handleClick: () => void;
@@ -82,17 +83,11 @@ const CardItemAvatar = ({
   }
 
   return (
-    <>
+    <Clickable handleClick={handleClick} data-testid={`avatar-library-item-${basename}`}>
       {image !== undefined ? (
-        <Image
-          alt={`image-${basename}-${id}`}
-          width={60}
-          height={60}
-          src={image}
-          onClick={() => handleClick()}
-        />
+        <Image alt={`image-${basename}-${id}`} width={60} height={60} src={image} />
       ) : (
-        <Box width={60} px={1} onClick={() => handleClick()}>
+        <Box width={60} px={1}>
           <FileIcon
             iconColor={iconColor}
             folderSecondIcon={folderSecondIcon}
@@ -103,7 +98,7 @@ const CardItemAvatar = ({
           />
         </Box>
       )}
-    </>
+    </Clickable>
   );
 };
 

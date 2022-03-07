@@ -59,7 +59,7 @@ type LayoutWrapperProps = {
 function LayoutWrapper({ children, title }: LayoutWrapperProps) {
   return (
     <Box width="100%">
-      <ToolbarSection title={title} link="/honeycomb" />
+      <ToolbarSection title={title} link="/honeycomb" noMargin />
       <Divider marginTop={10} />
       {children}
     </Box>

@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles, createStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import { useTranslation } from "next-i18next";
+import { formatBytes } from "@/utils/utils";
 
 const BorderLinearProgress = withStyles(() => ({
   root: {
@@ -18,9 +19,28 @@ const BorderLinearProgress = withStyles(() => ({
   },
 }))(LinearProgress);
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    quotaDescription: {
+      color: "#666",
+      textAlign: "left",
+    },
+  }),
+);
 export default function DiscreteSlider() {
+  const classes = useStyles();
   const { t } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const quotaDescription = useMemo(() => {
+    const totalUsedQuota = userRdx.user.quota.used;
+    const totalUsedQuotaFormatted = formatBytes(totalUsedQuota);
+    const totalQuota = userRdx.user.quota.total;
+    const totaQuotaFormatted = formatBytes(totalQuota);
+    const percentage = Math.round((totalUsedQuota / totalQuota) * 100);
+    return `${t("used")} ${totalUsedQuotaFormatted} / ${totaQuotaFormatted} (${percentage}%)`;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div
       style={{
@@ -28,10 +48,8 @@ export default function DiscreteSlider() {
         flexDirection: "column",
       }}
     >
-      <Text variant={TextVariantEnum.CAPTION} style={{ color: "#666", textAlign: "left" }}>
-        {t("used")}
-        <> {(userRdx.user.quota.used / (1000 * 1000 * 1000)).toFixed(2)} GB </>
-        {`(${Math.round((userRdx.user.quota.used / userRdx.user.quota.total) * 100)}%)`}
+      <Text variant={TextVariantEnum.CAPTION} className={classes.quotaDescription}>
+        {quotaDescription}
       </Text>
       <BorderLinearProgress
         variant="determinate"

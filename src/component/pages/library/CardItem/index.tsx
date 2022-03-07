@@ -41,7 +41,13 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
   const badgeStatusGrid = useMemo(() => <CardItemStatus {...cardItem} />, [cardItem]);
 
   const formatPrimaryWithSecondaryGrid = (
-    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+    <Box
+      component="span"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       <CardItemTitle
         title={basename}
         handleClick={handleClick}
@@ -52,7 +58,6 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
   );
 
   const subtitleVerticalItem = useMemo(() => {
-    console.log(subtitle);
     if (subtitle) {
       return (
         <Text variant={TextVariantEnum.CAPTION} noWrap>
@@ -62,7 +67,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     }
 
     return (
-      <Box display="flex" alignItems="center">
+      <Box component="span" display="flex" alignItems="center">
         <CardItemSubtitle key={`title-${id}`} {...cardItem} />
         {badgeStatusGrid}
       </Box>
