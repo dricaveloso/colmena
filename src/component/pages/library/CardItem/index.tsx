@@ -52,7 +52,6 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
   );
 
   const subtitleVerticalItem = useMemo(() => {
-    console.log(subtitle);
     if (subtitle) {
       return (
         <Text variant={TextVariantEnum.CAPTION} noWrap>

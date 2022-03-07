@@ -10,6 +10,7 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import { useDispatch } from "react-redux";
 import { setCursorSelected } from "@/store/actions/audio-editor/index";
 import { isMobile } from "react-device-detect";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme: Theme) => ({
   extraElementWrapper: {
@@ -60,6 +61,8 @@ export default function HeaderControls({
   const classes = useStyles();
   const [activeSelect, setActiveSelect] = useState(false);
   const [activeShift, setActiveShift] = useState(false);
+  const [loadingSave, setLoadingSave] = useState(false);
+  // const [loadingDownload, setLoadingDownload] = useState(false);
   const dispatch = useDispatch();
 
   const handleActiveSelected = () => {
@@ -79,6 +82,16 @@ export default function HeaderControls({
     setActiveSelect(false);
     dispatch(setCursorSelected(false));
     handleShift();
+  };
+
+  const handleSaveIntern = () => {
+    setLoadingSave(!loadingSave);
+    handleSave();
+  };
+
+  const handleDownloadIntern = () => {
+    // setLoadingDownload(!loadingDownload);
+    handleDownload();
   };
 
   return (
@@ -102,11 +115,19 @@ export default function HeaderControls({
         />
       </IconButton>
       <Box className={classes.verticalDivider}></Box>
-      <IconButton onClick={handleDownload} className={classes.actionsButton}>
+      <IconButton onClick={handleDownloadIntern} className={classes.actionsButton}>
+        {/* {loadingDownload ? (
+          <CircularProgress color="secondary" size="small" />
+        ) : ( */}
         <SvgIcon icon="download" htmlColor={theme.palette.icon.light} />
+        {/* )} */}
       </IconButton>
-      <IconButton onClick={handleSave} className={classes.actionsButton}>
-        <SvgIcon icon="save" htmlColor={theme.palette.icon.light} />
+      <IconButton onClick={handleSaveIntern} className={classes.actionsButton}>
+        {loadingSave ? (
+          <CircularProgress color="secondary" size="small" />
+        ) : (
+          <SvgIcon icon="save" htmlColor={theme.palette.icon.light} />
+        )}
       </IconButton>
     </Box>
   );

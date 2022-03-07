@@ -22,6 +22,7 @@ import { blobToArrayBuffer } from "blob-util";
 import { toast } from "@/utils/notifications";
 import { updateFile as updateFileLocal } from "@/store/idb/models/files";
 import { updateFile as updateFileQuickLocal } from "@/store/idb/models/filesQuickBlob";
+import { useRouter } from "next/router";
 
 type Props = {
   urlBlob: string;
@@ -52,12 +53,16 @@ export function createCursorElementSelectPosition(id: string, left: string) {
   document.getElementsByClassName("waveform")[0].appendChild(div);
 }
 
-export function getTextInputValue(id: string): number {
+export function getTextInputValue(id: string): number | string {
   const elem = document.getElementById(id) as HTMLInputElement;
 
   if (elem === null) return 0;
 
-  return Number(elem.value);
+  const val = String(elem.value);
+
+  if (Number.isNaN(Number(val))) return String(val);
+
+  return Number(val);
 }
 
 export function setTextInputValue(id: string, val: number | string) {
@@ -78,7 +83,7 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQui
   const END_CURSOR_SELECT = "end-cursor-select";
   const START_POSITION_SELECT = "start-position-select";
   const END_POSITION_SELECT = "end-position-select";
-  const LOADING_SAVE_AUDIO = "loading-save-audio";
+  const router = useRouter();
 
   const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -170,19 +175,13 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQui
   myStateCursorRef.current = audioEditorRdx.isCursorSelected;
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (getTextInputValue(LOADING_SAVE_AUDIO) === 1) setLoadingSaveAudio(true);
-      else setLoadingSaveAudio(false);
-    }, 500);
-
-    return () => clearInterval(intervalId);
+    setTextInputValue(SAVE_AUDIO_FLAG, "pending");
   }, []);
 
   useEffect(() => {
     if (!audioEditorRdx.isCursorSelected) {
       setTextInputValue(START_POSITION_SELECT, 0);
       setTextInputValue(END_POSITION_SELECT, 0);
-      setTextInputValue(LOADING_SAVE_AUDIO, 0);
     }
   }, [audioEditorRdx.isCursorSelected]);
 
@@ -243,8 +242,10 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQui
                 getTextInputValue(START_POSITION_SELECT) > 0 &&
                 getTextInputValue(END_POSITION_SELECT) > 0
               ) {
-                const diffStart = Math.abs(getTextInputValue(START_POSITION_SELECT) - start);
-                const diffEnd = Math.abs(getTextInputValue(END_POSITION_SELECT) - start);
+                const diffStart = Math.abs(
+                  Number(getTextInputValue(START_POSITION_SELECT)) - start,
+                );
+                const diffEnd = Math.abs(Number(getTextInputValue(END_POSITION_SELECT)) - start);
                 if (diffEnd < diffStart) {
                   removeElement(END_CURSOR_SELECT);
                   setTextInputValue(END_POSITION_SELECT, start);
@@ -264,36 +265,22 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQui
         });
 
         ee.on("audiorenderingfinished", async (type, data) => {
-          if (type === "wav") {
-            const name = filename.split("/").reverse()[0];
-            const arr = name.split(".");
-            arr.pop();
-            saveAs(data, `${arr.join("")}.wav`);
-          }
-          if (type === "buffer") {
-            if (getTextInputValue(SAVE_AUDIO_FLAG) === 1) {
-              try {
-                setTextInputValue(LOADING_SAVE_AUDIO, 1);
-                const blob = createBlobFromAudioBuffer(data, data.length);
-                const arrayBuffer = await blobToArrayBuffer(blob);
-                await putFileOnline(userRdx.user.id, filename, arrayBuffer);
+          if (type === "wav" || type === "buffer") {
+            const blob = createBlobFromAudioBuffer(data, data.length);
+            const arrayBuffer = await blobToArrayBuffer(blob);
+            if (localFileId) await updateFileLocal(localFileId, { arrayBufferBlob: arrayBuffer });
+            if (localFileQuickId)
+              await updateFileQuickLocal(localFileQuickId, { arrayBufferBlob: arrayBuffer });
 
-                if (localFileId)
-                  await updateFileLocal(localFileId, { arrayBufferBlob: arrayBuffer });
-                if (localFileQuickId)
-                  await updateFileQuickLocal(localFileQuickId, { arrayBufferBlob: arrayBuffer });
-
-                toast(t("audioSavedTitle"), "success");
-              } catch (e) {
-                console.log(e);
-                toast(c("genericErrorMessage"), "error");
-              } finally {
-                setTextInputValue(SAVE_AUDIO_FLAG, 0);
-                setTextInputValue(LOADING_SAVE_AUDIO, 0);
-              }
+            if (type === "wav") {
+              router.push(`/edit-audio/download/${btoa(filename)}`);
+            }
+            if (type === "buffer") {
+              router.push(`/edit-audio/saved/${btoa(filename)}`);
             }
           }
         });
+
         playlist.load([
           {
             src: urlBlob,
@@ -317,8 +304,6 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQui
     <Box className={classes.root}>
       <input type="hidden" id={START_POSITION_SELECT} />
       <input type="hidden" id={END_POSITION_SELECT} />
-      <input type="hidden" id={SAVE_AUDIO_FLAG} />
-      <input type="hidden" id={LOADING_SAVE_AUDIO} />
       <Backdrop open={loadingSaveAudio} />
       <Backdrop open={!showControls} />
       <Box className={classes.boxContainerNode}>

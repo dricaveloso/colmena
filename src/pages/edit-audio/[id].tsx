@@ -24,10 +24,7 @@ import { removeSpecialCharacters } from "@/utils/utils";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
 import RotateYourDevice from "@/components/pages/edit-audio/RotateYourDevice";
 import Box from "@material-ui/core/Box";
-import Playlist, {
-  setTextInputValue,
-  SAVE_AUDIO_FLAG,
-} from "@/components/pages/edit-audio/WaveformPlaylist";
+import Playlist from "@/components/pages/edit-audio/WaveformPlaylist";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Backdrop from "@/components/ui/Backdrop";
 import EventEmitter from "events";
@@ -81,7 +78,7 @@ const Orientation = dynamic<OrientationType>(
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["editAudio"])),
+    ...(await serverSideTranslations(locale, ["editAudio", "common"])),
   },
 });
 
@@ -184,11 +181,11 @@ function EditAudio() {
   };
 
   const handleDownload = () => {
-    ee.emit("startaudiorendering", "wav");
+    toast(c("featureUnavailable"), "warning");
+    // ee.emit("startaudiorendering", "wav");
   };
 
   const handleSave = () => {
-    setTextInputValue(SAVE_AUDIO_FLAG, 1);
     ee.emit("startaudiorendering", "buffer");
   };
 
