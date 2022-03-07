@@ -54,8 +54,6 @@ const useStyles = makeStyles((theme) =>
       paddingTop: "20px",
     },
     sliderQuota: {
-      marginLeft: 15,
-      paddingRight: 25,
       marginTop: 20,
       width: "100%",
       marginBottom: "20px",

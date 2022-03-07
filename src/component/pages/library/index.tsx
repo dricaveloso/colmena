@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
     padding: 4,
   },
   verticalList: {
-    padding: "2px 10px",
+    padding: "2px 0px",
   },
 }));
 

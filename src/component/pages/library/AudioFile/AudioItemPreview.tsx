@@ -94,13 +94,26 @@ export default function AudioItemVertical({
 
   if (type === "vertical")
     return loading ? (
-      <Box display="flex" flex={1} height={45} justifyContent="center" alignItems="center">
+      <Box
+        component="span"
+        display="flex"
+        flex={1}
+        height={45}
+        justifyContent="center"
+        alignItems="center"
+      >
         <CircularProgress size={20} />
       </Box>
     ) : (
-      <Box display="flex" flex={1} flexDirection="column">
+      <Box component="span" display="flex" flex={1} flexDirection="column">
         {blob && <Waves blob={blob} config={{ height: 36 }} play />}
-        <Box display="flex" flex={1} flexDirection="row" justifyContent="space-between">
+        <Box
+          component="span"
+          display="flex"
+          flex={1}
+          flexDirection="row"
+          justifyContent="space-between"
+        >
           <Text variant={TextVariantEnum.BODY1} style={{ fontSize: 10 }}>
             {formatBytes(size)}
           </Text>
@@ -113,12 +126,20 @@ export default function AudioItemVertical({
 
   if (type === "grid")
     return loading ? (
-      <Box display="flex" flex={1} height={75} justifyContent="center">
+      <Box component="span" display="flex" flex={1} height={75} justifyContent="center">
         <CircularProgress size={20} />
       </Box>
     ) : (
-      <Box display="flex" flex={1} marginBottom={2} height={50} width="100%" flexDirection="column">
-        <Box display="flex" flexDirection="row" justifyContent="space-between">
+      <Box
+        component="span"
+        display="flex"
+        flex={1}
+        marginBottom={2}
+        height={50}
+        width="100%"
+        flexDirection="column"
+      >
+        <Box component="span" display="flex" flexDirection="row" justifyContent="space-between">
           <Text
             variant={TextVariantEnum.BODY2}
             style={{ fontSize: 10, textAlign: "center", color: "gray" }}

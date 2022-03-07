@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
   library: {
     flexGrow: 1,
     overflow: "auto",
+    padding: "0 10px",
   },
   actions: {
     display: "flex",
