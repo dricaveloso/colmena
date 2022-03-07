@@ -1,6 +1,6 @@
 {
     "title": "Invita a tu equipo a Colmena",
-    "emailPlaceholder": "Ingresa el correo electrónico de la persona colaboradora",
+    "emailPlaceholder": "Ingresa el correo electrónico del integrante",
     "submitTextButton": "Enviar",
-    "successText": "Email enviado con éxito."
+    "successText": "Email enviado."
 }

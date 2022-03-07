@@ -19,7 +19,7 @@
         "question8": "8 - Quels sont les formats audio et leurs métadonnées ?",
         "answer8": "Le format audio standardisé pour le Web est Opus. D'autres formats comme MP3 et AAC seront également fournis, ainsi que de l'audio non compressé pour l'édition. Le système de métadonnées suivra les protocoles internationaux Dublin Core pour garantir l'interopérabilité des fichiers.",
         "question9": "9 - Quel type de fonctionnalités Colmena offre-t-il ?",
-        "answer9": "Au sein des groupes, les membres peuvent chatter ainsi qu'échanger et partager tout fichier texte ou audio.",
+        "answer9": "Au sein des groupes, les membres peuvent échanger et partager tout fichier texte ou audio.",
         "question10": "10 - Comment mes fichiers sont-ils stockés ? Y a-t-il une limite?",
         "answer10": "50 GB pour chaque support, à partager entre votre équipe.\nSi tu as besoin de plus de capacité, écrivez-nous !",
         "question11": "11 – Colmena a-t-il une section pour publier des audios ou des nouvelles?",

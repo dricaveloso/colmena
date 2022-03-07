@@ -9,7 +9,7 @@
     "discardButton": "Descartar",
     "cancelButton": "Cancelar",
     "errorStorageMessage": "No fue posible guardar esta grabación",
-    "errorGetAudioStreamMessage": "Necesita habilitar los permisos de audio para comenzar a grabar",
+    "errorGetAudioStreamMessage": "Necesitas habilitar los permisos de audio para comenzar a grabar.",
     "audioTitle": "Audio",
     "audioSaveTitle": "Guardado",
     "tagsTitle": "Etiquetas",
@@ -24,5 +24,7 @@
     "newRecordingTitle": "Nueva grabación",
     "recordingTitle": "Grabando...",
     "pausingTitle": "Grabación en pausa",
-    "stopingTitle": "Grabación detenida"
+    "stopingTitle": "Grabación detenida",
+    "advancedOptionsTitle": "Opciones avanzadas",
+    "tagInformationTitle": "Separar con comas o con la tecla Enter"
 }

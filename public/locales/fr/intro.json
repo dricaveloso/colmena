@@ -1,16 +1,16 @@
 {
     "aboutTitle": "À propos de Colmena",
     "step1": {
-        "description": "Colmena est une suite de productivité 100% gratuite et sécurisée pour les médias locaux et communautaires. Une solution Open Source intégrée pour les environnements mobiles et de bureau."
+        "description": "Colmena est une boîte à outils pour la production de contenus radio, 100% gratuite et sécurisée pour les médias locaux et communautaires. Une solution Open Source intégrée pour les environnements mobiles et de bureau."
     },
     "step2": {
-        "description": "Conçu pour fonctionner dans les zones de faible connectivité, il permet d'intégrer des appels vocaux, ainsi que d'enregistrer et de modifier des sons."
+        "description": "Espace collaboratif d'enregistrement, de conférences et de montage de audio conçu pour fonctionner dans des zones à faible connectivité."
     },
     "step3": {
-        "description": "Sauvegarder et partager ses fichiers avec ses collègues et partenaires médias avec l’option dédiée de notre application."
+        "description": "Sauvegardez et partagez votre travail en cours avec vos collègues et partenaires médias avec l'option de notre service en nuage."
     },
     "step4": {
-        "description": "Partager et publier son travail sur un site web, les réseaux sociaux, les plateformes de podcast ou sur sa bibliothèque dans Colmena."
+        "description": "Publiez et Partagez votre travail sur votre site web, les médias sociaux, les plateformes de podcast, ou dans votre bibliothèque sur Colmena."
     },
     "communityTitle": "Communauté",
     "forms": {

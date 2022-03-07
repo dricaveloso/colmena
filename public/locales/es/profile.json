@@ -20,7 +20,7 @@
         "deactivate": "Desactivar cuenta"
     },
     "confirmationRemoveAccountMessage": "Esta acción elimina definitivamente tu usuario y, en consecuencia, ya no tendrás acceso a Colmena.",
-    "confirmationSuspendAccountMessage": "Esta acción deshabilitará su cuenta de usuario, y solo con el permiso del administrador podrá regresar.",
-    "messageSuccessAccountDeactivated": "Usuario deshabilitado exitosamente.",
-    "messageSuccessAccountDeleted": "Usuario eliminado con éxito."
+    "confirmationSuspendAccountMessage": "Esta acción deshabilitará tu cuenta de usuario/a y solo con permiso del administrador/a podrás regresar.",
+    "messageSuccessAccountDeactivated": "Usuario/a deshabilitado exitosamente.",
+    "messageSuccessAccountDeleted": "Usuario/a eliminado con éxito"
 }

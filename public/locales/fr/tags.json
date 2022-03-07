@@ -9,9 +9,9 @@
         }
     },
     "messages": {
-        "tagCreatedSuccessfully": "Étiquette créé avec succès !",
-        "tagRemovedSuccessfully": "Étiquette supprimé avec succès !",
-        "tagUpdatedSuccessfully": "L'étiquette a été créée correctement !",
+        "tagCreatedSuccessfully": "L'étiquette a été créée",
+        "tagRemovedSuccessfully": "L'étiquette a été supprimée",
+        "tagUpdatedSuccessfully": "L'étiquette a été créée !",
         "forbidden": "Cette action est interdite",
         "tagAlreadyExists": "L'étiquette existe déjà"
     },
