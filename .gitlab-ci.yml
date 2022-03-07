@@ -92,7 +92,7 @@ deployer-develop:
     - apk add docker-compose
     - docker pull $IMAGE_TAG
     - ls -lha
-    - docker run -d app-develop
+    - docker run -d $IMAGE_TAG
     #- docker-compose up -d app-develop
     
   only:
