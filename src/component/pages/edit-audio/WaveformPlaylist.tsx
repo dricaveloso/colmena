@@ -13,15 +13,24 @@ import EventEmitter from "events";
 import SvgIcon from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
-import { clockFormatWaveformPlaylist, createBlobFromAudioBuffer } from "@/utils/utils";
+import {
+  clockFormatWaveformPlaylist,
+  createBlobFromAudioBuffer,
+  removeSpecialCharacters,
+} from "@/utils/utils";
 import { useTranslation } from "next-i18next";
 import { useSelector } from "react-redux";
 import { PropsAudioEditorSelector, PropsUserSelector } from "@/types/*";
 import { putFile as putFileOnline } from "@/services/webdav/files";
-import { blobToArrayBuffer } from "blob-util";
+import { blobToArrayBuffer, createObjectURL, arrayBufferToBlob } from "blob-util";
 import { toast } from "@/utils/notifications";
-import { updateFile as updateFileLocal } from "@/store/idb/models/files";
-import { updateFile as updateFileQuickLocal } from "@/store/idb/models/filesQuickBlob";
+import { findByBasename, updateFile as updateFileLocal } from "@/store/idb/models/files";
+import {
+  getFile as getQuickFile,
+  findByBasename as findByBasenameQuickBlob,
+  removeFile as removeQuickFile,
+  createFile as createQuickBlob,
+} from "@/store/idb/models/filesQuickBlob";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -29,8 +38,6 @@ type Props = {
   filename: string;
   waveHeight: number;
   ee: EventEmitter;
-  localFileId: number | null;
-  localFileQuickId: number | null;
 };
 
 export function removeElement(id: string) {
@@ -73,7 +80,7 @@ export function setTextInputValue(id: string, val: number | string) {
 
 export const SAVE_AUDIO_FLAG = "save-audio-flag";
 
-const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQuickId }: Props) => {
+const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   const { t } = useTranslation("editAudio");
   const { t: c } = useTranslation("common");
   const marginBoxContainer = 20;
@@ -268,16 +275,33 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee, localFileId, localFileQui
           if (type === "wav" || type === "buffer") {
             const blob = createBlobFromAudioBuffer(data, data.length);
             const arrayBuffer = await blobToArrayBuffer(blob);
-            if (localFileId) await updateFileLocal(localFileId, { arrayBufferBlob: arrayBuffer });
-            if (localFileQuickId)
-              await updateFileQuickLocal(localFileQuickId, { arrayBufferBlob: arrayBuffer });
 
-            if (type === "wav") {
-              router.push(`/edit-audio/download/${btoa(filename)}`);
+            const localFile = await findByBasename(
+              userRdx.user.id,
+              removeSpecialCharacters(filename),
+            );
+            const localFileQuickBlob = await findByBasenameQuickBlob(
+              userRdx.user.id,
+              removeSpecialCharacters(filename),
+            );
+
+            if (localFile) {
+              await updateFileLocal(localFile.id, { arrayBufferBlob: arrayBuffer });
             }
-            if (type === "buffer") {
-              router.push(`/edit-audio/saved/${btoa(filename)}`);
+            if (localFileQuickBlob) {
+              await removeQuickFile(userRdx.user.id, removeSpecialCharacters(filename));
+              await createQuickBlob({
+                basename: removeSpecialCharacters(filename),
+                userId: userRdx.user.id,
+                arrayBufferBlob: arrayBuffer,
+              });
             }
+
+            router.push(
+              type === "wav"
+                ? `/edit-audio/download/${btoa(filename)}`
+                : `/edit-audio/saved/${btoa(filename)}`,
+            );
           }
         });
 

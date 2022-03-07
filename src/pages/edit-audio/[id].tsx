@@ -97,8 +97,6 @@ function EditAudio() {
   const filename = atob(String(id));
   const [dynamicHeight, setDynamicHeight] = useState(0);
   const [isPortraitView, setIsPortraitView] = useState(true);
-  const [localFileId, setLocalFileId] = useState(null);
-  const [localFileQuickId, setLocalFileQuickId] = useState(null);
   const [ee] = useState(new EventEmitter());
 
   const { t: c } = useTranslation("common");
@@ -128,12 +126,6 @@ function EditAudio() {
         });
         await prepareAudioBlob(result);
       } else {
-        if (localFile) {
-          setLocalFileId(localFile.id);
-        }
-        if (localFileQuickBlob) {
-          setLocalFileQuickId(localFileQuickBlob.id);
-        }
         await prepareAudioBlob(localFile?.arrayBufferBlob || localFileQuickBlob?.arrayBufferBlob);
       }
     } catch (e) {
@@ -244,8 +236,6 @@ function EditAudio() {
                   waveHeight={dynamicHeight}
                   filename={filename}
                   ee={ee}
-                  localFileId={localFileId}
-                  localFileQuickId={localFileQuickId}
                 />
               )}
             </Orientation>
