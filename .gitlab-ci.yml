@@ -89,9 +89,7 @@ deployer-develop:
     - echo $CONTAINER_RELEASE_IMAGE
     - echo $CI_BUILD_REF_NAME
     - echo $CI_COMMIT_BRANCH
-    - apk add docker-compose
     - docker pull $IMAGE_TAG
-    - ls -lha
     - docker run -d $IMAGE_TAG
     #- docker-compose up -d app-develop
     
