@@ -1,6 +1,6 @@
+import Clickable from "@/components/ui/Clickable";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
-import { Box } from "@material-ui/core";
 import React from "react";
 
 interface LibraryCardItemTitleInterface {
@@ -11,11 +11,11 @@ interface LibraryCardItemTitleInterface {
 }
 
 const CardItemTitle = ({ title, textStyle, handleClick }: LibraryCardItemTitleInterface) => (
-  <Box onClick={handleClick}>
+  <Clickable handleClick={handleClick}>
     <Text variant={TextVariantEnum.BODY1} noWrap style={textStyle}>
       {title}
     </Text>
-  </Box>
+  </Clickable>
 );
 
 export default CardItemTitle;

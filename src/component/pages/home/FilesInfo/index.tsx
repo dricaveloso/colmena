@@ -13,6 +13,7 @@ import { getItems } from "../../library";
 import { LibraryItemInterface, TimeDescriptionInterface } from "@/interfaces/index";
 import { getAllContents } from "@/services/webdav/directories";
 import router from "next/router";
+import Clickable from "@/components/ui/Clickable";
 
 const FilesInfoSection = () => {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -60,12 +61,12 @@ const FilesInfoSection = () => {
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="row" alignContent="center" justifyContent="space-around">
-          <a onClick={() => router.push(`/library/${userRdx.user.id}`)}>
+          <Clickable handleClick={() => router.push(`/library/${userRdx.user.id}`)}>
             <Item title={h("myFilesLabel")} amount={data.length} />
-          </a>
-          <a onClick={() => router.push("/library/Talk")}>
+          </Clickable>
+          <Clickable handleClick={() => router.push("/library/Talk")}>
             <Item title={h("sharedLabel")} amount={sharedData.length} />
-          </a>
+          </Clickable>
           {/* <Item title={h("publicLabel")} amount={0} /> */}
         </Box>
       </Box>

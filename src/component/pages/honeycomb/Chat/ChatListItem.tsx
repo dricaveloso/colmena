@@ -168,6 +168,7 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
             className={classes.description}
             primary={
               <Box
+                component="span"
                 display="flex"
                 flex={1}
                 flexDirection={userId === actorId ? "row" : "row-reverse"}
@@ -208,7 +209,8 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
       if (item === "{user}" || item === "{actor}")
         messageArr.push(
           <Chip
-            key={`chip${id}-${actorId}-${referenceId}`}
+            component="span"
+            key={`chip${id}-${actorId}-${referenceId}-${idx}`}
             size="small"
             variant="outlined"
             style={{ fontSize: 12 }}

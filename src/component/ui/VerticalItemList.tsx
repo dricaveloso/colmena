@@ -5,6 +5,7 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
 import { VerticalItemListInterface } from "@/interfaces/index";
 import AudioItemPreview from "@/components/pages/library/AudioFile/AudioItemPreview";
+import { basename } from "path";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -60,7 +61,7 @@ const VerticalItemList = (cardItem: VerticalItemListInterface) => {
       {avatar && <ListItemAvatar className={classes.avatar}>{avatar}</ListItemAvatar>}
       {audioState !== "stop" ? (
         <ListItemText
-          data-testid="title"
+          data-testid={`library-item-${basename}`}
           className={classes.description}
           onClick={handleClick}
           primary={
@@ -78,7 +79,7 @@ const VerticalItemList = (cardItem: VerticalItemListInterface) => {
         />
       ) : (
         <ListItemText
-          data-testid="title"
+          data-testid={`library-item-${basename}`}
           className={classes.description}
           primary={primary}
           secondary={secondary}
