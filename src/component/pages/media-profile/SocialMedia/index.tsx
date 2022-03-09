@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import ToolbarSection from "../../home/ToolbarSection";
 import GalleryHorizontalScroll from "@/components/ui/GalleryHorizontalScroll";
@@ -7,11 +7,12 @@ import { useTranslation } from "react-i18next";
 import theme from "@/styles/theme";
 import IconButton from "@/components/ui/IconButton";
 import { isSubadminProfile } from "@/utils/permissions";
-import { toast } from "@/utils/notifications";
 import SocialMediaItem from "./SocialMediaItem";
+import CreateModal from "./create";
 
 export default function SocialMedia() {
   const { t } = useTranslation("common");
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <Box width="100%">
@@ -37,7 +38,7 @@ export default function SocialMedia() {
             iconColor={theme.palette.variation1.main}
             iconStyle={{ fontSize: 64 }}
             fontSizeIcon="large"
-            handleClick={() => toast(t("featureUnavailable"), "warning")}
+            handleClick={() => setOpenModal(true)}
             style={{ marginRight: 8, marginBottom: 25 }}
             textStyle={{
               color: theme.palette.primary.dark,
@@ -50,17 +51,24 @@ export default function SocialMedia() {
         <GalleryHorizontalScroll>
           <SocialMediaItem
             title="facebook"
-            icon="facebook_rounded"
+            icon="facebook"
             fontSize={64}
             iconColor={theme.palette.variation6.main}
           />
           <SocialMediaItem
             title="twitter"
-            icon="twitter_rounded"
+            icon="twitter"
+            fontSize={64}
+            iconColor={theme.palette.variation6.main}
+          />
+          <SocialMediaItem
+            title="instagram"
+            icon="instagram"
             fontSize={64}
             iconColor={theme.palette.variation6.main}
           />
         </GalleryHorizontalScroll>
+        <CreateModal open={openModal} handleClose={() => setOpenModal(false)} />
       </Box>
     </Box>
   );

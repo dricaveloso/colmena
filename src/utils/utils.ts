@@ -549,3 +549,8 @@ export function decodeURI(encodedURI: string | null | undefined) {
 
   return decodeURIComponent(encodedURI);
 }
+
+export function getAvailableSocialMedias() {
+  const sm = ["facebook", "twitter", "instagram"];
+  return sm;
+}
