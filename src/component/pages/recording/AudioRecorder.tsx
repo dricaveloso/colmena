@@ -303,7 +303,12 @@ function AudioRecorder({
                 foregroundColor={theme.palette.secondary.main}
               />
             ) : (
-              <Waves blob={audioBlob} play config={{ height: 190 }} />
+              <Waves
+                blob={audioBlob}
+                play
+                config={{ height: 190 }}
+                handleAudioFinish={() => console.log("asdasd")}
+              />
             )}
             <Box
               display="flex"

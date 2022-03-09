@@ -79,6 +79,8 @@ export function setTextInputValue(id: string, val: number | string) {
 }
 
 export const SAVE_AUDIO_FLAG = "save-audio-flag";
+export const START_POSITION_SELECT = "start-position-select";
+export const END_POSITION_SELECT = "end-position-select";
 
 const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   const { t } = useTranslation("editAudio");
@@ -88,8 +90,6 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   const fatorRewindForward = 10;
   const INIT_CURSOR_SELECT = "init-cursor-select";
   const END_CURSOR_SELECT = "end-cursor-select";
-  const START_POSITION_SELECT = "start-position-select";
-  const END_POSITION_SELECT = "end-position-select";
   const router = useRouter();
 
   const useStyles = makeStyles((theme: Theme) => ({

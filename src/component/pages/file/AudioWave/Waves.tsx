@@ -4,8 +4,6 @@
 import { useEffect, useRef } from "react";
 import theme from "@/styles/theme";
 import { v4 as uuid } from "uuid";
-import { useDispatch } from "react-redux";
-import { setCurrentAudioPlaying } from "@/store/actions/library";
 
 interface WavesurferInterface {
   current: {
@@ -29,14 +27,19 @@ type Props = {
   blob?: Blob | null;
   config?: WaveProps | undefined;
   play?: boolean;
+  pause?: boolean;
+  handleAudioFinish: () => void;
 };
 
-export default function Waves({ blob = null, config = undefined, play = false }: Props) {
+export default function Waves({
+  blob = null,
+  config = undefined,
+  play = false,
+  pause = false,
+  handleAudioFinish,
+}: Props) {
   const waveformRef = useRef(null);
   const wavesurfer: WavesurferInterface | any = useRef(null);
-  const dispatch = useDispatch();
-
-  console.log("Waves", blob);
 
   const formWaveSurferOptions = (ref: any) => ({
     container: ref,
@@ -63,8 +66,8 @@ export default function Waves({ blob = null, config = undefined, play = false }:
 
   useEffect(() => {
     if (play) wavesurfer?.current?.play();
-    else wavesurfer?.current?.pause();
-  }, [play]);
+    if (pause) wavesurfer?.current?.pause();
+  }, [play, pause]);
 
   const create = async () => {
     try {
@@ -81,8 +84,8 @@ export default function Waves({ blob = null, config = undefined, play = false }:
         });
 
         wavesurfer?.current.on("finish", () => {
+          handleAudioFinish();
           wavesurfer?.current?.setPlayEnd(0);
-          dispatch(setCurrentAudioPlaying(""));
         });
 
         wavesurfer?.current.on("error", (error: string) => {

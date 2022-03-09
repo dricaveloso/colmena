@@ -46,18 +46,19 @@ const VerticalItemList = (cardItem: VerticalItemListInterface) => {
     secondary,
     options,
     handleClick,
-    isPlaying = false,
     filename,
     environment,
     size = 0,
     arrayBufferBlob,
+    audioState = "stop",
+    handleAudioFinish,
   } = cardItem;
   const classes = useStyles();
 
   return (
     <Box className={classes.card}>
       {avatar && <ListItemAvatar className={classes.avatar}>{avatar}</ListItemAvatar>}
-      {isPlaying ? (
+      {audioState !== "stop" ? (
         <ListItemText
           data-testid="title"
           className={classes.description}
@@ -70,6 +71,8 @@ const VerticalItemList = (cardItem: VerticalItemListInterface) => {
               environment={environment}
               type="vertical"
               arrayBufferBlob={arrayBufferBlob}
+              audioState={audioState}
+              handleAudioFinish={handleAudioFinish}
             />
           }
         />
