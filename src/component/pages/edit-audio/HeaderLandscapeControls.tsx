@@ -12,6 +12,7 @@ import { setCursorSelected } from "@/store/actions/audio-editor/index";
 import { isMobile } from "react-device-detect";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { PropsAudioEditorSelector } from "@/types/*";
+import { removeAllCustomCursorElements } from "./WaveformPlaylist";
 
 const useStyles = makeStyles((theme: Theme) => ({
   extraElementWrapper: {
@@ -78,6 +79,9 @@ export default function HeaderControls({
     } else {
       handleSelectAudioRegion("cursor");
       dispatch(setCursorSelected(actSel));
+      if (!actSel) {
+        removeAllCustomCursorElements();
+      }
     }
   };
 

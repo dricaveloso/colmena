@@ -74,6 +74,14 @@ export function setTextInputValue(id: string, val: number | string) {
   if (elem !== null) elem.value = String(val);
 }
 
+export const INIT_CURSOR_SELECT = "init-cursor-select";
+export const END_CURSOR_SELECT = "end-cursor-select";
+
+export function removeAllCustomCursorElements() {
+  document.getElementById(INIT_CURSOR_SELECT)?.remove();
+  document.getElementById(END_CURSOR_SELECT)?.remove();
+}
+
 export const SAVE_AUDIO_FLAG = "save-audio-flag";
 
 const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
@@ -81,8 +89,6 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   const marginBoxContainer = 20;
   const zoomLevels = [500, 1000, 3000, 5000];
   const fatorRewindForward = 10;
-  const INIT_CURSOR_SELECT = "init-cursor-select";
-  const END_CURSOR_SELECT = "end-cursor-select";
   const START_POSITION_SELECT = "start-position-select";
   const END_POSITION_SELECT = "end-position-select";
   const IS_CURSOR_SELECTED = "is-cursor-selected";
@@ -168,11 +174,6 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
     (state: { audioEditor: PropsAudioEditorSelector }) => state.audioEditor,
   );
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-
-  function removeAllCustomCursorElements() {
-    document.getElementById(INIT_CURSOR_SELECT)?.remove();
-    document.getElementById(END_CURSOR_SELECT)?.remove();
-  }
 
   useEffect(() => {
     setTextInputValue(SAVE_AUDIO_FLAG, "pending");

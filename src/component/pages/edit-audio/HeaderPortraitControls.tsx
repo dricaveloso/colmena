@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCursorSelected } from "@/store/actions/audio-editor/index";
 import Backdrop from "@/components/ui/Backdrop";
 import { PropsAudioEditorSelector } from "@/types/*";
+import { removeAllCustomCursorElements } from "./WaveformPlaylist";
 
 type PositionProps = {
   mouseX: null | number;
@@ -77,6 +78,9 @@ const ContextMenuOptions = ({
     } else {
       handleSelectAudioRegion("cursor");
       dispatch(setCursorSelected(actSel));
+      if (!actSel) {
+        removeAllCustomCursorElements();
+      }
     }
     handleCloseContextMenu();
   };
