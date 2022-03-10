@@ -60,12 +60,12 @@ export default function HeaderControls({
   handleSave,
 }: Props) {
   const classes = useStyles();
-  const [activeShift, setActiveShift] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const audioEditorRdx = useSelector(
     (state: { audioEditor: PropsAudioEditorSelector }) => state.audioEditor,
   );
   const [activeSelect, setActiveSelect] = useState(audioEditorRdx.isCursorSelected);
+  const [activeShift, setActiveShift] = useState(false);
   const dispatch = useDispatch();
 
   const handleActiveSelected = () => {

@@ -11,9 +11,10 @@ import { v4 as uuid } from "uuid";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import theme from "@/styles/theme";
 import { isMobile } from "react-device-detect";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCursorSelected } from "@/store/actions/audio-editor/index";
 import Backdrop from "@/components/ui/Backdrop";
+import { PropsAudioEditorSelector } from "@/types/*";
 
 type PositionProps = {
   mouseX: null | number;
@@ -40,7 +41,10 @@ const ContextMenuOptions = ({
   handleSave,
 }: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [activeSelect, setActiveSelect] = useState(false);
+  const audioEditorRdx = useSelector(
+    (state: { audioEditor: PropsAudioEditorSelector }) => state.audioEditor,
+  );
+  const [activeSelect, setActiveSelect] = useState(audioEditorRdx.isCursorSelected);
   const [activeShift, setActiveShift] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const dispatch = useDispatch();
@@ -144,11 +148,15 @@ const ContextMenuOptions = ({
             style={fontSizeIcon}
           />
         </MenuItem>
-        <MenuItem key="cut-audio-button" data-testid="cut-audio-button" onClick={handleTrimIntern}>
+        <MenuItem
+          key="trim-audio-button"
+          data-testid="trim-audio-button"
+          onClick={handleTrimIntern}
+        >
           <ContextMenuItem
-            icon="cut"
+            icon="trim"
             iconColor={theme.palette.variation6.main}
-            title={t("contextOptions.cutAudioRegionTitle")}
+            title={t("contextOptions.trimAudioRegionTitle")}
             style={fontSizeIcon}
           />
         </MenuItem>
@@ -159,7 +167,7 @@ const ContextMenuOptions = ({
         >
           <ContextMenuItem
             icon="audio_shift"
-            htmlColor={activeShift ? theme.palette.variation6.dark : theme.palette.variation6.main}
+            iconColor={activeShift ? theme.palette.variation7.main : theme.palette.variation6.main}
             title={t("contextOptions.shiftAudioTitle")}
             style={fontSizeIcon}
           />
@@ -171,7 +179,7 @@ const ContextMenuOptions = ({
         >
           <ContextMenuItem
             icon="cursor_select"
-            htmlColor={activeSelect ? theme.palette.variation6.dark : theme.palette.variation6.main}
+            iconColor={activeSelect ? theme.palette.variation2.dark : theme.palette.variation6.main}
             title={t("contextOptions.selectAudioRegionTitle")}
             style={fontSizeIcon}
           />
