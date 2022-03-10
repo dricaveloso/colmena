@@ -45,7 +45,6 @@ type Props = {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
   handleTrim: () => void;
-  handleShift: () => void;
   handleSelectAudioRegion: (type: string) => void;
   handleDownload: () => void;
   handleSave: () => void;
@@ -55,7 +54,6 @@ export default function HeaderControls({
   handleZoomIn,
   handleZoomOut,
   handleTrim,
-  handleShift,
   handleSelectAudioRegion,
   handleDownload,
   handleSave,
@@ -86,10 +84,11 @@ export default function HeaderControls({
   };
 
   const handleActiveShift = () => {
-    setActiveShift(!activeShift);
+    const actShi = !activeShift;
+    setActiveShift(actShi);
     setActiveSelect(false);
     dispatch(setCursorSelected(false));
-    handleShift();
+    handleSelectAudioRegion(!actShi ? "cursor" : "shift");
   };
 
   const handleSaveIntern = () => {

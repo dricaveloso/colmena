@@ -26,7 +26,6 @@ type Props = {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
   handleTrim: () => void;
-  handleShift: () => void;
   handleSelectAudioRegion: (type: string) => void;
   handleDownload: () => void;
   handleSave: () => void;
@@ -37,7 +36,6 @@ const ContextMenuOptions = ({
   handleZoomOut,
   handleSelectAudioRegion,
   handleTrim,
-  handleShift,
   handleDownload,
   handleSave,
 }: Props) => {
@@ -86,10 +84,11 @@ const ContextMenuOptions = ({
   };
 
   const handleActiveShift = () => {
-    setActiveShift(!activeShift);
+    const actShi = !activeShift;
+    setActiveShift(actShi);
     setActiveSelect(false);
     dispatch(setCursorSelected(false));
-    handleShift();
+    handleSelectAudioRegion(!actShi ? "cursor" : "shift");
     handleCloseContextMenu();
   };
 
