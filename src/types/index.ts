@@ -319,7 +319,8 @@ export type AllIconProps =
   | "end_cursor"
   | "sync"
   | "recently_viewed"
-  | "arrow_up_left";
+  | "arrow_up_left"
+  | "trim";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 

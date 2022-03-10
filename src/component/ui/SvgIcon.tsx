@@ -1706,6 +1706,21 @@ function SvgIconAux({
       ),
     });
 
+    items.set("trim", {
+      viewBox: "0 0 48 48",
+      path: () => (
+        <>
+          <path
+            d="M6 6V42M42 6V42V6ZM16 20L12 24L16 28V20ZM32 20L36 24L32 28V20ZM24 6V42V6Z"
+            stroke={htmlColor}
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </>
+      ),
+    });
+
     if (!items.has(icon)) return undefined;
 
     return items.get(icon);

@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import theme from "@/styles/theme";
-import { toast } from "@/utils/notifications";
 import { isMobile } from "react-device-detect";
 import { useDispatch } from "react-redux";
 import { setCursorSelected } from "@/store/actions/audio-editor/index";
@@ -47,7 +46,6 @@ const ContextMenuOptions = ({
   const dispatch = useDispatch();
 
   const { t } = useTranslation("editAudio");
-  const { t: c } = useTranslation("common");
   const [position, setPosition] = useState<PositionProps>({
     mouseX: null,
     mouseY: null,
@@ -66,14 +64,15 @@ const ContextMenuOptions = ({
   };
 
   const handleActiveSelected = () => {
-    setActiveSelect(!activeSelect);
+    const actSel = !activeSelect;
+    setActiveSelect(actSel);
     setActiveShift(false);
     if (!isMobile) {
       handleSelectAudioRegion("select");
       dispatch(setCursorSelected(false));
     } else {
       handleSelectAudioRegion("cursor");
-      dispatch(setCursorSelected(!activeSelect));
+      dispatch(setCursorSelected(actSel));
     }
     handleCloseContextMenu();
   };

@@ -7,10 +7,11 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 import theme from "@/styles/theme";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@/components/ui/SvgIcon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCursorSelected } from "@/store/actions/audio-editor/index";
 import { isMobile } from "react-device-detect";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { PropsAudioEditorSelector } from "@/types/*";
 
 const useStyles = makeStyles((theme: Theme) => ({
   extraElementWrapper: {
@@ -59,21 +60,24 @@ export default function HeaderControls({
   handleSave,
 }: Props) {
   const classes = useStyles();
-  const [activeSelect, setActiveSelect] = useState(false);
   const [activeShift, setActiveShift] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
-  // const [loadingDownload, setLoadingDownload] = useState(false);
+  const audioEditorRdx = useSelector(
+    (state: { audioEditor: PropsAudioEditorSelector }) => state.audioEditor,
+  );
+  const [activeSelect, setActiveSelect] = useState(audioEditorRdx.isCursorSelected);
   const dispatch = useDispatch();
 
   const handleActiveSelected = () => {
-    setActiveSelect(!activeSelect);
+    const actSel = !activeSelect;
+    setActiveSelect(actSel);
     setActiveShift(false);
     if (!isMobile) {
       handleSelectAudioRegion("select");
       dispatch(setCursorSelected(false));
     } else {
       handleSelectAudioRegion("cursor");
-      dispatch(setCursorSelected(!activeSelect));
+      dispatch(setCursorSelected(actSel));
     }
   };
 
@@ -106,7 +110,7 @@ export default function HeaderControls({
         <SvgIcon icon="audio_shift" htmlColor={activeShift ? "#fff" : theme.palette.icon.light} />
       </IconButton>
       <IconButton onClick={handleTrim} className={classes.actionsButton}>
-        <SvgIcon icon="cut" htmlColor={theme.palette.icon.light} />
+        <SvgIcon icon="trim" htmlColor={theme.palette.icon.light} />
       </IconButton>
       <IconButton onClick={handleActiveSelected} className={classes.actionsButton}>
         <SvgIcon
