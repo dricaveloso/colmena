@@ -27,13 +27,20 @@ import IconButton from "@/components/ui/IconButton";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/router";
+import { Box, makeStyles } from "@material-ui/core";
 
+const useStyles = makeStyles(() => ({
+  library: {
+    padding: "0 10px",
+  },
+}));
 type Props = {
   conversationName: string;
   canDeleteConversation: number;
 };
 
 function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
+  const classes = useStyles();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
@@ -294,14 +301,16 @@ function HoneycombLibrary({ conversationName, canDeleteConversation }: Props) {
         firstBreadcrumbItem={firstBreadrcrumbMenu}
         rootPath={rootPath}
       />
-      <Library
-        items={items}
-        isLoading={isLoading}
-        handleItemClick={handleItemClick}
-        listType={listType}
-        options={options}
-        bottomOptions={bottomOptions}
-      />
+      <Box className={classes.library}>
+        <Library
+          items={items}
+          isLoading={isLoading}
+          handleItemClick={handleItemClick}
+          listType={listType}
+          options={options}
+          bottomOptions={bottomOptions}
+        />
+      </Box>
     </>
   );
 }

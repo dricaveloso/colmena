@@ -13,6 +13,7 @@ type Props = {
   link?: string;
   seeAllTitle?: string | undefined;
   showRightButton?: boolean;
+  noMargin?: boolean;
 };
 
 const useStyles = makeStyles(() => ({
@@ -31,6 +32,7 @@ export default function ToolbarSection({
   link,
   seeAllTitle,
   showRightButton = true,
+  noMargin = false,
 }: Props) {
   const goTo = () => {
     if (!link) return;
@@ -42,8 +44,8 @@ export default function ToolbarSection({
   return (
     <Box
       display="flex"
-      marginLeft={2}
-      marginRight={2}
+      marginLeft={!noMargin ? 2 : undefined}
+      marginRight={!noMargin ? 2 : undefined}
       flexDirection="row"
       justifyContent={showRightButton ? "space-between" : "flex-start"}
       alignItems="center"
