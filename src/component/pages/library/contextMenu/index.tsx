@@ -7,7 +7,7 @@ import DownloadModal from "./DownloadModal";
 import RenameItemModal from "./RenameItemModal";
 import DuplicateItemModal from "./DuplicateItemModal";
 import CopyItemModal from "./CopyItemModal";
-import { getOnlyFilename } from "@/utils/utils";
+import { getOnlyFilename, isAudioFile } from "@/utils/utils";
 import { LibraryItemContextMenuInterface } from "@/interfaces/index";
 import MoveItemModal from "./MoveItemModal";
 import DetailsModal from "./DetailsModal";
@@ -21,7 +21,6 @@ import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useRouter } from "next/router";
 // import { removeCornerSlash } from "@/utils/utils";
-
 const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const {
     type,
@@ -41,6 +40,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
+  const router = useRouter();
   const [openCopyItemModal, setOpenCopyItemModal] = useState(false);
   const [availableOffline, setAvailableOffline] = useState(environment === EnvironmentEnum.BOTH);
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
@@ -50,7 +50,6 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const [openMoveItemModal, setOpenMoveItemModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openDeleteItemConfirm, setOpenDeleteItemConfirm] = useState(false);
-  const router = useRouter();
 
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -69,6 +68,15 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
     toast(c("featureUnavailable"), "warning");
   };
 
+  const openEditFilePage = () => {
+    if (isAudioFile(mime)) {
+      router.push(`/edit-audio/${btoa(filename)}`);
+      return;
+    }
+
+    unavailable();
+  };
+
   // const inLibraryPage = useMemo(() => {
   //   const splitPage = removeCornerSlash(router.route).split("/");
 
@@ -83,7 +91,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
     extension !== "md"
   ) {
     renderOptions.push(
-      <MenuItem key="edit" onClick={unavailable} data-testid="edit-item" style={{ color: "#aaa" }}>
+      <MenuItem key="edit" onClick={openEditFilePage} data-testid="edit-item">
         <ContextMenuItem title={t("contextMenuOptions.edit")} icon="edit_filled" />
       </MenuItem>,
     );

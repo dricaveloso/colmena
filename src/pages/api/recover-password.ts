@@ -15,7 +15,7 @@ type Data = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === "POST") {
-    const { email } = req.body;
+    const { email, language } = req.body;
     try {
       const response = await axios.get(`${serverRuntimeConfig.api.baseUrl}/login`);
 
@@ -35,6 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           headers: {
             Cookie: cookies,
             requesttoken,
+            "Accept-Language": language === "pt" ? "pt-BR" : language,
           },
         },
       );

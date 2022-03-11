@@ -23,6 +23,7 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   extraStyle?: object;
   children: React.ReactNode;
+  [x: string]: any;
 };
 
 export default function Bx({
@@ -33,10 +34,12 @@ export default function Bx({
   justifyContent = JustifyContentEnum.SPACEBETWEEN,
   extraStyle = {},
   children,
+  ...props
 }: Props) {
   return (
     <Box
       key={uuid()}
+      {...props}
       style={{
         textAlign,
         padding,

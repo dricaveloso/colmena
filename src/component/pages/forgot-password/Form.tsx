@@ -15,6 +15,7 @@ import { toast } from "@/utils/notifications";
 import { v4 as uuid } from "uuid";
 import { makeStyles } from "@material-ui/core/styles";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import { parseCookies } from "nookies";
 
 type MyFormValues = {
   email: string;
@@ -23,6 +24,7 @@ type MyFormValues = {
 export default function WrapperForm() {
   const { t: c } = useTranslation("common");
   const router = useRouter();
+  const cookies = parseCookies();
 
   const color = `white !important`;
   const useOutlinedInputStyles = makeStyles(() => ({
@@ -60,9 +62,10 @@ export default function WrapperForm() {
         (async () => {
           setSubmitting(true);
           try {
+            const language = cookies.NEXT_LOCALE || "en";
             const response = await fetch("/api/recover-password", {
               method: "POST",
-              body: JSON.stringify({ email }),
+              body: JSON.stringify({ email, language }),
               headers: {
                 "Content-type": "application/json",
               },

@@ -29,6 +29,10 @@ export type PropsUserSelector = {
   invitationToken?: string | undefined;
 };
 
+export type PropsAudioEditorSelector = {
+  isCursorSelected: boolean;
+};
+
 export type PropsHoneycombSelector = {
   honeycombs: RoomItemInterface[];
   clearChatMessages: string[];
@@ -282,8 +286,8 @@ export type AllIconProps =
   | "disabled"
   | "camera"
   | "edit_circle"
-  | "facebook_rounded"
-  | "twitter_rounded"
+  | "facebook"
+  | "twitter"
   | "sync_file"
   | "generic_file"
   | "play_outlined"
@@ -301,9 +305,23 @@ export type AllIconProps =
   | "banner_4"
   | "gradient_plus"
   | "delete"
+  | "stop_flat"
+  | "forward"
+  | "rewind"
+  | "zoomin"
+  | "zoomout"
+  | "sync"
+  | "cursor_select"
+  | "audio_shift"
+  | "save"
+  | "audio_settings"
+  | "start_cursor"
+  | "end_cursor"
   | "sync"
   | "recently_viewed"
-  | "arrow_up_left";
+  | "arrow_up_left"
+  | "trim"
+  | "instagram";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 
