@@ -72,7 +72,7 @@ export default function HeaderControls({
     setActiveSelect(actSel);
     setActiveShift(false);
     if (!isMobile) {
-      handleSelectAudioRegion("select");
+      handleSelectAudioRegion(actSel ? "select" : "cursor");
       dispatch(setCursorSelected(false));
     } else {
       handleSelectAudioRegion("cursor");
