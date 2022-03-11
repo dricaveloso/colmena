@@ -13,6 +13,8 @@ import CardItemSubtitle from "./Subtitle";
 import CardItemAvatar from "./Avatar";
 import CardItemStatus from "./ItemStatus";
 import CardItemTitle from "./Title";
+import Text from "@/components/ui/Text";
+import { TextVariantEnum } from "@/enums/*";
 
 const CardItem = (cardItem: LibraryCardItemInterface) => {
   const {
@@ -27,6 +29,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     handleOpenCard,
     isDisabled,
     arrayBufferBlob,
+    subtitle,
   } = cardItem;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
   const handleClick = useCallback(() => {
@@ -38,7 +41,13 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
   const badgeStatusGrid = useMemo(() => <CardItemStatus {...cardItem} />, [cardItem]);
 
   const formatPrimaryWithSecondaryGrid = (
-    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+    <Box
+      component="span"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       <CardItemTitle
         title={basename}
         handleClick={handleClick}
@@ -48,15 +57,22 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
     </Box>
   );
 
-  const subtitleVerticalItem = useMemo(
-    () => (
-      <Box display="flex" alignItems="center">
+  const subtitleVerticalItem = useMemo(() => {
+    if (subtitle) {
+      return (
+        <Text variant={TextVariantEnum.CAPTION} noWrap>
+          {subtitle}
+        </Text>
+      );
+    }
+
+    return (
+      <Box component="span" display="flex" alignItems="center">
         <CardItemSubtitle key={`title-${id}`} {...cardItem} />
         {badgeStatusGrid}
       </Box>
-    ),
-    [cardItem],
-  );
+    );
+  }, [cardItem]);
 
   return (
     <>

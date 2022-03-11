@@ -14,7 +14,6 @@ import { ContextMenuOptionEnum, ListTypeEnum, OrderEnum, TextVariantEnum } from 
 import Library, { getItems, orderItems } from "@/components/pages/library";
 import { PropsUserSelector } from "@/types/*";
 import ToolbarSection from "../ToolbarSection";
-import DirectoryList from "@/components/ui/skeleton/DirectoryList";
 import { removeCornerSlash, isAudioFile } from "@/utils/utils";
 import { v4 as uuid } from "uuid";
 import ContextMenuOptions from "@/components/pages/library/contextMenu";
@@ -160,10 +159,10 @@ const RecentFiles: React.FC = () => {
         <ToolbarSection
           title={homeTranslation("section4Title")}
           link={`/library/${userRdx.user.id}`}
+          noMargin
         />
       </Grid>
-      {isLoading && <DirectoryList quantity={3} />}
-      {!isLoading && data && data?.length > 0 && (
+      {data && data?.length > 0 && (
         <Library
           items={data}
           options={options}
@@ -171,6 +170,7 @@ const RecentFiles: React.FC = () => {
           handleItemClick={handleItemClick}
           listType={ListTypeEnum.LIST}
           isLoading={isLoading}
+          itemsQuantitySkeleton={3}
         />
       )}
       {!isLoading && data && data?.length === 0 && (

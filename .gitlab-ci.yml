@@ -7,6 +7,7 @@ variables:
 stages:
   - prepare
   - build
+  - registry
   - deploy
   #- livetest
   # - cleanup
@@ -54,6 +55,7 @@ builder-staging:
     #name: $CI_BUILD_REF_NAME
   only:
     - develop
+    
 
 builder-production:
   tags:
@@ -69,13 +71,31 @@ builder-production:
     - main
     - tags
 
-deployer:
+register:
+  tags:
+    - docker
+  stage: registry
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $IMAGE_TAG
+
+
+deployer-develop:
   tags:
     - docker
   stage: deploy
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker push $IMAGE_TAG
+    - echo $CI_REGISTRY_IMAGE
+    - echo $CONTAINER_RELEASE_IMAGE
+    - echo $CI_BUILD_REF_NAME
+    - echo $CI_COMMIT_BRANCH
+    - docker pull $IMAGE_TAG
+    - docker run -d $IMAGE_TAG
+    #- docker-compose up -d app-develop
+    
+  only:
+    - develop
+
 
 #configure cluster:
 # tags:

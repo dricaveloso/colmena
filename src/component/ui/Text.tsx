@@ -21,6 +21,7 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/ban-types
   style?: object;
   children: React.ReactNode;
+  className?: string;
   [x: string]: any;
 };
 
@@ -45,6 +46,7 @@ function Text({
     body2: TextVariantEnum.P,
   },
   style = {},
+  className,
   children,
   ...props
 }: Props) {
@@ -59,6 +61,7 @@ function Text({
       gutterBottom={gutterBottom}
       variantMapping={variantMapping}
       style={{ ...style }}
+      className={className}
       {...props}
     >
       {children}

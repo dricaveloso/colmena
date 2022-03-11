@@ -4,6 +4,6 @@
     "errorMessagePassword": "Las contraseñas no coinciden",
     "errorUpdatingPassword": "No se puede actualizar la contraseña.",
     "errorCreatingPassword": "No se puede crear la contraseña",
-    "successCreatingPassword": "Contraseña creada con éxito",
-    "successUpdatingPassword": "Contraseña actualizada"
+    "successCreatingPassword": "Contraseña creada",
+    "successUpdatingPassword": "Contraseña actualizada "
 }

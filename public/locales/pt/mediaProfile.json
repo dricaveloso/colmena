@@ -14,27 +14,27 @@
     "messageSuccessInvite": "Convite enviado com sucesso.",
     "messageSuccessInformation": "Informações salvas com sucesso",
     "titleModalDialogInvite": "Convidar colaborador",
-    "descriptionModalDialogInvite": "Digite o nome, e-mail e perfil de acesso para o colaborador que deseja convidar.",
+    "descriptionModalDialogInvite": "Digite o nome, e-mail e perfil de acesso para a pessoa colaboradora que deseja convidar.",
     "buttonOkModalDialogInvite": "Enviar",
     "buttonCancelModalDialogInvite": "Cancelar",
     "placeholderGroup": "Grupo",
-    "messageOkModalDialogInvite": "Usuário criado com sucesso",
+    "messageOkModalDialogInvite": "Usuário/a criado",
     "messageErrorModalDialogInvite": "Usuário já existe",
     "createdErrorUser": "Erro ao criar usuário",
     "welcomeErrorUser": "Usuário criado mas e-mail não enviado",
     "inviteCollaboratorTitle": "Colaborador(a)",
     "inviteAdministratorTitle": "Administrador(a)",
-	"contextMenuOptions": {
-    "settings": "Configurações",
-    "edit": "Editar",
-    "deactivate": "Desativar conta"
-  },
-  "titleEditMediaModal": "Editar o Meio",
-  "editForm": {
-    "name": "Nome do meio",
-    "slogan": "Descrição",
-    "url": "URL"
-  },
-  "mediaProfileAvatarSaved": "Imagem salva",
-  "mediaProfileInfoSaved": "Meio atualizado"
+    "contextMenuOptions": {
+        "settings": "Configurações",
+        "edit": "Editar",
+        "deactivate": "Desativar conta"
+    },
+    "titleEditMediaModal": "Editar o Meio",
+    "editForm": {
+        "name": "Nome do meio",
+        "slogan": "Descrição",
+        "url": "URL"
+    },
+    "mediaProfileAvatarSaved": "Imagem salva",
+    "mediaProfileInfoSaved": "Meio atualizado"
 }

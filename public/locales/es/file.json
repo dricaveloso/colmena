@@ -9,7 +9,11 @@
         "deleteAudio": "Eliminar audio"
     },
     "messages": {
-        "descriptionSuccessfullyUpdated": "Descripción actualizada correctamente"
+        "descriptionSuccessfullyUpdated": "Descripción actualizada.",
+        "tagsSuccessfullyCreated": "Etiquetas creadas",
+        "fileNotFound": "Archivo no encontrado"
     },
-    "editDescription": "Editar Descripción"
+    "editDescription": "Editar Descripción",
+    "fileTitle": "Archivo",
+    "createTag": "Crear etiqueta"
 }

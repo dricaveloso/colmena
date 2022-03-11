@@ -1,8 +1,8 @@
 {
-    "titleCreated": "Créez ton mot de passe",
+    "titleCreated": "Créer ton mot de passe",
     "titleUpdated": "Le mot de passe a été mis à jour avec succès",
     "errorMessagePassword": "Le mot de passe ne correspond pas",
-    "errorUpdatingPassword": "Impossible de mettre à jour ton mot de passe",
+    "errorUpdatingPassword": "Impossible de mettre à jour ton mot de passe.",
     "errorCreatingPassword": "Impossible de créer ton mot de passe",
     "successCreatingPassword": "Mot de passe créé avec succès",
     "successUpdatingPassword": "Mot de passe mis à jour avec succès"

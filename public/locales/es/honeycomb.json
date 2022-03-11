@@ -1,16 +1,19 @@
 {
     "title": "Panal",
-    "memberTitle": "Miembro",
-    "membersTitle": "Miembros",
+    "memberTitle": "Integrante",
+    "membersTitle": "Integrantes",
     "noMemberTitle": "Sin integrantes",
     "tab1Title": "Chat",
     "tab2Title": "Librería",
-    "emptyTalkDescription": "Pulsa el signo de más para crear un panal",
-    "downloadAudioFailed": "No se puede descargar el audio",
+    "emptyTalkDescription": "Pulsa el signo de más para crear un panal.",
+    "downloadAudioFailed": "No se puede descargar el audio.",
     "contextMenuOptions": {
         "addParticipantContextTitle": "Añadir participante",
         "addParticipantModalTitle": "Add participant",
-        "participantsAddedSuccessfully": "Los participantes se agregaron satisfactoriamente"
+        "participantsAddedSuccessfully": "Participantes agregados/as correctamente.",
+        "leaveConversationContextTitle": "Abandonar conversación",
+        "removeConversationContextTitle": "Eliminar conversación"
     },
-    "downloadFileFailed": "No se puede descargar el archivo"
+    "downloadFileFailed": "No se puede descargar el archivo.",
+    "youTitle": "Tú"
 }

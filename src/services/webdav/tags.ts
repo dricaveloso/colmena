@@ -1,6 +1,8 @@
 import davAxiosConnection from "@/services/webdav/axiosConnection";
+import davAxiosBase from "@/services/webdav/axiosBase";
 import { webdavAxios } from "@/services/webdav";
 import { getFileId } from "@/services/webdav/files";
+import { TagInterface } from "@/interfaces/tags";
 
 interface SearchInterface {
   [key: string]: any;
@@ -154,4 +156,13 @@ export async function search(filters: SearchInterface, props?: string[]) {
     true,
   );
   return result.multistatus.response;
+}
+
+export async function getAllTags() {
+  const results = await davAxiosBase({}, "apps/colmenappi/meta/tag", "GET");
+  if (results.status !== 200) {
+    return [];
+  }
+
+  return results.data as TagInterface[];
 }

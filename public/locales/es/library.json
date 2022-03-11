@@ -1,10 +1,10 @@
 {
-    "title": "Librería",
+    "title": "Biblioteca",
     "sort": {
         "title": "Clasificar",
         "highlights": "Destacadas",
         "newest": "Más reciente",
-        "oldest": "Más antiguas",
+        "oldest": "Más antigua",
         "alphabeticalOrder": "Orden alfabético",
         "descendingAlphabeticalOrder": "Orden alfabético descendente"
     },
@@ -42,15 +42,15 @@
         "cannotDownloadFile": "No se puede descargar este archivo.",
         "unidentifiedEnvironment": "Entorno no identificado.",
         "unableToCompleteRequest": "No se puede completar la solicitud.",
-        "directorySuccessfullyCopied": "Directorio copiado con éxito.",
-        "fileSuccessfullyCopied": "Archivo copiado con éxito.",
-        "directorySuccessfullyMoved": "El directorio se movió con éxito.",
-        "fileSuccessfullyMoved": "El archivo se movió con éxito.",
-        "directorySuccessfullyDuplicated": "El directorio se duplicó con éxito.",
-        "fileSuccessfullyDuplicated": "El archivo se duplicó con éxito.",
-        "directorySuccessfullyRenamed": "El directorio se renombró con éxito.",
-        "fileSuccessfullyRenamed": "El archivo se renombró con éxito.",
-        "directorySuccessfullyRemoved": "El directorio se eliminó con éxito.",
+        "directorySuccessfullyCopied": "Directorio copiado",
+        "fileSuccessfullyCopied": "Archivo copiado",
+        "directorySuccessfullyMoved": "El directorio se movió con éxito",
+        "fileSuccessfullyMoved": "El archivo se movió con éxito",
+        "directorySuccessfullyDuplicated": "El directorio se duplicó",
+        "fileSuccessfullyDuplicated": "El archivo se duplicó",
+        "directorySuccessfullyRenamed": "El directorio se renombró con éxito",
+        "fileSuccessfullyRenamed": "El archivo se renombró con éxito",
+        "directorySuccessfullyRemoved": "El directorio se eliminó con éxito",
         "fileSuccessfullyRemoved": "El archivo ha sido eliminado.",
         "itemDuplicationCanceledSuccessfully": "La duplicación ha sido cancelada.",
         "itemRenamingCanceledSuccessfully": "Se ha cancelado el cambio de nombre del contenido."
@@ -67,7 +67,7 @@
     "detailsModal": {
         "name": "Nombre",
         "path": "Camino",
-        "lastUpdate": "Última actualización",
+        "lastUpdate": "Última actualización en",
         "size": "Tamaño",
         "type": "Tipo",
         "creator": "Creador/a",
@@ -80,11 +80,11 @@
     "downloading": "Descargando",
     "synchronizing": "Sincronizando",
     "cancel": "Cancelar",
-    "moveButton": "Mueve aquí",
+    "moveButton": "Mover aquí",
     "confirmCancelItemDuplication": "¿Realmente quieres cancelar la duplicación del contenido?",
     "confirmCancelItemRenaming": "¿Realmente quieres cancelar el cambio de nombre del contenido?",
     "itemStatus": {
         "availableOffline": "Disponible sin conexión"
     },
-    "talkFolderName": "compartido conmigo"
+    "talkFolderName": "Compartido conmigo"
 }

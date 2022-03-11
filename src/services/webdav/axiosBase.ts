@@ -14,10 +14,14 @@ export default async function axiosBase(
   extraHeaders: {} = { "Content-Type": "application/xml; charset=utf-8" },
 ) {
   const { password, id: username } = initializeStore({}).getState().user.user;
+  let baseUrl = `${publicRuntimeConfig.api.baseUrl}`;
+  if (path.search(/^apps\/colmenappi/) < 0) {
+    baseUrl += "/remote.php";
+  }
 
   const config: any = {
     method,
-    url: `${publicRuntimeConfig.api.baseUrl}/remote.php/${encodeURLAxios(path)}`,
+    url: `${baseUrl}/${encodeURLAxios(path)}`,
     headers: {
       ...extraHeaders,
     },

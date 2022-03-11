@@ -1,21 +1,21 @@
 {
     "title": "Preguntas frecuentes",
-    "subtitle": "12 preguntas frecuentes sobre Colmena",
+    "subtitle": "12 Preguntas frecuentes sobre Colmena",
     "faq": {
         "question1": "1 - ¿Qué es Colmena?",
         "answer1": "Colmena es una caja de herramientas de comunicación colaborativos 100% gratuita y segura para los medios locales y comunitarios. Colmena es mantenido por REDES A.C. y DW Akademie.",
         "question2": "2 - ¿Cuáles son las tecnologías detrás de Colmena?",
         "answer2": "Es una solución de aplicación web progresiva (PWA) de software libre integrada para entornos móviles y de escritorio que funciona tanto en línea como sin conectividad a Internet.",
         "question3": "3 - ¿Quiénes son los usuarios de Colmena?",
-        "answer3": "Medios de comunicación locales y comunitarios y activistas de los derechos humanos que promueven la igualdad de género, la diversidad y la comunicación de base que buscan una herramienta segura, privada y gratuita.",
+        "answer3": "Medios de comunicación locales, comunitarios y activistas de los derechos humanos que promueven la igualdad de género, la diversidad y la comunicación de base que buscan una herramienta segura, privada y gratuita.",
         "question4": "4 – ¿Cómo puedo acceder a Colmena?",
-        "answer4": "Para unirse a Colmena se debe solicitar una clave de acceso y es necesario aceptar el código de conducta/términos de uso basados en los derechos humanos digitales y la diversidad.",
+        "answer4": "Para unirte a Colmena se debe solicitar una clave de acceso y es necesario aceptar el código de conducta/términos de uso basados en los derechos humanos digitales y la diversidad.",
         "question5": "5 – ¿Puedo tener mi propia instancia de Colmena?",
         "answer5": "¡Sí, es software libre! Puedes instalar Colmena en tu propio servidor y así tener tu propia instancia. Consulta la documentación.",
         "question6": "6 - ¿Cuáles son las principales características de Colmena?",
-        "answer6": "Es una aplicación de productividad para radios comunitarias. Reúne en una sola aplicación: grabación, edición, intercambio, entrevistas remotas, transmisión, reuniones de equipo, intercambio de archivos, colaboración remota, publicación y transmisión; diseñado para una amplia gama de dispositivos y totalmente funcional con baja o nula conectividad a Internet. Garantiza la sincronización segura de contenidos a la nube de colmena siempre que se disponga de conexión a Internet.",
+        "answer6": "Es una aplicación de productividad para radios comunitarias. Reúne en una sola aplicación: grabación, edición, intercambio, entrevistas remotas, transmisión, reuniones de equipo, intercambio de archivos, colaboración remota, publicación y transmisión; diseñado para una amplia gama de dispositivos y totalmente funcional con baja o nula conectividad a Internet. Garantiza la sincronización segura de contenidos a la nube de Colmena siempre que se disponga de conexión a Internet.",
         "question7": "7 - ¿Cuales son las herramientas de audio?",
-        "answer7": "Los más importantes son la grabadora de audio, el editor y la transmisión en vivo, incluidas las conferencias de audio (con personas de sus medios o invitados externos).",
+        "answer7": "Los más importantes son la grabadora de audio, el editor y la transmisión en vivo, incluidas las conferencias de audio (con personas de sus medios o invitadas externas).",
         "question8": "8 - ¿Cuáles son los formatos de audio y sus metadatos?",
         "answer8": "El formato de audio estandarizado para la Web es Opus/ogg. También se admitirán otros formatos como MP3 y AAC y audio sin comprimir para la edición. El sistema de metadatos seguirá los protocolos internacionales Dublin Core para garantizar la interoperabilidad de los archivos.",
         "question9": "9 - ¿Qué tipo de funcionalidades ofrece Colmena?",
@@ -23,8 +23,8 @@
         "question10": "10 - ¿Cómo se almacenan mis archivos? ¿Hay un límite?",
         "answer10": "50 GB por cada medio para compartir entre tu equipo. Si necesitas más capacidad, ¡escríbenos!",
         "question11": "11 – ¿Tiene Colmena una sección para publicar audios o noticias?",
-        "answer11": "Sí, hay un área para publicaciones: audio, texto e imágenes. Una vez publicado, cualquiera puede compartir en redes sociales o tomar el código para incrustar el audio en su sitio web.  ",
+        "answer11": "Sí, hay un área para publicaciones: audio, texto e imágenes. Una vez publicado, cualquiera puede compartir en redes sociales o tomar el código para incrustar el audio en su sitio web. También dentro de los otros panales, el mismo intercambio está disponible pero solo para los usuarios autorizados.  ",
         "question12": "12 - ¿Cuáles son los requisitos legales para compartir y publicar contenidos en Colmena? (¿Qué tipo de licencia está disponible?)",
-        "answer12": "Por defecto, las publicaciones tienen una licencia Creative Commons BY-SA-NC. Pero podrá elegir otra licencia en cada publicación: tanto las demás licencias CC como la Licencia P2P."
+        "answer12": "Por defecto, las publicaciones tienen una licencia Creative Commons BY-SA-NC, pero podrás elegir otra licencia en cada publicación: tanto las demás licencias CC como la Licencia P2P."
     }
 }

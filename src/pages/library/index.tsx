@@ -269,7 +269,7 @@ function MyLibrary() {
 
   return (
     <LayoutApp title={l("title")} back>
-      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0 }}>
+      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART}>
         <HeaderBar
           key="library-modal"
           path={path}

@@ -17,6 +17,7 @@ import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
 import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
 import { HoneycombContextOptions } from "@/enums/*";
+import Clickable from "@/components/ui/Clickable";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -105,31 +106,35 @@ const VerticalItemList = ({ data }: Props) => {
   return (
     <Box className={classes.card}>
       <ListItemAvatar data-testid="honeycomb-avatar" className={classes.avatar}>
-        <HoneycombAvatar
-          showTitle={false}
-          width={55}
-          height={47}
-          image={`/images/honeycombs/honeycomb${getRandomInt(0, 13)}.png`}
-        />
+        <Clickable handleClick={navigateTo}>
+          <HoneycombAvatar
+            showTitle={false}
+            width={55}
+            height={47}
+            image={`/images/honeycombs/honeycomb${getRandomInt(0, 13)}.png`}
+          />
+        </Clickable>
       </ListItemAvatar>
-      <ListItemText
-        data-testid="honeycomb-title"
-        className={classes.description}
-        primary={displayName}
-        onClick={navigateTo}
-        primaryTypographyProps={{
-          style: {
-            color: theme.palette.primary.dark,
-            fontWeight: unreadMessages > 0 ? "bold" : "normal",
-          },
-        }}
-        secondary={`${prepareTitleMessage}: ${prepareSubtitleMessage()}`}
-        secondaryTypographyProps={{
-          style: {
-            fontWeight: unreadMessages > 0 ? "bold" : "normal",
-          },
-        }}
-      />
+      <Clickable handleClick={navigateTo} className={classes.description}>
+        <ListItemText
+          data-testid="honeycomb-title"
+          className={classes.description}
+          primary={displayName}
+          onClick={navigateTo}
+          primaryTypographyProps={{
+            style: {
+              color: theme.palette.primary.dark,
+              fontWeight: unreadMessages > 0 ? "bold" : "normal",
+            },
+          }}
+          secondary={`${prepareTitleMessage}: ${prepareSubtitleMessage()}`}
+          secondaryTypographyProps={{
+            style: {
+              fontWeight: unreadMessages > 0 ? "bold" : "normal",
+            },
+          }}
+        />
+      </Clickable>
       <Box className={classes.options}>
         {unreadMessages > 0 && <Chip label={unreadMessages} size="small" color="primary" />}
         <ContextMenu

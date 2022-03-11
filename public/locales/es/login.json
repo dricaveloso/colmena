@@ -1,9 +1,9 @@
 {
-    "title": "Ingrese su correo electrónico y contraseña para iniciar sesión",
+    "title": "Ingresa tu correo electrónico y contraseña para iniciar sesión.",
     "loginInvalid": "Usuario o contraseña incorrectos",
     "permissionDenied": "Acceso denegado",
     "userDeactivated": "Usuario deshabilitado",
     "mediaNotFound": "Error al obtener tus contenidos",
-    "profileNotFound": "Error al acceder a su archivo de usuario",
-    "loginSuccesfully": "Sesión iniciada con éxito"
+    "profileNotFound": "Error al acceder a tu archivo de usuario",
+    "loginSuccesfully": "Sesión iniciada"
 }

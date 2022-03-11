@@ -1,0 +1,12 @@
+{
+  "title": "Search",
+  "searchFile": "Search a file",
+  "searchByTags": "Search by tags",
+  "recentSearches": "Recent searches",
+  "clearRecentSearches": "Clear recent searches",
+  "itemsFound": "item(s) found",
+  "messages": {
+    "tagNotFound": "Tag not found.",
+    "folderOrFileNotFound": "Sorry, we didn't find any results with this search."
+  }
+}
