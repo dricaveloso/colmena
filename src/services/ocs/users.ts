@@ -43,6 +43,7 @@ interface UserObjParams {
   groups: string[];
   password: string;
   subadmin?: string[];
+  language: string;
 }
 
 export function createUser(
@@ -50,6 +51,7 @@ export function createUser(
   email: string,
   group: string,
   permission: string,
+  language: string,
   password = publicRuntimeConfig.user.defaultNewUserPassword || "",
 ): Promise<CreateUserInterface> {
   const userObj: UserObjParams = {
@@ -58,6 +60,7 @@ export function createUser(
     email,
     groups: [group],
     password,
+    language,
   };
 
   if (permission === RoleUserEnum.ADMIN) userObj.subadmin = [group];

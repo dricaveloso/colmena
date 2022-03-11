@@ -18,8 +18,9 @@ import Switch from "@material-ui/core/Switch";
 import { Box } from "@material-ui/core";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { useRouter } from "next/router";
 // import { useRouter } from "next/router";
-// import { removeCornerSlash } from "@/utils/utils";
+import { isAudioFile } from "@/utils/utils";
 
 const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const { type, environment, filename, basename, arrayBufferBlob, mime, availableOptions } =
@@ -32,6 +33,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
+  const router = useRouter();
   const [openCopyItemModal, setOpenCopyItemModal] = useState(false);
   const [availableOffline, setAvailableOffline] = useState(environment === EnvironmentEnum.BOTH);
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
@@ -55,6 +57,15 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
     toast(c("featureUnavailable"), "warning");
   };
 
+  const openEditFilePage = () => {
+    if (isAudioFile(mime)) {
+      router.push(`/edit-audio/${btoa(filename)}`);
+      return;
+    }
+
+    unavailable();
+  };
+
   // const inLibraryPage = useMemo(() => {
   //   const splitPage = removeCornerSlash(router.route).split("/");
 
@@ -65,7 +76,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const renderOptions = [];
   if (type === "file" && availableOptions.includes(ContextMenuOptionEnum.EDIT)) {
     renderOptions.push(
-      <MenuItem key="edit" onClick={unavailable} data-testid="edit-item" style={{ color: "#aaa" }}>
+      <MenuItem key="edit" onClick={openEditFilePage} data-testid="edit-item">
         <ContextMenuItem title={t("contextMenuOptions.edit")} icon="edit_filled" />
       </MenuItem>,
     );
