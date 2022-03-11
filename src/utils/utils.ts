@@ -623,3 +623,8 @@ function bufferToWave(abuffer: AudioBuffer, len: number) {
     pos += 4;
   }
 }
+
+export function getAvailableSocialMedias() {
+  const sm = ["facebook", "twitter", "instagram"];
+  return sm;
+}

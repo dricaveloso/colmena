@@ -17,17 +17,7 @@ import Text from "@/components/ui/Text";
 import { useTranslation } from "next-i18next";
 import { TextVariantEnum } from "@/enums/*";
 import { useDispatch } from "react-redux";
-
-// import FundoRodapeLogin from "../../../public/images/fundoRodapeLogin.png";
-/*
-    // backgroundImage={{
-    //   backgroundImage: `url(${FundoRodapeLogin})`,
-    //   backgroundRepeat: "repeat-x",
-    //   backgroundPosition: `center ${window.outerHeight - 290}px`,
-    //   backgroundSize: "auto",
-    //   backgroundColor,
-    // }}
-*/
+import { parseCookies } from "nookies";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -36,27 +26,35 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 });
 
 export default function Login() {
+  const cookies = parseCookies();
   const dispatch = useDispatch();
   const { t } = useTranslation("login");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isLower640, setIsLower640] = useState(false);
+  const locale = cookies.NEXT_LOCALE || "en";
 
   useEffect(() => {
     if (window.innerHeight <= 640) setIsLower640(true);
 
     if (router.asPath.indexOf("?out") !== -1) {
       dispatch({ type: "USER_LOGGED_OUT" });
-      router.push("/login");
+      router.push("/login", "", {
+        locale,
+      });
     }
 
     if (!navigator.onLine) {
-      router.replace("/home");
+      router.replace("/home", "", {
+        locale,
+      });
       return;
     }
     getSession().then((session) => {
       if (session) {
-        router.replace("/home");
+        router.replace("/home", "", {
+          locale,
+        });
       } else {
         setIsLoading(false);
       }

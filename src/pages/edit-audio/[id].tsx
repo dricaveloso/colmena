@@ -192,10 +192,6 @@ function EditAudio() {
     ee.emit("statechange", type);
   };
 
-  const handleShift = () => {
-    ee.emit("statechange", "shift");
-  };
-
   return (
     <LayoutApp
       templateHeader="variation3"
@@ -212,7 +208,6 @@ function EditAudio() {
             handleTrim={handleTrim}
             handleSelectAudioRegion={handleSelectAudioRegion}
             handleDownload={handleDownload}
-            handleShift={handleShift}
             handleSave={handleSave}
           />
         ) : (
@@ -222,7 +217,6 @@ function EditAudio() {
             handleTrim={handleTrim}
             handleSelectAudioRegion={handleSelectAudioRegion}
             handleDownload={handleDownload}
-            handleShift={handleShift}
             handleSave={handleSave}
           />
         )

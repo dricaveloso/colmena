@@ -165,7 +165,7 @@ export default function WrapperForm() {
 
               const { language } = user;
               if (language !== langCookie) {
-                user.language = langCookie;
+                user.language = language;
               }
 
               dispatch(

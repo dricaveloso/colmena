@@ -286,8 +286,8 @@ export type AllIconProps =
   | "disabled"
   | "camera"
   | "edit_circle"
-  | "facebook_rounded"
-  | "twitter_rounded"
+  | "facebook"
+  | "twitter"
   | "sync_file"
   | "generic_file"
   | "play_outlined"
@@ -319,7 +319,9 @@ export type AllIconProps =
   | "end_cursor"
   | "sync"
   | "recently_viewed"
-  | "arrow_up_left";
+  | "arrow_up_left"
+  | "trim"
+  | "instagram";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 

@@ -3,7 +3,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useState, useEffect } from "react";
 import WaveformPlaylist from "waveform-playlist";
-import { saveAs } from "file-saver";
 import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import { makeStyles, Theme } from "@material-ui/core/styles";
@@ -21,12 +20,9 @@ import {
 import { useTranslation } from "next-i18next";
 import { useSelector } from "react-redux";
 import { PropsAudioEditorSelector, PropsUserSelector } from "@/types/*";
-import { putFile as putFileOnline } from "@/services/webdav/files";
-import { blobToArrayBuffer, createObjectURL, arrayBufferToBlob } from "blob-util";
-import { toast } from "@/utils/notifications";
+import { blobToArrayBuffer } from "blob-util";
 import { findByBasename, updateFile as updateFileLocal } from "@/store/idb/models/files";
 import {
-  getFile as getQuickFile,
   findByBasename as findByBasenameQuickBlob,
   removeFile as removeQuickFile,
   createFile as createQuickBlob,
@@ -78,18 +74,24 @@ export function setTextInputValue(id: string, val: number | string) {
   if (elem !== null) elem.value = String(val);
 }
 
+export const INIT_CURSOR_SELECT = "init-cursor-select";
+export const END_CURSOR_SELECT = "end-cursor-select";
+
+export function removeAllCustomCursorElements() {
+  document.getElementById(INIT_CURSOR_SELECT)?.remove();
+  document.getElementById(END_CURSOR_SELECT)?.remove();
+}
+
 export const SAVE_AUDIO_FLAG = "save-audio-flag";
 export const START_POSITION_SELECT = "start-position-select";
 export const END_POSITION_SELECT = "end-position-select";
 
 const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   const { t } = useTranslation("editAudio");
-  const { t: c } = useTranslation("common");
   const marginBoxContainer = 20;
   const zoomLevels = [500, 1000, 3000, 5000];
   const fatorRewindForward = 10;
-  const INIT_CURSOR_SELECT = "init-cursor-select";
-  const END_CURSOR_SELECT = "end-cursor-select";
+  const IS_CURSOR_SELECTED = "is-cursor-selected";
   const router = useRouter();
 
   const useStyles = makeStyles((theme: Theme) => ({
@@ -173,14 +175,6 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   );
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
-  function removeAllCustomCursorElements() {
-    document.getElementById(INIT_CURSOR_SELECT)?.remove();
-    document.getElementById(END_CURSOR_SELECT)?.remove();
-  }
-
-  const myStateCursorRef = React.useRef(false);
-  myStateCursorRef.current = audioEditorRdx.isCursorSelected;
-
   useEffect(() => {
     setTextInputValue(SAVE_AUDIO_FLAG, "pending");
   }, []);
@@ -225,7 +219,7 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
         });
 
         ee.on("select", (start, end, track) => {
-          if (track && track.state === "cursor" && myStateCursorRef.current) {
+          if (track && track.state === "cursor" && getTextInputValue(IS_CURSOR_SELECTED) === 1) {
             setTimeout(() => {
               const currentCursor = document.getElementsByClassName(
                 "selection point",
@@ -261,7 +255,7 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
                   removeAllCustomCursorElements();
                 }
               }
-            }, 200);
+            }, 400);
           }
         });
 
@@ -322,6 +316,11 @@ const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
     <Box className={classes.root}>
       <input type="hidden" id={START_POSITION_SELECT} />
       <input type="hidden" id={END_POSITION_SELECT} />
+      <input
+        type="hidden"
+        id={IS_CURSOR_SELECTED}
+        value={audioEditorRdx.isCursorSelected ? 1 : 0}
+      />
       <Backdrop open={loadingSaveAudio} />
       <Backdrop open={!showControls} />
       <Box className={classes.boxContainerNode}>

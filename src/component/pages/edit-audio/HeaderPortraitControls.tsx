@@ -10,11 +10,12 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import theme from "@/styles/theme";
-import { toast } from "@/utils/notifications";
 import { isMobile } from "react-device-detect";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCursorSelected } from "@/store/actions/audio-editor/index";
 import Backdrop from "@/components/ui/Backdrop";
+import { PropsAudioEditorSelector } from "@/types/*";
+import { removeAllCustomCursorElements } from "./WaveformPlaylist";
 
 type PositionProps = {
   mouseX: null | number;
@@ -25,7 +26,6 @@ type Props = {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
   handleTrim: () => void;
-  handleShift: () => void;
   handleSelectAudioRegion: (type: string) => void;
   handleDownload: () => void;
   handleSave: () => void;
@@ -36,18 +36,19 @@ const ContextMenuOptions = ({
   handleZoomOut,
   handleSelectAudioRegion,
   handleTrim,
-  handleShift,
   handleDownload,
   handleSave,
 }: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [activeSelect, setActiveSelect] = useState(false);
+  const audioEditorRdx = useSelector(
+    (state: { audioEditor: PropsAudioEditorSelector }) => state.audioEditor,
+  );
+  const [activeSelect, setActiveSelect] = useState(audioEditorRdx.isCursorSelected);
   const [activeShift, setActiveShift] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const dispatch = useDispatch();
 
   const { t } = useTranslation("editAudio");
-  const { t: c } = useTranslation("common");
   const [position, setPosition] = useState<PositionProps>({
     mouseX: null,
     mouseY: null,
@@ -66,23 +67,28 @@ const ContextMenuOptions = ({
   };
 
   const handleActiveSelected = () => {
-    setActiveSelect(!activeSelect);
+    const actSel = !activeSelect;
+    setActiveSelect(actSel);
     setActiveShift(false);
     if (!isMobile) {
-      handleSelectAudioRegion("select");
+      handleSelectAudioRegion(actSel ? "select" : "cursor");
       dispatch(setCursorSelected(false));
     } else {
       handleSelectAudioRegion("cursor");
-      dispatch(setCursorSelected(!activeSelect));
+      dispatch(setCursorSelected(actSel));
+      if (!actSel) {
+        removeAllCustomCursorElements();
+      }
     }
     handleCloseContextMenu();
   };
 
   const handleActiveShift = () => {
-    setActiveShift(!activeShift);
+    const actShi = !activeShift;
+    setActiveShift(actShi);
     setActiveSelect(false);
     dispatch(setCursorSelected(false));
-    handleShift();
+    handleSelectAudioRegion(!actShi ? "cursor" : "shift");
     handleCloseContextMenu();
   };
 
@@ -145,11 +151,15 @@ const ContextMenuOptions = ({
             style={fontSizeIcon}
           />
         </MenuItem>
-        <MenuItem key="cut-audio-button" data-testid="cut-audio-button" onClick={handleTrimIntern}>
+        <MenuItem
+          key="trim-audio-button"
+          data-testid="trim-audio-button"
+          onClick={handleTrimIntern}
+        >
           <ContextMenuItem
-            icon="cut"
+            icon="trim"
             iconColor={theme.palette.variation6.main}
-            title={t("contextOptions.cutAudioRegionTitle")}
+            title={t("contextOptions.trimAudioRegionTitle")}
             style={fontSizeIcon}
           />
         </MenuItem>
@@ -160,7 +170,7 @@ const ContextMenuOptions = ({
         >
           <ContextMenuItem
             icon="audio_shift"
-            htmlColor={activeShift ? theme.palette.variation6.dark : theme.palette.variation6.main}
+            iconColor={activeShift ? theme.palette.variation7.main : theme.palette.variation6.main}
             title={t("contextOptions.shiftAudioTitle")}
             style={fontSizeIcon}
           />
@@ -172,7 +182,7 @@ const ContextMenuOptions = ({
         >
           <ContextMenuItem
             icon="cursor_select"
-            htmlColor={activeSelect ? theme.palette.variation6.dark : theme.palette.variation6.main}
+            iconColor={activeSelect ? theme.palette.variation2.dark : theme.palette.variation6.main}
             title={t("contextOptions.selectAudioRegionTitle")}
             style={fontSizeIcon}
           />
