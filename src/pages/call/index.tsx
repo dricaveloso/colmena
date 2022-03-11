@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -16,9 +17,10 @@ import { I18nInterface } from "@/interfaces/index";
 import { AlignItemsEnum, JustifyContentEnum } from "@/enums/index";
 import GoLive from "@/components/pages/call/GoLive";
 import dynamic from "next/dynamic";
+// @ts-ignore
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 // @ts-ignore
-const WebRTCClient = dynamic(() => import("freepbx-react-webrtc"), { ssr: false });
+const WebRTCClient = dynamic(() => import("iotcomms-react-webrtc"), { ssr: false });
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
     ...(await serverSideTranslations(locale, ["call", "recording"])),
@@ -42,8 +44,7 @@ function Call() {
           <video width="50%" id="remoteVideo" autoPlay playsInline></video>
 
           <WebRTCClient
-          // @ts-ignore
-
+            // @ts-ignore
             video={true}
             autoRegister
             autoConnect={false}
