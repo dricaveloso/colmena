@@ -50,7 +50,10 @@ export default NextAuth({
           } = dataUser;
 
           let userLang = constants.DEFAULT_LANGUAGE;
-          if (Object.values(constants.LOCALES).includes(language)) userLang = language;
+          if (Object.values(constants.LOCALES_NEXTCLOUD).includes(language)) {
+            // TIRAR ISSO NO FUTURO! a pasta pt de locales precisa ser alterada para pt_br
+            userLang = language === "pt_BR" ? "pt" : language;
+          }
 
           return {
             id,
