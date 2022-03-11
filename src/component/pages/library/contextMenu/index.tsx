@@ -61,7 +61,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
 
   const goToTextEditor = () => {
     const filename = getOnlyFilename(cardItem.basename);
-    router.push(`text-editor/${filename}`);
+    router.push(`/text-editor/${filename}`);
   };
 
   const unavailable = () => {
