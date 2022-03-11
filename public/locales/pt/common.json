@@ -52,7 +52,7 @@
     "callDrawerBottomTitle": "Chamada",
     "honeycombModal": {
         "buttonStep2": "Adicionar",
-        "chatRoomSuccess": "Sala de bate-papo criada com sucesso",
+        "chatRoomSuccess": "Sala de bate-papo criada",
         "chatRoomFailed": "Não foi possível criar sala de bate-papo",
         "buttonStep1": "Criar",
         "errorCreatePanal": "Já existe favo de mel com este nome",
@@ -99,7 +99,7 @@
         "singularYear": "ano",
         "pluralYear": "anos",
         "singularMonth": "mês",
-        "pluralMonth": "anos",
+        "pluralMonth": "meses",
         "singularDay": "dia",
         "pluralDay": "dias",
         "singularHour": "hora",
@@ -113,7 +113,7 @@
     "seeAllTitle": "Ver todos",
     "examplePostTitle": "Mostrar {{num}} Radio Colmena",
     "examplePostSubtitle": "5 dias | 12 MB",
-    "membersTitle": "Membros (as)",
+    "membersTitle": "Integrantes",
     "manageTitle": "Gerenciar",
     "yesTitle": "Sim",
     "noTitle": "Não",
@@ -137,7 +137,7 @@
     "confirmCancelFolderCreation": "Tem certeza que deseja cancelar a criação da pasta?",
     "uploadRuleFileSize": "Imagem não pode ser maior que 20mb",
     "uploadRuleFileType": "São permitidas apenas extensões PNG e JPG",
-    "uploadUserAvatarSuccessfully": "Imagem de perfil carregada com sucesso",
+    "uploadUserAvatarSuccessfully": "Atualizar foto de perfil",
     "contextMenuUserAvatar": {
         "remove": "Remover",
         "upload": "Selecionar imagem"
@@ -147,5 +147,7 @@
     "bannerMessage3": "Gravar, editar e publicar áudio do seu aparelho de celular com múltiplas pessoas na sala de gravação",
     "bannerMessage4": "Salve seu arquivos com nosso serviço de nuvem especializado para mídias.",
     "addFolderDrawerBottomTitle": "Pasta",
-    "recordingDrawerBottomTitle": "Gravar"
+    "recordingDrawerBottomTitle": "Gravar",
+    "microphonePermissionTitle": "Você precisa permitir o uso do microfone",
+    "doneMessage": "Feito!"
 }
