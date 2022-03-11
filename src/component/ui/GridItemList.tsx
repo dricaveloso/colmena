@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
 import { Environment } from "@/types/*";
 import AudioItemPreview from "@/components/pages/library/AudioFile/AudioItemPreview";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -74,12 +75,13 @@ interface GridItemListInterface {
   secondary?: string | React.ReactNode;
   topOptions?: React.ReactNode;
   bottomOptions?: React.ReactNode;
-  isPlaying: boolean;
   handleClick?: (event: any) => void | undefined;
   filename: string;
   environment: Environment;
   size?: number;
-  arrayBufferBlob?: ArrayBuffer;
+  arrayBufferBlob?: ArrayBuffer | null;
+  audioState: "play" | "pause" | "stop";
+  handleAudioFinish: () => void;
 }
 
 const GridItemList = ({
@@ -90,11 +92,12 @@ const GridItemList = ({
   topOptions,
   bottomOptions,
   handleClick,
-  isPlaying = false,
   filename,
   environment,
   size = 0,
   arrayBufferBlob,
+  audioState,
+  handleAudioFinish,
 }: GridItemListInterface) => {
   const classes = useStyles();
 
@@ -102,20 +105,28 @@ const GridItemList = ({
     <Box className={classes.card}>
       <Box className={[classes.options, classes.topOptions].join(" ")}>{topOptions}</Box>
       {avatar && <ListItemAvatar className={classes.avatar}>{avatar}</ListItemAvatar>}
-      {isPlaying ? (
+      {audioState !== "stop" ? (
         <ListItemText
           className={classes.title}
           data-testid="title"
           style={{ width: "100%" }}
           primary={
-            <AudioItemPreview
-              primary={primary}
-              size={size}
-              filename={filename}
-              environment={environment}
-              type="grid"
-              arrayBufferBlob={arrayBufferBlob}
-            />
+            !arrayBufferBlob ? (
+              <Box display="flex" flex={1} height={45} justifyContent="center" alignItems="center">
+                <CircularProgress size={20} />
+              </Box>
+            ) : (
+              <AudioItemPreview
+                primary={primary}
+                size={size}
+                filename={filename}
+                environment={environment}
+                type="grid"
+                arrayBufferBlob={arrayBufferBlob}
+                audioState={audioState}
+                handleAudioFinish={handleAudioFinish}
+              />
+            )
           }
         />
       ) : (

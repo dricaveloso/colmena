@@ -83,14 +83,14 @@ export function removeAllCustomCursorElements() {
 }
 
 export const SAVE_AUDIO_FLAG = "save-audio-flag";
+export const START_POSITION_SELECT = "start-position-select";
+export const END_POSITION_SELECT = "end-position-select";
 
 const Waveform = ({ urlBlob, filename, waveHeight, ee }: Props) => {
   const { t } = useTranslation("editAudio");
   const marginBoxContainer = 20;
   const zoomLevels = [500, 1000, 3000, 5000];
   const fatorRewindForward = 10;
-  const START_POSITION_SELECT = "start-position-select";
-  const END_POSITION_SELECT = "end-position-select";
   const IS_CURSOR_SELECTED = "is-cursor-selected";
   const router = useRouter();
 

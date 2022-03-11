@@ -2,22 +2,22 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import theme from "@/styles/theme";
 import { LibraryCardItemInterface } from "@/interfaces/index";
-import { AllIconProps, PropsLibrarySelector } from "@/types/*";
+import { AllIconProps } from "@/types/*";
 import { getAudioPath, getPrivatePath, getPublicPath, getTalkPath } from "@/utils/directory";
 import { Box } from "@material-ui/core";
 import FileIcon from "@/components/ui/FileIcon";
 import IconButton from "@/components/ui/IconButton";
 import { isAudioFile } from "@/utils/utils";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentAudioPlaying } from "@/store/actions/library";
 import Clickable from "@/components/ui/Clickable";
 
 interface LibraryCardItemAvatarInterface extends LibraryCardItemInterface {
   handleClick: () => void;
+  handlePlayPause: (audioState: string) => void;
+  audioFinishStop: boolean;
 }
 
 const CardItemAvatar = ({
@@ -30,12 +30,10 @@ const CardItemAvatar = ({
   image,
   mime,
   type,
+  handlePlayPause,
+  audioFinishStop = false,
 }: LibraryCardItemAvatarInterface) => {
-  const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
-  const dispatch = useDispatch();
-  const playPauseAudioHandle = (flag: boolean) => {
-    dispatch(setCurrentAudioPlaying(!flag ? filename : ""));
-  };
+  const [playPause, setPlayPause] = useState<"play" | "pause" | null>(null);
 
   let iconColor = theme.palette.variation2.main;
   let folderSecondIcon: AllIconProps | null | undefined = null;
@@ -63,21 +61,31 @@ const CardItemAvatar = ({
     }
   }
 
+  useEffect(() => {
+    if (audioFinishStop) setPlayPause("pause");
+  }, [audioFinishStop]);
+
+  const handleToggleStateAudioPlaying = () => {
+    if (!playPause) {
+      setPlayPause("play");
+      handlePlayPause("play");
+      return;
+    }
+
+    const plPa = playPause === "play" ? "pause" : "play";
+    setPlayPause(plPa);
+    handlePlayPause(plPa);
+  };
+
   if (type === "file" && isAudioFile(mime)) {
     return (
       <IconButton
         key={`${basename}-playpause`}
-        icon={
-          library.currentAudioPlaying && library.currentAudioPlaying === filename ? "stop" : "play"
-        }
+        icon={playPause === "play" ? "pause" : "play"}
         iconColor={theme.palette.primary.main}
         iconStyle={{ fontSize: 45 }}
         fontSizeIcon="small"
-        handleClick={() =>
-          playPauseAudioHandle(
-            library.currentAudioPlaying ? library.currentAudioPlaying === filename : false,
-          )
-        }
+        handleClick={handleToggleStateAudioPlaying}
       />
     );
   }

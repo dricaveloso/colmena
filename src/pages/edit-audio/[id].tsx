@@ -18,13 +18,18 @@ import dynamic from "next/dynamic";
 import {
   createFile as createQuickBlob,
   findByBasename as findByBasenameQuickBlob,
+  removeFile,
 } from "@/store/idb/models/filesQuickBlob";
 import { findByBasename } from "@/store/idb/models/files";
 import { removeSpecialCharacters } from "@/utils/utils";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
 import RotateYourDevice from "@/components/pages/edit-audio/RotateYourDevice";
 import Box from "@material-ui/core/Box";
-import Playlist from "@/components/pages/edit-audio/WaveformPlaylist";
+import Playlist, {
+  getTextInputValue,
+  START_POSITION_SELECT,
+  END_POSITION_SELECT,
+} from "@/components/pages/edit-audio/WaveformPlaylist";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Backdrop from "@/components/ui/Backdrop";
 import EventEmitter from "events";
@@ -119,6 +124,7 @@ function EditAudio() {
       if (!localFile && !localFileQuickBlob) {
         setLoading(true);
         const result: any = await listFile(userRdx.user.id, filename);
+        removeFile(userRdx.user.id, removeSpecialCharacters(filename));
         await createQuickBlob({
           basename: removeSpecialCharacters(filename),
           userId: userRdx.user.id,
@@ -169,7 +175,8 @@ function EditAudio() {
   };
 
   const handleTrim = () => {
-    ee.emit("trim");
+    if (getTextInputValue(START_POSITION_SELECT) > 0 && getTextInputValue(END_POSITION_SELECT) > 0)
+      ee.emit("trim");
   };
 
   const handleDownload = () => {
