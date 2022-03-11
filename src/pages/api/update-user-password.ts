@@ -23,8 +23,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         },
         {
           auth: {
-            username: serverRuntimeConfig.adminInfo.username || "vinicius",
-            password: serverRuntimeConfig.adminInfo.password || "vinicius",
+            username: serverRuntimeConfig.adminInfo.username || "",
+            password: serverRuntimeConfig.adminInfo.password || "",
           },
           headers: {
             "OCS-APIRequest": true,

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 import React, { useState } from "react";
@@ -83,55 +85,7 @@ export default function InviteForm({ open, handleClose }: Props) {
           onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
             setShowBackdrop(true);
             setSubmitting(false);
-            const { name, emailCol: email, group, permission } = values;
-
-            (async () => {
-              try {
-                const user = await createUser(name, email, group, permission);
-                const userId = user.data.ocs.data.id;
-                let file: UserProfileInterface;
-                try {
-                  const userProfileFile = await listFile(
-                    userId,
-                    ConfigFilesNCEnum.USER_PROFILE,
-                    {
-                      username: userId,
-                      password: publicRuntimeConfig.user.defaultNewUserPassword,
-                    },
-                    true,
-                  );
-                  file = JSON.parse(String(userProfileFile));
-                  file.medias.push(group);
-                  await createOrUpdateFile(userId, file);
-                  const tokenChat = await findTokenChatByPath(group);
-                  if (typeof tokenChat === "string") {
-                    const response = await fetch("/api/add-participant-conversation", {
-                      method: "POST",
-                      body: JSON.stringify({ token: tokenChat, newParticipant: userId }),
-                      headers: {
-                        "Content-type": "application/json",
-                      },
-                    });
-                    const data = await response.json();
-                    if (!data.success) {
-                      console.log("erro ao adicionar o participante em um chat");
-                    }
-                  }
-                } catch (e) {
-                  console.log("Arquivo .profile.json não encontrado", e);
-                }
-
-                handleClose();
-                toast(t("messageOkModalDialogInvite"), "success");
-              } catch (e) {
-                console.log(e);
-
-                handleClose();
-                toast(t("messageErrorModalDialogInvite"), "warning");
-              } finally {
-                setShowBackdrop(false);
-              }
-            })();
+            // const { name, emailCol: email, group, permission } = values;
           }}
         >
           {({ submitForm, isSubmitting, errors, touched }: any) => (

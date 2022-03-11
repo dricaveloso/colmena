@@ -16,8 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         `${serverRuntimeConfig.api.baseUrl}/ocs/v2.php/cloud/users/${userId}?format=json`,
         {
           auth: {
-            username: serverRuntimeConfig.adminInfo.username || "vinicius",
-            password: serverRuntimeConfig.adminInfo.password || "vinicius",
+            username: serverRuntimeConfig.adminInfo.username || "",
+            password: serverRuntimeConfig.adminInfo.password || "",
           },
           headers: {
             "OCS-APIRequest": true,

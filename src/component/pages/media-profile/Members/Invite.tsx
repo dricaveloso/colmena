@@ -26,6 +26,7 @@ import { UserProfileInterface } from "@/interfaces/index";
 import Divider from "@/components/ui/Divider";
 import Modal from "@/components/ui/Modal";
 import { findTokenChatByPath } from "@/pages/recording";
+import { parseCookies } from "nookies";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -46,6 +47,7 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
   const { t: c } = useTranslation("common");
   const [showBackdrop, setShowBackdrop] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const cookies = parseCookies();
 
   const ValidationSchema = Yup.object().shape({
     name: Yup.string().required(c("form.requiredTitle")),
@@ -87,7 +89,8 @@ export default function InviteForm({ openInviteForm, handleCloseInviteForm }: Pr
 
             (async () => {
               try {
-                const user = await createUser(name, email, group, permission);
+                const langCookie = cookies.NEXT_LOCALE || "en";
+                const user = await createUser(name, email, group, permission, langCookie);
                 const userId = user.data.ocs.data.id;
                 let file: UserProfileInterface;
                 try {

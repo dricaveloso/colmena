@@ -38,7 +38,7 @@ export default function SocialMedia() {
             iconColor={theme.palette.variation1.main}
             iconStyle={{ fontSize: 64 }}
             fontSizeIcon="large"
-            handleClick={() => setOpenModal(true)}
+            handleClick={() => setOpenModal(false)}
             style={{ marginRight: 8, marginBottom: 25 }}
             textStyle={{
               color: theme.palette.primary.dark,
