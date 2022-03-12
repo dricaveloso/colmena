@@ -1,6 +1,5 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import theme from "@/styles/theme";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum, ButtonVariantEnum } from "@/enums/*";
 // import IconButton from "@/components/ui/IconButton";
@@ -10,57 +9,66 @@ import { PropsUserSelector } from "@/types/index";
 import { isSubadminProfile } from "@/utils/permissions";
 import Button from "@/components/ui/Button";
 import AvatarWithContextMenu from "@/components/pages/media-profile/AvatarWithContextMenu";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    padding: theme.spacing(3),
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: theme.palette.primary.main,
+    width: "100%",
+  },
+  containerMedia: {
+    display: "flex",
+    flexDirection: "column",
+    marginLeft: theme.spacing(2),
+    flex: 1,
+    justifyContent: "flex-start",
+  },
+  containerMediaUrl: {
+    display: "flex",
+    marginTop: theme.spacing(1),
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  mediaTitle: {
+    color: "#D2D3DC",
+    fontSize: 12,
+    textAlign: "left",
+  },
+  mediaUrl: {
+    color: "#D2D3DC",
+    fontSize: 12,
+    textAlign: "left",
+    marginLeft: 0,
+    paddingLeft: 0,
+  },
+}));
 
 export default function HeaderMediaProfile() {
+  const classes = useStyles();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
-  const textAlign = "left";
-  const colorBody1 = "#D2D3DC";
-
   return (
-    <Box
-      padding={3}
-      display="flex"
-      justifyContent="flex-start"
-      alignItems="center"
-      flexDirection="row"
-      style={{ backgroundColor: theme.palette.primary.main, width: "100%" }}
-    >
+    <Box className={classes.container}>
       <AvatarWithContextMenu size={10} showEditImage={isSubadminProfile()} />
-      <Box
-        display="flex"
-        flexDirection="column"
-        marginLeft={2}
-        flex={1}
-        justifyContent="flex-start"
-      >
-        <Text
-          variant={TextVariantEnum.BODY2}
-          style={{ color: colorBody1, fontSize: 12, textAlign }}
-        >
+      <Box className={classes.containerMedia}>
+        <Text variant={TextVariantEnum.BODY2} className={classes.mediaTitle}>
           {userRdx.user.media?.slogan}
         </Text>
-        <Box
-          display="flex"
-          marginTop={1}
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Box className={classes.containerMediaUrl}>
           <Button
             component="a"
-            style={{ color: colorBody1, fontSize: 12, textAlign, marginLeft: 0, paddingLeft: 0 }}
+            className={classes.mediaUrl}
             title={userRdx.user.media?.url}
             target="blank"
             url={userRdx.user.media?.url}
             variant={ButtonVariantEnum.TEXT}
           />
-          {/* <IconButton
-            handleClick={() => toast(c("featureUnavailable"), "warning")}
-            icon="speaker"
-            fontSizeIcon="small"
-            iconColor="#fff"
-          /> */}
         </Box>
       </Box>
     </Box>

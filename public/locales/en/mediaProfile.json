@@ -41,6 +41,7 @@
         "url": "URL"
     },
     "mediaProfileAvatarSaved": "Image saved",
+    "mediaProfileAvatarRemoved": "Image removed",
     "mediaProfileInfoSaved": "Media updated",
     "addSocialMediaTitle": "Add social media",
     "updateSocialMediaTitle": "Update social media",

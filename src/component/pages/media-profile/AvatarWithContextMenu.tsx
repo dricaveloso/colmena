@@ -22,8 +22,15 @@ import Loading from "@/components/ui/Loading";
 import { isPNGImage, isJPGImage } from "@/utils/utils";
 import getCroppedImg from "@/utils/cropImage";
 import { blobToArrayBuffer } from "blob-util";
-import { putFile } from "@/services/webdav/files";
+import { putFile, deleteFile } from "@/services/webdav/files";
 import { getUserGroup } from "@/utils/permissions";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  create as createMedia,
+  findByName as findByMediaName,
+  update as updateMedia,
+  remove as removeMedia,
+} from "@/store/idb/models/media";
 
 type Props = {
   size: number;
@@ -42,7 +49,14 @@ type CroppedAreaProps = {
   y: number;
 };
 
+const useStyles = makeStyles((theme) => ({
+  iconRemove: {
+    color: theme.palette.danger.light,
+  },
+}));
+
 function AvatarChangePicture({ size, showEditImage = true }: Props) {
+  const classes = useStyles();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const inputFileRef = useRef(null);
   const [showBackdrop, setShowBackdrop] = useState(false);
@@ -58,6 +72,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
   });
   const [fileTarget, setFileTarget] = useState<Blob | null>(null);
   const [fileNameTarget, setFileNameTarget] = useState("");
+  const [loadingRemove, setLoadingRemove] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<CroppedAreaProps>({
@@ -66,6 +81,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
     x: 0,
     y: 0,
   });
+  const mediaName = getUserGroup();
 
   const handleOpenContextMenu = (event: any) => {
     if (!showEditImage) return;
@@ -97,6 +113,25 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
     toast(c("featureUnavailable"), "warning");
   };
 
+  const removeMediaAvatar = async () => {
+    try {
+      setLoadingRemove(true);
+      handleCloseContextMenu();
+      await deleteFile(userRdx.user.id, `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE_AVATAR}`);
+      const mediaIdb = await findByMediaName(mediaName);
+      if (mediaIdb) {
+        await removeMedia(mediaIdb.id);
+      }
+      handleReloadAvatar();
+      toast(t("mediaProfileAvatarRemoved"), "success");
+    } catch (e) {
+      console.log(e);
+      toast(c("genericErrorMessage"), "warning");
+    } finally {
+      setLoadingRemove(false);
+    }
+  };
+
   const onSelectFile = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
       const { type, size } = e.target.files[0];
@@ -126,7 +161,6 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
       setShowBackdrop(true);
       const croppedImage = await getCroppedImg(file, croppedAreaPixels, 0);
       const imageArrayBuffer = await blobToArrayBuffer(croppedImage);
-      const mediaName = getUserGroup();
 
       const result = await putFile(
         userRdx.user.id,
@@ -137,8 +171,14 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
           password: userRdx.user.password,
         },
       );
-
       if (!result) throw new Error("error");
+
+      const mediaIdb = await findByMediaName(mediaName);
+      if (!mediaIdb) {
+        await createMedia({ name: mediaName, image: imageArrayBuffer });
+      } else {
+        await updateMedia(mediaIdb.id, { image: imageArrayBuffer });
+      }
 
       handleReloadAvatar();
       toast(t("mediaProfileAvatarSaved"), "success");
@@ -174,6 +214,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
 
   return (
     <>
+      <Backdrop open={loadingRemove} />
       <Backdrop open={showBackdrop} />
       <input type="file" ref={inputFileRef} onChange={onSelectFile} style={{ display: "none" }} />
       <Box
@@ -208,14 +249,10 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
           <MenuItem
             key="remove"
             data-testid="remove-media-avatar-menu-option"
-            onClick={featureUnavailable}
-            style={{ color: "#ff6347" }}
+            onClick={removeMediaAvatar}
+            className={classes.iconRemove}
           >
-            <ContextMenuItem
-              icon="trash"
-              iconColor="#ff6347"
-              title={c("contextMenuUserAvatar.remove")}
-            />
+            <ContextMenuItem icon="trash" danger title={c("contextMenuUserAvatar.remove")} />
           </MenuItem>
         </Menu>
       </Box>
