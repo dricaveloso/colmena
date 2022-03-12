@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import theme from "@/styles/theme";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import { capitalizeFirstLetter } from "@/utils/utils";
+import { isSubadminProfile } from "@/utils/permissions";
 
 type Props = {
   title: string;
@@ -92,7 +93,7 @@ export default function SocialMediaItem({
       {openConfirmation && (
         <ActionConfirm onOk={handleDeleteIntern} onClose={() => setOpenConfirmation(false)} />
       )}
-      <Clickable handleClick={handleOpenContextMenu}>
+      <Clickable handleClick={isSubadminProfile() ? handleOpenContextMenu : handleShow}>
         <SvgIcon icon={icon} style={{ fontSize }} htmlColor={iconColor} />
         <Text
           variant={TextVariantEnum.SUBTITLE1}
