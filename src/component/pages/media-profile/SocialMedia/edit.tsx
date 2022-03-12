@@ -10,57 +10,45 @@ import Divider from "@/components/ui/Divider";
 import { Formik, Form, Field, FieldProps } from "formik";
 import { Grid } from "@material-ui/core";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
-import * as Yup from "yup";
 import { getUserGroup } from "@/utils/permissions";
 import { ConfigFilesNCEnum } from "@/enums/index";
 import { listFile, putFile } from "@/services/webdav/files";
 import { useSelector, useDispatch } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
-import { MediaInfoInterface } from "@/interfaces/index";
+import { MediaInfoInterface, SocialMediaInfoInterface } from "@/interfaces/index";
 import { mediaInfoUpdate } from "@/store/actions/users/index";
 import { toast } from "@/utils/notifications";
-import { isValidUrl } from "@/utils/utils";
+import { isValidUrl, capitalizeFirstLetter } from "@/utils/utils";
+import * as Yup from "yup";
 
 type Props = {
   title: string;
   open: boolean;
   handleClose: () => void;
+  socialMediaSelected: SocialMediaInfoInterface | null;
 };
 
 interface MyFormValues {
-  // name: string;
-  description: string;
+  name: string;
   url: string;
 }
 
-export default function EditMedia({ title, open, handleClose }: Props) {
+export default function Edit({ title, open, handleClose, socialMediaSelected }: Props) {
   const { t } = useTranslation("mediaProfile");
   const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
   const [errorUrlMessage, setErrorUrlMessage] = useState("");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
+  const name = socialMediaSelected?.name || "";
+
   const initialValues = {
-    // name: userRdx.user.media?.name,
-    description: userRdx.user.media?.slogan,
-    url: userRdx.user.media?.url,
+    name: capitalizeFirstLetter(name),
+    url: socialMediaSelected?.url || "",
   };
 
-  // const maxLengthName = 100;
-  const maxLengthDescription = 200;
-
-  const schemaValidation = Yup.object().shape({
-    // name: Yup.string()
-    //   .required(c("form.requiredTitle"))
-    //   .max(maxLengthName, c("form.passwordMaxLengthTitle", { size: maxLengthName })),
-    description: Yup.string()
-      .required(c("form.requiredTitle"))
-      .max(maxLengthDescription, c("form.passwordMaxLengthTitle", { size: maxLengthDescription })),
-    // url: Yup.string().nullable().url(c("form.invalidURLTitle")),
-  });
-
   const handleSubmit = async (values: MyFormValues, setSubmitting: (flag: boolean) => void) => {
-    const { description, url } = values;
+    const { url } = values;
     let urlSend = url;
     if (urlSend) {
       if (urlSend.indexOf("http://") === -1 && urlSend.indexOf("https://") === -1)
@@ -85,23 +73,26 @@ export default function EditMedia({ title, open, handleClose }: Props) {
         true,
       );
       const mediaObj: MediaInfoInterface = JSON.parse(String(mediaFile));
-      // mediaObj.name = name;
-      mediaObj.slogan = description;
-      mediaObj.url = urlSend;
+
+      if (mediaObj.social_medias) {
+        mediaObj.social_medias.map((item: SocialMediaInfoInterface) => {
+          if (item.name.toLowerCase() === socialMediaSelected?.name.toLowerCase()) {
+            // eslint-disable-next-line no-param-reassign
+            item.url = url;
+          }
+          return item;
+        });
+      }
 
       await putFile(
         userRdx.user.id,
         `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE}`,
         JSON.stringify(mediaObj),
-        {
-          username: userRdx.user.id,
-          password: userRdx.user.password,
-        },
       );
 
       dispatch(mediaInfoUpdate(mediaObj));
 
-      toast(t("mediaProfileInfoSaved"), "success");
+      toast(t("socialMediaInfoSaved"), "success");
       handleClose();
     } catch (e) {
       console.log(e);
@@ -110,6 +101,10 @@ export default function EditMedia({ title, open, handleClose }: Props) {
       setSubmitting(false);
     }
   };
+
+  const schemaValidation = Yup.object().shape({
+    url: Yup.string().required(c("form.requiredTitle")),
+  });
 
   return (
     <Modal title={title} handleClose={handleClose} open={open}>
@@ -122,52 +117,29 @@ export default function EditMedia({ title, open, handleClose }: Props) {
       >
         {({ submitForm, isSubmitting, errors, touched }: any) => (
           <Form>
-            {/* <Field name="name" data-testid="media-name" InputProps={{ notched: true }}>
+            <Divider marginTop={20} />
+            <Field name="name" data-testid="social-media-name" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="name"
-                  label={t("editForm.name")}
+                  label={t("addSocialMedia.name")}
                   variant="outlined"
+                  fullWidth
+                  disabled
                   inputProps={{
                     autoComplete: "off",
-                    maxLength: maxLengthName,
                   }}
-                  fullWidth
-                  {...field}
-                />
-              )}
-            </Field>
-            {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null} */}
-            <Divider marginTop={20} />
-            <Field
-              name="description"
-              data-testid="media-description"
-              InputProps={{ notched: true }}
-            >
-              {({ field }: FieldProps) => (
-                <TextField
-                  id="description"
-                  label={t("editForm.slogan")}
-                  variant="outlined"
-                  inputProps={{
-                    autoComplete: "off",
-                    maxLength: maxLengthDescription,
-                  }}
-                  fullWidth
                   multiline
                   {...field}
                 />
               )}
             </Field>
-            {errors.description && touched.description ? (
-              <ErrorMessageForm message={errors.description} />
-            ) : null}
             <Divider marginTop={20} />
-            <Field name="url" data-testid="media-url" InputProps={{ notched: true }}>
+            <Field name="url" data-testid="social-media-url" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField
                   id="url"
-                  label={t("editForm.url")}
+                  label={t("addSocialMedia.url")}
                   variant="outlined"
                   fullWidth
                   inputProps={{
@@ -178,6 +150,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
                 />
               )}
             </Field>
+            {errors.url && touched.url ? <ErrorMessageForm message={errors.url} /> : null}
             {errorUrlMessage ? <ErrorMessageForm message={errorUrlMessage} /> : null}
             <Divider marginTop={20} />
             <Grid container justifyContent="flex-end">
@@ -186,7 +159,7 @@ export default function EditMedia({ title, open, handleClose }: Props) {
                 title={c("form.submitSaveTitle")}
                 disabled={isSubmitting}
                 isLoading={isSubmitting}
-                data-testid="submit-edit-media"
+                data-testid="submit-update-social-media"
                 type="submit"
               />
             </Grid>

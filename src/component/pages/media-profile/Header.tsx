@@ -12,7 +12,6 @@ import Button from "@/components/ui/Button";
 import AvatarWithContextMenu from "@/components/pages/media-profile/AvatarWithContextMenu";
 
 export default function HeaderMediaProfile() {
-  // const { t: c } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
   const textAlign = "left";
