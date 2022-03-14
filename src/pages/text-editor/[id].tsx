@@ -71,9 +71,9 @@ const TextEditor = () => {
   };
 
   const save = async () => {
-    setIsLoading(true);
-
     try {
+      setIsLoading(true);
+
       await createFileText();
       await putFile(userRdx.user.id, filename, content);
       toast(c("messages.fileSaveSuccessfully"), "success");
@@ -81,9 +81,8 @@ const TextEditor = () => {
     } catch (error) {
       toast(c("genericErrorMessage"), "error");
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const getContent = async () => getFileContents(userRdx.user.id, filename);
@@ -134,7 +133,7 @@ const TextEditor = () => {
       >
         <Grid container>
           <JoditEditor
-            value={content}
+            value={content || ""}
             config={{
               readonly: false,
               toolbarAdaptive: false,
