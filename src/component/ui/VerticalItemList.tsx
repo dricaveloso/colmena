@@ -5,7 +5,6 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core";
 import { VerticalItemListInterface } from "@/interfaces/index";
 import AudioItemPreview from "@/components/pages/library/AudioFile/AudioItemPreview";
-import { basename } from "path";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -51,6 +50,7 @@ const VerticalItemList = (cardItem: VerticalItemListInterface) => {
     environment,
     size = 0,
     arrayBufferBlob,
+    basename,
     audioState = "stop",
     handleAudioFinish,
   } = cardItem;

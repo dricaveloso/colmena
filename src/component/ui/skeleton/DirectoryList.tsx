@@ -18,6 +18,8 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     background: "#fff",
     padding: 3,
+    borderRadius: 2,
+    marginBottom: 4,
   },
   description: {
     flexDirection: "column",

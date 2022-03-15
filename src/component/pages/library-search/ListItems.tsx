@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { LibraryCardItemInterface, LibraryItemInterface } from "@/interfaces/index";
 import Text from "@/components/ui/Text";
@@ -13,10 +13,20 @@ import ContextMenuOptions from "../library/contextMenu";
 import { ContextMenuOptionEnum } from "@/enums/*";
 import { useRouter } from "next/router";
 import CardItem from "../library/CardItem";
-import { ListItem } from "@material-ui/core";
+import { Box, ListItem } from "@material-ui/core";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const useStyles = makeStyles(() =>
   createStyles({
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      flex: 1,
+    },
+    infiniteScroll: {
+      width: "100%",
+    },
     shareButton: {
       padding: 0,
       margin: 0,
@@ -32,18 +42,15 @@ type Props = {
 };
 
 export default function ListItems({ items, loading, reloadItems }: Props) {
+  const [slicedItems, setSlicedItems] = useState<LibraryItemInterface[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const maxItems = 20;
   const classes = useStyles();
   const { t } = useTranslation("librarySearch");
   const { t: c } = useTranslation("common");
   const router = useRouter();
-
-  if (loading) {
-    return <DirectoryList />;
-  }
-
-  if (items.length === 0) {
-    return <Text>{t("messages.folderOrFileNotFound")}</Text>;
-  }
 
   const unavailable = () => {
     toast(c("featureUnavailable"), "warning");
@@ -106,19 +113,60 @@ export default function ListItems({ items, loading, reloadItems }: Props) {
     }
   };
 
+  const getMoreItems = useCallback(() => {
+    if (currentPage < totalPages) {
+      const newItems = items.slice(0, slicedItems.length + maxItems);
+      setSlicedItems(newItems);
+
+      const current = currentPage + 1;
+      setCurrentPage(current);
+      if (current >= totalPages) {
+        setHasMore(false);
+      }
+    }
+  }, [currentPage, totalPages, items, slicedItems.length]);
+
+  useEffect(() => {
+    if (items && items.length > 0) {
+      setTotalPages(Math.ceil(items.length / maxItems));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
+
+  useEffect(() => {
+    getMoreItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalPages]);
+
+  if (loading) {
+    return <DirectoryList />;
+  }
+
+  if (items.length === 0) {
+    return <Text>{t("messages.folderOrFileNotFound")}</Text>;
+  }
+
   return (
-    <>
-      {items.map((item: LibraryItemInterface) => (
-        <ListItem key={item.filename} style={{ padding: 1 }}>
-          <CardItem
-            subtitle={item.filename}
-            handleOpenCard={handleItemClick}
-            {...item}
-            orientation="vertical"
-            options={options}
-          />
-        </ListItem>
-      ))}
-    </>
+    <Box className={classes.root}>
+      <InfiniteScroll
+        dataLength={slicedItems.length}
+        next={getMoreItems}
+        hasMore={hasMore}
+        loader={<h4>Loading...</h4>}
+        className={classes.infiniteScroll}
+      >
+        {slicedItems.map((item: LibraryItemInterface) => (
+          <ListItem key={item.filename} style={{ padding: 1 }}>
+            <CardItem
+              subtitle={item.filename}
+              handleOpenCard={handleItemClick}
+              {...item}
+              orientation="vertical"
+              options={options}
+            />
+          </ListItem>
+        ))}
+      </InfiniteScroll>
+    </Box>
   );
 }

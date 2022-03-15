@@ -170,7 +170,7 @@ function HeaderBar({
           <IconButton
             color="primary"
             component="span"
-            onClick={() => router.push("/library-search")}
+            onClick={() => router.push("/search")}
             aria-controls="filter-menu"
             aria-haspopup="true"
             disabled={isDisabled}

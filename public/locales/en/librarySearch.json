@@ -8,5 +8,6 @@
   "messages": {
     "tagNotFound": "Tag not found.",
     "folderOrFileNotFound": "Sorry, we didn't find any results with this search."
-  }
+  },
+  "clear": "Clear"
 }

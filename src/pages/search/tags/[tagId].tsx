@@ -44,7 +44,7 @@ export default function LibrarySearchTags() {
   const handleOpenTag = (tag: any) => {
     router.replace(
       {
-        pathname: `/library-search/tags/${tag.tagId}`,
+        pathname: `/search/tags/${tag.tagId}`,
       },
       undefined,
       {
@@ -63,7 +63,7 @@ export default function LibrarySearchTags() {
     const tags = getTags(tagId);
     if (!tags || tags.length === 0) {
       toast(t("messages.tagNotFound"), "error");
-      router.replace("/library-search");
+      router.replace("/search");
     }
 
     return items.filter(

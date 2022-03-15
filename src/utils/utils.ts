@@ -545,8 +545,12 @@ export function verifyIndexedDBBrowserEnable() {
   };
 }
 
+function checkEncodeURI(str: string) {
+  return /%/i.test(str);
+}
+
 export function decodeURI(encodedURI: string | null | undefined) {
-  if (!encodedURI) return encodedURI;
+  if (!encodedURI || !checkEncodeURI(encodedURI)) return encodedURI;
 
   return decodeURIComponent(encodedURI);
 }
