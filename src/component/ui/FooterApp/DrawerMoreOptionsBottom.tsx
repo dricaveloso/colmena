@@ -16,6 +16,7 @@ import { toast } from "@/utils/notifications";
 import { isSubadminProfile } from "@/utils/permissions";
 import { ButtonColorEnum, ButtonVariantEnum } from "@/enums/index";
 import Button from "@/components/ui/Button";
+import NewEditorModal from "./ModalTools/NewEditorModal";
 
 type Props = {
   open: boolean;
@@ -27,6 +28,7 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
   const [openNewFolderModal, setOpenNewFolderModal] = useState(false);
   const [openUploadModal, setOpenUploadModal] = useState(false);
   const [openNewHoneycombModal, setOpenNewHoneycombModal] = useState(false);
+  const [openNewEditorModal, setOpenNewEditorModal] = useState(false);
 
   const { t } = useTranslation("common");
   const router = useRouter();
@@ -36,6 +38,11 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
 
   const handleOpenNewFolderModal = () => {
     setOpenNewFolderModal(true);
+    handleClose();
+  };
+
+  const handleOpenEditorModal = () => {
+    setOpenNewEditorModal(true);
     handleClose();
   };
 
@@ -61,6 +68,12 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
     setOpenNewHoneycombModal(false);
     handleClose();
   };
+
+  const handleCloseNewEditorModal = () => {
+    setOpenNewEditorModal(false);
+    handleClose();
+  };
+
   interface DefaultConfigButtonInterface {
     color: {
       main: string;
@@ -130,10 +143,10 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
                 fontSizeIcon={defaultConfigButton.fontSizeIcon}
                 textStyle={{
                   fontSize: defaultConfigButton.fontSize,
-                  color: defaultConfigButton.color.light,
+                  color: defaultConfigButton.color.main,
                 }}
                 title={t("textDrawerBottomTitle")}
-                handleClick={() => toast(t("featureUnavailable"), "warning")}
+                handleClick={handleOpenEditorModal}
               />
             </Grid>
             <Grid item xs={3}>
@@ -213,6 +226,9 @@ export default function SwipeableTemporaryDrawer({ open, handleOpen, handleClose
           open={openNewHoneycombModal}
           handleClose={handleCloseNewHoneycombModal}
         />
+      )}
+      {openNewEditorModal && (
+        <NewEditorModal open={openNewEditorModal} handleClose={handleCloseNewEditorModal} />
       )}
     </>
   );
