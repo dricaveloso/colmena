@@ -50,6 +50,11 @@ export default function SearchInput({ search, keyword = "" }: Props) {
   };
 
   const handleSearch = (values: FormValues) => {
+    if (intervalSearch) {
+      clearTimeout(intervalSearch);
+      setIntervalSearch(undefined);
+    }
+
     search(values.keyword);
   };
 
@@ -62,7 +67,7 @@ export default function SearchInput({ search, keyword = "" }: Props) {
     setIntervalSearch(
       setTimeout(() => {
         submitForm();
-      }, 500),
+      }, 600),
     );
   };
 
@@ -82,7 +87,7 @@ export default function SearchInput({ search, keyword = "" }: Props) {
                 <InputBase
                   className={classes.input}
                   placeholder={t("searchFile")}
-                  value={field.value ? decodeURI(field.value) : ""}
+                  value={field.value}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
                     setFieldValue("keyword", event.target.value);
                     setSubmitType("search");

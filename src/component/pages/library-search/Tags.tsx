@@ -7,6 +7,9 @@ import Chip from "@material-ui/core/Chip";
 import { useTranslation } from "next-i18next";
 import { LibraryItemInterface } from "@/interfaces/index";
 import { TagInterface } from "@/interfaces/tags";
+import { ButtonSizeEnum } from "@/enums/*";
+import Button from "@/components/ui/Button";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -38,6 +41,19 @@ const useStyles = makeStyles((theme) =>
       color: "#fff",
       borderColor: "#fff",
     },
+    sectionTitle: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    clearButton: {
+      backgroundColor: `${theme.palette.gray.dark} !important`,
+      color: theme.palette.gray.contrastText,
+      display: "inline-block",
+      borderRadius: 15,
+      textTransform: "initial",
+      padding: 2,
+    },
   }),
 );
 
@@ -50,6 +66,7 @@ type Props = {
 };
 
 export default function Tags({ rawTags, rawItems, currentTag, openTag }: Props) {
+  const router = useRouter();
   const [tags, setTags] = useState<Array<TagInterface[]>>([]);
   const { t } = useTranslation("librarySearch");
   const classes = useStyles();
@@ -108,6 +125,10 @@ export default function Tags({ rawTags, rawItems, currentTag, openTag }: Props) 
     setTags(slicedTags);
   };
 
+  const clear = () => {
+    router.push(`/search`);
+  };
+
   useEffect(() => {
     if (rawTags && rawItems) {
       handleTags(rawTags, rawItems);
@@ -121,7 +142,17 @@ export default function Tags({ rawTags, rawItems, currentTag, openTag }: Props) 
 
   return (
     <Box className={classes.root}>
-      <SectionTitle>{t("searchByTags")}</SectionTitle>
+      <SectionTitle className={classes.sectionTitle}>
+        {t("searchByTags")}
+        {currentTag && (
+          <Button
+            title={t("clear")}
+            size={ButtonSizeEnum.SMALL}
+            className={classes.clearButton}
+            handleClick={clear}
+          />
+        )}
+      </SectionTitle>
       <Box className={classes.tags}>
         {tags.map((row) => (
           <Box className={classes.tagRow} key={uuid()}>
@@ -136,7 +167,7 @@ export default function Tags({ rawTags, rawItems, currentTag, openTag }: Props) 
                 ].join(" ")}
                 label={
                   <Box component="span" display="flex" flexDirection="row">
-                    {tag.tagName}
+                    {tag.tagName.toString().toLowerCase()}
                   </Box>
                 }
                 style={{ marginRight: 5 }}
