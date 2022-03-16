@@ -9,7 +9,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import { useDispatch } from "react-redux";
-import { updateStatus, removeFile } from "@/store/actions/transfers";
+import { updateStatus, removeFile, setOpenTransferModal } from "@/store/actions/transfers";
 import {
   getByTempfilename as getTransferByTempfilename,
   update as updateTransfer,
@@ -18,6 +18,8 @@ import {
 import { StatusTransferItemProps } from "@/types/index";
 import SvgIcon from "@/components/ui/SvgIcon";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import theme from "@/styles/theme";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -51,6 +53,9 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignItems: "center",
   },
+  iconColorDanger: {
+    color: "#ff6347",
+  },
 }));
 
 type Props = {
@@ -67,6 +72,7 @@ type PositionProps = {
 export default function Transfer({ tempFilename, filename, status }: Props) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const router = useRouter();
   const { t: c } = useTranslation("common");
   const [anchorEl, setAnchorEl] = useState(null);
   const [position, setPosition] = useState<PositionProps>({
@@ -101,6 +107,22 @@ export default function Transfer({ tempFilename, filename, status }: Props) {
     dispatch(removeFile(tempFilename));
   };
 
+  const openFile = () => {
+    dispatch(setOpenTransferModal(false));
+    router.push(`/file/${btoa(filename)}`);
+  };
+
+  const showFilenamePath = () => {
+    const arr = filename.split("/");
+    arr.pop();
+    return arr.join("/");
+  };
+
+  const showFilenameName = () => {
+    const arr = filename.split("/");
+    return arr[arr.length - 1];
+  };
+
   return (
     <>
       <Box className={classes.card} onClick={handleOpenContextMenu}>
@@ -108,13 +130,17 @@ export default function Transfer({ tempFilename, filename, status }: Props) {
         <ListItemText
           data-testid={`library-item-${basename}`}
           className={classes.description}
-          primary={filename.split("/").reverse()[0]}
+          primary={showFilenameName()}
           primaryTypographyProps={{ style: { fontWeight: "bold" } }}
-          secondary="/vinicius/Teste"
+          secondary={`/${showFilenamePath()}`}
         />
         {status === "in progress" && <Image src="/images/upload.gif" width={30} height={30} />}
-        {status === "complete" && <SvgIcon icon="tick" htmlColor="green" fontSize="large" />}
-        {status === "canceled" && <SvgIcon icon="cancel" htmlColor="tomato" fontSize="large" />}
+        {status === "complete" && (
+          <SvgIcon icon="sync_success" htmlColor="green" fontSize="large" />
+        )}
+        {status === "canceled" && (
+          <SvgIcon icon="sync_canceled" htmlColor={theme.palette.danger.light} fontSize="large" />
+        )}
       </Box>
       <Menu
         key={`simple-menu-${tempFilename}`}
@@ -130,6 +156,11 @@ export default function Transfer({ tempFilename, filename, status }: Props) {
         }
         onClose={handleCloseContextMenu}
       >
+        {status === "complete" && (
+          <MenuItem key="open" data-testid="open-details-file" onClick={openFile}>
+            <ContextMenuItem icon="show" title={c("transfer.openDetailsFile")} />
+          </MenuItem>
+        )}
         {(status === "complete" || status === "canceled") && (
           <MenuItem key="clean" data-testid="clean-transfer-item" onClick={removeUpload}>
             <ContextMenuItem icon="clean" title={c("transfer.cleanTransfer")} />
@@ -140,7 +171,7 @@ export default function Transfer({ tempFilename, filename, status }: Props) {
             key="disabled"
             data-testid="cancel-transfer-item"
             onClick={cancelUpload}
-            style={{ color: "#ff6347" }}
+            className={classes.iconColorDanger}
           >
             <ContextMenuItem
               iconColor="#ff6347"

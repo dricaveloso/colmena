@@ -68,7 +68,6 @@ export default function SyncModal({ open, handleOpen, cardItem, availableOffline
             await deleteOfflinePath();
           }
 
-          console.log("chegou aqui");
           handleOpen(false);
         } catch (e) {
           setDownloadError(e.message);

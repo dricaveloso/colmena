@@ -330,7 +330,10 @@ export type AllIconProps =
   | "instagram"
   | "transfer"
   | "cancel"
-  | "clean";
+  | "clean"
+  | "show"
+  | "sync_success"
+  | "sync_canceled";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 

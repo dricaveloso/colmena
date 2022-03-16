@@ -1,13 +1,9 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@/components/ui/Modal";
-import {
-  getUniqueName,
-  // chunkFileUpload,
-  abortUpload,
-  createBaseFileUpload,
-} from "@/services/webdav/files";
+import { getUniqueName, abortUpload, createBaseFileUpload } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import Divider from "@/components/ui/Divider";
@@ -154,9 +150,10 @@ export default function Upload({ open, handleClose }: Props) {
           progress: 0,
           type: "upload",
           status: "in progress",
+          chatNotify: true,
           createdAt: Date.now(),
         });
-        dispatch(addFile({ tempFilename, filename: destination, status: "in progress" }));
+        dispatch(addFile({ tempFilename, filename: destination, status: "in progress", userId }));
         // if (isPanal(realPath)) {
         //   await shareInChat(realPath, finalPath);
         // }

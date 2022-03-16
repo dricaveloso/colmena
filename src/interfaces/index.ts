@@ -34,6 +34,7 @@ export interface TransferItemInterface {
   tempFilename: string;
   filename: string;
   status: StatusTransferItemProps;
+  userId: string;
 }
 
 export interface UserProfileInterface {

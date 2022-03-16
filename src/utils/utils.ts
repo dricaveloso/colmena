@@ -413,7 +413,7 @@ export function uniqueId() {
 
 export async function findGroupFolderByPath(path: string): Promise<boolean> {
   const arr = path.split("/");
-  const honeycombName = arr[0];
+  const honeycombName = arr[0].toLocaleLowerCase() === "talk" ? arr[1] : arr[0];
   const response = await fetch("/api/list-group-folder");
   const groupFolders = await response.json();
   return groupFolders.data

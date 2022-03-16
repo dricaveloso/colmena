@@ -40,6 +40,9 @@ import {
   getByTempfilename as getTransferByTempfilename,
   update as updateTransfer,
 } from "@/store/idb/models/transfers";
+import { createShare } from "@/services/share/share";
+// eslint-disable-next-line import/no-cycle
+import { findTokenChatByPath } from "@/pages/recording";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -520,6 +523,8 @@ type TransferIDBProps = {
   file: File;
   currentChunk: number;
   status: "in progress" | "canceled" | "complete" | "pending";
+  filename: string;
+  chatNotify: boolean;
 };
 
 export async function chunkFileUpload(
@@ -581,7 +586,15 @@ export async function chunkFileUpload(
     }
   }
 
-  if (!abort) await doneChunkFileUpload(userId, tempFilename, filename);
+  if (!abort) {
+    await doneChunkFileUpload(userId, tempFilename, filename);
+    if (transfer.chatNotify) {
+      const token = await findTokenChatByPath(filename);
+      if (token && typeof token === "string") {
+        await createShare(token, filename);
+      }
+    }
+  }
 }
 
 export async function createBaseFileUpload(userId: string | number, tempFilename: string) {

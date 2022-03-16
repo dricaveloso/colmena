@@ -160,6 +160,7 @@
     "noResults": "No files to transfer",
     "fileAddToTransfer": "File added to transfer queue",
     "cancelTransfer": "Cancel",
-    "cleanTransfer": "Clean"
+    "cleanTransfer": "Clean",
+    "openDetailsFile": "Open"
   }
 }

@@ -31,7 +31,6 @@ function UploadItem({ file }: Props) {
   };
 
   useEffect(() => {
-    console.log("Chegou aqui", file.tempFilename);
     load();
   }, []);
 

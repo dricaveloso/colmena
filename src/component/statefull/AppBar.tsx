@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import Toolbar from "@material-ui/core/Toolbar";
 import SvgIcon from "@/components/ui/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
-import { PositionProps, PropsRecordingSelector } from "@/types/index";
+import { PositionProps, PropsRecordingSelector, PropsTransferSelector } from "@/types/index";
 import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,7 +12,9 @@ import Drawer from "./GeneralMenuDrawer";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 import { updateRecordingState } from "@/store/actions/recordings/index";
+import { setOpenTransferModal } from "@/store/actions/transfers/index";
 import { setBackAfterFinishRecording } from "@/utils/utils";
+import { TransferItemInterface } from "@/interfaces/index";
 
 export interface AppBarInterface {
   title: string;
@@ -55,6 +57,7 @@ function AppBarSys({
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
+  const transferRdx = useSelector((state: { transfer: PropsTransferSelector }) => state.transfer);
   const dispatch = useDispatch();
 
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -87,6 +90,10 @@ function AppBarSys({
       backTo(backPage);
     }
   };
+
+  const transferWorkInProgress = transferRdx.files.some(
+    (item: TransferItemInterface) => item.status === "in progress",
+  );
 
   return (
     <header>
@@ -141,6 +148,20 @@ function AppBarSys({
           </Box>
           <Box display="flex" flexDirection="row" alignItems="center">
             {extraElement && extraElement}
+            {transferWorkInProgress && (
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => dispatch(setOpenTransferModal(true))}
+              >
+                <SvgIcon
+                  icon="transfer"
+                  htmlColor={tplHeader.get(templateHeader).textColor}
+                  fontSize="medium"
+                />
+              </IconButton>
+            )}
             {drawer && (
               <IconButton
                 edge="start"
