@@ -14,9 +14,10 @@ import {
   hasLocalPath,
   getRootPath,
   handleDirectoryName,
-  convertUsernameToPrivate,
   convertPrivateToUsername,
   isPanal,
+  convertAliasPathToRealPath,
+  convertSharedWithMeToTalk,
 } from "@/utils/directory";
 import { toast } from "@/utils/notifications";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
@@ -51,6 +52,7 @@ let requestCancel = false;
 
 export default function NewFolderModal({ open, handleClose }: Props) {
   const { t } = useTranslation("common");
+  const { t: l } = useTranslation("library");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const userId = userRdx.user.id;
   const library = useSelector((state: { library: PropsLibrarySelector }) => state.library);
@@ -74,7 +76,7 @@ export default function NewFolderModal({ open, handleClose }: Props) {
     setIsLoading(true);
     (async () => {
       try {
-        const realPath = convertUsernameToPrivate(finalPath, userId);
+        const realPath = convertAliasPathToRealPath(finalPath, userId, l("talkFolderName"));
         const directoryExists = await existDirectory(userId, realPath);
 
         if (requestCancel) {
@@ -111,7 +113,12 @@ export default function NewFolderModal({ open, handleClose }: Props) {
           const timer = 5000;
 
           toast(t("messages.directoryCreatedSuccessfully"), "success", { timer });
-          router.push(`/library/${removeFirstSlash(finalPath)}`);
+          router.push(
+            `/library/${convertSharedWithMeToTalk(
+              removeFirstSlash(finalPath),
+              l("talkFolderName"),
+            )}`,
+          );
         }
       } catch (e) {
         if (requestCancel) {

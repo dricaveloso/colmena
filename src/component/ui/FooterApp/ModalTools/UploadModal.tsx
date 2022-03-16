@@ -17,8 +17,9 @@ import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } f
 import { Box } from "@material-ui/core";
 import Text from "@/components/ui/Text";
 import {
+  convertAliasPathToRealPath,
   convertPrivateToUsername,
-  convertUsernameToPrivate,
+  convertSharedWithMeToTalk,
   getRootPath,
   isPanal,
 } from "@/utils/directory";
@@ -70,6 +71,7 @@ export default function Upload({ open, handleClose }: Props) {
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
   const [filesInProgress, setFilesInProgress] = useState<FileInProgressInterface[]>([]);
   const { t } = useTranslation("common");
+  const { t: l } = useTranslation("library");
 
   const handleUpload = async (event: any) => {
     await prepareFiles(event.target.files);
@@ -92,9 +94,13 @@ export default function Upload({ open, handleClose }: Props) {
       const extension = getExtensionFilename(handledName);
       const finalName = `${onlyName.substr(0, 60)}.${extension}`;
 
-      return getUniqueName(userId, convertUsernameToPrivate(handledPath(), userId), finalName);
+      return getUniqueName(
+        userId,
+        convertAliasPathToRealPath(handledPath(), userId, l("talkFolderName")),
+        finalName,
+      );
     },
-    [handledPath, userId],
+    [handledPath, l, userId],
   );
 
   const cancelUpload = useCallback(() => {
@@ -123,15 +129,19 @@ export default function Upload({ open, handleClose }: Props) {
     async (file: File) => {
       const fileName = await handleFileName(file.name);
       const finalPath = `${trailingSlash(handledPath())}${fileName}`;
-      const realPath = convertUsernameToPrivate(handledPath(), userId);
+      const realPath = convertAliasPathToRealPath(handledPath(), userId, l("talkFolderName"));
 
-      await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
+      await chunkFileUpload(
+        userId,
+        file,
+        convertAliasPathToRealPath(finalPath, userId, l("talkFolderName")),
+      );
 
       if (isPanal(realPath)) {
         await shareInChat(realPath, finalPath);
       }
     },
-    [handleFileName, handledPath, userId],
+    [handleFileName, handledPath, l, userId],
   );
 
   const resultMessage = useCallback(() => {
@@ -143,10 +153,15 @@ export default function Upload({ open, handleClose }: Props) {
       const timer = 5000;
       toast(t("messages.fileUploadedSuccessfully"), "success", { timer });
       setTimeout(() => {
-        router.push(`/library/${removeFirstSlash(handledPath())}`);
+        router.push(
+          `/library/${convertSharedWithMeToTalk(
+            removeFirstSlash(handledPath()),
+            l("talkFolderName"),
+          )}`,
+        );
       }, timer);
     }
-  }, [handledPath, router, t]);
+  }, [handledPath, l, router, t]);
 
   const processUploadFiles = useCallback(
     async (files: FileInProgressInterface[]) => {

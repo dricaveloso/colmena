@@ -5,7 +5,7 @@ export default function serverSideTranslations(
   initialLocale: string,
   namespacesRequired?: string[] | undefined, configOverride?: UserConfig | null,
 ): Promise<SSRConfig> {
-  let namespaces = ["drawer", "common"];
+  let namespaces = ["drawer", "common", "library"];
   if (namespacesRequired) {
     namespaces = [...namespaces, ...namespacesRequired];
   }
