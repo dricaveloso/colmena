@@ -49,24 +49,45 @@ type Props = {
   children: React.ReactNode;
   actions?: React.ReactNode;
   disableBackdropClick?: boolean;
+  fullScreen?: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  dialogContentStyle?: any | undefined;
+  dialogTitleStyle?: any | undefined;
+  [x: string]: any;
 };
 
-function Modal({ title, description, open, handleClose, children, actions, ...props }: Props) {
+function Modal({
+  title,
+  description,
+  open,
+  handleClose,
+  children,
+  actions,
+  fullScreen = false,
+  dialogContentStyle = undefined,
+  dialogTitleStyle = undefined,
+  ...props
+}: Props) {
   return (
     <Dialog
       onClose={handleClose}
       aria-labelledby="customized-dialog-title"
       open={open}
       fullWidth
+      fullScreen={fullScreen}
       maxWidth="xs"
       {...props}
     >
       {title && (
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle
+          className={dialogTitleStyle}
+          id="customized-dialog-title"
+          onClose={handleClose}
+        >
           {title}
         </DialogTitle>
       )}
-      <DialogContent dividers>
+      <DialogContent className={dialogContentStyle} dividers>
         {description && <DialogContentText>{description}</DialogContentText>}
         {children}
       </DialogContent>

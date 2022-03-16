@@ -1,18 +1,18 @@
 /* eslint-disable camelcase */
 // eslint-disable-next-line import/no-cycle
-import { NotificationStatusProps, NXTagsProps, Environment, AllIconProps } from "@/types/index";
+import {
+  NotificationStatusProps,
+  NXTagsProps,
+  Environment,
+  AllIconProps,
+  StatusTransferItemProps,
+} from "@/types/index";
 import React from "react";
 import { ContextMenuEventEnum, ContextMenuOptionEnum, ListTypeEnum } from "../enums";
 
 export interface I18nInterface {
   locale: string;
 }
-
-export interface ConfigReduxInterface {
-  currentPage: string;
-  mutate: any;
-}
-
 export interface RecordingInterface {
   id: string;
   title?: string;
@@ -28,6 +28,12 @@ export interface RecordingInterface {
 export interface NotificationDataInterface {
   message: string;
   status: NotificationStatusProps;
+}
+
+export interface TransferItemInterface {
+  tempFilename: string;
+  filename: string;
+  status: StatusTransferItemProps;
 }
 
 export interface UserProfileInterface {

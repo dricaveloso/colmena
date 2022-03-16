@@ -1,12 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@/components/ui/Modal";
-import { getUniqueName, chunkFileUpload, abortUpload } from "@/services/webdav/files";
+import {
+  getUniqueName,
+  // chunkFileUpload,
+  abortUpload,
+  createBaseFileUpload,
+} from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Divider from "@/components/ui/Divider";
 import Button from "@/components/ui/Button";
-import { trailingSlash, getExtensionFilename, getRandomInt, removeFirstSlash } from "@/utils/utils";
+import {
+  trailingSlash,
+  getExtensionFilename,
+  getRandomInt,
+  // removeFirstSlash,
+  getRandomChunkFileName,
+} from "@/utils/utils";
 import { v4 as uuid } from "uuid";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "next-i18next";
@@ -20,10 +32,12 @@ import {
   convertPrivateToUsername,
   convertUsernameToPrivate,
   getRootPath,
-  isPanal,
+  // isPanal,
 } from "@/utils/directory";
 import ActionConfirm from "@/components/ui/ActionConfirm";
-import { shareInChat } from "@/services/share/share";
+// import { shareInChat } from "@/services/share/share";
+import { create as createTransfer } from "@/store/idb/models/transfers";
+import { addFile, setOpenTransferModal } from "@/store/actions/transfers/index";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -69,6 +83,8 @@ export default function Upload({ open, handleClose }: Props) {
   const [path, setPath] = useState(currentLibraryPath);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
   const [filesInProgress, setFilesInProgress] = useState<FileInProgressInterface[]>([]);
+  const [tempFilenameChunk, setTempFilenameChunk] = useState("");
+  const dispatch = useDispatch();
   const { t } = useTranslation("common");
 
   const handleUpload = async (event: any) => {
@@ -97,8 +113,8 @@ export default function Upload({ open, handleClose }: Props) {
     [handledPath, userId],
   );
 
-  const cancelUpload = useCallback(() => {
-    abortUpload();
+  const cancelUpload = useCallback(async () => {
+    await abortUpload(tempFilenameChunk);
     handleClose();
     toast(t("messages.uploadCanceledSuccessfully"), "success");
   }, [handleClose, t]);
@@ -123,12 +139,27 @@ export default function Upload({ open, handleClose }: Props) {
     async (file: File) => {
       const fileName = await handleFileName(file.name);
       const finalPath = `${trailingSlash(handledPath())}${fileName}`;
-      const realPath = convertUsernameToPrivate(handledPath(), userId);
+      // const realPath = convertUsernameToPrivate(handledPath(), userId);
+      const destination = convertUsernameToPrivate(finalPath, userId);
+      const tempFilename = getRandomChunkFileName();
+      setTempFilenameChunk(tempFilename);
 
-      await chunkFileUpload(userId, file, convertUsernameToPrivate(finalPath, userId));
-
-      if (isPanal(realPath)) {
-        await shareInChat(realPath, finalPath);
+      const created = await createBaseFileUpload(userId, tempFilename);
+      if (created.status === 201) {
+        await createTransfer({
+          filename: destination,
+          userId,
+          tempFilename,
+          file,
+          progress: 0,
+          type: "upload",
+          status: "in progress",
+          createdAt: Date.now(),
+        });
+        dispatch(addFile({ tempFilename, filename: destination, status: "in progress" }));
+        // if (isPanal(realPath)) {
+        //   await shareInChat(realPath, finalPath);
+        // }
       }
     },
     [handleFileName, handledPath, userId],
@@ -141,10 +172,13 @@ export default function Upload({ open, handleClose }: Props) {
       }
 
       const timer = 5000;
-      toast(t("messages.fileUploadedSuccessfully"), "success", { timer });
-      setTimeout(() => {
-        router.push(`/library/${removeFirstSlash(handledPath())}`);
-      }, timer);
+      setIsLoading(false);
+      handleClose();
+      toast(t("transfer.fileAddToTransfer"), "success", { timer });
+      dispatch(setOpenTransferModal(true));
+      // setTimeout(() => {
+      //   router.push(`/library/${removeFirstSlash(handledPath())}`);
+      // }, timer);
     }
   }, [handledPath, router, t]);
 
@@ -182,12 +216,12 @@ export default function Upload({ open, handleClose }: Props) {
             default:
               message = t("messages.unableToProcessFile", { fileName });
           }
-
           toast(message, "error");
         }
       }
 
       setShowConfirmCancel(false);
+      setIsLoading(false);
       resultMessage();
     },
     [t, updateFileInProgress, uploadFile, resultMessage],
@@ -292,7 +326,7 @@ export default function Upload({ open, handleClose }: Props) {
           </Box>
           <Divider marginTop={20} />
           <Box display="flex" justifyContent="flex-end" width="100%">
-            {isLoading && (
+            {/* {isLoading && (
               <Button
                 handleClick={confirmClose}
                 title={t("form.cancelButton")}
@@ -300,7 +334,7 @@ export default function Upload({ open, handleClose }: Props) {
                 color={ButtonColorEnum.DEFAULT}
                 variant={ButtonVariantEnum.OUTLINED}
               />
-            )}
+            )} */}
             <label htmlFor="upload-file">
               <Button
                 data-cy="select-files"

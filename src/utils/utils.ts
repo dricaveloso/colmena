@@ -628,3 +628,12 @@ export function getAvailableSocialMedias() {
   const sm = ["facebook", "twitter", "instagram"];
   return sm;
 }
+
+export function getRandomChunkFileName() {
+  let tempFilename = "file";
+  // eslint-disable-next-line no-plusplus
+  for (let count = 1; count < 4; count++) {
+    tempFilename += `-${getRandomInt(1000, 9999)}`;
+  }
+  return tempFilename;
+}

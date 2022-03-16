@@ -8,4 +8,5 @@ export default {
   LOCALES_DATE_FNS: { en: enUS, es, fr, ar: arDZ, pt: ptBR, sw: enUS },
   DEFAULT_LANGUAGE: "en",
   TOKEN_EXPIRE_SECONDS: 60 * 60,
+  MAX_CHUNK_FILE: 2 * 1000000, // 2mb
 };

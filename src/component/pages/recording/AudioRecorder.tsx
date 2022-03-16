@@ -12,7 +12,6 @@ import {
   PropsAudioData,
   PropsRecordingSelector,
   PropsUserSelector,
-  PropsConfigSelector,
   PropsLibrarySelector,
 } from "@/types/index";
 import { useSelector } from "react-redux";
@@ -94,7 +93,6 @@ function AudioRecorder({
   const [removeCanvas, setRemoveCanvas] = useState(false);
   const theme = useTheme();
   const [pathLocationSave, setPathLocationSave] = useState("");
-  const configRdx = useSelector((state: { config: PropsConfigSelector }) => state.config);
   const libraryRdx = useSelector((state: { library: PropsLibrarySelector }) => state.library);
 
   const startRecording = useCallback(async () => {

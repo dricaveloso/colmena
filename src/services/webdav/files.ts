@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-unused-vars */
 /* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/ban-types */
@@ -34,6 +35,11 @@ import {
 } from "@/utils/directory";
 import { EnvironmentEnum } from "@/enums/*";
 import { TFunction } from "next-i18next";
+import constants from "@/constants/index";
+import {
+  getByTempfilename as getTransferByTempfilename,
+  update as updateTransfer,
+} from "@/store/idb/models/transfers";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -495,42 +501,47 @@ export function searchItems(items: LibraryItemInterface[], userId: string, keywo
   return items.filter((item: LibraryItemInterface) => item.basename.indexOf(value) >= 0);
 }
 
-let cancelUpload = false;
+// let cancelUpload = false;
 
-export function abortUpload() {
-  cancelUpload = true;
+export async function abortUpload(tempFilenameChunk: string) {
+  const transfer = await getTransferByTempfilename(tempFilenameChunk);
+  await updateTransfer(transfer.id, {
+    status: "canceled",
+    updatedAt: Date.now(),
+  });
+  // cancelUpload = true;
 }
 
-export async function chunkFileUpload(userId: string | number, file: File, filename: string) {
-  const maxChunkFile = 2 * 1000000; // 2mb
-  const totalLength = file.size;
+type TransferIDBProps = {
+  id: number;
+  file: File;
+  currentChunk: number;
+  status: "in progress" | "canceled" | "complete" | "pending";
+};
 
-  /* if (maxChunkFile >= totalLength) {
-    const contentFile = await blobToArrayBuffer(file);
+export async function chunkFileUpload(
+  userId: string | number,
+  tempFilename: string,
+  filename: string,
+  transfer: TransferIDBProps,
+) {
+  if (transfer.status === "complete" || transfer.status === "canceled") return;
 
-    return putFile(userId, filename, contentFile);
-  } */
+  const fileUp = transfer.file;
+  const maxChunkFile = constants.MAX_CHUNK_FILE;
+  const totalLength = fileUp.size;
 
-  let tempFilename = "file";
-  // eslint-disable-next-line no-plusplus
-  for (let count = 1; count < 4; count++) {
-    tempFilename += `-${getRandomInt(1000, 9999)}`;
-  }
-
-  const created = await createBaseFileUpload(userId, tempFilename);
-  if (created.status !== 201) {
-    return false;
-  }
-
-  let initialChunk = 0;
-  let finalChunk = 0;
+  let initialChunk = !transfer.currentChunk ? 0 : transfer.currentChunk;
+  let finalChunk = !transfer.currentChunk ? 0 : transfer.currentChunk;
   let done = false;
   let chunkNumber = 0;
+  let abort = false;
   while (done === false) {
-    if (cancelUpload) {
-      abortChunkFileUpload(userId, tempFilename);
-
-      return false;
+    const transferCanceled = await getTransferByTempfilename(tempFilename);
+    if (transferCanceled.status === "canceled") {
+      await abortChunkFileUpload(userId, tempFilename);
+      abort = true;
+      break;
     }
 
     chunkNumber += 1;
@@ -543,25 +554,34 @@ export async function chunkFileUpload(userId: string | number, file: File, filen
       finalChunk = totalLength;
     }
 
-    // eslint-disable-next-line no-await-in-loop
-    const chunkContent = await file.slice(initialChunk, finalChunk, file.type).arrayBuffer();
-    // console.log(initialChunk, finalChunk, totalLength, chunkNumber, chunkContent);
+    const chunkContent = await fileUp.slice(initialChunk, finalChunk, fileUp.type).arrayBuffer();
     const positionPath = `${(initialChunk + 1).toString().padStart(15, "0")}-${finalChunk
       .toString()
       .padStart(15, "0")}`;
 
-    // eslint-disable-next-line no-await-in-loop
     await sendChunkFile(userId, tempFilename, positionPath, chunkContent);
+    await updateTransfer(transfer.id, {
+      currentChunk: finalChunk,
+      progress: Math.round((100 * finalChunk) / totalLength),
+      updatedAt: Date.now(),
+    });
 
-    if (finalChunk >= totalLength) done = true;
+    if (finalChunk >= totalLength) {
+      await updateTransfer(transfer.id, {
+        currentChunk: finalChunk,
+        status: "complete",
+        progress: 100,
+        updatedAt: Date.now(),
+        file: null,
+      });
+      done = true;
+    }
   }
 
-  await doneChunkFileUpload(userId, tempFilename, filename);
-
-  return true;
+  if (!abort) await doneChunkFileUpload(userId, tempFilename, filename);
 }
 
-async function createBaseFileUpload(userId: string | number, tempFilename: string) {
+export async function createBaseFileUpload(userId: string | number, tempFilename: string) {
   return axiosBase(null, `dav/uploads/${userId}/${tempFilename}`, "MKCOL", {});
 }
 

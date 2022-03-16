@@ -52,8 +52,6 @@ function LayoutApp({
   useEffect(() => {
     dispatch(setCurrentAudioPlaying(""));
     dispatch(updateRecordingState("NONE"));
-    // dispatch(setCurrentPage(router.asPath));
-    // dispatch(setChangedLanguage(false));
     updateAccessedPages();
     if (navigator.onLine) {
       (async () => {

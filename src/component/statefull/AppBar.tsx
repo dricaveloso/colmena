@@ -75,7 +75,6 @@ function AppBarSys({
       await localStorage.setItem("isChangedLanguage", "no");
     }
 
-    // if (router.pathname === "/profile") router.push(configRdx.currentPage);
     if (router.pathname === "/recording") {
       if (recordingRdx.activeRecordingState === "START") {
         setBackAfterFinishRecording("yes");
