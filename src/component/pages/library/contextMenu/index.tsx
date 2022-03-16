@@ -7,6 +7,7 @@ import DownloadModal from "./DownloadModal";
 import RenameItemModal from "./RenameItemModal";
 import DuplicateItemModal from "./DuplicateItemModal";
 import CopyItemModal from "./CopyItemModal";
+import { getOnlyFilename, isAudioFile } from "@/utils/utils";
 import { LibraryItemContextMenuInterface } from "@/interfaces/index";
 import MoveItemModal from "./MoveItemModal";
 import DetailsModal from "./DetailsModal";
@@ -18,12 +19,19 @@ import Switch from "@material-ui/core/Switch";
 import { Box } from "@material-ui/core";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 // import { removeCornerSlash } from "@/utils/utils";
-
 const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
-  const { type, environment, filename, basename, arrayBufferBlob, mime, availableOptions } =
-    cardItem;
+  const {
+    type,
+    environment,
+    filename,
+    basename,
+    arrayBufferBlob,
+    extension,
+    mime,
+    availableOptions,
+  } = cardItem;
 
   if (!availableOptions || availableOptions.length === 0) {
     return null;
@@ -32,6 +40,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
+  const router = useRouter();
   const [openCopyItemModal, setOpenCopyItemModal] = useState(false);
   const [availableOffline, setAvailableOffline] = useState(environment === EnvironmentEnum.BOTH);
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
@@ -41,7 +50,6 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const [openMoveItemModal, setOpenMoveItemModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openDeleteItemConfirm, setOpenDeleteItemConfirm] = useState(false);
-  // const router = useRouter();
 
   const handleOpenContextMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -51,8 +59,22 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
     setAnchorEl(null);
   };
 
+  const goToTextEditor = () => {
+    const filename = getOnlyFilename(cardItem.basename);
+    router.push(`/text-editor/${filename}`);
+  };
+
   const unavailable = () => {
     toast(c("featureUnavailable"), "warning");
+  };
+
+  const openEditFilePage = () => {
+    if (isAudioFile(mime)) {
+      router.push(`/edit-audio/${btoa(filename)}`);
+      return;
+    }
+
+    unavailable();
   };
 
   // const inLibraryPage = useMemo(() => {
@@ -63,9 +85,26 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
 
   const renderModals = [];
   const renderOptions = [];
-  if (type === "file" && availableOptions.includes(ContextMenuOptionEnum.EDIT)) {
+  if (
+    type === "file" &&
+    availableOptions.includes(ContextMenuOptionEnum.EDIT) &&
+    extension !== "md"
+  ) {
     renderOptions.push(
-      <MenuItem key="edit" onClick={unavailable} data-testid="edit-item" style={{ color: "#aaa" }}>
+      <MenuItem key="edit" onClick={openEditFilePage} data-testid="edit-item">
+        <ContextMenuItem title={t("contextMenuOptions.edit")} icon="edit_filled" />
+      </MenuItem>,
+    );
+  }
+
+  if (extension === "md") {
+    renderOptions.push(
+      <MenuItem
+        key="edit"
+        onClick={goToTextEditor}
+        data-testid="edit-item"
+        style={{ color: "#aaa" }}
+      >
         <ContextMenuItem title={t("contextMenuOptions.edit")} icon="edit_filled" />
       </MenuItem>,
     );
@@ -274,7 +313,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
       <MenuItem
         key="publish"
         data-testid="publish-item"
-        onClick={unavailable}
+        onClick={() => goToTextEditor()}
         style={{ color: "#aaa" }}
       >
         <ContextMenuItem title={t("contextMenuOptions.publish")} icon="upload" />

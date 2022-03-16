@@ -1,6 +1,15 @@
-{ 
-  "title": "Edit recording", 
-  "description": "Program name and metadata", 
-  "textEditButton": "Edit", 
-  "textShareButton": "Share" 
-} 
+{
+  "title": "Audio editor",
+  "rotateYourDeviceTitle": "For a better experience, please rotate your device.",
+  "contextOptions": {
+    "zoomInTitle": "Zoom in",
+    "zoomOutTitle": "Zoom out",
+    "shiftAudioTitle": "Shift audio in time",
+    "trimAudioRegionTitle": "Keep only the selected audio",
+    "selectAudioRegionTitle": "Select audio region",
+    "saveTitle": "Save",
+    "downloadTitle": "Download"
+  },
+  "regionSelectedTitle": "Region selected: {{startTime}} - {{endTime}}",
+  "audioSavedTitle": "Audio saved"
+}

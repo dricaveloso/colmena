@@ -214,24 +214,35 @@ table.envPage td:nth-child(1) {
   width: 60%;
 }
 
-.ui-carousel{
+.ui-carousel {
   margin-bottom: 16px;
 }
 
-.ui-carousel > .awssld__wrapper{
+.ui-carousel > .awssld__wrapper {
   height: 90px;
 }
 
-
-.ui-carousel > .awssld__bullets{
+.ui-carousel > .awssld__bullets {
   background-color: #00aeaf;
   bottom: 0px;
   position: inherit;
   padding-bottom: 12px;
 }
 
-.ui-carousel > .awssld__bullets > button{
+.ui-carousel > .awssld__bullets > button {
   width: 10px;
   height: 10px;
   background-color: #fff;
+}
+
+.jodit-status-bar{
+  display: none!important;
+}
+
+.jodit-react-container{
+  width: 100%!important;
+}
+
+.jodit-container{
+  height: 450px!important;
 }

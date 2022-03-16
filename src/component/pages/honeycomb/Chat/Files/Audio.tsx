@@ -19,6 +19,7 @@ import { TextVariantEnum, DirectoryNamesNCEnum } from "@/enums/*";
 import {
   createFile as createQuickBlob,
   findByBasename as findQuickBlobByBasename,
+  removeFile,
 } from "@/store/idb/models/filesQuickBlob";
 import { listFile } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
@@ -144,6 +145,7 @@ export function Audio({ filename, size, name, config, canDeleteConversation }: P
         fileN = canDeleteConversation === 1 ? fileN : `${DirectoryNamesNCEnum.TALK}/${fileN}`;
 
       const result: any = await listFile(userRdx.user.id, fileN);
+      removeFile(userRdx.user.id, removeSpecialCharacters(fileN));
       await createQuickBlob({
         basename: removeSpecialCharacters(fileN),
         userId: userRdx.user.id,

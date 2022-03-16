@@ -29,6 +29,7 @@
     "titleSwitchLanguage": "Switch language",
     "noItemsFound": "No items found",
     "reservedNameError": "Name not available for registration",
+    "textEditor": "Text editor",
     "honeycombModal": {
         "chatRoomSuccess": "Chat room has been created",
         "chatRoomFailed": "Unable to create chat room",
@@ -38,6 +39,7 @@
         "searchUserPlaceholder": "Search user"
     },
     "newFolderTitle": "New folder",
+    "newFileTitle": "New File",
     "uploadTitle": "Upload",
     "loading": "Loading",
     "form": {
@@ -86,6 +88,8 @@
         "unableToUpdatePassword": "Unable to update your password",
         "passwordUpdatedSuccessfully": "Password has been updated",
         "directoryCreatedSuccessfully": "Directory has been created",
+        "fileCreatedSuccessfully": "File has been created",
+        "fileSaveSuccessfully": "File has been saved",
         "fileUploadedSuccessfully": "File has been uploaded",
         "uploadCanceledSuccessfully": "File upload canceled.",
         "folderCreationCanceledSuccessfully": "Folder creation canceled."
@@ -149,5 +153,6 @@
   "bannerMessage3": "Record, edit and publish audio from your cell phone with multiple people in recording rooms.",
   "bannerMessage4": "Save your files with our specialized cloud service for media.",
   "doneMessage": "Done!",
-  "microphonePermissionTitle": "You need to allow the use of the microphone"
+  "microphonePermissionTitle": "You need to allow the use of the microphone",
+  "unavailableAudio": "Audio is no longer available"
 }

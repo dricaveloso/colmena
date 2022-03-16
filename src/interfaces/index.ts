@@ -234,12 +234,15 @@ export interface VerticalItemListInterface {
   primary: string | React.ReactNode;
   secondary?: string | React.ReactNode;
   options?: React.ReactNode;
-  isPlaying: boolean;
+  isPlaying?: boolean;
   handleClick?: (event: any) => void | undefined;
   filename: string;
+  basename: string;
   environment: Environment;
   size?: number;
-  arrayBufferBlob?: ArrayBuffer;
+  arrayBufferBlob?: ArrayBuffer | null;
+  audioState?: "play" | "pause" | "stop";
+  handleAudioFinish: () => void;
 }
 
 export interface TagInterface {

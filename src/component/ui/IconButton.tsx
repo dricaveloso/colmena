@@ -31,6 +31,7 @@ type Props = {
   variant?: "text" | "outlined" | "contained" | undefined;
   size?: "small" | "medium";
   component?: "a" | "button";
+  [x: string]: any;
 };
 
 function IconButtonCtr({

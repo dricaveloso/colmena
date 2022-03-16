@@ -8,4 +8,7 @@ declare module 'web-audio-peak-meter';
 declare module 'wavesurfer.js';
 declare module 'formidable';
 declare module 'request';
+declare module 'react-screen-orientation';
+declare module 'waveform-playlist';
+declare module 'file-saver';
 
