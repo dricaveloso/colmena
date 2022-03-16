@@ -234,3 +234,15 @@ table.envPage td:nth-child(1) {
   height: 10px;
   background-color: #fff;
 }
+
+.jodit-status-bar{
+  display: none!important;
+}
+
+.jodit-react-container{
+  width: 100%!important;
+}
+
+.jodit-container{
+  height: 450px!important;
+}

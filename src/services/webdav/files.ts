@@ -491,14 +491,17 @@ export async function getAllPaths(userId: string, timeDescription: TimeDescripti
   return newItems;
 }
 
-export function searchItems(items: LibraryItemInterface[], userId: string, keyword: string) {
+export async function searchItems(items: LibraryItemInterface[], keyword: string) {
   if (!items) {
     return [];
   }
 
-  const value = decodeURIComponent(keyword);
-
-  return items.filter((item: LibraryItemInterface) => item.basename.indexOf(value) >= 0);
+  return Promise.resolve(
+    items.filter(
+      (item: LibraryItemInterface) =>
+        item.basename.toString().toLowerCase().indexOf(keyword.toString().toLowerCase()) >= 0,
+    ),
+  );
 }
 
 // let cancelUpload = false;

@@ -243,6 +243,7 @@ export interface VerticalItemListInterface {
   isPlaying?: boolean;
   handleClick?: (event: any) => void | undefined;
   filename: string;
+  basename: string;
   environment: Environment;
   size?: number;
   arrayBufferBlob?: ArrayBuffer | null;

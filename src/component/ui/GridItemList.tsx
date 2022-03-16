@@ -77,6 +77,7 @@ interface GridItemListInterface {
   bottomOptions?: React.ReactNode;
   handleClick?: (event: any) => void | undefined;
   filename: string;
+  basename: string;
   environment: Environment;
   size?: number;
   arrayBufferBlob?: ArrayBuffer | null;
@@ -96,6 +97,7 @@ const GridItemList = ({
   environment,
   size = 0,
   arrayBufferBlob,
+  basename,
   audioState,
   handleAudioFinish,
 }: GridItemListInterface) => {
@@ -108,7 +110,7 @@ const GridItemList = ({
       {audioState !== "stop" ? (
         <ListItemText
           className={classes.title}
-          data-testid="title"
+          data-testid={`library-item-${basename}`}
           style={{ width: "100%" }}
           primary={
             !arrayBufferBlob ? (
@@ -132,7 +134,7 @@ const GridItemList = ({
       ) : (
         <ListItemText
           className={classes.title}
-          data-testid="title"
+          data-testid={`library-item-${basename}`}
           primary={primaryFormatted}
           onClick={handleClick}
         />

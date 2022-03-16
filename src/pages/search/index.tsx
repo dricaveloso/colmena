@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
@@ -43,7 +43,7 @@ function LibrarySearch() {
   const recentSearchesKey = "recentSearches";
 
   const handleOpenTag = (tag: TagInterface) => {
-    router.push(`/library-search/tags/${tag.tagId}`);
+    router.push(`/search/tags/${tag.tagId}`);
   };
 
   const saveRecentSearchesKeyword = async (keyword: string) => {
@@ -76,49 +76,73 @@ function LibrarySearch() {
     localStorage.setItem(recentSearchesKey, "");
   };
 
-  const handleSearch = (keyword: string) => {
-    if (!keyword) {
-      setKeyword("");
-      setIsSearching(false);
-      setItems([]);
+  const search = useCallback(
+    async (keyword: string) => {
+      const searching = keyword.length > 0;
+      setIsSearching(searching);
+      setKeyword(keyword ?? "");
+      setTag(tag);
+      if (!searching) {
+        return;
+      }
+
+      const items = await searchItems(rawItems, keyword);
+      setItems(items);
+    },
+    [rawItems, tag],
+  );
+
+  const handleSearch = useCallback(
+    async (keyword: string) => {
+      if (!keyword) {
+        setKeyword("");
+        setIsSearching(false);
+        setItems([]);
+
+        return;
+      }
+
+      setIsLoading(true);
+      await saveRecentSearchesKeyword(keyword);
+      await search(keyword);
+      setIsLoading(false);
+
+      router.push(
+        {
+          pathname: "/search",
+          query: keyword ? { keyword: encodeURIComponent(keyword) } : undefined,
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [search],
+  );
+
+  const loadRawItems = useCallback(async () => {
+    let items: LibraryItemInterface[] = [];
+    try {
+      items = await getAllPaths(userRdx.user.id, timeDescription);
+    } catch (e) {
+      console.error("GET ALL PATHS", e);
     }
 
-    saveRecentSearchesKeyword(keyword);
-    router.push(
-      {
-        pathname: "/library-search",
-        query: keyword ? { keyword } : undefined,
-      },
-      undefined,
-      {
-        shallow: true,
-      },
-    );
-  };
-
-  const search = (keyword: string) => {
-    const searching = keyword.length > 0;
-    setIsSearching(searching);
-    setKeyword(keyword ?? "");
-    setTag(tag);
-    if (!searching) {
-      return;
-    }
-
-    const items = searchItems(rawItems, userRdx.user.id, keyword);
-
-    setItems(items);
-  };
-
-  const loadRawItems = async () => {
-    const items = await getAllPaths(userRdx.user.id, timeDescription);
     setRawItems(items);
-  };
+  }, [timeDescription, userRdx.user.id]);
 
-  const loadRawTags = async () => {
-    const tags = await getAllTags();
+  const loadRawTags = useCallback(async () => {
+    let tags: TagInterface[] = [];
+    try {
+      tags = await getAllTags();
+    } catch (e) {
+      console.error("LOAD RAW TAGS", e);
+    }
+
     setRawTags(tags);
-  };
+  }, []);
 
   const reloadItems = async () => {
     setIsLoading(true);
@@ -140,8 +164,11 @@ function LibrarySearch() {
 
   useEffect(() => {
     if (typeof urlKeyword === "string" && rawItems.length > 0) {
-      setLastUrlKeyword(urlKeyword);
-      search(decodeURIComponent(urlKeyword));
+      if (urlKeyword !== keyword) {
+        setLastUrlKeyword(urlKeyword);
+        search(decodeURIComponent(urlKeyword));
+      }
+
       (async () => {
         setRecentSearches(await getRecentSearchesKeywords());
       })();
