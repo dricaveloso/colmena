@@ -127,15 +127,9 @@ export default function TemporaryFiltersDrawer({
             <ListItem button key={uuid()} onClick={() => filterItems("")}>
               <ListItemText primary={t("filter.all")} className={filterActive("")} />
             </ListItem>
-            <ListItem button key={uuid()} onClick={() => filterItems(FilterEnum.OFFLINE)}>
-              <ListItemText
-                primary={t("filter.availableOffline")}
-                className={filterActive(FilterEnum.OFFLINE)}
-              />
-            </ListItem>
             <ListItem button key={uuid()} onClick={() => filterItems(FilterEnum.SYNC)}>
               <ListItemText
-                primary={t("filter.synchronized")}
+                primary={t("filter.availableOffline")}
                 className={filterActive(FilterEnum.SYNC)}
               />
             </ListItem>

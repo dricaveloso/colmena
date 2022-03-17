@@ -79,6 +79,8 @@
   },
   "downloading": "Downloading",
   "synchronizing": "Synchronizing",
+  "makeFileAvailableOffline": "Please wait while we make the file available offline.",
+  "removeFileAvailableOffline": "Please wait while we remove the local file.",
   "cancel": "Cancel",
   "moveButton": "Move here",
   "confirmCancelItemDuplication": "Do you really want to cancel the item duplication?",
