@@ -354,6 +354,7 @@ function Recording() {
       backgroundColor={theme.palette.variation7.dark}
       title={t("title")}
       showFooter={false}
+      showUploadProgress={false}
       back
     >
       <FlexBox

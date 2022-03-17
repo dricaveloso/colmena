@@ -26,6 +26,7 @@ export interface AppBarInterface {
   headerPosition?: PositionProps | undefined;
   templateHeader?: "variation1" | "variation2" | "variation3";
   extraElement?: React.ReactNode | undefined;
+  showUploadProgress?: boolean;
 }
 
 export const tplHeader = new Map();
@@ -52,6 +53,7 @@ function AppBarSys({
   back = false,
   templateHeader = "variation2",
   extraElement = undefined,
+  showUploadProgress = true,
 }: AppBarInterface) {
   const router = useRouter();
   const recordingRdx = useSelector(
@@ -95,6 +97,8 @@ function AppBarSys({
     (item: TransferItemInterface) => item.status === "in progress",
   );
 
+  const subtitleColor = "#fbe1b7";
+
   return (
     <header>
       <AppBar position={headerPosition} elevation={0} style={{ height: 70 }}>
@@ -136,7 +140,7 @@ function AppBarSys({
                   align={TextAlignEnum.LEFT}
                   style={{
                     fontSize: fontSizeSubtitle,
-                    color: "#B4AEF5",
+                    color: subtitleColor,
                     fontFamily: "Nunito sans, sans-serif",
                     paddingTop: 2,
                   }}
@@ -148,18 +152,16 @@ function AppBarSys({
           </Box>
           <Box display="flex" flexDirection="row" alignItems="center">
             {extraElement && extraElement}
-            {transferWorkInProgress && (
+            {transferWorkInProgress && showUploadProgress && (
               <IconButton
                 edge="start"
                 color="inherit"
-                aria-label="menu"
+                aria-label="transfer"
+                data-testid="open-transfer-modal"
+                style={{ marginLeft: 2 }}
                 onClick={() => dispatch(setOpenTransferModal(true))}
               >
-                <SvgIcon
-                  icon="transfer"
-                  htmlColor={tplHeader.get(templateHeader).textColor}
-                  fontSize="medium"
-                />
+                <SvgIcon icon="transfer" htmlColor={subtitleColor} fontSize="medium" />
               </IconButton>
             )}
             {drawer && (
@@ -167,6 +169,7 @@ function AppBarSys({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
+                data-testid="open-burguer-menu"
                 style={{ marginLeft: 4 }}
                 onClick={() => setOpenDrawer(!openDrawer)}
               >

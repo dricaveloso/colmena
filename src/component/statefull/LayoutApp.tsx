@@ -32,6 +32,7 @@ function LayoutApp({
   showFooter = true,
   extraElement = undefined,
   backgroundColor = "#F9F9F9",
+  showUploadProgress = true,
   children,
 }: LayoutInterface) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -81,6 +82,7 @@ function LayoutApp({
           templateHeader={templateHeader}
           back={back}
           extraElement={extraElement}
+          showUploadProgress={showUploadProgress}
         />
         <>{children}</>
         {showFooter && <FooterApp />}

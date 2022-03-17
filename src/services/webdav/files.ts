@@ -588,6 +588,7 @@ export async function chunkFileUpload(
 
   if (!abort) {
     await doneChunkFileUpload(userId, tempFilename, filename);
+    // document.dispatchEvent(new CustomEvent("finish-upload", { detail: { name: "Vinicius" } }));
     if (transfer.chatNotify) {
       const token = await findTokenChatByPath(filename);
       if (token && typeof token === "string") {

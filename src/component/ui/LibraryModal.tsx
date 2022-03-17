@@ -231,6 +231,7 @@ export default function LibraryModal({
             templateHeader="variation2"
             drawer={false}
             back={false}
+            showUploadProgress={false}
             extraElement={
               <IconButton
                 icon="close"

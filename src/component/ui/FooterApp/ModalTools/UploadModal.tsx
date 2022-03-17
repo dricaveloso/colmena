@@ -27,11 +27,10 @@ import {
   convertAliasPathToRealPath,
   convertPrivateToUsername,
   getRootPath,
-  convertUsernameToPrivate,
 } from "@/utils/directory";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import { create as createTransfer } from "@/store/idb/models/transfers";
-import { addFile, setOpenTransferModal } from "@/store/actions/transfers/index";
+import { addFile } from "@/store/actions/transfers/index";
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -138,15 +137,14 @@ export default function Upload({ open, handleClose }: Props) {
     async (file: File) => {
       const fileName = await handleFileName(file.name);
       const finalPath = `${trailingSlash(handledPath())}${fileName}`;
-      const realPath = convertAliasPathToRealPath(handledPath(), userId, l("talkFolderName"));
-      const destination = convertUsernameToPrivate(finalPath, userId);
+      const destination = convertAliasPathToRealPath(finalPath, userId, l("talkFolderName"));
       const tempFilename = getRandomChunkFileName();
       setTempFilenameChunk(tempFilename);
 
       const created = await createBaseFileUpload(userId, tempFilename);
       if (created.status === 201) {
         await createTransfer({
-          filename: realPath,
+          filename: destination,
           userId,
           tempFilename,
           file,
@@ -168,14 +166,9 @@ export default function Upload({ open, handleClose }: Props) {
         formRef.current.reset();
       }
 
-      const timer = 5000;
       setIsLoading(false);
       handleClose();
-      toast(t("transfer.fileAddToTransfer"), "success", { timer });
-      dispatch(setOpenTransferModal(true));
-      // setTimeout(() => {
-      //   router.push(`/library/${removeFirstSlash(handledPath())}`);
-      // }, timer);
+      toast(t("transfer.fileAddToTransfer"), "success");
     }
   }, [handledPath, l, router, t]);
 

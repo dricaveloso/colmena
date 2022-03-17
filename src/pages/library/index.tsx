@@ -213,6 +213,16 @@ function MyLibrary() {
     [currentDirectory, dispatch, l, timeDescription, userRdx.user.id],
   );
 
+  // useEffect(() => {
+  //   document.addEventListener(
+  //     "finish-upload",
+  //     (e) => {
+  //       console.log(e?.detail);
+  //     },
+  //     false,
+  //   );
+  // }, []);
+
   useEffect(() => {
     let currentPath = "/";
     if (typeof path === "object") {
