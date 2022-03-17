@@ -6,6 +6,7 @@ import {
   Environment,
   AllIconProps,
   StatusTransferItemProps,
+  SocialMediasAvailable,
 } from "@/types/index";
 import React from "react";
 import { ContextMenuEventEnum, ContextMenuOptionEnum, ListTypeEnum } from "../enums";
@@ -51,12 +52,12 @@ export interface MediaInfoInterface {
   groups?: string[];
   quota?: string;
   email?: string;
-  social_medias?: [
-    {
-      name: string;
-      url: string;
-    },
-  ];
+  social_medias?: SocialMediaInfoInterface[];
+}
+
+export interface SocialMediaInfoInterface {
+  name: SocialMediasAvailable;
+  url: string;
 }
 
 export interface UserQuotaInterface {

@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
 import { useTranslation } from "next-i18next";
 import { getFileContents } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   LibraryItemContextMenuInterface,
   LibraryItemInterface,
@@ -17,30 +12,8 @@ import { createFile, remove } from "@/store/idb/models/files";
 import { getPath } from "@/utils/directory";
 import { ContextMenuEventEnum, ContextMenuOptionEnum, EnvironmentEnum } from "@/enums/*";
 import { dateDescription, getExtensionFilename } from "@/utils/utils";
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(4),
-  },
-  form: {
-    "& .MuiTextField-root": {
-      width: "100%",
-    },
-  },
-  submit: {
-    display: "none",
-  },
-  loading: {
-    textAlign: "center",
-  },
-}));
+import { toast } from "@/utils/notifications";
+import LoadingPage from "@/components/ui/LoadingPage";
 
 type Props = {
   open: boolean;
@@ -52,7 +25,6 @@ type Props = {
 export default function SyncModal({ open, handleOpen, cardItem, availableOffline }: Props) {
   const { t } = useTranslation("library");
   const { t: c } = useTranslation("common");
-  const classes = useStyles();
   const [downloadError, setDownloadError] = useState<boolean | string>(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const timeDescription: TimeDescriptionInterface = c("timeDescription", { returnObjects: true });
@@ -130,36 +102,20 @@ export default function SyncModal({ open, handleOpen, cardItem, availableOffline
     );
   }, [cardItem, userRdx.user.id]);
 
+  useEffect(() => {
+    if (typeof downloadError === "string") {
+      toast(downloadError, "error");
+      handleOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [downloadError]);
+
   return (
-    <>
-      <Modal
-        data-testid="modal-available-offline"
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={() => handleOpen(false)}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            {downloadError === true ? (
-              <>{downloadError}</>
-            ) : (
-              <>
-                <div className={classes.loading}>
-                  <CircularProgress color="secondary" size={16} style={{ marginRight: 8 }} />{" "}
-                  {t("synchronizing")}
-                </div>
-              </>
-            )}
-          </div>
-        </Fade>
-      </Modal>
-    </>
+    <LoadingPage
+      open={open}
+      description={
+        availableOffline ? t("makeFileAvailableOffline") : t("removeFileAvailableOffline")
+      }
+    />
   );
 }

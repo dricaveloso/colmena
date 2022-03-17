@@ -333,7 +333,8 @@ export type AllIconProps =
   | "clean"
   | "show"
   | "sync_success"
-  | "sync_canceled";
+  | "sync_canceled"
+  | "show";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 
@@ -343,3 +344,5 @@ export type LanguageProps = {
   abbr: LanguagesAvailableProps;
   language: string;
 };
+
+export type SocialMediasAvailable = "twitter" | "facebook" | "instagram";

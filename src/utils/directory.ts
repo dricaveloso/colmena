@@ -111,3 +111,23 @@ export function convertUsernameToPrivate(path: string, username: string): string
 
   return removeCornerSlash(trailingSlash(path).replace(regex, trailingSlash(getPrivatePath())));
 }
+
+export function convertTalkToShareWithMe(path: string, talkFolderName: string): string {
+  const regex = new RegExp(`^${trailingSlash(getTalkPath())}`);
+
+  return removeCornerSlash(trailingSlash(path).replace(regex, trailingSlash(talkFolderName)));
+}
+
+export function convertSharedWithMeToTalk(path: string, talkFolderName: string): string {
+  const regex = new RegExp(`^${trailingSlash(talkFolderName)}`);
+
+  return removeCornerSlash(trailingSlash(path).replace(regex, trailingSlash(getTalkPath())));
+}
+
+export function convertRealPathToAliasPath(path: string, username: string, talkFolderName: string) {
+  return convertTalkToShareWithMe(convertPrivateToUsername(path, username), talkFolderName);
+}
+
+export function convertAliasPathToRealPath(path: string, username: string, talkFolderName: string) {
+  return convertSharedWithMeToTalk(convertUsernameToPrivate(path, username), talkFolderName);
+}

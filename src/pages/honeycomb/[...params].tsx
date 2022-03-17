@@ -26,6 +26,9 @@ import Text from "@/components/ui/Text";
 import { AllIconProps } from "@/types/*";
 import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
 import { v4 as uuid } from "uuid";
+import { useDispatch } from "react-redux";
+import { setLibraryPath } from "@/store/actions/library";
+import { findGroupFolderByPath } from "@/utils/utils";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -46,7 +49,9 @@ interface TabPanelProps {
 }
 
 function Honeycomb() {
+  const dispatch = useDispatch();
   const { t } = useTranslation("honeycomb");
+  const { t: l } = useTranslation("library");
   const router = useRouter();
   const { params } = router.query;
   const [tokenUuid, setTokenUuid] = useState(uuid());
@@ -95,6 +100,18 @@ function Honeycomb() {
   const token = params[0];
   const displayName = params[1];
   const canDeleteConversation = Number(params[2]);
+
+  (async () => {
+    let path = displayName;
+    if (!canDeleteConversation) {
+      const isGroupFolder = await findGroupFolderByPath(displayName);
+      if (!isGroupFolder) {
+        path = `${l("talkFolderName")}/${displayName}`;
+      }
+    }
+
+    dispatch(setLibraryPath(path));
+  })();
 
   async function sendMessageAPI(message: string, referenceId: string) {
     await sendChatMessage(token, message, referenceId);

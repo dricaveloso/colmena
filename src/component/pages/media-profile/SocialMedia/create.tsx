@@ -1,210 +1,170 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable max-len */
-/* eslint-disable camelcase */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState } from "react";
-import Button from "@/components/ui/Button";
-import { TextField, Box } from "@material-ui/core";
-import Select from "@/components/ui/Select";
 import { useTranslation } from "next-i18next";
-import { toast } from "@/utils/notifications";
-import {
-  SelectVariantEnum,
-  RoleUserEnum,
-  ConfigFilesNCEnum,
-  ButtonVariantEnum,
-  ButtonColorEnum,
-} from "@/enums/index";
+import Modal from "@/components/ui/Modal";
+import Button from "@/components/ui/Button";
+import TextField from "@material-ui/core/TextField";
+import Divider from "@/components/ui/Divider";
 import { Formik, Form, Field, FieldProps } from "formik";
+import { Grid } from "@material-ui/core";
 import ErrorMessageForm from "@/components/ui/ErrorFormMessage";
 import * as Yup from "yup";
-import { createUser } from "@/services/ocs/users";
-import { putFile, listFile } from "@/services/webdav/files";
-import Backdrop from "@/components/ui/Backdrop";
-import { useSelector } from "react-redux";
-import { PropsUserSelector } from "@/types/index";
-import getConfig from "next/config";
-import { UserProfileInterface } from "@/interfaces/index";
-import Divider from "@/components/ui/Divider";
-import Modal from "@/components/ui/Modal";
-import { findTokenChatByPath } from "@/pages/recording";
-
-const { publicRuntimeConfig } = getConfig();
+import { getUserGroup } from "@/utils/permissions";
+import { ConfigFilesNCEnum, SelectVariantEnum } from "@/enums/index";
+import { listFile, putFile } from "@/services/webdav/files";
+import { useSelector, useDispatch } from "react-redux";
+import { PropsUserSelector, SocialMediasAvailable } from "@/types/index";
+import { MediaInfoInterface, SocialMediaInfoInterface } from "@/interfaces/index";
+import { mediaInfoUpdate } from "@/store/actions/users/index";
+import { toast } from "@/utils/notifications";
+import { isValidUrl, getAvailableSocialMedias, capitalizeFirstLetter } from "@/utils/utils";
+import Select from "@/components/ui/Select";
 
 type Props = {
+  title: string;
   open: boolean;
   handleClose: () => void;
 };
 
-type MyFormValues = {
-  name: string;
-  emailCol: string;
-  group: string;
-  permission: string;
-};
+interface MyFormValues {
+  name: SocialMediasAvailable;
+  url: string;
+}
 
-export default function InviteForm({ open, handleClose }: Props) {
+export default function Create({ title, open, handleClose }: Props) {
   const { t } = useTranslation("mediaProfile");
+  const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
-  const [showBackdrop, setShowBackdrop] = useState(false);
+  const [errorUrlMessage, setErrorUrlMessage] = useState("");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
-  const ValidationSchema = Yup.object().shape({
-    name: Yup.string().required(c("form.requiredTitle")),
-    emailCol: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
-    group: Yup.string().required(c("form.requiredTitle")),
-    permission: Yup.string().required(c("form.requiredTitle")),
-  });
+  const socialMediasRegistered =
+    userRdx.user.media && userRdx.user.media && Array.isArray(userRdx.user.media.social_medias)
+      ? userRdx.user.media?.social_medias.map((item: SocialMediaInfoInterface) => item.name)
+      : [];
 
-  const initialValues: MyFormValues = {
+  const initialValues = {
     name: "",
-    emailCol: "",
-    group: "",
-    permission: "",
+    url: "",
   };
 
-  async function createOrUpdateFile(userId: string, file: UserProfileInterface) {
-    await putFile(userId, ConfigFilesNCEnum.USER_PROFILE, JSON.stringify(file), {
-      username: userId,
-      password: publicRuntimeConfig.user.defaultNewUserPassword,
-    });
-  }
+  const schemaValidation = Yup.object().shape({
+    name: Yup.string().required(c("form.requiredTitle")),
+    url: Yup.string().required(c("form.requiredTitle")),
+  });
+
+  const handleSubmit = async (values: MyFormValues, setSubmitting: (flag: boolean) => void) => {
+    const { name, url } = values;
+    let urlSend = url;
+    if (urlSend) {
+      if (urlSend.indexOf("http://") === -1 && urlSend.indexOf("https://") === -1)
+        urlSend = `http://${urlSend}`;
+      if (!isValidUrl(urlSend)) {
+        setSubmitting(false);
+        setErrorUrlMessage(c("form.invalidURLTitle"));
+        return;
+      }
+    }
+
+    setSubmitting(true);
+    try {
+      const mediaName = getUserGroup();
+      const mediaFile = await listFile(
+        userRdx.user.id,
+        `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE}`,
+        null,
+        true,
+      );
+      const mediaObj: MediaInfoInterface = JSON.parse(String(mediaFile));
+
+      if (mediaObj.social_medias && Array.isArray(mediaObj.social_medias))
+        mediaObj.social_medias.push({
+          name,
+          url: urlSend,
+        });
+
+      await putFile(
+        userRdx.user.id,
+        `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE}`,
+        JSON.stringify(mediaObj),
+      );
+
+      dispatch(mediaInfoUpdate(mediaObj));
+
+      toast(t("socialMediaInfoSaved"), "success");
+      handleClose();
+    } catch (e) {
+      console.log(e);
+      toast(t("genericErrorMessage"), "error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
-    <Modal
-      title={t("textInviteCollaborators")}
-      description={t("descriptionModalDialogInvite")}
-      handleClose={handleClose}
-      open={open}
-    >
-      <div>
-        <Backdrop open={showBackdrop} />
-        <Formik
-          initialValues={initialValues}
-          validationSchema={ValidationSchema}
-          onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
-            setShowBackdrop(true);
-            setSubmitting(false);
-            // const { name, emailCol: email, group, permission } = values;
-          }}
-        >
-          {({ submitForm, isSubmitting, errors, touched }: any) => (
-            <>
-              <Form autoComplete="off">
-                <Field name="name" data-testid="media-name" InputProps={{ notched: true }}>
-                  {({ field }: FieldProps) => (
-                    <TextField
-                      id="name"
-                      variant="outlined"
-                      inputProps={{
-                        autoComplete: "off",
-                        form: {
-                          autoComplete: "off",
-                        },
-                      }}
-                      label={t("placeholderName")}
-                      type="text"
-                      fullWidth
-                      {...field}
-                    />
-                  )}
-                </Field>
-                {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
-                <Divider marginTop={20} />
-                <Field name="emailCol" data-testid="media-email" InputProps={{ notched: true }}>
-                  {({ field }: FieldProps) => (
-                    <TextField
-                      variant="outlined"
-                      inputProps={{
-                        autoComplete: "off",
-                        form: {
-                          autoComplete: "off",
-                        },
-                      }}
-                      id="emailCol"
-                      label={t("placeholderEmail")}
-                      type="email"
-                      fullWidth
-                      {...field}
-                    />
-                  )}
-                </Field>
-                {errors.emailCol && touched.emailCol ? (
-                  <ErrorMessageForm message={errors.emailCol} />
-                ) : null}
-                <Divider marginTop={20} />
-                <Field name="group" data-testid="media-group" InputProps={{ notched: true }}>
-                  {({ field }: FieldProps) => (
-                    <Select
-                      label={t("placeholderGroup")}
-                      variant={SelectVariantEnum.OUTLINED}
-                      options={userRdx.user.subadmin.map((item) => ({
-                        id: item,
-                        value: item,
-                      }))}
-                      id="group"
-                      {...field}
-                    />
-                  )}
-                </Field>
-                {errors.group && touched.group ? <ErrorMessageForm message={errors.group} /> : null}
-                <Divider marginTop={20} />
-                <Field
-                  name="permission"
-                  data-testid="media-permission"
-                  InputProps={{ notched: true }}
-                >
-                  {({ field }: FieldProps) => (
-                    <Select
-                      label={t("placeholderPermission")}
-                      variant={SelectVariantEnum.OUTLINED}
-                      options={[
-                        {
-                          id: RoleUserEnum.COLLABORATOR,
-                          value: t("inviteCollaboratorTitle"),
-                          disabled: true,
-                        },
-                        {
-                          id: RoleUserEnum.ADMIN,
-                          value: t("inviteAdministratorTitle"),
-                        },
-                      ]}
-                      id="permission"
-                      {...field}
-                    />
-                  )}
-                </Field>
-                {errors.permission && touched.permission ? (
-                  <ErrorMessageForm message={errors.permission} />
-                ) : null}
-              </Form>
-              <Box
-                display="flex"
-                marginTop={2}
-                flex={1}
-                flexDirection="row"
-                justifyContent="space-between"
-              >
-                <Button
-                  handleClick={handleClose}
-                  title={t("buttonCancelModalDialogInvite")}
-                  data-testid="close-modal-invite"
-                  color={ButtonColorEnum.SECONDARY}
-                  variant={ButtonVariantEnum.OUTLINED}
+    <Modal title={title} handleClose={handleClose} open={open}>
+      <Formik
+        validationSchema={schemaValidation}
+        initialValues={initialValues}
+        onSubmit={(values: MyFormValues, { setSubmitting }: any) => {
+          handleSubmit(values, setSubmitting);
+        }}
+      >
+        {({ submitForm, isSubmitting, errors, touched }: any) => (
+          <Form>
+            <Divider marginTop={20} />
+            <Field name="name" data-testid="social-media-name" InputProps={{ notched: true }}>
+              {({ field }: FieldProps) => (
+                <Select
+                  label={t("addSocialMedia.name")}
+                  variant={SelectVariantEnum.OUTLINED}
+                  options={getAvailableSocialMedias()
+                    .filter((item: SocialMediasAvailable) => !socialMediasRegistered.includes(item))
+                    .map((item) => ({
+                      id: item,
+                      value: capitalizeFirstLetter(item),
+                    }))}
+                  id="name"
+                  {...field}
                 />
-                <Button
-                  handleClick={submitForm}
-                  title={t("buttonOkModalDialogInvite")}
-                  disabled={isSubmitting}
-                  isLoading={isSubmitting}
-                  data-testid="submit-invite"
-                  type="submit"
+              )}
+            </Field>
+            {errors.name && touched.name ? <ErrorMessageForm message={errors.name} /> : null}
+            <Divider marginTop={20} />
+            <Field name="url" data-testid="social-media-url" InputProps={{ notched: true }}>
+              {({ field }: FieldProps) => (
+                <TextField
+                  id="url"
+                  label={t("addSocialMedia.url")}
+                  variant="outlined"
+                  fullWidth
+                  inputProps={{
+                    autoComplete: "off",
+                  }}
+                  multiline
+                  maxRows={6}
+                  {...field}
                 />
-              </Box>
-            </>
-          )}
-        </Formik>
-      </div>
+              )}
+            </Field>
+            {errors.url && touched.url ? <ErrorMessageForm message={errors.url} /> : null}
+            {errorUrlMessage ? <ErrorMessageForm message={errorUrlMessage} /> : null}
+            <Divider marginTop={20} />
+            <Grid container justifyContent="flex-end">
+              <Button
+                handleClick={submitForm}
+                title={c("form.submitSaveTitle")}
+                disabled={isSubmitting}
+                isLoading={isSubmitting}
+                data-testid="submit-add-social-media"
+                type="submit"
+              />
+            </Grid>
+          </Form>
+        )}
+      </Formik>
     </Modal>
   );
 }

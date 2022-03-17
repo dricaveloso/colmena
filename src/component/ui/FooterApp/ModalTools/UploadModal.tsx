@@ -12,7 +12,6 @@ import {
   trailingSlash,
   getExtensionFilename,
   getRandomInt,
-  // removeFirstSlash,
   getRandomChunkFileName,
 } from "@/utils/utils";
 import { v4 as uuid } from "uuid";
@@ -25,13 +24,12 @@ import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } f
 import { Box } from "@material-ui/core";
 import Text from "@/components/ui/Text";
 import {
+  convertAliasPathToRealPath,
   convertPrivateToUsername,
-  convertUsernameToPrivate,
   getRootPath,
-  // isPanal,
+  convertUsernameToPrivate,
 } from "@/utils/directory";
 import ActionConfirm from "@/components/ui/ActionConfirm";
-// import { shareInChat } from "@/services/share/share";
 import { create as createTransfer } from "@/store/idb/models/transfers";
 import { addFile, setOpenTransferModal } from "@/store/actions/transfers/index";
 
@@ -82,6 +80,7 @@ export default function Upload({ open, handleClose }: Props) {
   const [tempFilenameChunk, setTempFilenameChunk] = useState("");
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
+  const { t: l } = useTranslation("library");
 
   const handleUpload = async (event: any) => {
     await prepareFiles(event.target.files);
@@ -104,9 +103,13 @@ export default function Upload({ open, handleClose }: Props) {
       const extension = getExtensionFilename(handledName);
       const finalName = `${onlyName.substr(0, 60)}.${extension}`;
 
-      return getUniqueName(userId, convertUsernameToPrivate(handledPath(), userId), finalName);
+      return getUniqueName(
+        userId,
+        convertAliasPathToRealPath(handledPath(), userId, l("talkFolderName")),
+        finalName,
+      );
     },
-    [handledPath, userId],
+    [handledPath, l, userId],
   );
 
   const cancelUpload = useCallback(async () => {
@@ -135,7 +138,7 @@ export default function Upload({ open, handleClose }: Props) {
     async (file: File) => {
       const fileName = await handleFileName(file.name);
       const finalPath = `${trailingSlash(handledPath())}${fileName}`;
-      // const realPath = convertUsernameToPrivate(handledPath(), userId);
+      const realPath = convertAliasPathToRealPath(handledPath(), userId, l("talkFolderName"));
       const destination = convertUsernameToPrivate(finalPath, userId);
       const tempFilename = getRandomChunkFileName();
       setTempFilenameChunk(tempFilename);
@@ -143,7 +146,7 @@ export default function Upload({ open, handleClose }: Props) {
       const created = await createBaseFileUpload(userId, tempFilename);
       if (created.status === 201) {
         await createTransfer({
-          filename: destination,
+          filename: realPath,
           userId,
           tempFilename,
           file,
@@ -154,12 +157,9 @@ export default function Upload({ open, handleClose }: Props) {
           createdAt: Date.now(),
         });
         dispatch(addFile({ tempFilename, filename: destination, status: "in progress", userId }));
-        // if (isPanal(realPath)) {
-        //   await shareInChat(realPath, finalPath);
-        // }
       }
     },
-    [handleFileName, handledPath, userId],
+    [handleFileName, handledPath, l, userId],
   );
 
   const resultMessage = useCallback(() => {
@@ -177,7 +177,7 @@ export default function Upload({ open, handleClose }: Props) {
       //   router.push(`/library/${removeFirstSlash(handledPath())}`);
       // }, timer);
     }
-  }, [handledPath, router, t]);
+  }, [handledPath, l, router, t]);
 
   const processUploadFiles = useCallback(
     async (files: FileInProgressInterface[]) => {
@@ -334,7 +334,7 @@ export default function Upload({ open, handleClose }: Props) {
             )} */}
             <label htmlFor="upload-file">
               <Button
-                data-cy="select-files"
+                data-testid="select-files"
                 component="span"
                 title={t("form.upload")}
                 className={classes.submit}

@@ -125,7 +125,7 @@ export function filterItems(filter: string, items: Array<LibraryItemInterface>) 
       case FilterEnum.OFFLINE:
         return item.environment === EnvironmentEnum.LOCAL;
       case FilterEnum.SYNC:
-        return item.environment === EnvironmentEnum.REMOTE;
+        return item.environment === EnvironmentEnum.BOTH;
       case FilterEnum.AUDIO:
         return item.type === "audio" || audioExtensions.includes(extension);
       case FilterEnum.IMAGE:

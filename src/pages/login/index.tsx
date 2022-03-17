@@ -8,7 +8,6 @@ import { I18nInterface } from "@/interfaces/index";
 import Form from "@/components/pages/login/Form";
 import { getSession } from "next-auth/client";
 import { useRouter } from "next/router";
-import CenterProgress from "@/components/ui/CenterProgress";
 import ExternalVerticalLogo from "@/components/ui/ExternalVerticalLogo";
 import FooterDW from "@/components/ui/FooterDW";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
@@ -17,6 +16,7 @@ import Text from "@/components/ui/Text";
 import { useTranslation } from "next-i18next";
 import { TextVariantEnum } from "@/enums/*";
 import { useDispatch } from "react-redux";
+import LoadingPage from "@/components/ui/LoadingPage";
 import { parseCookies } from "nookies";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
@@ -60,7 +60,8 @@ export default function Login() {
       }
     });
   }, []);
-  if (isLoading) return <CenterProgress />;
+
+  if (isLoading) return <LoadingPage />;
 
   const backgroundColor = theme.palette.primary.main;
 
