@@ -20,6 +20,7 @@ import { Box } from "@material-ui/core";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useRouter } from "next/router";
+import { isPanal } from "@/utils/directory";
 // import { removeCornerSlash } from "@/utils/utils";
 const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
   const {
@@ -77,6 +78,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
     unavailable();
   };
 
+  const isHoneycomb = isPanal(filename);
   // const inLibraryPage = useMemo(() => {
   //   const splitPage = removeCornerSlash(router.route).split("/");
 
@@ -134,7 +136,7 @@ const ContextMenuOptions = (cardItem: LibraryItemContextMenuInterface) => {
     );
   }
 
-  if (availableOptions.includes(ContextMenuOptionEnum.MOVE)) {
+  if (!isHoneycomb && availableOptions.includes(ContextMenuOptionEnum.MOVE)) {
     const handleOpenMoveModal = (opt: boolean) => {
       setOpenMoveItemModal(opt);
       handleCloseContextMenu();
