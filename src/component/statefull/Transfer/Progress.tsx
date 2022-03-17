@@ -7,6 +7,7 @@ import { getByTempfilename as getTransferByTempfilename } from "@/store/idb/mode
 import { useDispatch } from "react-redux";
 import { updateStatus } from "@/store/actions/transfers";
 import { StatusTransferItemProps } from "@/types/index";
+import { TransferStatusEnum } from "@/enums/index";
 
 function CircularProgressWithLabel(props: CircularProgressProps & { value: number }) {
   return (
@@ -39,16 +40,16 @@ type Props = {
 };
 
 export default function Progress({ tempFilename, status }: Props) {
-  const [progress, setProgress] = useState(status === "complete" ? 100 : 0);
+  const [progress, setProgress] = useState(status === TransferStatusEnum.COMPLETE ? 100 : 0);
   const dispatch = useDispatch();
 
   const load = async () => {
-    if (status !== "complete") {
+    if (status !== TransferStatusEnum.COMPLETE) {
       const transfer = await getTransferByTempfilename(tempFilename);
       if (transfer) {
-        if (transfer.status === "in progress") setProgress(transfer.progress);
-        else if (transfer.status === "complete") {
-          dispatch(updateStatus(tempFilename, "complete"));
+        if (transfer.status === TransferStatusEnum.IN_PROGRESS) setProgress(transfer.progress);
+        else if (transfer.status === TransferStatusEnum.COMPLETE) {
+          dispatch(updateStatus(tempFilename, TransferStatusEnum.COMPLETE));
           setProgress(100);
         }
       }

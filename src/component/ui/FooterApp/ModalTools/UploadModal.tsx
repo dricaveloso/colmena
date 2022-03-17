@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@/components/ui/Modal";
-import { getUniqueName, abortUpload, createBaseFileUpload } from "@/services/webdav/files";
+import { getUniqueName, createBaseFileUpload } from "@/services/webdav/files";
 import { PropsLibrarySelector, PropsUserSelector } from "@/types/index";
 import { useSelector, useDispatch } from "react-redux";
 import Divider from "@/components/ui/Divider";
@@ -20,7 +20,14 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import LibraryModal from "@/components/ui/LibraryModal";
 import { LibraryItemInterface } from "@/interfaces/index";
-import { ButtonColorEnum, ButtonSizeEnum, ButtonVariantEnum, TextVariantEnum } from "@/enums/*";
+import {
+  ButtonColorEnum,
+  ButtonSizeEnum,
+  ButtonVariantEnum,
+  TextVariantEnum,
+  TransferStatusEnum,
+  TransferTypeEnum,
+} from "@/enums/*";
 import { Box } from "@material-ui/core";
 import Text from "@/components/ui/Text";
 import {
@@ -28,7 +35,7 @@ import {
   convertPrivateToUsername,
   getRootPath,
 } from "@/utils/directory";
-import ActionConfirm from "@/components/ui/ActionConfirm";
+// import ActionConfirm from "@/components/ui/ActionConfirm";
 import { create as createTransfer } from "@/store/idb/models/transfers";
 import { addFile } from "@/store/actions/transfers/index";
 
@@ -59,8 +66,6 @@ interface FileInProgressInterface {
   status: FileStatusEnum;
 }
 
-let requestCancel = false;
-
 export default function Upload({ open, handleClose }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -70,13 +75,10 @@ export default function Upload({ open, handleClose }: Props) {
   const pathExists = library.currentPathExists;
   const classes = useStyles();
   const router = useRouter();
-  const [cancelIsLoading, setCancelIsLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [openLibrary, setOpenLibrary] = useState(false);
   const [path, setPath] = useState(currentLibraryPath);
-  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
   const [filesInProgress, setFilesInProgress] = useState<FileInProgressInterface[]>([]);
-  const [tempFilenameChunk, setTempFilenameChunk] = useState("");
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const { t: l } = useTranslation("library");
@@ -111,12 +113,6 @@ export default function Upload({ open, handleClose }: Props) {
     [handledPath, l, userId],
   );
 
-  const cancelUpload = useCallback(async () => {
-    await abortUpload(tempFilenameChunk);
-    handleClose();
-    toast(t("messages.uploadCanceledSuccessfully"), "success");
-  }, [handleClose, t]);
-
   const updateFileInProgress = useCallback(
     (file: FileInProgressInterface, data) => {
       filesInProgress.map((item) => {
@@ -139,7 +135,6 @@ export default function Upload({ open, handleClose }: Props) {
       const finalPath = `${trailingSlash(handledPath())}${fileName}`;
       const destination = convertAliasPathToRealPath(finalPath, userId, l("talkFolderName"));
       const tempFilename = getRandomChunkFileName();
-      setTempFilenameChunk(tempFilename);
 
       const created = await createBaseFileUpload(userId, tempFilename);
       if (created.status === 201) {
@@ -149,27 +144,28 @@ export default function Upload({ open, handleClose }: Props) {
           tempFilename,
           file,
           progress: 0,
-          type: "upload",
-          status: "in progress",
+          type: TransferTypeEnum.UPLOAD,
+          status: TransferStatusEnum.IN_PROGRESS,
           chatNotify: true,
           createdAt: Date.now(),
         });
-        dispatch(addFile({ tempFilename, filename: destination, status: "in progress", userId }));
+        dispatch(
+          addFile({
+            tempFilename,
+            filename: destination,
+            status: TransferStatusEnum.IN_PROGRESS,
+            userId,
+          }),
+        );
       }
     },
     [handleFileName, handledPath, l, userId],
   );
 
   const resultMessage = useCallback(() => {
-    if (!requestCancel) {
-      if (formRef.current) {
-        formRef.current.reset();
-      }
-
-      setIsLoading(false);
-      handleClose();
-      toast(t("transfer.fileAddToTransfer"), "success");
-    }
+    setIsLoading(false);
+    handleClose();
+    toast(t("transfer.fileAddToTransfer"), "success");
   }, [handledPath, l, router, t]);
 
   const processUploadFiles = useCallback(
@@ -178,10 +174,6 @@ export default function Upload({ open, handleClose }: Props) {
 
       // eslint-disable-next-line no-plusplus
       for (let index = 0; index < files.length; index++) {
-        if (requestCancel) {
-          break;
-        }
-
         const fileInProgress: FileInProgressInterface = files[index];
         const { file } = fileInProgress;
         try {
@@ -210,7 +202,6 @@ export default function Upload({ open, handleClose }: Props) {
         }
       }
 
-      setShowConfirmCancel(false);
       setIsLoading(false);
       resultMessage();
     },
@@ -235,20 +226,6 @@ export default function Upload({ open, handleClose }: Props) {
     },
     [filesInProgress, processUploadFiles],
   );
-
-  const confirmClose = useCallback(() => {
-    if (isLoading) {
-      setShowConfirmCancel(true);
-    } else {
-      handleClose();
-    }
-  }, [handleClose, isLoading]);
-
-  const requestAbortUpload = () => {
-    setCancelIsLoading(true);
-    cancelUpload();
-    requestCancel = true;
-  };
 
   const libraryOptions = (item: LibraryItemInterface) => {
     if (item.type === "directory") {
@@ -282,7 +259,7 @@ export default function Upload({ open, handleClose }: Props) {
       <Modal
         data-testid="modal-file-upload"
         title={t("uploadTitle")}
-        handleClose={isLoading ? undefined : confirmClose}
+        handleClose={isLoading ? undefined : () => setOpenLibrary(false)}
         open={open}
       >
         <form ref={formRef}>
@@ -316,15 +293,6 @@ export default function Upload({ open, handleClose }: Props) {
           </Box>
           <Divider marginTop={20} />
           <Box display="flex" justifyContent="flex-end" width="100%">
-            {/* {isLoading && (
-              <Button
-                handleClick={confirmClose}
-                title={t("form.cancelButton")}
-                data-cy="cancel"
-                color={ButtonColorEnum.DEFAULT}
-                variant={ButtonVariantEnum.OUTLINED}
-              />
-            )} */}
             <label htmlFor="upload-file">
               <Button
                 data-testid="select-files"
@@ -345,14 +313,6 @@ export default function Upload({ open, handleClose }: Props) {
         options={libraryOptions}
         footerActions={footerActions}
       />
-      {showConfirmCancel && (
-        <ActionConfirm
-          title={t("confirmCancelUpload")}
-          onOk={requestAbortUpload}
-          onClose={() => setShowConfirmCancel(false)}
-          isLoading={cancelIsLoading}
-        />
-      )}
     </>
   );
 }

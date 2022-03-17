@@ -20,6 +20,7 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
+import { TransferStatusEnum } from "@/enums/index";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -96,10 +97,10 @@ export default function Transfer({ tempFilename, filename, status }: Props) {
     const transfer = await getTransferByTempfilename(tempFilename);
     await updateTransfer(transfer.id, {
       currentChunk: 0,
-      status: "canceled",
+      status: TransferStatusEnum.CANCELED,
       updatedAt: Date.now(),
     });
-    dispatch(updateStatus(tempFilename, "canceled"));
+    dispatch(updateStatus(tempFilename, TransferStatusEnum.CANCELED));
   };
 
   const removeUpload = async () => {
@@ -134,11 +135,13 @@ export default function Transfer({ tempFilename, filename, status }: Props) {
           primaryTypographyProps={{ style: { fontWeight: "bold" } }}
           secondary={`/${showFilenamePath()}`}
         />
-        {status === "in progress" && <Image src="/images/upload.gif" width={30} height={30} />}
-        {status === "complete" && (
+        {status === TransferStatusEnum.IN_PROGRESS && (
+          <Image src="/images/upload.gif" width={30} height={30} />
+        )}
+        {status === TransferStatusEnum.COMPLETE && (
           <SvgIcon icon="sync_success" htmlColor="green" fontSize="large" />
         )}
-        {status === "canceled" && (
+        {status === TransferStatusEnum.CANCELED && (
           <SvgIcon icon="sync_canceled" htmlColor={theme.palette.danger.light} fontSize="large" />
         )}
       </Box>
@@ -156,17 +159,17 @@ export default function Transfer({ tempFilename, filename, status }: Props) {
         }
         onClose={handleCloseContextMenu}
       >
-        {status === "complete" && (
+        {status === TransferStatusEnum.COMPLETE && (
           <MenuItem key="open" data-testid="open-details-file" onClick={openFile}>
             <ContextMenuItem icon="show" title={c("transfer.openDetailsFile")} />
           </MenuItem>
         )}
-        {(status === "complete" || status === "canceled") && (
+        {(status === TransferStatusEnum.COMPLETE || status === TransferStatusEnum.CANCELED) && (
           <MenuItem key="clean" data-testid="clean-transfer-item" onClick={removeUpload}>
             <ContextMenuItem icon="clean" title={c("transfer.cleanTransfer")} />
           </MenuItem>
         )}
-        {status === "in progress" && (
+        {status === TransferStatusEnum.IN_PROGRESS && (
           <MenuItem
             key="disabled"
             data-testid="cancel-transfer-item"

@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
-import { JustifyContentEnum } from "@/enums/index";
+import { JustifyContentEnum, TransferStatusEnum, TransferTypeEnum } from "@/enums/index";
 import { useSelector, useDispatch } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
@@ -22,7 +22,7 @@ import { createBaseFileUpload } from "@/services/webdav/files";
 import Box from "@material-ui/core/Box";
 import { arrayBufferToBlob } from "blob-util";
 import { create as createTransfer } from "@/store/idb/models/transfers";
-import { addFile, setOpenTransferModal } from "@/store/actions/transfers/index";
+import { addFile } from "@/store/actions/transfers/index";
 
 const useStyles = makeStyles((theme: Theme) => ({
   frameWaveform: {
@@ -87,14 +87,20 @@ function SavedAudio() {
             tempFilename,
             file,
             progress: 0,
-            type: "upload",
-            status: "in progress",
+            type: TransferTypeEnum.UPLOAD,
+            status: TransferStatusEnum.IN_PROGRESS,
             chatNotify: false,
             createdAt: Date.now(),
           });
-          dispatch(addFile({ tempFilename, filename, status: "in progress", userId }));
+          dispatch(
+            addFile({
+              tempFilename,
+              filename,
+              status: TransferStatusEnum.IN_PROGRESS,
+              userId,
+            }),
+          );
           toast(c("transfer.fileAddToTransfer"), "success");
-          dispatch(setOpenTransferModal(true));
         }
       }
     } catch (e) {
@@ -102,7 +108,7 @@ function SavedAudio() {
       toast(c("genericErrorMessage"), "error");
     } finally {
       setLoading(false);
-      router.replace(`/edit-audio/${id}`);
+      router.back();
     }
   };
 

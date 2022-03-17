@@ -5,7 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import SvgIcon from "@/components/ui/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
 import { PositionProps, PropsRecordingSelector, PropsTransferSelector } from "@/types/index";
-import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
+import { PositionEnum, TextVariantEnum, TextAlignEnum, TransferStatusEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import { useSelector, useDispatch } from "react-redux";
 import Drawer from "./GeneralMenuDrawer";
@@ -94,7 +94,7 @@ function AppBarSys({
   };
 
   const transferWorkInProgress = transferRdx.files.some(
-    (item: TransferItemInterface) => item.status === "in progress",
+    (item: TransferItemInterface) => item.status === TransferStatusEnum.IN_PROGRESS,
   );
 
   const subtitleColor = "#fbe1b7";

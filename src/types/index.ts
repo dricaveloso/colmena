@@ -27,6 +27,7 @@ import {
   FlexDirectionEnum,
   TextfieldVariantEnum,
   EnvironmentEnum,
+  TransferStatusEnum,
 } from "@/enums/index";
 
 export type PropsUserSelector = {
@@ -51,7 +52,11 @@ export type PropsTransferSelector = {
   files: TransferItemInterface[];
 };
 
-export type StatusTransferItemProps = "pending" | "in progress" | "canceled" | "complete";
+export type StatusTransferItemProps =
+  | TransferStatusEnum.PENDING
+  | TransferStatusEnum.IN_PROGRESS
+  | TransferStatusEnum.CANCELED
+  | TransferStatusEnum.COMPLETE;
 
 export type PropsAudioData = {
   blob: Blob;

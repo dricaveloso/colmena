@@ -33,7 +33,7 @@ import {
   getPublicPath,
   getTalkPath,
 } from "@/utils/directory";
-import { EnvironmentEnum } from "@/enums/*";
+import { EnvironmentEnum, TransferStatusEnum } from "@/enums/*";
 import { TFunction } from "next-i18next";
 import constants from "@/constants/index";
 import {
@@ -43,6 +43,7 @@ import {
 import { createShare } from "@/services/share/share";
 // eslint-disable-next-line import/no-cycle
 import { findTokenChatByPath } from "@/pages/recording";
+import { StatusTransferItemProps } from "@/types/*";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -522,7 +523,7 @@ type TransferIDBProps = {
   id: number;
   file: File;
   currentChunk: number;
-  status: "in progress" | "canceled" | "complete" | "pending";
+  status: StatusTransferItemProps;
   filename: string;
   chatNotify: boolean;
 };
@@ -533,7 +534,11 @@ export async function chunkFileUpload(
   filename: string,
   transfer: TransferIDBProps,
 ) {
-  if (transfer.status === "complete" || transfer.status === "canceled") return;
+  if (
+    transfer.status === TransferStatusEnum.COMPLETE ||
+    transfer.status === TransferStatusEnum.CANCELED
+  )
+    return;
 
   const fileUp = transfer.file;
   const maxChunkFile = constants.MAX_CHUNK_FILE;
@@ -546,7 +551,7 @@ export async function chunkFileUpload(
   let abort = false;
   while (done === false) {
     const transferCanceled = await getTransferByTempfilename(tempFilename);
-    if (transferCanceled.status === "canceled") {
+    if (transferCanceled.status === TransferStatusEnum.CANCELED) {
       await abortChunkFileUpload(userId, tempFilename);
       abort = true;
       break;
