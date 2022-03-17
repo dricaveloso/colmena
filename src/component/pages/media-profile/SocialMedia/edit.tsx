@@ -146,6 +146,7 @@ export default function Edit({ title, open, handleClose, socialMediaSelected }: 
                     autoComplete: "off",
                   }}
                   multiline
+                  maxRows={6}
                   {...field}
                 />
               )}

@@ -144,6 +144,7 @@ export default function Create({ title, open, handleClose }: Props) {
                     autoComplete: "off",
                   }}
                   multiline
+                  maxRows={6}
                   {...field}
                 />
               )}
