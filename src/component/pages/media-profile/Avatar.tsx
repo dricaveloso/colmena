@@ -7,7 +7,6 @@ import { getFirstLettersOfTwoFirstNames } from "@/utils/utils";
 import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
 import SvgIcon from "@/components/ui/SvgIcon";
-import { v4 as uuid } from "uuid";
 import { listFile } from "@/services/webdav/files";
 import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
@@ -31,7 +30,7 @@ function AvatarAux({ size, showEditImage = false, mediaName = "" }: Props) {
       },
     }),
   );
-  const [file, setFile] = useState<string | null>(null);
+  const [file, setFile] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
 
@@ -47,7 +46,7 @@ function AvatarAux({ size, showEditImage = false, mediaName = "" }: Props) {
           `${mediaName}/${ConfigFilesNCEnum.MEDIA_PROFILE_AVATAR}`,
         );
         blob = await arrayBufferToBlob(blobRes);
-        createMedia({ name: mediaName, image: blobRes });
+        await createMedia({ name: mediaName, image: blobRes });
       } else {
         blob = await arrayBufferToBlob(media.image);
       }
@@ -67,13 +66,6 @@ function AvatarAux({ size, showEditImage = false, mediaName = "" }: Props) {
   const classes = useStyles();
 
   if (loading) return <Loading />;
-
-  if (!file)
-    return (
-      <Avatar alt={`Media avatar ${mediaName}`} className={classes.size}>
-        {getFirstLettersOfTwoFirstNames(mediaName)}
-      </Avatar>
-    );
 
   return (
     <Badge

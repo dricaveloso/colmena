@@ -81,8 +81,6 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     const responseAvatar = await doRequest(optionsAvatar);
 
-    console.log("avatar", responseAvatar);
-
     cookies = formatCookies(responseAvatar.headers["set-cookie"], cookies);
 
     const optionsCropped = {
@@ -108,8 +106,6 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     const result = JSON.parse(responseAvatarCropped.body.trim());
     if (result.status !== "success") throw new Error("Error");
-
-    console.log("cropped", result);
 
     fs.unlinkSync(filename);
 

@@ -321,7 +321,8 @@ export type AllIconProps =
   | "recently_viewed"
   | "arrow_up_left"
   | "trim"
-  | "instagram";
+  | "instagram"
+  | "show";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 
@@ -331,3 +332,5 @@ export type LanguageProps = {
   abbr: LanguagesAvailableProps;
   language: string;
 };
+
+export type SocialMediasAvailable = "twitter" | "facebook" | "instagram";

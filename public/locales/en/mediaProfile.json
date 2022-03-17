@@ -13,7 +13,7 @@
     "placeholderGroup": "Group",
     "messageSuccessInvite": "Invitation sent",
     "messageSuccessInformation": "Saved information",
-    "socialMediaTitle": "Media's social networks.",
+    "socialMediaTitle": "Media's social networks",
     "socialMediaDescription": "Link your media's social networks so that they are visible in the media's public profile.",
     "titleModalDialogInvite": "Invite collaborator",
     "descriptionModalDialogInvite": "Enter the name, email and access profile for the person you want to invite.",
@@ -36,6 +36,21 @@
         "slogan": "Description",
         "url": "URL"
     },
+    "addSocialMedia": {
+        "name": "Social Media",
+        "url": "URL"
+    },
     "mediaProfileAvatarSaved": "Image saved",
-    "mediaProfileInfoSaved": "Media updated"
-}
+    "mediaProfileAvatarRemoved": "Image removed",
+    "mediaProfileInfoSaved": "Media updated",
+    "addSocialMediaTitle": "Add social media",
+    "updateSocialMediaTitle": "Update social media",
+    "socialMediaInfoSaved": "Social Media saved",
+    "socialMediaInfoRemoved": "Social Media removed",
+    "socialMediaAlreadyRegistered": "All social medias network were registered",
+    "socialMediaContextMenuOptions": {
+      "open": "Open",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  }

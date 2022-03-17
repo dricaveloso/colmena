@@ -37,10 +37,6 @@ const ContextMenuOptions = () => {
     setAnchorEl(null);
   };
 
-  // const featureUnavailable = () => {
-  //   toast(c("featureUnavailable"), "warning");
-  // };
-
   const handleOpenEditForm = () => {
     if (!isSubadminProfile()) {
       toast(c("noPrivilegesAccessTitle"), "warning");
