@@ -254,12 +254,16 @@ export default function Upload({ open, handleClose }: Props) {
     setOpenLibrary(false);
   };
 
+  const confirmClose = useCallback(() => {
+    if (!isLoading) handleClose();
+  }, [handleClose, isLoading]);
+
   return (
     <>
       <Modal
         data-testid="modal-file-upload"
         title={t("uploadTitle")}
-        handleClose={isLoading ? undefined : () => setOpenLibrary(false)}
+        handleClose={confirmClose}
         open={open}
       >
         <form ref={formRef}>
