@@ -36,7 +36,7 @@ function Call() {
     // the id/element dom element that will hold remote videos
     remoteVideosEl: "remoteVideos",
     media: {
-      video: false,
+      video: true,
       audio: true,
     },
     // immediately ask for camera access
