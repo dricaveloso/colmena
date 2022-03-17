@@ -103,7 +103,7 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
 
   const handleMessage = (message: string) => {
     const handledMessage = message.replace(
-      /((?:http:|https:)\/\/[^\s\n]*)/gi,
+      /((?:http:|https:)\/\/\S+\.\S[^.\s,]+)/gi,
       "<a href='$1' target='_blank'>$1</a>",
     );
 
