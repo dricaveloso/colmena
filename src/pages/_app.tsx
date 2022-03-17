@@ -13,10 +13,10 @@ import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as NextAuthProvider } from "next-auth/client";
-import CenterProgress from "@/components/ui/CenterProgress";
 import { verifyIndexedDBBrowserEnable } from "@/utils/utils";
 import "waveform-playlist/styles/playlist.css";
 import "@/styles/globals.css";
+import LoadingPage from "@/components/ui/LoadingPage";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const store = useStore(pageProps.initialReduxState);
@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <PersistGate
           loading={
             <div>
-              <CenterProgress />
+              <LoadingPage open />
             </div>
           }
           persistor={persistor}

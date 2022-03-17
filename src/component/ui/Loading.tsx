@@ -6,6 +6,8 @@ import Text from "@/components/ui/Text";
 
 type Props = {
   description?: string;
+  textColor?: string;
+  loadingColor?: string;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -20,15 +22,22 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     marginTop: theme.spacing(1),
   },
+  circularProgress: {
+    color: theme.palette.secondary.main,
+  },
 }));
 
-const Loading = ({ description }: Props) => {
+const Loading = ({ description, textColor, loadingColor }: Props) => {
   const classes = useStyles();
 
   return (
     <Box className={classes.loading}>
-      <CircularProgress color="secondary" />
-      {description && <Text className={classes.description}>{description}</Text>}
+      <CircularProgress className={classes.circularProgress} style={{ color: loadingColor }} />
+      {description && (
+        <Text className={classes.description} style={{ color: textColor }}>
+          {description}
+        </Text>
+      )}
     </Box>
   );
 };
