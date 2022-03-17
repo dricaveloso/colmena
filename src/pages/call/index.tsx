@@ -16,11 +16,11 @@ import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import { AlignItemsEnum, JustifyContentEnum } from "@/enums/index";
 import GoLive from "@/components/pages/call/GoLive";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 // @ts-ignore
+import SimpleWebRTC from "simplewebrtc";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
-// @ts-ignore
-const WebRTCClient = dynamic(() => import("iotcomms-react-webrtc"), { ssr: false });
+
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
     ...(await serverSideTranslations(locale, ["call", "recording"])),
@@ -30,6 +30,24 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function Call() {
   // const router = useRouter();
   const { t } = useTranslation("call");
+  const webrtc = new SimpleWebRTC({
+    // the id/element dom element that will hold "our" video
+    localVideoEl: "localVideo",
+    // the id/element dom element that will hold remote videos
+    remoteVideosEl: "remoteVideos",
+    media: {
+      video: false,
+      audio: true,
+    },
+    // immediately ask for camera access
+    autoRequestMedia: true,
+  });
+  webrtc.on("readyToCall", () => {
+    // you can name it anything
+    webrtc.joinRoom("your awesome room name");
+  });
+
+  webrtc.startLocalVideo();
 
   return (
     <LayoutApp title={t("title")} back>
@@ -38,37 +56,10 @@ function Call() {
         <ShareLinkComponent url="https://dev.maia.press/jghd-asde-erty" />
         <RecordUsers />
         <Timer />
-        <div className="App">
-          <video width="25%" id="localVideo" autoPlay playsInline muted></video>
-
-          <video width="50%" id="remoteVideo" autoPlay playsInline></video>
-
-          <WebRTCClient
-            // @ts-ignore
-            video={true}
-            autoRegister
-            autoConnect={false}
-            sipDomain=""
-            sipServer=""
-            sipUser=""
-            destination=""
-            metaData={{}}
-            alertVideoUrl="alertUrl"
-            ringbackVideoUrl="ringbackUrl"
-            hideConnectionStatus={false}
-            hideControls={false}
-            autoAnswer={false}
-            hangupCallNow={false}
-            traceSip={false}
-            callLabel="Custom call label"
-            remoteVideo="remoteVideoElementId"
-            localVideo="localVideoElementId"
-            onConnected={() => {}}
-            onConnecting={() => {}}
-            onDisconnected={() => {}}
-            onHangup={() => {}}
-          />
-        </div>
+        <>
+          <video id="localVideo" height={150}></video>
+          <div id="remoteVideos"></div>
+        </>
       </FlexBox>
     </LayoutApp>
   );
