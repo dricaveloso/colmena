@@ -25,7 +25,7 @@ import { parseCookies, setCookie } from "nookies";
 import { MemoizedAudio } from "@/components/pages/honeycomb/Chat/Files/Audio";
 import Default from "./Files/Default";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
     flexDirection: "row",
@@ -45,6 +45,12 @@ const useStyles = makeStyles(() => ({
     alignSelf: "stretch",
     overflow: "hidden",
     marginLeft: 5,
+  },
+  message: {
+    overflowWrap: "anywhere",
+    "& a": {
+      color: theme.palette.primary.main,
+    },
   },
 }));
 
@@ -95,11 +101,30 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
     );
   }
 
+  const handleMessage = (message: string) => {
+    const handledMessage = message.replace(
+      /((?:http:|https:)\/\/[^\s\n]*)/gi,
+      "<a href='$1' target='_blank'>$1</a>",
+    );
+
+    if (message === handledMessage) return message;
+
+    return (
+      <Box
+        component="span"
+        className={classes.message}
+        dangerouslySetInnerHTML={{
+          __html: handledMessage,
+        }}
+      />
+    );
+  };
+
   const prepareCommentWithFile = (
     message: string,
     messageParameters: ChatMessageItemMessageParameterInterface | undefined,
   ): string | React.ReactNode => {
-    if (message !== "{file}") return message;
+    if (message !== "{file}") return handleMessage(message);
 
     if (messageParameters) {
       const messageFile = renderMessageFile(messageParameters);

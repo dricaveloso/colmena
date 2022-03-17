@@ -162,17 +162,15 @@ const RecentFiles: React.FC = () => {
           noMargin
         />
       </Grid>
-      {data && data?.length > 0 && (
-        <Library
-          items={data}
-          options={options}
-          bottomOptions={bottomOptions}
-          handleItemClick={handleItemClick}
-          listType={ListTypeEnum.LIST}
-          isLoading={isLoading}
-          itemsQuantitySkeleton={3}
-        />
-      )}
+      <Library
+        items={data}
+        options={options}
+        bottomOptions={bottomOptions}
+        handleItemClick={handleItemClick}
+        listType={ListTypeEnum.LIST}
+        isLoading={isLoading}
+        itemsQuantitySkeleton={3}
+      />
       {!isLoading && data && data?.length === 0 && (
         <Box style={{ backgroundColor: "#fff" }} padding={2}>
           <Text style={{ textAlign: "left" }} variant={TextVariantEnum.BODY2}>

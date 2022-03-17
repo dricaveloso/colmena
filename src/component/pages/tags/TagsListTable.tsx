@@ -8,8 +8,8 @@ import { useTranslation } from "next-i18next";
 import { TagInterface } from "@/interfaces/index";
 
 const caseInsensitiveSort = (rowA: TagInterface, rowB: TagInterface) => {
-  const a = rowA.tag.toLowerCase();
-  const b = rowB.tag.toLowerCase();
+  const a = rowA.tag.toString().toLowerCase();
+  const b = rowB.tag.toString().toLowerCase();
 
   if (a > b) {
     return 1;

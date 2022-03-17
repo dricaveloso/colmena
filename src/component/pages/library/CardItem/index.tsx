@@ -148,6 +148,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           audioState={audioState}
           environment={environment}
           filename={filename}
+          basename={basename}
           size={size}
           arrayBufferBlob={arrayBufferBlob || arrayBufferIntern}
           handleAudioFinish={() => setAudioState("stop")}
@@ -170,6 +171,7 @@ const CardItem = (cardItem: LibraryCardItemInterface) => {
           handleClick={handleClick}
           environment={environment}
           filename={filename}
+          basename={basename}
           size={size}
           arrayBufferBlob={arrayBufferBlob || arrayBufferIntern}
           audioState={audioState}
