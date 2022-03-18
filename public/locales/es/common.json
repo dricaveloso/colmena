@@ -9,7 +9,7 @@
     "messageOffline": "Por favor acceda a esta página, al menos una vez, con Internet activado",
     "welcomeUserMessage": "Bienvenido/a {{userName}}",
     "invitationGreeting": "Hola {{name}}",
-    "welcomeRadioMessage": "Radio {{mediaName}}",
+    "welcomeRadioMessage": "{{mediaName}}",
     "notFoundPageText": "Página no encontrada",
     "internErrorPageText": "Error interno",
     "constructionPageText": "Página en construcción",
