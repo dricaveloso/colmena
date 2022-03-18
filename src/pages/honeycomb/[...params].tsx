@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
@@ -29,6 +30,30 @@ import { v4 as uuid } from "uuid";
 import { useDispatch } from "react-redux";
 import { setLibraryPath } from "@/store/actions/library";
 import { findGroupFolderByPath } from "@/utils/utils";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  container: {
+    padding: 0,
+    margin: 0,
+    backgroundColor: "#fff",
+  },
+  appBar: {
+    marginTop: 70,
+    height: 40,
+    backgroundColor: theme.palette.primary.main,
+  },
+  tabs: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: "100vw",
+    color: theme.palette.icon.main,
+  },
+  paddingTopAppBarBox: {
+    paddingTop: 55,
+  },
+}));
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -49,12 +74,14 @@ interface TabPanelProps {
 }
 
 function Honeycomb() {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { t } = useTranslation("honeycomb");
   const { t: l } = useTranslation("library");
   const router = useRouter();
   const { params } = router.query;
   const [tokenUuid, setTokenUuid] = useState(uuid());
+  const [showReloadMessages, setShowReloadMessages] = useState(false);
 
   const [value, setValue] = useState(0);
   const [showInputMessage, setShowInputMessage] = useState(true);
@@ -133,6 +160,12 @@ function Honeycomb() {
     </Box>
   );
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowReloadMessages(true);
+    }, 2000);
+  }, []);
+
   return (
     <LayoutApp
       back
@@ -148,27 +181,14 @@ function Honeycomb() {
         />
       }
     >
-      <FlexBox
-        justifyContent={JustifyContentEnum.FLEXSTART}
-        extraStyle={{ padding: 0, margin: 0, backgroundColor: "#fff" }}
-      >
-        <Box width="100vw" style={{ paddingTop: 55 }}>
-          <AppBar
-            position="fixed"
-            elevation={0}
-            style={{ marginTop: 70, height: 40, backgroundColor: theme.palette.primary.main }}
-          >
+      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} className={classes.container}>
+        <Box width="100vw" className={classes.paddingTopAppBarBox}>
+          <AppBar position="fixed" elevation={0} className={classes.appBar}>
             <Tabs
               value={value}
               onChange={handleChange}
               indicatorColor="primary"
-              style={{
-                backgroundColor: "#fff",
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                width: "100vw",
-                color: theme.palette.icon.main,
-              }}
+              className={classes.tabs}
               variant="fullWidth"
             >
               <Tab label={getTabOption(t("tab1Title"), "chat")} {...a11yProps(0)} />
@@ -182,7 +202,7 @@ function Honeycomb() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0}>
-              <ReloadChatMessages token={token} uuid={tokenUuid} />
+              {showReloadMessages && <ReloadChatMessages token={token} uuid={tokenUuid} />}
               <MemoizedChat
                 token={token}
                 conversationName={displayName}

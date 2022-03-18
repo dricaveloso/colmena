@@ -15,7 +15,7 @@ export function receiveChatMessages(
   uuid = "",
 ): ChatMessagesListInterface {
   return useTalkFetch("v1")(
-    `/chat/${token}${responseFormat}&limit=200&lookIntoFuture=0&uuid=${uuid}`,
+    `/chat/${token}${responseFormat}&limit=50&lookIntoFuture=0&uuid=${uuid}`,
     {},
     options,
   );

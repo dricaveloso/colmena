@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -7,7 +6,6 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import { ChatMessageItemInterface, ChatMessageItemInterfaceCustom } from "@/interfaces/talk";
 import { MemoizedChatListItem } from "./ChatListItem";
 import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core";
 import {
   getMessagesByTokenAndBetweenIDs,
@@ -38,7 +36,6 @@ type Props = {
   idxElem: number;
 };
 
-// eslint-disable-next-line max-len
 export function ChatList({
   blockBeginID,
   blockEndID,
@@ -48,22 +45,9 @@ export function ChatList({
   canDeleteConversation,
 }: Props) {
   const classes = useStyles();
-  const footerRef = useRef<HTMLDivElement | null>(null);
-  const listRef = useRef<HTMLUListElement | null>(null);
-  const honeycombRdx = useSelector(
-    (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
-  );
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const { chatMessagesBlockLoad } = honeycombRdx;
-  const renderFooter =
-    chatMessagesBlockLoad.filter((item) => item.token === token).length - 1 === idxElem;
-
   const [data, setData] = useState([]);
   const [allData, setAllData] = useState([]);
-
-  const scrollDownAutomatically = useCallback(() => {
-    footerRef?.current?.scrollIntoView();
-  }, []);
 
   const init = async () => {
     let data = [];
@@ -80,47 +64,30 @@ export function ChatList({
     }
 
     const allData = await getAllMessages(token);
-    // if (idxElem !== 0 && blockBeginID !== blockEndID) {
-    //   const firstElement = data.shift();
-    // }
     setData(data);
     setAllData(allData);
-
-    if (renderFooter) {
-      setTimeout(() => {
-        scrollDownAutomatically();
-      }, 500);
-    }
   };
 
   useEffect(() => {
     init();
   }, []);
 
+  if (data.length === 0) return null;
+
   return (
-    <List ref={listRef} className={classes.list}>
-      {data.length > 0 &&
-        data.map((item: ChatMessageItemInterface, idx: number) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <ListItem key={idx} disableGutters className={classes.verticalList}>
-            <MemoizedChatListItem
-              // prevItem={allData[allData.findIndex(
-              //   (item2: ChatMessageItemInterfaceCustom) =>
-              //     item2.id === item.id || item2.referenceId === item.referenceId,
-              // ) - 1] || null}
-              prevItem={null}
-              canDeleteConversation={canDeleteConversation}
-              item={item}
-              userId={userRdx.user.id}
-            />
-          </ListItem>
-        ))}
-      {renderFooter && (
-        <ListItem key={`footer${blockBeginID}${blockEndID}`} disableGutters>
-          <div ref={footerRef} style={{ width: "100%", height: 80 }}></div>
+    <>
+      {data.map((item: ChatMessageItemInterface, idx: number) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <ListItem key={idx} disableGutters className={classes.verticalList}>
+          <MemoizedChatListItem
+            prevItem={null}
+            canDeleteConversation={canDeleteConversation}
+            item={item}
+            userId={userRdx.user.id}
+          />
         </ListItem>
-      )}
-    </List>
+      ))}
+    </>
   );
 }
 

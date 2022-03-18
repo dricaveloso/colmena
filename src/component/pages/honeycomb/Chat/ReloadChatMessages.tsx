@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-no-bind */
-import React from "react";
+// import React from "react";
 import { receiveChatMessages } from "@/services/talk/chat";
 import { addAllMessages, deleteAllMessages, getAllMessages } from "@/store/idb/models/chat";
-import ChatListSkeleton from "@/components/ui/skeleton/ChatList";
+// import ChatListSkeleton from "@/components/ui/skeleton/ChatList";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addBlockIDChatControl,
@@ -34,7 +34,7 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
     dispatch(addBlockIDChatControl({ blockBeginID, blockEndID, token }));
   };
 
-  const prepareDataTranslate = async (
+  const updateTranslationLocalMessages = async (
     onlineMessages: ChatMessageItemInterface[],
     localMessages: ChatMessageItemInterfaceCustom[],
   ) => {
@@ -47,7 +47,8 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
       createBlockChatControl(onlineMessages, token);
       await addAllMessages(onlineMessages);
 
-      const localMessages = await getAllMessages(token);
+      let localMessages = await getAllMessages(token);
+      localMessages = localMessages.sort((a: any, b: any) => a.id - b.id);
       return localMessages;
     }
 
@@ -55,8 +56,8 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
   };
 
   const { data, error } = receiveChatMessages(token, {
-    // refreshInterval: 2000,
-    // revalidateIfStale: false,
+    refreshInterval: 2000,
+    revalidateIfStale: false,
     // revalidateOnFocus: false,
     // revalidateOnReconnect: false,
     onError: (err: any) => {
@@ -72,51 +73,60 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
       }
 
       if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
-        const localMessages = await getAllMessages(token);
+        let localMessages = await getAllMessages(token);
         if (localMessages.length === 0) {
           dispatch(removeBlockIDChatControlByToken(token));
           createBlockChatControl(onlineMessages, token);
 
           await addAllMessages(onlineMessages);
         } else {
-          const limitNextcloudApiChat = 200;
+          localMessages = localMessages.sort((a: any, b: any) => a.id - b.id);
+          // const limitNextcloudApiChat = 200;
 
-          const lclMessages = await prepareDataTranslate(onlineMessages, localMessages);
+          const lclMessages = await updateTranslationLocalMessages(onlineMessages, localMessages);
 
-          if (onlineMessages.length === limitNextcloudApiChat) {
-            const lastIdInsertedLocalMessages = lclMessages[lclMessages.length - 1].id;
-            const resultDifference = onlineMessages.filter(
-              (item) => item.id > lastIdInsertedLocalMessages,
-            );
-            if (resultDifference.length > 0 && resultDifference.length < limitNextcloudApiChat) {
-              console.log("men", resultDifference);
-              await addAllMessages(resultDifference);
-              createBlockChatControl(resultDifference, token);
-            } else if (
-              resultDifference.length > 0 &&
-              resultDifference.length >= limitNextcloudApiChat
-            ) {
-              // Será necessário tratar a atualização das mensagens do usuário
-              // quando houver mais de 200 mensagens não lidas
-              await addAllMessages(resultDifference);
-              createBlockChatControl(resultDifference, token);
-            }
-          } else {
-            const difference = onlineMessages.length - lclMessages.length;
-
-            if (difference > 0) {
-              const arrDiffMessages = onlineMessages.slice(-difference);
-              await addAllMessages(arrDiffMessages);
-              createBlockChatControl(arrDiffMessages, token);
-            }
+          const lastIdInsertedLocalMessages = lclMessages[lclMessages.length - 1].id;
+          const resultDifference = onlineMessages.filter(
+            (item) => item.id > lastIdInsertedLocalMessages,
+          );
+          if (resultDifference.length > 0) {
+            await addAllMessages(resultDifference);
+            createBlockChatControl(resultDifference, token);
           }
+
+          // if (onlineMessages.length === limitNextcloudApiChat) {
+          //   const lastIdInsertedLocalMessages = lclMessages[lclMessages.length - 1].id;
+          //   const resultDifference = onlineMessages.filter(
+          //     (item) => item.id > lastIdInsertedLocalMessages,
+          //   );
+          //   if (resultDifference.length > 0 && resultDifference.length < limitNextcloudApiChat) {
+          //     await addAllMessages(resultDifference);
+          //     createBlockChatControl(resultDifference, token);
+          //   } else if (
+          //     resultDifference.length > 0 &&
+          //     resultDifference.length >= limitNextcloudApiChat
+          //   ) {
+          //     // Será necessário tratar a atualização das mensagens do usuário
+          //     // quando houver mais de 200 mensagens não lidas
+          //     await addAllMessages(resultDifference);
+          //     createBlockChatControl(resultDifference, token);
+          //   }
+          // } else {
+          //   const difference = onlineMessages.length - lclMessages.length;
+
+          //   if (difference > 0) {
+          //     const arrDiffMessages = onlineMessages.slice(-difference);
+          //     await addAllMessages(arrDiffMessages);
+          //     createBlockChatControl(arrDiffMessages, token);
+          //   }
+          // }
         }
       }
     },
     uuid,
   });
 
-  if (!data && !error) return <ChatListSkeleton />;
+  if (!data && !error) return null;
 
   return null;
 }
