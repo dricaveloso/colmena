@@ -129,25 +129,25 @@
     "confirmCancelUpload": "Do you really want to cancel the upload?",
     "confirmCancelFolderCreation": "Do you really want to cancel the folder creation?",
     "contextMenuUserAvatar": {
-    "upload": "Select image",
-    "remove": "Remove"
-  },
-  "uploadUserAvatarSuccessfully": "Updated profile picture",
-  "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
-  "uploadRuleFileSize": "Image cannot be larger than 20mb",
-  "languagesAllowed": {
-    "en": "English",
-    "es": "Spanish",
-    "fr": "French",
-    "ar": "Arabic",
-    "pt": "Portuguese (Brazil)",
-    "sw": "Swahili"
-  },
-  "confirmationDeleteFile": "Delete file ?",
-  "bannerMessage1": "Colmena is a productivity suite for local media, safe, free and 100% free",
-  "bannerMessage2": "Designed to work in areas of low connectivity.",
-  "bannerMessage3": "Record, edit and publish audio from your cell phone with multiple people in recording rooms.",
-  "bannerMessage4": "Save your files with our specialized cloud service for media.",
-  "doneMessage": "Done!",
-  "microphonePermissionTitle": "You need to allow the use of the microphone"
+        "upload": "Select image",
+        "remove": "Remove"
+    },
+    "uploadUserAvatarSuccessfully": "Updated profile picture",
+    "uploadRuleFileType": "Only PNG and JPG extensions will be allowed",
+    "uploadRuleFileSize": "Image cannot be larger than 20mb",
+    "languagesAllowed": {
+        "en": "English",
+        "es": "Spanish",
+        "fr": "French",
+        "ar": "Arabic",
+        "pt": "Portuguese (Brazil)",
+        "sw": "Swahili"
+    },
+    "confirmationDeleteFile": "Delete file ?",
+    "bannerMessage1": "Colmena is a productivity suite for local media, safe, free and 100% free",
+    "bannerMessage2": "Designed to work in areas of low connectivity.",
+    "bannerMessage3": "Record, edit and publish audio from your cell phone with multiple people in recording rooms.",
+    "bannerMessage4": "Save your files with our specialized cloud service for media.",
+    "doneMessage": "Done!",
+    "microphonePermissionTitle": "You need to allow the use of the microphone"
 }
