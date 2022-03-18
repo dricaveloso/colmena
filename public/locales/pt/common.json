@@ -44,7 +44,7 @@
     "messageOffline": "Favor acessar esta página pelo menos uma vez com a internet habilitada.",
     "welcomeUserMessage": "Seja bem vindo(a) {{userName}}",
     "invitationGreeting": "Olá {{name}}",
-    "welcomeRadioMessage": "Radio {{mediaName}}",
+    "welcomeRadioMessage": "{{mediaName}}",
     "notFoundPageText": "Página não encontrada",
     "internErrorPageText": "Erro interno",
     "constructionPageText": "Página em construção",
