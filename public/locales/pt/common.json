@@ -84,7 +84,7 @@
         "loginFailedTitle": "Nome de usuário ou senha incorretos",
         "directoryAlreadyExists": "Já existe pasta com este nome",
         "enterFolderName": "Nomear pasta",
-        "fileAlreadyExists": "nome de arquivo já existente",
+        "fileAlreadyExists": "já existe um arquivo com esse nome",
         "fileTooLarge": "O arquivo {{fileName}} é muito grande para carregar",
         "fileTooLarg": "O arquivo {{fileName}} é muito grande para carregar",
         "unableToProcessFile": "Não foi possível executar o arquivo {{fileName}}.",
