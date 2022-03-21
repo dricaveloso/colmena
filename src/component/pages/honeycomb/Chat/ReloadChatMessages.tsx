@@ -39,7 +39,7 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
     localMessages: ChatMessageItemInterfaceCustom[],
   ) => {
     const messageOnline = onlineMessages.filter((item) => item.systemMessage !== "").reverse();
-    const messageLocal = localMessages.find((item) => item.id === messageOnline[0].id);
+    const messageLocal = localMessages.find((item) => item.nextcloudId === messageOnline[0].id);
     if (messageLocal?.message !== messageOnline[0].message) {
       await deleteAllMessages(token);
 
@@ -48,7 +48,7 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
       await addAllMessages(onlineMessages);
 
       let localMessages = await getAllMessages(token);
-      localMessages = localMessages.sort((a: any, b: any) => a.id - b.id);
+      localMessages = localMessages.sort((a: any, b: any) => a.nextcloudId - b.nextcloudId);
       return localMessages;
     }
 
@@ -56,8 +56,8 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
   };
 
   const { data, error } = receiveChatMessages(token, {
-    refreshInterval: 2000,
-    revalidateIfStale: false,
+    // refreshInterval: 2000,
+    // revalidateIfStale: false,
     // revalidateOnFocus: false,
     // revalidateOnReconnect: false,
     onError: (err: any) => {
@@ -74,18 +74,17 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
 
       if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
         let localMessages = await getAllMessages(token);
+
         if (localMessages.length === 0) {
           dispatch(removeBlockIDChatControlByToken(token));
           createBlockChatControl(onlineMessages, token);
-
           await addAllMessages(onlineMessages);
         } else {
-          localMessages = localMessages.sort((a: any, b: any) => a.id - b.id);
-          // const limitNextcloudApiChat = 200;
+          localMessages = localMessages.sort((a: any, b: any) => a.nextcloudId - b.nextcloudId);
 
           const lclMessages = await updateTranslationLocalMessages(onlineMessages, localMessages);
 
-          const lastIdInsertedLocalMessages = lclMessages[lclMessages.length - 1].id;
+          const lastIdInsertedLocalMessages = lclMessages[lclMessages.length - 1].nextcloudId;
           const resultDifference = onlineMessages.filter(
             (item) => item.id > lastIdInsertedLocalMessages,
           );
@@ -93,33 +92,6 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
             await addAllMessages(resultDifference);
             createBlockChatControl(resultDifference, token);
           }
-
-          // if (onlineMessages.length === limitNextcloudApiChat) {
-          //   const lastIdInsertedLocalMessages = lclMessages[lclMessages.length - 1].id;
-          //   const resultDifference = onlineMessages.filter(
-          //     (item) => item.id > lastIdInsertedLocalMessages,
-          //   );
-          //   if (resultDifference.length > 0 && resultDifference.length < limitNextcloudApiChat) {
-          //     await addAllMessages(resultDifference);
-          //     createBlockChatControl(resultDifference, token);
-          //   } else if (
-          //     resultDifference.length > 0 &&
-          //     resultDifference.length >= limitNextcloudApiChat
-          //   ) {
-          //     // Será necessário tratar a atualização das mensagens do usuário
-          //     // quando houver mais de 200 mensagens não lidas
-          //     await addAllMessages(resultDifference);
-          //     createBlockChatControl(resultDifference, token);
-          //   }
-          // } else {
-          //   const difference = onlineMessages.length - lclMessages.length;
-
-          //   if (difference > 0) {
-          //     const arrDiffMessages = onlineMessages.slice(-difference);
-          //     await addAllMessages(arrDiffMessages);
-          //     createBlockChatControl(arrDiffMessages, token);
-          //   }
-          // }
         }
       }
     },

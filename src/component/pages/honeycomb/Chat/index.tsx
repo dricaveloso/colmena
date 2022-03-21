@@ -1,13 +1,17 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useCallback, useRef } from "react";
-// import Box from "@material-ui/core/Box";
-import { MemoizedChatList } from "./ChatList";
+import React, { useState, useEffect } from "react";
+import Box from "@material-ui/core/Box";
 import { useSelector } from "react-redux";
-import { PropsHoneycombSelector } from "@/types/*";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
+import { PropsUserSelector } from "@/types/*";
+import { makeStyles } from "@material-ui/core";
+import { getAllMessages } from "@/store/idb/models/chat";
+import { Virtuoso } from "react-virtuoso";
 import ListItem from "@material-ui/core/ListItem";
+import { MemoizedChatListItem } from "./ChatListItem";
+import ChatListSkeleton from "@/components/ui/skeleton/ChatList";
 
 type Props = {
   token: string;
@@ -20,52 +24,52 @@ const useStyles = makeStyles(() => ({
     textAlign: "left",
     alignItems: "stretch",
   },
+  verticalList: {
+    padding: 1,
+  },
 }));
 
 export function Chat({ token, conversationName, canDeleteConversation }: Props) {
   const classes = useStyles();
-  const footerRef = useRef<HTMLDivElement | null>(null);
-  const listRef = useRef<HTMLUListElement | null>(null);
-  const honeycombRdx = useSelector(
-    (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
-  );
-  const { chatMessagesBlockLoad } = honeycombRdx;
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const [data, setData] = useState([]);
+  const [initialItemCount, setInitialItemCount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const renderFooter = chatMessagesBlockLoad.filter((item) => item.token === token).length - 1;
-
-  const scrollDownAutomatically = useCallback(() => {
-    footerRef?.current?.scrollIntoView();
-  }, []);
+  const init = async () => {
+    setLoading(true);
+    const allData = await getAllMessages(token);
+    setInitialItemCount(allData.length - 1);
+    setData(allData);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    if (renderFooter) {
-      setTimeout(() => {
-        scrollDownAutomatically();
-      }, 500);
-    }
+    init();
   }, []);
 
   return (
-    <List ref={listRef} className={classes.list}>
-      {Array.isArray(chatMessagesBlockLoad) &&
-        chatMessagesBlockLoad
-          .filter((item) => item.token === token)
-          .map((item, idx) => (
-            <MemoizedChatList
-              {...item}
-              // eslint-disable-next-line react/no-array-index-key
-              key={idx}
-              canDeleteConversation={canDeleteConversation}
-              conversationName={conversationName}
-              idxElem={idx}
-            />
-          ))}
-      {renderFooter && (
-        <ListItem key="footer-chat" disableGutters>
-          <div ref={footerRef} style={{ width: "100%", height: 80 }}></div>
-        </ListItem>
+    <Box>
+      {!loading ? (
+        <Virtuoso
+          style={{ height: "calc(100vh - 207px)", paddingBottom: 30 }}
+          data={data}
+          initialTopMostItemIndex={initialItemCount}
+          itemContent={(index, item) => (
+            <ListItem key={index} disableGutters className={classes.verticalList}>
+              <MemoizedChatListItem
+                prevItem={null}
+                canDeleteConversation={canDeleteConversation}
+                item={item}
+                userId={userRdx.user.id}
+              />
+            </ListItem>
+          )}
+        />
+      ) : (
+        <ChatListSkeleton />
       )}
-    </List>
+    </Box>
   );
 }
 

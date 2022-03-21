@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import db from "@/store/idb/index";
 
 export function addSingleMessage(file) {
@@ -9,7 +10,13 @@ export function updateMessage(chatId, message) {
 }
 
 export function addAllMessages(file) {
-  return db.chatMessages.bulkAdd(file);
+  const aux = file;
+  aux.map((item) => {
+    item.nextcloudId = item.id;
+    delete item.id;
+    return item;
+  });
+  return db.chatMessages.bulkAdd(aux);
 }
 
 export function deleteAllMessages(token) {

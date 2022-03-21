@@ -182,6 +182,7 @@ export interface ChatMessageItemInterfaceCustom {
   messageType: string;
   isReplyable?: boolean;
   referenceId?: string;
+  nextcloudId?: number;
 }
 
 export interface ChatMessagesListInterface extends SWRDefaultOptionsInterface {
