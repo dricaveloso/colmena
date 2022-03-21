@@ -8,21 +8,27 @@ import { useDispatch } from "react-redux";
 import { updateStatus } from "@/store/actions/transfers";
 import { StatusTransferItemProps } from "@/types/index";
 import { TransferStatusEnum } from "@/enums/index";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  boxCircularProgress: {
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    position: "absolute",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+}));
 
 function CircularProgressWithLabel(props: CircularProgressProps & { value: number }) {
+  const classes = useStyles();
   return (
     <Box position="relative" display="inline-flex">
       <CircularProgress variant="determinate" {...props} />
-      <Box
-        top={0}
-        left={0}
-        bottom={0}
-        right={0}
-        position="absolute"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Box className={classes.boxCircularProgress}>
         <Typography variant="caption" component="div" color="textSecondary">
           {`${Math.round(
             // eslint-disable-next-line react/destructuring-assignment

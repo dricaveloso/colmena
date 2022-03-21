@@ -79,7 +79,7 @@ export async function verifyDeleteAccessFromUserOnChat(token: string): Promise<b
 
 export async function findTokenChatByPath(path: string): Promise<string | boolean> {
   const arr = path.split("/");
-  const honeycombName = arr[0].toLowerCase() === "talk" ? arr[1] : arr[0];
+  const honeycombName = arr[0].toString().toLowerCase() === "talk" ? arr[1] : arr[0];
   const response = await getUsersConversationsAxios();
   const rooms = response.data.ocs.data;
   // eslint-disable-next-line max-len
