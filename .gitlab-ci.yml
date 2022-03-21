@@ -5,9 +5,9 @@ variables:
 
 
 stages:
-  - prepare
-  - build
-  - registry
+  #- prepare
+  #- build
+  #- registry
   - deploy
   #- livetest
   # - cleanup
@@ -16,68 +16,68 @@ cache:
     - node_modules/
     - out/
 
-tests:
-  stage: prepare
-  script:
-    - echo "TODO TESTS"
-  only:
-    - branches
-    - tags
-  except:
-   - main
+# tests:
+#   stage: prepare
+#   script:
+#     - echo "TODO TESTS"
+#   only:
+#     - branches
+#     - tags
+#   except:
+#    - main
 
 
-builder-feature:
-  tags:
-    - docker
-  stage: build
-  script:
-    - cp $ENV_FILE .env
-    - docker build . -t $IMAGE_TAG --no-cache
-  environment:
-    name: feature
-    #name: $CI_BUILD_REF_NAME
-  except:
-   - main
-   - develop
-   - tags
-   - translation
+# builder-feature:
+#   tags:
+#     - docker
+#   stage: build
+#   script:
+#     - cp $ENV_FILE .env
+#     - docker build . -t $IMAGE_TAG --no-cache
+#   environment:
+#     name: feature
+#     #name: $CI_BUILD_REF_NAME
+#   except:
+#    - main
+#    - develop
+#    - tags
+#    - translation
 
-builder-staging:
-  tags:
-    - docker
-  stage: build
-  script:
-    - cp $ENV_FILE .env
-    - docker build . -t $IMAGE_TAG --no-cache
-  environment:
-    name: staging
-    #name: $CI_BUILD_REF_NAME
-  only:
-    - develop
+# builder-staging:
+#   tags:
+#     - docker
+#   stage: build
+#   script:
+#     - cp $ENV_FILE .env
+#     - docker build . -t $IMAGE_TAG --no-cache
+#   environment:
+#     name: staging
+#     #name: $CI_BUILD_REF_NAME
+#   only:
+#     - develop
     
 
-builder-production:
-  tags:
-    - docker
-  stage: build
-  script:
-    - cp $ENV_FILE .env
-    - docker build . -t $IMAGE_TAG --no-cache
-  environment:
-    name: production
-    #name: $CI_BUILD_REF_NAME
-  only:
-    - main
-    - tags
+# builder-production:
+#   tags:
+#     - docker
+#   stage: build
+#   script:
+#     - cp $ENV_FILE .env
+#     - docker build . -t $IMAGE_TAG --no-cache
+#   environment:
+#     name: production
+#     #name: $CI_BUILD_REF_NAME
+#   only:
+#     - main
+#     - tags
 
-register:
-  tags:
-    - docker
-  stage: registry
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker push $IMAGE_TAG
+# register:
+#   tags:
+#     - docker
+#   stage: registry
+#   script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - docker push $IMAGE_TAG
 
 
 deployer-develop:
@@ -91,19 +91,27 @@ deployer-develop:
     - echo $CI_COMMIT_BRANCH
     - docker pull $IMAGE_TAG
     - docker run -d $IMAGE_TAG
-    #- docker-compose up -d app-develop
-    
-  only:
+    #- docker-compose up -d app-develop  
+  except:
+    - main
     - develop
+    - tags
+    - translation
 
-
-#configure cluster:
-# tags:
-#  - k8
-#stage: deploy
-#script: echo $KUBE_NAMESPACE
-#environment:
-# name: production
+configure_cluster:
+  tags:
+    - k8
+  stage: deploy
+  script: 
+    - echo $KUBE_NAMESPACE
+    - echo $KUBE_CERTIFICATE
+  environment:
+    name: testk8
+  except:
+  - main
+  - develop
+  - tags
+  - translation
 
 #test_all:
 #  stage: livetest
