@@ -107,6 +107,7 @@ configure_cluster:
   script: 
     - echo $KUBE_NAMESPACE
     - echo $KUBE_CERTIFICATE
+    - 
     - helm install $CI_COMMIT_REF_SLUG chart
   environment:
     name: testk8
