@@ -76,7 +76,7 @@ function Faq() {
         <Box style={{ backgroundColor: "#fff" }} padding={2}>
           <Text
             variant={TextVariantEnum.BODY1}
-            style={{ textAlign: "left", fontWeight: 600, marginBottom: 10 }}
+            style={{ textAlign: "start", fontWeight: 600, marginBottom: 10 }}
           >
             {t("subtitle")}
           </Text>

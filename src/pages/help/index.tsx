@@ -25,11 +25,21 @@ function Help() {
   const { t } = useTranslation("help");
 
   const items = [
-    "Collaborative space / chat / panal",
-    "Cloud library and sync with security and privacy",
-    "Audio recorder, conference and stream",
-    "Text and audio editor (with image)",
-    "Publishing and sharing content",
+    {
+      support: t("items.item1"),
+    },
+    {
+      support: t("items.item2"),
+    },
+    {
+      support: t("items.item3"),
+    },
+    {
+      support: t("items.item4"),
+    },
+    {
+      support: t("items.item5"),
+    },
   ];
 
   return (
@@ -55,10 +65,10 @@ function Help() {
                     />
                     <Text
                       variant={TextVariantEnum.BODY2}
-                      style={{ marginLeft: 8 }}
+                      style={{ margin: 5 }}
                       align={TextAlignEnum.LEFT}
                     >
-                      {item}
+                      {item.support}
                     </Text>
                   </Box>
                 }

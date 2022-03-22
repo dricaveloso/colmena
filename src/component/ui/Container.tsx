@@ -3,6 +3,14 @@ import Container from "@material-ui/core/Container";
 import { SizeScreensProps } from "@/types/index";
 import { SizeScreensEnum } from "@/enums/index";
 
+import { currentDirection } from "@/utils/i18n";
+
+import { create } from "jss";
+import rtl from "jss-rtl";
+import { StylesProvider, jssPreset } from "@material-ui/core/styles";
+
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+
 type Props = {
   maxWidth?: SizeScreensProps | false;
   children: React.ReactNode;
@@ -24,6 +32,7 @@ export default function Ctnr({
 }: Props) {
   return (
     <Container
+      dir={currentDirection()}
       maxWidth={maxWidth}
       style={{
         display: "flex",
@@ -35,7 +44,7 @@ export default function Ctnr({
         ...backgroundImage,
       }}
     >
-      <>{children}</>
+      <StylesProvider jss={jss}>{children}</StylesProvider>
     </Container>
   );
 }

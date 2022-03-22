@@ -14,6 +14,8 @@ import IconButton from "@/components/ui/IconButton";
 import { isAudioFile } from "@/utils/utils";
 import Clickable from "@/components/ui/Clickable";
 
+import classNames from "classnames";
+
 interface LibraryCardItemAvatarInterface extends LibraryCardItemInterface {
   handleClick: () => void;
   handlePlayPause: (audioState: string) => void;
@@ -80,6 +82,7 @@ const CardItemAvatar = ({
   if (type === "file" && isAudioFile(mime)) {
     return (
       <IconButton
+        className={classNames("rtl:-scale-100")}
         key={`${basename}-playpause`}
         icon={playPause === "play" ? "pause" : "play"}
         iconColor={theme.palette.primary.main}

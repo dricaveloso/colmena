@@ -102,7 +102,7 @@ export function ChatList({
       {data.length > 0 &&
         data.map((item: ChatMessageItemInterface, idx: number) => (
           // eslint-disable-next-line react/no-array-index-key
-          <ListItem key={idx} disableGutters className={classes.verticalList}>
+          <ListItem key={idx} disableGutters className="px-6">
             <MemoizedChatListItem
               // prevItem={allData[allData.findIndex(
               //   (item2: ChatMessageItemInterfaceCustom) =>

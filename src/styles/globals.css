@@ -1,3 +1,4 @@
+
 html,
 body {
   padding: 0;
@@ -234,6 +235,11 @@ table.envPage td:nth-child(1) {
   height: 10px;
   background-color: #fff;
 }
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .jodit-status-bar{
   display: none!important;

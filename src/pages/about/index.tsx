@@ -21,63 +21,34 @@ function About() {
   const { t } = useTranslation("intro");
   const fontSize = "4.0em";
   const color = theme.palette.icon.dark;
+  const classeItems = "flex my-2 justify-between flex-row items-center p-4";
 
   return (
     <LayoutApp title={t("aboutTitle")} back>
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} padding={0}>
-        <Box
-          display="flex"
-          marginBottom={2}
-          justifyContent="space-between"
-          flexDirection="row"
-          alignItems="center"
-          style={{ backgroundColor: "#fff" }}
-          padding={2}
-        >
+        <Box className={classeItems} style={{ backgroundColor: "#fff" }}>
           <MaterialIcon
             icon="perm_data_setting_sharp"
             style={{ fontSize, color, marginRight: 15 }}
           />
-          <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "left" }}>
+          <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "start", margin: 5 }}>
             {t("step1.description")}
           </Text>
         </Box>
-        <Box
-          display="flex"
-          marginBottom={2}
-          justifyContent="space-between"
-          flexDirection="row"
-          alignItems="center"
-          padding={2}
-        >
-          <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "left" }}>
+        <Box className={classeItems}>
+          <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "start", margin: 12 }}>
             {t("step2.description")}
           </Text>
           <MaterialIcon icon="wifi_off_sharp" style={{ fontSize, color, marginLeft: 15 }} />
         </Box>
-        <Box
-          style={{ backgroundColor: "#fff" }}
-          display="flex"
-          marginBottom={2}
-          justifyContent="space-between"
-          flexDirection="row"
-          alignItems="center"
-          padding={2}
-        >
+        <Box style={{ backgroundColor: "#fff" }} className={classeItems}>
           <MaterialIcon icon="cloud_upload_sharp" style={{ fontSize, color, marginRight: 15 }} />
-          <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "left" }}>
+          <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "start", margin: 5 }}>
             {t("step3.description")}
           </Text>
         </Box>
-        <Box
-          display="flex"
-          marginBottom={2}
-          justifyContent="space-between"
-          flexDirection="row"
-          alignItems="center"
-          padding={2}
-        >
-          <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "left" }}>
+        <Box className={classeItems}>
+          <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "start", margin: 12 }}>
             {t("step4.description")}
           </Text>
           <MaterialIcon

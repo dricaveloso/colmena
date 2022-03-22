@@ -1,4 +1,11 @@
 {
   "title": "Help and tutorials",
-  "subtitle": "Tutorials"
+  "subtitle": "Tutorials",
+  "items":{
+    "item1":"Collaborative space / chat / panal",
+    "item2":"Cloud library and sync with security and privacy",
+    "item3":"Audio recorder, conference and stream",
+    "item4":"Text and audio editor (with image)",
+    "item5":"Publishing and sharing content"
+}
 }
