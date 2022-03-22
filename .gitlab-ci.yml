@@ -114,7 +114,7 @@ configure_cluster:
         --set image.repository=$CI_REGISTRY_IMAGE
         --set env=$ENV_FILE
         --set ingress.hosts.host="{$HOST_URL}"
-        --set ingress.tls="([map[hosts:{$HOST_URL} secretName:{$HOST_URL}]])"
+        --set ingress.tls="[hosts:$HOST_URL secretName:$HOST_URL]"
         --set certificate.name=$CI_COMMIT_REF_SLUG
         --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG
         --set certificate.email=support@colmena.network
