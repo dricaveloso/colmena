@@ -1,0 +1,13 @@
+--- 
+- name: HERMES web gui angular frontend software
+  block:
+    
+    - name: HERMES web gui - angular environemnt 
+      command: "npx ts-node setEnv.ts "
+      environment:
+        APP_NAME: HERMES
+        API_URL: /api
+        PRODUCTION: "true"
+        GENERATE_SOURCEMAP: "false"
+      args:
+        chdir: "{{ build_path }}/angular/"
