@@ -19,7 +19,6 @@ import { ButtonColorEnum, ButtonVariantEnum } from "@/enums/*";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import { isPNGImage, isJPGImage } from "@/utils/utils";
-import theme from "@/styles/theme";
 
 type Props = {
   size: number;
@@ -181,7 +180,11 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
         data-testid="avatar-open-context"
         style={{ cursor: "pointer" }}
       >
-        {reloadAvatar ? <Loading /> : <Avatar size={size} showEditImage={showEditImage} />}
+        {reloadAvatar ? (
+          <Loading />
+        ) : (
+          <Avatar size={size} showEditImage={showEditImage} uuid={uuid()} />
+        )}
       </Box>
       <Box display="flex" justifyContent="flex-end">
         <Menu

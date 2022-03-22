@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-no-bind */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
@@ -81,7 +81,6 @@ function Honeycomb() {
   const router = useRouter();
   const { params } = router.query;
   const [tokenUuid, setTokenUuid] = useState(uuid());
-  const [showReloadMessages, setShowReloadMessages] = useState(false);
 
   const [value, setValue] = useState(0);
   const [showInputMessage, setShowInputMessage] = useState(true);
@@ -160,12 +159,6 @@ function Honeycomb() {
     </Box>
   );
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowReloadMessages(true);
-    }, 2000);
-  }, []);
-
   return (
     <LayoutApp
       back
@@ -202,7 +195,7 @@ function Honeycomb() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0}>
-              {showReloadMessages && <ReloadChatMessages token={token} uuid={tokenUuid} />}
+              <ReloadChatMessages token={token} uuid={tokenUuid} />
               <MemoizedChat
                 token={token}
                 conversationName={displayName}

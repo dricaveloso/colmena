@@ -14,6 +14,7 @@ import Modal from "@/components/ui/Modal";
 import { getSystemLanguages } from "@/utils/utils";
 import { LanguageProps, LanguagesAvailableProps } from "@/types/*";
 import constants from "@/constants/index";
+import { deleteAllMessages as deleteAllChatMessages } from "@/store/idb/models/chat";
 
 type Props = {
   open: boolean;
@@ -37,6 +38,7 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
       await localStorage.setItem("isChangedLanguage", "yes");
       try {
         const localesNextcloud = constants.LOCALES_NEXTCLOUD;
+        await deleteAllChatMessages();
         if (localesNextcloud[locale]) {
           await updateUser<string>("language", localesNextcloud[locale]);
         }

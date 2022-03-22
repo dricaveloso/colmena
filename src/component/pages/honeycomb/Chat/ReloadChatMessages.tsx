@@ -1,15 +1,10 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-no-bind */
 // import React from "react";
 import { receiveChatMessages } from "@/services/talk/chat";
-import { addAllMessages, deleteAllMessages, getAllMessages } from "@/store/idb/models/chat";
-// import ChatListSkeleton from "@/components/ui/skeleton/ChatList";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addBlockIDChatControl,
-  removeBlockIDChatControlByToken,
-  addClearHoneycombChatMessages,
-} from "@/store/actions/honeycomb/index";
+import { addAllMessages, deleteAllMessagesByToken, getAllMessages } from "@/store/idb/models/chat";
+import { useSelector } from "react-redux";
 import {
   ChatMessagesListInterfaceCustom,
   ChatMessageItemInterface,
@@ -23,37 +18,9 @@ type Props = {
 };
 
 export default function ReloadChatMessages({ token, uuid }: Props) {
-  const dispatch = useDispatch();
   const honeycombRdx = useSelector(
     (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
   );
-
-  const createBlockChatControl = (onlineMessages: ChatMessageItemInterface[], token: string) => {
-    const blockBeginID = onlineMessages[0].id || 1;
-    const blockEndID = onlineMessages[onlineMessages.length - 1].id || 1;
-    dispatch(addBlockIDChatControl({ blockBeginID, blockEndID, token }));
-  };
-
-  const updateTranslationLocalMessages = async (
-    onlineMessages: ChatMessageItemInterface[],
-    localMessages: ChatMessageItemInterfaceCustom[],
-  ) => {
-    const messageOnline = onlineMessages.filter((item) => item.systemMessage !== "").reverse();
-    const messageLocal = localMessages.find((item) => item.nextcloudId === messageOnline[0].id);
-    if (messageLocal?.message !== messageOnline[0].message) {
-      await deleteAllMessages(token);
-
-      dispatch(removeBlockIDChatControlByToken(token));
-      createBlockChatControl(onlineMessages, token);
-      await addAllMessages(onlineMessages);
-
-      let localMessages = await getAllMessages(token);
-      localMessages = localMessages.sort((a: any, b: any) => a.nextcloudId - b.nextcloudId);
-      return localMessages;
-    }
-
-    return localMessages;
-  };
 
   const { data, error } = receiveChatMessages(token, {
     // refreshInterval: 2000,
@@ -67,30 +34,44 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
       const onlineMessages = data.ocs.data.reverse();
 
       if (!honeycombRdx.clearChatMessages.includes(token)) {
-        dispatch(addClearHoneycombChatMessages(token));
-        dispatch(removeBlockIDChatControlByToken(token));
-        await deleteAllMessages(token);
+        await deleteAllMessagesByToken(token);
       }
 
       if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
         let localMessages = await getAllMessages(token);
 
         if (localMessages.length === 0) {
-          dispatch(removeBlockIDChatControlByToken(token));
-          createBlockChatControl(onlineMessages, token);
           await addAllMessages(onlineMessages);
+          document.dispatchEvent(
+            new CustomEvent("new-messages", {
+              detail: { messages: onlineMessages },
+            }),
+          );
         } else {
           localMessages = localMessages.sort((a: any, b: any) => a.nextcloudId - b.nextcloudId);
 
-          const lclMessages = await updateTranslationLocalMessages(onlineMessages, localMessages);
+          const lastIdInsertedLocalMessages = localMessages
+            .filter((item: ChatMessageItemInterfaceCustom) => item.nextcloudId)
+            .reverse()[0].nextcloudId;
 
-          const lastIdInsertedLocalMessages = lclMessages[lclMessages.length - 1].nextcloudId;
           const resultDifference = onlineMessages.filter(
             (item) => item.id > lastIdInsertedLocalMessages,
           );
+
           if (resultDifference.length > 0) {
-            await addAllMessages(resultDifference);
-            createBlockChatControl(resultDifference, token);
+            const refIdArray = localMessages
+              .filter((item: ChatMessageItemInterfaceCustom) => item.referenceId)
+              .map((item: ChatMessageItemInterfaceCustom) => item.referenceId);
+
+            const messages = resultDifference.filter(
+              (item: ChatMessageItemInterface) => !refIdArray.includes(item.referenceId),
+            );
+            await addAllMessages(messages);
+            document.dispatchEvent(
+              new CustomEvent("new-messages", {
+                detail: { messages },
+              }),
+            );
           }
         }
       }

@@ -9,7 +9,7 @@ import {
   ChatMessageItemMessageParameterInterface,
 } from "@/interfaces/talk";
 import { makeStyles } from "@material-ui/core";
-import Avatar from "@/components/pages/profile/Avatar";
+import { AvatarMemoized } from "@/components/pages/profile/Avatar";
 import AvatarCore from "@material-ui/core/Avatar";
 import {
   getFirstLettersOfTwoFirstNames,
@@ -90,7 +90,7 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
     )
       return (
         <ListItemAvatar key={id} style={{ width: 30, height: 30, display: "flex", justifyContent }}>
-          <Avatar size={6} userName={actorDisplayName} userId={actorId} />
+          <AvatarMemoized size={6} userName={actorDisplayName} userId={actorId} />
         </ListItemAvatar>
       );
 

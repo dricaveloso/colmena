@@ -21,6 +21,16 @@ export function receiveChatMessages(
   );
 }
 
+export function receiveChatMessagesAxios(
+  token: string,
+  limit: number,
+  lastKnownMessageId: number,
+): Promise<ChatMessagesListInterface> {
+  return talkInstance("v1").get(
+    `/chat/${token}${responseFormat}&limit=${limit}&lastKnownMessageId=${lastKnownMessageId}&lookIntoFuture=0`,
+  );
+}
+
 export function sendChatMessage(
   token: string,
   message: string,

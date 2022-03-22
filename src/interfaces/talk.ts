@@ -1,10 +1,5 @@
 import { OCSMetaDefaultInterface, SWRDefaultOptionsInterface } from "./ocs";
 
-export interface MessageBlockLoadInterface {
-  blockBeginID: number | string;
-  blockEndID: number | string;
-  token: string;
-}
 export interface RoomItemInterface {
   id: number;
   token: string;
@@ -167,6 +162,7 @@ export interface ChatMessageItemInterface {
   messageType: string;
   isReplyable?: boolean;
   referenceId?: string;
+  nextcloudId?: number;
 }
 
 export interface ChatMessageItemInterfaceCustom {

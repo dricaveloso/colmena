@@ -7,13 +7,28 @@ import { useTranslation } from "next-i18next";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@/components/ui/IconButton";
 import theme from "@/styles/theme";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ChatMessageItemInterfaceCustom } from "@/interfaces/talk";
 import { PropsUserSelector } from "@/types/index";
 import { addSingleMessage } from "@/store/idb/models/chat";
 // import { reloadChatLocalMessages } from "@/store/actions/honeycomb";
-import { addBlockIDChatControl } from "@/store/actions/honeycomb/index";
 import { v4 as uuid } from "uuid";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  container: {
+    position: "fixed",
+    flexDirection: "row",
+    bottom: 42,
+    left: 0,
+    width: "98%",
+    marginTop: 1,
+    marginLeft: 1,
+    marginRight: 1,
+    paddingBottom: 1,
+    backgroundColor: "#fff",
+  },
+}));
 
 type MyFormValues = {
   message: string;
@@ -26,8 +41,8 @@ type Props = {
 
 export default function InputSendMessage({ handleSendMessage, token }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
-  const dispatch = useDispatch();
   const { t: c } = useTranslation("common");
+  const classes = useStyles();
 
   const initialValues: MyFormValues = {
     message: "",
@@ -38,18 +53,7 @@ export default function InputSendMessage({ handleSendMessage, token }: Props) {
   });
 
   return (
-    <Box
-      position="fixed"
-      flexDirection="row"
-      bottom={42}
-      left={0}
-      width="98%"
-      marginTop={1}
-      marginLeft={1}
-      marginRight={1}
-      paddingBottom={1}
-      style={{ backgroundColor: "#fff" }}
-    >
+    <Box className={classes.container}>
       <Formik
         initialValues={initialValues}
         validationSchema={ValidationSchema}
@@ -70,12 +74,12 @@ export default function InputSendMessage({ handleSendMessage, token }: Props) {
               referenceId,
             };
             await addSingleMessage(messageObj);
-            // dispatch(addChatMessage(messageObj));
-            dispatch(
-              addBlockIDChatControl({ blockBeginID: referenceId, blockEndID: referenceId, token }),
+            document.dispatchEvent(
+              new CustomEvent("new-message", {
+                detail: { message: messageObj },
+              }),
             );
             await handleSendMessage(message, referenceId);
-            // dispatch(reloadChatLocalMessages(true));
             setSubmitting(false);
           })();
           resetForm();

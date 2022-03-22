@@ -19,12 +19,20 @@ export function addAllMessages(file) {
   return db.chatMessages.bulkAdd(aux);
 }
 
-export function deleteAllMessages(token) {
+export function deleteAllMessagesByToken(token) {
   return db.chatMessages.where("token").equals(token).delete();
+}
+
+export function deleteAllMessages() {
+  return db.chatMessages.where("id").above(1).delete();
 }
 
 export function getAllMessages(token) {
   return db.chatMessages.where("token").equals(token).toArray();
+}
+
+export function getAllMessagesWithLimit(token) {
+  return db.chatMessages.where("token").equals(token).limit(50).toArray();
 }
 
 export function getMessageByRefIDAndToken(token, referenceId) {

@@ -1,10 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { UserInfoInterface, RecordingInterface, LibraryItemInterface } from "@/interfaces/index";
-import {
-  ChatMessageItemInterface,
-  RoomItemInterface,
-  MessageBlockLoadInterface,
-} from "@/interfaces/talk";
+import { ChatMessageItemInterface, RoomItemInterface } from "@/interfaces/talk";
 import {
   NotificationStatusEnum,
   ButtonColorEnum,
@@ -37,7 +33,6 @@ export type PropsHoneycombSelector = {
   honeycombs: RoomItemInterface[];
   clearChatMessages: string[];
   chatMessages: ChatMessageItemInterface[];
-  chatMessagesBlockLoad: MessageBlockLoadInterface[];
   reloadChatLocalMessage: boolean;
 };
 
@@ -322,7 +317,8 @@ export type AllIconProps =
   | "arrow_up_left"
   | "trim"
   | "instagram"
-  | "show";
+  | "show"
+  | "arrow_down_circle";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 
