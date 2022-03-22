@@ -7,9 +7,9 @@ replicaCount: 1
 #To see deployment progress for your environments, make sure you are deploying to $KUBE_NAMESPACE 
 #and annotating with app.gitlab.com/app=$CI_PROJECT_PATH_SLUG and app.gitlab.com/env=$CI_ENVIRONMENT_SLUG.
 image:
-  repository: $CI_REGISTRY_IMAGE
+  repository: __CI_REGISTRY_IMAGE__
   pullPolicy: Always
-  tag: $CI_COMMIT_BRANCH
+  tag: __CI_COMMIT_BRANCH__
 
 imagePullSecrets: []
 nameOverride: ""
@@ -42,14 +42,14 @@ ingress:
   kubernetes.io/ingress.class: nginx
   kubernetes.io/tls-acme: "true"
   hosts:
-    - host: __CI_COMMIT_REF_SLUG.colmena.network
+    - host: __CI_COMMIT_REF_SLUG__
       paths:
         - path: 
           pathType: ImplementationSpecific     
   tls: 
      - hosts:
-         -  __CI_COMMIT_REF_SLUG.colmena.network
-       secretName: __CI_COMMIT_REF_SLUG.colmena.network
+         -  __CI_COMMIT_REF_SLUG__
+       secretName: __CI_COMMIT_REF_SLUG__
 resources: {}
 autoscaling:
   enabled: false
