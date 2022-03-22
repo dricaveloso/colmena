@@ -4,11 +4,12 @@ replicaCount: 1
 # $CI_BUILD_REF_NAME develop
 # echo $CI_COMMIT_BRANCH develop
 # docker pull $IMAGE_TAG develop: Pulling from maia/frontend
-#
+#To see deployment progress for your environments, make sure you are deploying to $KUBE_NAMESPACE 
+#and annotating with app.gitlab.com/app=$CI_PROJECT_PATH_SLUG and app.gitlab.com/env=$CI_ENVIRONMENT_SLUG.
 image:
-  repository: __CI_REGISTRY_IMAGE__
+  repository: $CI_REGISTRY_IMAGE
   pullPolicy: Always
-  tag: __CI_COMMIT_BRANCH__
+  tag: $CI_COMMIT_BRANCH
 
 imagePullSecrets: []
 nameOverride: ""
@@ -60,6 +61,6 @@ tolerations: []
 affinity: {}
 
 certificate:
-  name: test.colmena.network
+  name:   
   issuer_name: letsencrypt-test
   email: support@colmena.network 
