@@ -108,14 +108,15 @@ configure_cluster:
     - echo $KUBE_NAMESPACE
     - echo $KUBE_CERTIFICATE
     - echo $CI_COMMIT_REF_SLUG
-    - helm upgrade --set image.tag=$CI_COMMIT_BRANCH\n
-      --set env=$ENV_FILE\n
-      --set ingress.hosts.host=$HOST_URL\n
-      --set ingress.tls.hosts=$HOST_URL\n
-      --set ingress.tls.secretName=$HOST_URL\n
-      --set certificate.name=$CI_COMMIT_REF_SLUG\n
-      --set certificate.issuer_name=$CI_COMMIT_REF_SLUG\n
-      --set certificate.email=support@colmena.network\n
+    - helm upgrade --set image.tag=$CI_COMMIT_BRANCH\
+      --set env=$ENV_FILE\
+      --set ingress.hosts.host=$HOST_URL\
+      --set ingress.tls.hosts=$HOST_URL\
+      --set ingress.tls.secretName=$HOST_URL\
+      --set certificate.name=$CI_COMMIT_REF_SLUG\
+      --set certificate.issuer_name=$CI_COMMIT_REF_SLUG\
+      --set certificate.email=support@colmena.network\
+      --set image.repository=$CI_REGISTRY_IMAGE
        $CI_COMMIT_REF_SLUG chart
   environment:
     name: testk8
