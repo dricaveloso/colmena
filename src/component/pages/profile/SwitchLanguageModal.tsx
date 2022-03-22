@@ -45,9 +45,10 @@ export default function SwitchLanguageModal({ open, onClose, defaultLang, backUr
         // idioma não existe no NC
       }
       setShowBackdrop(false);
-      router.push(backUrl, "", {
+      await router.push(backUrl, "", {
         locale,
       });
+      router.reload();
     }
   };
 

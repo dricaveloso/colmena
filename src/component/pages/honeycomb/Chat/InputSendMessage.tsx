@@ -14,6 +14,7 @@ import { addSingleMessage } from "@/store/idb/models/chat";
 // import { reloadChatLocalMessages } from "@/store/actions/honeycomb";
 import { addBlockIDChatControl } from "@/store/actions/honeycomb/index";
 import { v4 as uuid } from "uuid";
+import classNames from "classnames";
 
 type MyFormValues = {
   message: string;
@@ -126,6 +127,7 @@ export default function InputSendMessage({ handleSendMessage, token }: Props) {
                 )}
               </Field>
               <IconButton
+                className={classNames("rtl:-scale-x-100")}
                 icon="send"
                 iconColor={!isSubmitting ? theme.palette.primary.main : theme.palette.icon.main}
                 handleClick={submitForm}

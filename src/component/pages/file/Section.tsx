@@ -6,7 +6,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Box from "@material-ui/core/Box";
 import { TextVariantEnum } from "@/enums/*";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Text from "@/components/ui/Text";
 
@@ -31,14 +30,14 @@ export default function Section({ title, secondaryAction, children }: Props) {
     <List
       subheader={
         <ListSubheader style={{ backgroundColor: "#F3F3F3" }}>
-          <Box padding={2} display="flex" flexDirection="row" justifyContent="space-between">
+          <Box className="flex justify-between py-4">
             <Text
               variant={TextVariantEnum.BODY1}
               style={{ fontWeight: "bold", color: "#656469", textAlign: "left" }}
             >
               {title}
             </Text>
-            <ListItemSecondaryAction>{secondaryAction}</ListItemSecondaryAction>
+            <div>{secondaryAction}</div>
           </Box>
         </ListSubheader>
       }

@@ -57,7 +57,7 @@ export default function FileHeader({ data, setData }: Props) {
 
   return (
     <>
-      <Box className={classes.root}>
+      <Box className="flex space-s-4 h-36 bg-primary-main items-center px-4">
         <div>
           <Avatar size={10} borderRadius="8px!important" />
         </div>

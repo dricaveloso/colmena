@@ -11,5 +11,7 @@
     "contextMenuOptions": {
         "participantsAddedSuccessfully": "تمت إضافة المشاركين بنجاح",
         "addParticipantContextTitle": "إضافة مشارك"
-    }
+    },
+    "downloadFileFailed": "لم نتمكن من تحميل الملف",
+    "youTitle": "أنت"
 }

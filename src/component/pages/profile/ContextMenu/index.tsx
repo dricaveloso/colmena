@@ -14,6 +14,7 @@ import { toast } from "@/utils/notifications";
 // import { signOut } from "next-auth/client";
 // import BackdropModal from "@/components/ui/Backdrop";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
+import { currentDirection } from "@/utils/i18n";
 
 type PositionProps = {
   mouseX: null | number;
@@ -155,6 +156,8 @@ const ContextMenuOptions = () => {
         handleClick={handleOpenContextMenu}
       />
       <Menu
+        dir={currentDirection()}
+        className="m-3"
         key={uuid()}
         id="simple-menu"
         anchorEl={anchorEl}
@@ -173,7 +176,11 @@ const ContextMenuOptions = () => {
           data-testid="profile-settings-menu-option"
           onClick={() => router.push("/settings")}
         >
-          <ContextMenuItem icon="settings" title={t("contextMenuOptions.settings")} />
+          <ContextMenuItem
+            icon="settings"
+            title={t("contextMenuOptions.settings")}
+            className="m-1"
+          />
         </MenuItem>
         <MenuItem
           key="suspend"
@@ -185,6 +192,7 @@ const ContextMenuOptions = () => {
             icon="disabled"
             iconColor="#ff6347"
             title={t("contextMenuOptions.deactivate")}
+            className="m-1"
           />
         </MenuItem>
         {/* <MenuItem

@@ -17,13 +17,15 @@ import {
   isAudioFile,
 } from "@/utils/utils";
 import theme from "@/styles/theme";
-import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum, TextColorEnum } from "@/enums/*";
 import { parseCookies, setCookie } from "nookies";
 import { MemoizedAudio } from "@/components/pages/honeycomb/Chat/Files/Audio";
 import Default from "./Files/Default";
+import { currentDirection } from "@/utils/i18n";
+
+import classNames from "classnames";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -173,56 +175,58 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
   //   (prevItem && prevItem.actorId !== actorId) ||
   //   (prevItem && prevItem.actorId === actorId && prevItem.systemMessage !== "");
 
-  if (systemMessage === "")
+  if (systemMessage === "") {
     return (
-      <Box className={classes.card} key={id}>
-        {userId === actorId && getAvatarComponent(actorDisplayName, actorId, "flex-start")}
-        <Box
-          padding={1}
-          display="flex"
-          borderRadius={20}
-          flex={1}
-          style={{
-            backgroundColor: "#f5f5f5",
-            borderTopLeftRadius: userId === actorId ? 2 : 20,
-            borderTopRightRadius: userId !== actorId ? 2 : 20,
-          }}
-        >
-          <ListItemText
-            data-testid="title"
-            className={classes.description}
-            primary={
-              <Box
-                component="span"
-                display="flex"
-                flex={1}
-                flexDirection={userId === actorId ? "row" : "row-reverse"}
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Text variant={TextVariantEnum.BODY2} style={{ fontWeight: "bold" }}>
-                  {actorDisplayName}
-                </Text>
-                <Text variant={TextVariantEnum.CAPTION} style={{ color: "#9A9A9A" }}>
-                  {getFormattedDistanceDateFromNow(timestamp, lang)}
-                </Text>
-              </Box>
-            }
-            secondary={prepareCommentWithFile(message, messageParameters)}
-            style={{ paddingTop: 0, marginTop: 0 }}
-            primaryTypographyProps={{
-              style: {
-                fontSize: 14,
-                fontWeight: "bold",
-                color: theme.palette.primary.main,
-              },
-            }}
-            secondaryTypographyProps={{ style: { fontSize: 14, color: "#858585" } }}
-          />
+      <div className="w-full " dir={currentDirection()}>
+        <Box className="flex w-full" key={id}>
+          {userId === actorId && getAvatarComponent(actorDisplayName, actorId, "flex-start")}
+          <Box
+            className={classNames("bg-gray-100 flex w-full p-2 rounded-b-xl", {
+              "rounded-ts-xl": userId !== actorId,
+              "rounded-te-xl": userId === actorId,
+            })}
+          >
+            <ListItemText
+              data-testid="title"
+              className={classes.description}
+              primary={
+                <Box
+                  display="flex"
+                  flex={1}
+                  flexDirection={userId === actorId ? "row" : "row-reverse"}
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Text variant={TextVariantEnum.BODY2} style={{ fontWeight: "bold" }}>
+                    {actorDisplayName}
+                  </Text>
+                  <Text variant={TextVariantEnum.CAPTION} style={{ color: "#9A9A9A" }}>
+                    {getFormattedDistanceDateFromNow(timestamp, lang)}
+                  </Text>
+                </Box>
+              }
+              secondary={
+                <div className="flex flex-start">
+                  {" "}
+                  {prepareCommentWithFile(message, messageParameters)}{" "}
+                </div>
+              }
+              style={{ paddingTop: 0, marginTop: 0 }}
+              primaryTypographyProps={{
+                style: {
+                  fontSize: 14,
+                  fontWeight: "bold",
+                  color: theme.palette.primary.main,
+                },
+              }}
+              secondaryTypographyProps={{ style: { fontSize: 14, color: "#858585" } }}
+            />
+          </Box>
+          {userId !== actorId && getAvatarComponent(actorDisplayName, actorId, "flex-end")}
         </Box>
-        {userId !== actorId && getAvatarComponent(actorDisplayName, actorId, "flex-end")}
-      </Box>
+      </div>
     );
+  }
 
   function prepareInfoMessage(
     message: string,
@@ -233,30 +237,21 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
     arr.forEach((item, idx) => {
       if (item === "{user}" || item === "{actor}")
         messageArr.push(
-          <Chip
-            component="span"
-            key={`chip${id}-${actorId}-${referenceId}-${idx}`}
-            size="small"
-            variant="outlined"
-            style={{ fontSize: 12 }}
-            avatar={
-              <AvatarCore>
-                {getFirstLettersOfTwoFirstNames(
-                  item === "{user}" ? messageParameters?.user?.name : messageParameters?.actor.name,
-                )}
-              </AvatarCore>
-            }
-            label={
-              item === "{user}" ? messageParameters?.user?.name : messageParameters?.actor.name
-            }
-          />,
+          <div
+            className="border px-2 py-1 flex items-baseline space-s-1 rounded-full"
+            key={`chip${id}-${actorId}-${referenceId}`}
+          >
+            <h1 className="bg-gray-300 rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center">
+              {getFirstLettersOfTwoFirstNames(
+                item === "{user}" ? messageParameters?.user?.name : messageParameters?.actor.name,
+              )}
+            </h1>
+            <h1>
+              {item === "{user}" ? messageParameters?.user?.name : messageParameters?.actor.name}
+            </h1>
+          </div>,
         );
-      else
-        messageArr.push(
-          <span key={`span${id}${idx}`} style={{ marginLeft: 2, marginRight: 2, fontSize: 12 }}>
-            {item}
-          </span>,
-        );
+      else messageArr.push(<span key={`span${id}${idx}`}>{item}</span>);
     });
 
     return messageArr;
@@ -264,21 +259,13 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
 
   return (
     <Box
-      display="flex"
-      flex="1"
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      style={{ marginTop: 6, marginBottom: 6, marginLeft: 10, marginRight: 10 }}
+      style={{ direction: currentDirection() }}
+      className="flex w-full justify-between items-center mt-0"
       key={id}
     >
-      <Text
-        variant={TextVariantEnum.CAPTION}
-        style={{ wordBreak: "break-work" }}
-        color={TextColorEnum.TEXTSECONDARY}
-      >
+      <div className="flex items-baseline space-s-2 font-normal">
         {prepareInfoMessage(message, messageParameters)}
-      </Text>
+      </div>
       <Text variant={TextVariantEnum.CAPTION} color={TextColorEnum.TEXTSECONDARY}>
         {getFormattedDistanceDateFromNow(timestamp, lang)}
       </Text>

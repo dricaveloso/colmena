@@ -1,5 +1,6 @@
 {
     "audioTitle": "صوت",
+    "fileTitle": "الملف",
     "descriptionTitle": "وصف",
     "tagTitle": "الإشارات",
     "contextMenuOptions": {
@@ -11,5 +12,6 @@
     "messages": {
         "descriptionSuccessfullyUpdated": "تم تعديل الوصف بنجاح"
     },
-    "editDescription": "تعديل الوصف"
+    "editDescription": "تعديل الوصف",
+    "addFileDescription": "أضف وصفا لهذا الملف"
 }
