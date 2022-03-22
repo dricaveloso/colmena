@@ -108,7 +108,8 @@ configure_cluster:
     - echo $KUBE_NAMESPACE
     - echo $KUBE_CERTIFICATE
     - echo $CI_COMMIT_REF_SLUG
-    - ls -la ~/
+    - echo $CI_ENVIRONMENT_SLUG
+    - echo $CI_PROJECT_PATH_SLUG
     - >
         helm upgrade --install $CI_COMMIT_REF_SLUG chart
         --set image.tag=$CI_COMMIT_BRANCH
