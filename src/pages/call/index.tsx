@@ -56,6 +56,7 @@ function Call() {
       getUserMedia(
         { video: true, audio: true },
         (stream) => {
+          console.log("connect turn server");
           const call = peer.call("a", stream);
           call.on("stream", (remoteStream) => {
             // Show stream in some video/canvas element.
@@ -104,7 +105,7 @@ function Call() {
         <Timer />
         <video id="localVideo" autoPlay playsInline></video>
         <button onClick={() => init()} type="button">
-          show Video Streaming
+          Video
         </button>
       </FlexBox>
     </LayoutApp>
