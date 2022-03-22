@@ -60,6 +60,6 @@ tolerations: []
 affinity: {}
 
 certificate:
-  name:   
+  name: __CI_COMMIT_REF_SLUG__   
   issuer_name: letsencrypt-test
   email: support@colmena.network 
