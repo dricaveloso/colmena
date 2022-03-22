@@ -109,6 +109,7 @@ configure_cluster:
     - echo $KUBE_CERTIFICATE
     - echo $CI_COMMIT_REF_SLUG
     - echo helm version
+    - source $ENV_FILE
     - >
         helm upgrade --install $CI_COMMIT_REF_SLUG chart
         --set image.tag=$CI_COMMIT_BRANCH
