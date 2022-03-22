@@ -1,7 +1,7 @@
 variables:
   CONTAINER_IMAGE: maia/frontend:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: http://localhost:5000/maia/frontend:$CI_BUILD_REF_NAME
-  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$ 
 
 
 stages:
@@ -107,6 +107,7 @@ configure_cluster:
   script: 
     - echo $KUBE_NAMESPACE
     - echo $KUBE_CERTIFICATE
+    - helm install $CI_COMMIT_REF_SLUG chart
   environment:
     name: testk8
   except:
