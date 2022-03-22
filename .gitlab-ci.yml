@@ -113,7 +113,7 @@ configure_cluster:
         --set image.tag=$CI_COMMIT_BRANCH
         --set image.repository=$CI_REGISTRY_IMAGE
         --set env=$ENV_FILE
-        --set ingress.hosts="([ host: $HOST_URL]""[ paths: ]""[ path: pathType:ImplementationSpecific])"
+        --set ingress.hosts="([ host: $HOST_URL]""[ paths: ]""[ path: ]""[pathType:ImplementationSpecific])"
         --set ingress.tls="([ hosts: $HOST_URL]""[ secretName: $HOST_URL])"
         --set certificate.name=$CI_COMMIT_REF_SLUG
         --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG
