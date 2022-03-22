@@ -47,8 +47,7 @@ ingress:
         - path: 
           pathType: ImplementationSpecific     
   tls: 
-     - hosts:
-         -  __CI_COMMIT_REF_SLUG__
+     - hosts: __CI_COMMIT_REF_SLUG__
        secretName: __CI_COMMIT_REF_SLUG__
 resources: {}
 autoscaling:
