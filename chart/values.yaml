@@ -1,0 +1,60 @@
+replicaCount: 1
+
+image:
+  repository: maia.press:5050/maia/frontend
+  pullPolicy: Always
+  tag: "develop"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+env:
+  app_env: staging
+  api_base_url: "https://cloud.colmena.network"
+  nextauth_url: "http://localhost:3000"
+  nextcloud_talk_version: v3
+  default_user_password: "colmena@123"
+  username_admin_nc: admin
+  password_admin_nc: "3577umTUSD2qvb3"
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+securityContext: {}
+service:
+  type: ClusterIP
+  port: 80
+  
+ingress:
+  enabled: true
+  annotations: 
+  kubernetes.io/ingress.class: nginx
+  kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: test.colmena.network
+      paths:
+        - path: 
+          pathType: ImplementationSpecific 
+       
+  tls: 
+     - hosts:
+         - test.colmena.network
+       secretName: test.colmena.network
+resources: {}
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+certificate:
+  name: test.colmena.network
+  issuer_name: letsencrypt-test
+  email: support@colmena.network 
