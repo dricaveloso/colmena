@@ -22,7 +22,12 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
 function Profile() {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   return (
-    <LayoutApp title={getFirstname(userRdx.user.name)} back extraElement={<ContextMenuProfile />}>
+    <LayoutApp
+      drawer={false}
+      title={getFirstname(userRdx.user.name)}
+      back
+      extraElement={<ContextMenuProfile />}
+    >
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <HeaderProfile />
         <FlexBox

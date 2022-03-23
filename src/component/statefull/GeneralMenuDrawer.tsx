@@ -12,10 +12,11 @@ import { signOut } from "next-auth/client";
 import Backdrop from "@/components/ui/Backdrop";
 import SvgIcon from "@/components/ui/SvgIcon";
 import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal";
-// import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
 import { isSubadminProfile } from "@/utils/permissions";
+import { useDispatch } from "react-redux";
+import { setOpenTransferModal } from "@/store/actions/transfers/index";
 import { currentDirection } from "@/utils/i18n";
 
 import classNames from "classnames";
@@ -81,6 +82,7 @@ function DrawerAux({ open, onClose }: Props) {
     setLanguage(currentDirection());
   }, [language]);
   const classes = useStyles();
+  const dispatch = useDispatch();
   const router = useRouter();
   const [showBackdrop, setShowBackdrop] = useState(false);
   const cookies = parseCookies();
@@ -92,6 +94,7 @@ function DrawerAux({ open, onClose }: Props) {
   const installRoute = defaultLangRouter === langCookies ? "/install" : `/${langCookies}/install`;
 
   const switchLanguageHandle = () => {
+    onClose();
     setOpenChangeLanguage(true);
   };
 
@@ -100,6 +103,10 @@ function DrawerAux({ open, onClose }: Props) {
   };
 
   const { t } = useTranslation("drawer");
+
+  const openTransferModal = () => {
+    dispatch(setOpenTransferModal(true));
+  };
 
   const logoutHandler = async () => {
     if (navigator.onLine) {
@@ -126,6 +133,13 @@ function DrawerAux({ open, onClose }: Props) {
       icon: <SvgIcon icon="settings" fontSize={iconSize} htmlColor={iconColor} />,
       title: t("settingsTitle"),
       url: "/settings",
+      onlyAdmin: false,
+    },
+    {
+      id: uuid(),
+      icon: <SvgIcon icon="transfer" fontSize={iconSize} htmlColor={iconColor} />,
+      title: t("transfersTitle"),
+      handleClick: openTransferModal,
       onlyAdmin: false,
     },
     {

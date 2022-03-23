@@ -11,8 +11,7 @@ import SocialMediaItem from "./SocialMediaItem";
 import { makeStyles } from "@material-ui/core/styles";
 import Create from "./create";
 import Edit from "./edit";
-import Text from "@/components/ui/Text";
-import { TextVariantEnum, ConfigFilesNCEnum } from "@/enums/*";
+import { ConfigFilesNCEnum } from "@/enums/*";
 import { useSelector, useDispatch } from "react-redux";
 import { PropsUserSelector } from "@/types/index";
 import { SocialMediaInfoInterface, MediaInfoInterface } from "@/interfaces/index";
@@ -115,11 +114,6 @@ export default function SocialMedia() {
       <Backdrop open={loadingRemoveSocialMedia} />
       <ToolbarSection showRightButton={false} title={t("socialMediaTitle")} />
       <Divider marginTop={10} />
-      {t("socialMediaDescription") && (
-        <Text variant={TextVariantEnum.BODY2} className={classes.mediaDescription}>
-          {t("socialMediaDescription")}
-        </Text>
-      )}
       <Box className={classes.container}>
         {isSubadminProfile() && (
           <IconButton

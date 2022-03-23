@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-no-bind */
@@ -69,9 +70,16 @@ export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) 
   },
 });
 
+export async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
+  const response = await getSingleConversationAxios(token);
+  const { data } = response.data.ocs;
+
+  return data.canDeleteConversation;
+}
+
 export async function findTokenChatByPath(path: string): Promise<string | boolean> {
   const arr = path.split("/");
-  const honeycombName = arr[0];
+  const honeycombName = arr[0].toString().toLowerCase() === "talk" ? arr[1] : arr[0];
   const response = await getUsersConversationsAxios();
   const rooms = response.data.ocs.data;
   // eslint-disable-next-line max-len
@@ -259,13 +267,6 @@ function Recording() {
     setOpenContinueRecording(false);
   };
 
-  async function verifyDeleteAccessFromUserOnChat(token: string): Promise<boolean> {
-    const response = await getSingleConversationAxios(token);
-    const { data } = response.data.ocs;
-
-    return data.canDeleteConversation;
-  }
-
   async function createChatMessageFileNotification(path: string, token: boolean | string) {
     if (!token || typeof token !== "string") return;
 
@@ -353,6 +354,8 @@ function Recording() {
       backgroundColor={theme.palette.variation7.dark}
       title={t("title")}
       showFooter={false}
+      showUploadProgress={false}
+      drawer={false}
       back
     >
       <FlexBox

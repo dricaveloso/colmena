@@ -5,6 +5,7 @@ import {
   NXTagsProps,
   Environment,
   AllIconProps,
+  StatusTransferItemProps,
   SocialMediasAvailable,
 } from "@/types/index";
 import React from "react";
@@ -13,12 +14,6 @@ import { ContextMenuEventEnum, ContextMenuOptionEnum, ListTypeEnum } from "../en
 export interface I18nInterface {
   locale: string;
 }
-
-export interface ConfigReduxInterface {
-  currentPage: string;
-  mutate: any;
-}
-
 export interface RecordingInterface {
   id: string;
   title?: string;
@@ -34,6 +29,13 @@ export interface RecordingInterface {
 export interface NotificationDataInterface {
   message: string;
   status: NotificationStatusProps;
+}
+
+export interface TransferItemInterface {
+  tempFilename: string;
+  filename: string;
+  status: StatusTransferItemProps;
+  userId: string;
 }
 
 export interface UserProfileInterface {

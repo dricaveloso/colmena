@@ -4,15 +4,17 @@ import Box from "@material-ui/core/Box";
 import Toolbar from "@material-ui/core/Toolbar";
 import SvgIcon from "@/components/ui/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
-import { PositionProps, PropsRecordingSelector } from "@/types/index";
-import { PositionEnum, TextVariantEnum, TextAlignEnum } from "@/enums/index";
+import { PositionProps, PropsRecordingSelector, PropsTransferSelector } from "@/types/index";
+import { PositionEnum, TextVariantEnum, TextAlignEnum, TransferStatusEnum } from "@/enums/index";
 import Text from "@/components/ui/Text";
 import { useSelector, useDispatch } from "react-redux";
 import Drawer from "./GeneralMenuDrawer";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 import { updateRecordingState } from "@/store/actions/recordings/index";
+import { setOpenTransferModal } from "@/store/actions/transfers/index";
 import { setBackAfterFinishRecording } from "@/utils/utils";
+import { TransferItemInterface } from "@/interfaces/index";
 
 export interface AppBarInterface {
   title: string;
@@ -24,6 +26,7 @@ export interface AppBarInterface {
   headerPosition?: PositionProps | undefined;
   templateHeader?: "variation1" | "variation2" | "variation3";
   extraElement?: React.ReactNode | undefined;
+  showUploadProgress?: boolean;
 }
 
 export const tplHeader = new Map();
@@ -50,11 +53,13 @@ function AppBarSys({
   back = false,
   templateHeader = "variation2",
   extraElement = undefined,
+  showUploadProgress = true,
 }: AppBarInterface) {
   const router = useRouter();
   const recordingRdx = useSelector(
     (state: { recording: PropsRecordingSelector }) => state.recording,
   );
+  const transferRdx = useSelector((state: { transfer: PropsTransferSelector }) => state.transfer);
   const dispatch = useDispatch();
 
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -75,7 +80,6 @@ function AppBarSys({
       await localStorage.setItem("isChangedLanguage", "no");
     }
 
-    // if (router.pathname === "/profile") router.push(configRdx.currentPage);
     if (router.pathname === "/recording") {
       if (recordingRdx.activeRecordingState === "START") {
         setBackAfterFinishRecording("yes");
@@ -88,6 +92,12 @@ function AppBarSys({
       backTo(backPage);
     }
   };
+
+  const transferWorkInProgress = transferRdx.files.some(
+    (item: TransferItemInterface) => item.status === TransferStatusEnum.IN_PROGRESS,
+  );
+
+  const subtitleColor = "#fbe1b7";
 
   return (
     <header>
@@ -136,7 +146,7 @@ function AppBarSys({
                   align={TextAlignEnum.LEFT}
                   style={{
                     fontSize: fontSizeSubtitle,
-                    color: "#B4AEF5",
+                    color: subtitleColor,
                     fontFamily: "Nunito sans, sans-serif",
                     paddingTop: 2,
                   }}
@@ -148,11 +158,24 @@ function AppBarSys({
           </Box>
           <Box display="flex" flexDirection="row" alignItems="center">
             {extraElement && extraElement}
+            {transferWorkInProgress && showUploadProgress && (
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="transfer"
+                data-testid="open-transfer-modal"
+                style={{ marginLeft: 2 }}
+                onClick={() => dispatch(setOpenTransferModal(true))}
+              >
+                <SvgIcon icon="transfer" htmlColor={subtitleColor} fontSize="medium" />
+              </IconButton>
+            )}
             {drawer && (
               <IconButton
                 edge="start"
                 color="inherit"
                 aria-label="menu"
+                data-testid="open-burguer-menu"
                 style={{ marginLeft: 4 }}
                 onClick={() => setOpenDrawer(!openDrawer)}
               >
