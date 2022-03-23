@@ -14,6 +14,7 @@ import { addSingleMessage } from "@/store/idb/models/chat";
 // import { reloadChatLocalMessages } from "@/store/actions/honeycomb";
 import { v4 as uuid } from "uuid";
 import { makeStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -130,6 +131,7 @@ export default function InputSendMessage({ handleSendMessage, token }: Props) {
                 )}
               </Field>
               <IconButton
+                className={classNames("rtl:-scale-x-100")}
                 icon="send"
                 iconColor={!isSubmitting ? theme.palette.primary.main : theme.palette.icon.main}
                 handleClick={submitForm}

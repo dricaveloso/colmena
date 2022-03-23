@@ -54,6 +54,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+import classNames from "classnames";
+
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
     ...(await serverSideTranslations(locale, ["honeycomb", "library"])),
@@ -142,18 +144,9 @@ function Honeycomb() {
   }
 
   const getTabOption = (title: string, icon: AllIconProps) => (
-    <Box
-      display="flex"
-      flexDirection="row"
-      padding={0}
-      margin={0}
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Box className={classNames("flex justify-center items-center space-s-2")}>
       <SvgIcon icon={icon} htmlColor="#727272" fontSize="small" />
-      <Text variant={TextVariantEnum.CAPTION} style={{ marginLeft: 4 }}>
-        {title}
-      </Text>
+      <Text variant={TextVariantEnum.CAPTION}>{title}</Text>
     </Box>
   );
 

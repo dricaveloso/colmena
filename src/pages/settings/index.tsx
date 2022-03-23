@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FlexBox from "@/components/ui/FlexBox";
 import LayoutApp from "@/components/statefull/LayoutApp";
 import { useTranslation } from "next-i18next";
@@ -31,6 +31,7 @@ import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal"
 import { parseCookies } from "nookies";
 import Switch from "@material-ui/core/Switch";
 import { toast } from "@/utils/notifications";
+import { currentDirection } from "@/utils/i18n";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -43,6 +44,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     // maxWidth: 360,
     textAlign: "left",
+    "& .MuiListItem-root": {
+      backgroundColor: theme.palette.background.paper,
+    },
+  },
+  rootForRtl: {
+    width: "100%",
+    textAlign: "right",
     "& .MuiListItem-root": {
       backgroundColor: theme.palette.background.paper,
     },
@@ -67,6 +75,8 @@ function Settings() {
     setOpenChangeLanguage(true);
   };
 
+  const [language, setLanguage] = useState("");
+
   const handleCloseChangeLanguage = () => {
     setOpenChangeLanguage(false);
   };
@@ -84,6 +94,10 @@ function Settings() {
       }
     }
   };
+
+  useEffect(() => {
+    setLanguage(currentDirection());
+  }, [language]);
 
   const handleToggle = (value: string) => () => {
     const currentIndex = checked.indexOf(value);
@@ -116,7 +130,7 @@ function Settings() {
           subheader={
             <ListSubheader style={{ fontWeight: "bold" }}>{t("profileTitle")}</ListSubheader>
           }
-          className={classes.root}
+          className={language === "rtl" ? classes.rootForRtl : classes.root}
         >
           <ListItem divider button onClick={() => router.push("/profile")}>
             <ListItemIcon>
@@ -145,7 +159,7 @@ function Settings() {
           subheader={
             <ListSubheader style={{ fontWeight: "bold" }}>{t("generalTitle")}</ListSubheader>
           }
-          className={classes.root}
+          className={language === "rtl" ? classes.rootForRtl : classes.root}
         >
           <ListItem divider>
             <ListItemIcon>

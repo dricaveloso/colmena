@@ -105,9 +105,15 @@ function AppBarSys({
             backgroundColor: tplHeader.get(templateHeader).backgroundAppBar,
           }}
         >
-          <Box display="flex" flexDirection="row" alignItems="center">
+          <Box className="flex items-center space-s-2">
             {back && (
-              <IconButton edge="start" color="inherit" aria-label="back" onClick={handleBack}>
+              <IconButton
+                className="rtl:-scale-x-100"
+                edge="start"
+                color="inherit"
+                aria-label="back"
+                onClick={handleBack}
+              >
                 <SvgIcon icon="back" htmlColor={tplHeader.get(templateHeader).textColor} />
               </IconButton>
             )}

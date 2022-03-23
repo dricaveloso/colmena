@@ -1,19 +1,19 @@
 {
-    "title": "مكتبة",
+    "title": "المكتبة",
     "sort": {
         "title": "ترتيب",
         "highlights": "ابرز النقاط",
-        "newest": "أحدث",
+        "newest": "الأحدث",
         "oldest": "الاقدم",
         "alphabeticalOrder": "ترتيب ابجدي",
-        "descendingAlphabeticalOrder": "تنازلي الترتيب الأبجدي"
+        "descendingAlphabeticalOrder": "الترتيب الأبجدي تنازلياً"
     },
     "filter": {
         "title": "تصفيات",
         "all": "كل",
-        "availableOffline": "متوفر بعدم اتصال",
+        "availableOffline": "متوفر دون إتصال بالشبكة",
         "synchronized": "متزامن",
-        "audios": "صوتيات",
+        "audios": "الصوتيات",
         "images": "الصور",
         "texts": "النصوص"
     },
@@ -34,30 +34,32 @@
         "synchronize": "تزامن",
         "publish": "نشر",
         "delete": "حذف",
-        "availableOffline": "نسخ"
+        "availableOffline": "متوفر دون إتصال بالشبكة"
     },
     "messages": {
         "couldNotRemove": "لا يمكن ازالته",
-        "fileAlreadyExists": "اسم الملف موجود بالفعل",
+        "fileAlreadyExists": "يوجد ملف بهذا الاسم في حالة إستعمال",
         "cannotDownloadFile": "تحميل الملف غير ممكن",
         "unidentifiedEnvironment": "بيئة غير محددة",
         "unableToCompleteRequest": "لم يتم اكمال الطلب",
         "directorySuccessfullyCopied": "تم نسخ دليل الملفات بنجاح",
         "fileSuccessfullyCopied": "تم نسخ الملف بنجاح",
-        "directorySuccessfullyMoved": "تم تحريك دليل الملفات بنجاح",
-        "fileSuccessfullyMoved": "تم تحرك الملف بنجاح",
-        "directorySuccessfullyDuplicated": "تم تكرر دليل الملفات بنجاح",
-        "fileSuccessfullyDuplicated": "تكرر الملف بنجاح",
+        "directorySuccessfullyMoved": "تم تغيير دليل الملفات بنجاح",
+        "fileSuccessfullyMoved": "تم تغيير الملف بنجاح",
+        "directorySuccessfullyDuplicated": "تم نسخ دليل الملفات بنجاح",
+        "fileSuccessfullyDuplicated": "نسخ الملف بنجاح",
         "directorySuccessfullyRenamed": "تمت اعادة تسمية دليل الملفات بنجاح",
         "fileSuccessfullyRenamed": "تمت إعادة تسمية الملف بنجاح",
         "directorySuccessfullyRemoved": "تمت إزالة الدليل الملفات بنجاح",
-        "fileSuccessfullyRemoved": "تمت إزالة الملف بنجاح"
+        "fileSuccessfullyRemoved": "تمت إزالة الملف بنجاح",
+        "itemDuplicationCanceledSuccessfully": "تم إلغاء التكرار",
+        "itemRenamingCanceledSuccessfully": "تم إلغاء إعادة التسمية."
     },
     "renameTitle": "إعادة تسمية",
     "saveButton": "حفظ",
     "duplicateTitle": "تكرر",
     "duplicateButton": "تكرر",
-    "copyModalTitle": "اختر الموقع",
+    "copyModalTitle": "اختر وجهة الملف",
     "pasteButton": "لصق هنا",
     "moveModalTitle": "اختر الموقع",
     "chooseButton": "اختر هنا",
@@ -66,16 +68,23 @@
         "name": "اسم",
         "path": "مسار",
         "lastUpdate": "آخر تحديث في",
+        "createdAt": "أنشئ في",
         "size": "حجم",
         "type": "نوع",
         "creator": "منشى",
         "fileId": "معرف الملف",
         "tags": "الإشارات",
         "language": "اللغة",
-        "description": "تفصيل"
+        "description": "التفاصيل"
     },
-    "downloading": "جارى التحميل",
-    "synchronizing": "مزامنة",
-    "cancel": "إلغاء",
-    "moveButton": "تحرك هنا"
+  "downloading": "جاري التحميل",
+  "synchronizing": "تزامن",
+  "cancel": "إلغاء",
+  "moveButton": "تحريك",
+  "confirmCancelItemDuplication": "هل تريد حقًا إلغاء تكرار العنصر؟",
+  "confirmCancelItemRenaming": "هل تريد حقًا إلغاء إعادة التسمية؟",
+  "itemStatus": {
+        "availableOffline": "متوفر دون إتصال بالشبكة"
+    },
+    "talkFolderName": "شارك المحتوى معي"
 }

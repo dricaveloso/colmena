@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import DialogActions from "@material-ui/core/DialogActions";
+import { currentDirection } from "@/utils/i18n";
 
 const styles: any = (theme: any) => ({
   root: {
@@ -54,6 +55,7 @@ type Props = {
 function Modal({ title, description, open, handleClose, children, actions, ...props }: Props) {
   return (
     <Dialog
+      dir={currentDirection()}
       onClose={handleClose}
       aria-labelledby="customized-dialog-title"
       open={open}
