@@ -355,6 +355,7 @@ function Recording() {
       title={t("title")}
       showFooter={false}
       showUploadProgress={false}
+      drawer={false}
       back
     >
       <FlexBox

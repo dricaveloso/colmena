@@ -1,4 +1,3 @@
-
 html,
 body {
   padding: 0;
@@ -236,19 +235,18 @@ table.envPage td:nth-child(1) {
   background-color: #fff;
 }
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.jodit-status-bar{
-  display: none!important;
+.jodit-status-bar {
+  display: none !important;
 }
 
-.jodit-react-container{
-  width: 100%!important;
+.jodit-react-container {
+  width: 100% !important;
 }
 
-.jodit-container{
-  height: 450px!important;
+.jodit-container {
+  height: 450px !important;
 }

@@ -28,6 +28,7 @@ function MediaProfile() {
       title={userRdx.user.media?.name || ""}
       back
       extraElement={<ContextMenuMediaProfile />}
+      drawer={false}
     >
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} extraStyle={{ padding: 0, margin: 0 }}>
         <HeaderMediaProfile />
