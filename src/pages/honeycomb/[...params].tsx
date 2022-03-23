@@ -26,7 +26,6 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
 import { AllIconProps } from "@/types/*";
 import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
-import { v4 as uuid } from "uuid";
 import { useDispatch } from "react-redux";
 import { setLibraryPath } from "@/store/actions/library";
 import { findGroupFolderByPath } from "@/utils/utils";
@@ -80,7 +79,6 @@ function Honeycomb() {
   const { t: l } = useTranslation("library");
   const router = useRouter();
   const { params } = router.query;
-  const [tokenUuid, setTokenUuid] = useState(uuid());
 
   const [value, setValue] = useState(0);
   const [showInputMessage, setShowInputMessage] = useState(true);
@@ -166,11 +164,11 @@ function Honeycomb() {
       fontSizeTitle={16}
       subtitle={<Subtitle token={token} />}
       fontSizeSubtitle={12}
+      drawer={false}
       extraElement={
         <ContextMenu
           token={token}
           handleFallbackLeaveConversation={() => router.push("/honeycomb")}
-          handleFallbackParticipants={() => setTokenUuid(uuid())}
         />
       }
     >
@@ -195,7 +193,7 @@ function Honeycomb() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0}>
-              <ReloadChatMessages token={token} uuid={tokenUuid} />
+              <ReloadChatMessages token={token} />
               <MemoizedChat
                 token={token}
                 conversationName={displayName}

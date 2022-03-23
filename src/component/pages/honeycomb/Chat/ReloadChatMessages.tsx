@@ -4,26 +4,28 @@
 // import React from "react";
 import { receiveChatMessages } from "@/services/talk/chat";
 import { addAllMessages, deleteAllMessagesByToken, getAllMessages } from "@/store/idb/models/chat";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   ChatMessagesListInterfaceCustom,
   ChatMessageItemInterface,
   ChatMessageItemInterfaceCustom,
 } from "@/interfaces/talk";
 import { PropsHoneycombSelector } from "@/types/*";
+import { addClearHoneycombChatMessages } from "@/store/actions/honeycomb";
 
 type Props = {
   token: string;
-  uuid: string;
+  uuid?: string;
 };
 
-export default function ReloadChatMessages({ token, uuid }: Props) {
+export default function ReloadChatMessages({ token, uuid = "" }: Props) {
+  const dispatch = useDispatch();
   const honeycombRdx = useSelector(
     (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
   );
 
   const { data, error } = receiveChatMessages(token, {
-    // refreshInterval: 2000,
+    refreshInterval: 2000,
     // revalidateIfStale: false,
     // revalidateOnFocus: false,
     // revalidateOnReconnect: false,
@@ -35,6 +37,7 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
 
       if (!honeycombRdx.clearChatMessages.includes(token)) {
         await deleteAllMessagesByToken(token);
+        dispatch(addClearHoneycombChatMessages(token));
       }
 
       if (Array.isArray(onlineMessages) && onlineMessages.length > 0) {
@@ -42,11 +45,6 @@ export default function ReloadChatMessages({ token, uuid }: Props) {
 
         if (localMessages.length === 0) {
           await addAllMessages(onlineMessages);
-          document.dispatchEvent(
-            new CustomEvent("new-messages", {
-              detail: { messages: onlineMessages },
-            }),
-          );
         } else {
           localMessages = localMessages.sort((a: any, b: any) => a.nextcloudId - b.nextcloudId);
 

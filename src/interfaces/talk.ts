@@ -97,14 +97,14 @@ export interface RoomInterface extends SWRDefaultOptionsInterface {
 }
 
 export interface RoomParticipant {
-  inCall: number;
-  lastPing: number;
-  sessionId: number;
-  participantType: number;
-  attendeeId: number;
+  inCall?: number;
+  lastPing?: number;
+  sessionId?: number;
+  participantType?: number;
+  attendeeId?: number;
   actorId: string;
-  actorType: string;
-  attendeePin: string;
+  actorType?: string;
+  attendeePin?: string;
   displayName: string;
 }
 

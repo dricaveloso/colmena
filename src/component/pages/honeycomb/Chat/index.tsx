@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
 import { makeStyles } from "@material-ui/core";
-import { getAllMessagesWithLimit } from "@/store/idb/models/chat";
+import { getAllMessagesWithLimit, getAllMessages } from "@/store/idb/models/chat";
 import { Virtuoso, VirtuosoHandle, ScrollSeekPlaceholderProps } from "react-virtuoso";
 import ListItem from "@material-ui/core/ListItem";
 import { MemoizedChatListItem } from "./ChatListItem";
@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function Chat({ token, conversationName, canDeleteConversation }: Props) {
-  const MAX_ITEMS = 50;
+  const MAX_ITEMS = 100;
   const START_INDEX = 9999999999;
   const classes = useStyles();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -58,20 +58,17 @@ export function Chat({ token, conversationName, canDeleteConversation }: Props) 
   const [atBottom, setAtBottom] = useState(true);
   const [showButton, setShowButton] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [scroll, setScroll] = useState<"auto" | "smooth">("auto");
   const showButtonTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
-  const scrollToIndex = (
-    index: number | "LAST" = "LAST",
-    behavior: "auto" | "smooth" = "smooth",
-  ) => {
-    if (virtuosoRef && virtuosoRef.current) virtuosoRef.current.scrollToIndex({ index, behavior });
+  const scrollToIndex = (index: number | "LAST" = "LAST") => {
+    if (virtuosoRef && virtuosoRef.current)
+      virtuosoRef.current.scrollToIndex({ index, behavior: "auto" });
   };
 
   const init = async () => {
-    const data = await getAllMessagesWithLimit(token);
-    setData(data);
+    const data = await getAllMessages(token);
+    setData(data.slice(-MAX_ITEMS));
   };
 
   const addMessage = (messages: ChatMessageItemInterface[]) => {
@@ -81,14 +78,13 @@ export function Chat({ token, conversationName, canDeleteConversation }: Props) 
   };
 
   useEffect(() => {
-    init();
     document.addEventListener(
       "new-messages",
       (e: CustomEvent<{ messages: ChatMessageItemInterface[] }>) => {
         if (!e.detail) return;
 
         const messages = e.detail?.messages || [];
-        if (messages && Array.isArray(messages)) {
+        if (messages && Array.isArray(messages) && messages.length > 0) {
           addMessage(messages);
         }
       },
@@ -101,9 +97,7 @@ export function Chat({ token, conversationName, canDeleteConversation }: Props) 
         addMessage(message);
       },
     );
-    setTimeout(() => {
-      setScroll("smooth");
-    }, 3000);
+    init();
     return () => {
       if (showButtonTimeoutRef.current) clearTimeout(showButtonTimeoutRef.current);
     };
@@ -145,7 +139,7 @@ export function Chat({ token, conversationName, canDeleteConversation }: Props) 
         style={{ height: "calc(100vh - 207px)" }}
         data={data}
         startReached={prependItems}
-        initialTopMostItemIndex={data.length - 1}
+        initialTopMostItemIndex={{ index: "LAST" }}
         firstItemIndex={firstItemIndex}
         atBottomStateChange={(bottom) => {
           setAtBottom(bottom);
@@ -154,7 +148,7 @@ export function Chat({ token, conversationName, canDeleteConversation }: Props) 
           Header: () => <Box padding={1}>{loadingMore && <Loading />}</Box>,
           Footer: () => <Box padding={3}></Box>,
         }}
-        followOutput={scroll}
+        followOutput="smooth"
         itemContent={(index, item) => (
           <ListItem key={index} disableGutters className={classes.verticalList}>
             <MemoizedChatListItem
@@ -169,7 +163,7 @@ export function Chat({ token, conversationName, canDeleteConversation }: Props) 
       {showButton && (
         <IconButton
           icon="arrow_down_circle"
-          handleClick={() => scrollToIndex(data.length - 1, "auto")}
+          handleClick={() => scrollToIndex(data.length - 1)}
           className={classes.buttonScrollDown}
           iconColor={theme.palette.variation1.main}
           fontSizeIcon={30}

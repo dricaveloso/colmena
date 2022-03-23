@@ -224,9 +224,6 @@ function DrawerAux({ open, onClose }: Props) {
             );
           })}
       </List>
-      {/* <div style={{ marginLeft: 15, paddingRight: 25, marginTop: 20 }}>
-        <SliderQuota />
-      </div> */}
     </div>
   );
 
