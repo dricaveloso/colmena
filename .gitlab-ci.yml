@@ -104,6 +104,7 @@ configure_cluster:
         --set certificate.name=$CI_COMMIT_REF_SLUG
         --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG
         --set certificate.email=support@colmena.network
+        -n $KUBE_NAMESPACE
   environment:
     name: testk8
   only: 
