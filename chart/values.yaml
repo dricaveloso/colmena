@@ -38,13 +38,13 @@ service:
   
 ingress:
   enabled: true
-  annotations: {} 
-  kubernetes.io/ingress.class: nginx
-  kubernetes.io/tls-acme: "true"
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
   hosts:
-    - host: __CI_COMMIT_REF_SLUG__
+    - host: __HOST_URL__
       paths:
-        - path: 
+        - path: /
           pathType: ImplementationSpecific     
   tls: 
      - hosts: __CI_COMMIT_REF_SLUG__
