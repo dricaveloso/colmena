@@ -95,12 +95,12 @@ configure_cluster:
         --set image.tag=$CI_COMMIT_BRANCH
         --set image.repository=$CI_REGISTRY_IMAGE
         --set ingress.hosts=$HOST_URL
-        --set ingress.tls.hosts=${HOST_URL}
-        --set ingress.tls.secretName=${HOST_URL}
-        --set ServiceAccount.annotations=app.gitlab.com/app=${CI_PROJECT_PATH_SLUG}
-        --set ServiceAccount.annotations=app.gitlab.com/env=${CI_ENVIRONMENT_SLUG}
-        --set ingress.annotations=app.gitlab.com/app=${CI_PROJECT_PATH_SLUG}
-        --set ingress.annotations=app.gitlab.com/env=${CI_ENVIRONMENT_SLUG}
+        --set ingress.tls[0]=hosts=${HOST_URL}
+        --set ingress.tls[1]=secretName=${HOST_URL}
+        --set ServiceAccount.annotations[0]=app.gitlab.com/app=${CI_PROJECT_PATH_SLUG}
+        --set ServiceAccount.annotations[1]=app.gitlab.com/env=${CI_ENVIRONMENT_SLUG}
+        --set ingress.annotations[0]=app.gitlab.com/app=${CI_PROJECT_PATH_SLUG}
+        --set ingress.annotations[1]=app.gitlab.com/env=${CI_ENVIRONMENT_SLUG}
         --set certificate.name=$CI_COMMIT_REF_SLUG
         --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG
         --set certificate.email=support@colmena.network
