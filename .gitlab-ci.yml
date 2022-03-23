@@ -107,7 +107,7 @@ configure_cluster:
   environment:
     name: testk8
   only: 
-    - testk8
+    - k8deploy
 
 #test_all:
 #  stage: livetest
