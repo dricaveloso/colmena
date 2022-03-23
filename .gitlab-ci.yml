@@ -80,26 +80,6 @@ cache:
 #     - docker push $IMAGE_TAG
 
 
-deployer-develop:
-  tags:
-    - docker
-  stage: deploy
-  script:
-    - echo $CI_REGISTRY_IMAGE
-    - echo $CONTAINER_RELEASE_IMAGE
-    - echo $CI_BUILD_REF_NAME
-    - echo $CI_COMMIT_BRANCH
-    - echo $CI_COMMIT_REF_SLUG
-    - echo $CI_SERVER_URL
-    # - docker pull $IMAGE_TAG
-    # - docker run -d $IMAGE_TAG
-    #- docker-compose up -d app-develop  
-  except:
-    - main
-    - develop
-    - tags
-    - translation
-
 configure_cluster:
   tags:
     - k8
@@ -114,19 +94,20 @@ configure_cluster:
         helm upgrade --install $CI_COMMIT_REF_SLUG chart
         --set image.tag=$CI_COMMIT_BRANCH
         --set image.repository=$CI_REGISTRY_IMAGE
-        --set env=$ENV_FILE
-        --set ingress.hosts="([host:$HOST_URL paths: path: pathType:ImplementationSpecific])"
-        --set ingress.tls="([hosts: ${HOST_URL}][secretName: ${HOST_URL}])"
+        --set ingress.hosts=$HOST_URL
+        --set ingress.tls.hosts: ${HOST_URL}
+        --set ingress.tls.secretName: ${HOST_URL}]
+        --set ServiceAccount.annotations=app.gitlab.com/app=${CI_PROJECT_PATH_SLUG}
+        --set ServiceAccount.annotations=app.gitlab.com/env=${CI_ENVIRONMENT_SLUG}
+        --set ingress.annotations=app.gitlab.com/app=${CI_PROJECT_PATH_SLUG}
+        --set ingress.annotations=app.gitlab.com/env=${CI_ENVIRONMENT_SLUG}
         --set certificate.name=$CI_COMMIT_REF_SLUG
         --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG
         --set certificate.email=support@colmena.network
   environment:
     name: testk8
-  except:
-  - main
-  - develop
-  - tags
-  - translation
+  only: 
+    - testk8
 
 #test_all:
 #  stage: livetest
