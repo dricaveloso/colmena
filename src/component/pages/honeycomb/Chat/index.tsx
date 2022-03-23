@@ -16,6 +16,7 @@ import IconButton from "@/components/ui/IconButton";
 import theme from "@/styles/theme";
 import { receiveChatMessagesAxios } from "@/services/talk/chat";
 import Loading from "@/components/ui/Loading";
+import ChatListSkeleton from "@/components/ui/skeleton/ChatList";
 
 type Props = {
   token: string;
@@ -29,22 +30,13 @@ const useStyles = makeStyles(() => ({
     alignItems: "stretch",
   },
   verticalList: {
-    padding: 1,
+    padding: 6,
   },
   buttonScrollDown: {
     bottom: 0,
     right: 0,
     position: "absolute",
     marginBottom: 50,
-  },
-  containerScrollSeek: {
-    padding: 8,
-    boxSizing: "border-box",
-    overflow: "hidden",
-  },
-  subContainerScrollSeek: {
-    background: "#f5f5f5",
-    margin: 10,
   },
 }));
 
@@ -131,6 +123,8 @@ export function Chat({ token, conversationName, canDeleteConversation }: Props) 
     }
     return false;
   }, [firstItemIndex, data, setData]);
+
+  if (data.length === 0) return <ChatListSkeleton />;
 
   return (
     <Box>

@@ -39,7 +39,7 @@ export default function Section4() {
   ];
   return (
     <Box width="100%">
-      <ToolbarSection title={t("section4Title")} link="/algum-lugar" />
+      <ToolbarSection title={t("section4Title")} />
       <Divider marginTop={10} />
       <ItemList items={items} type={ListTypeEnum.LIST} />
     </Box>

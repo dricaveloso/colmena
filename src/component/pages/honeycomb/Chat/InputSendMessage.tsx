@@ -95,7 +95,7 @@ export default function InputSendMessage({ handleSendMessage, token }: Props) {
             }}
             style={{ width: "100%" }}
           >
-            <Box display="flex" flexDirection="row" flex={1}>
+            <Box display="flex" flexDirection="row" margin={1} flex={1}>
               {/* <IconButton
                 icon="clip"
                 iconColor={theme.palette.icon.main}

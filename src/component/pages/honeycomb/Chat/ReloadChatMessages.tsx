@@ -45,6 +45,11 @@ export default function ReloadChatMessages({ token, uuid = "" }: Props) {
 
         if (localMessages.length === 0) {
           await addAllMessages(onlineMessages);
+          document.dispatchEvent(
+            new CustomEvent("new-messages", {
+              detail: { messages: onlineMessages },
+            }),
+          );
         } else {
           localMessages = localMessages.sort((a: any, b: any) => a.nextcloudId - b.nextcloudId);
 
