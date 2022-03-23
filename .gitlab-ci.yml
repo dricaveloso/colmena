@@ -95,8 +95,8 @@ configure_cluster:
         --set image.tag=$CI_COMMIT_BRANCH
         --set image.repository=$CI_REGISTRY_IMAGE
         --set ingress.hosts[0].host=$HOST_URL
-        --set ingress.hosts[0].paths[0].path="/"
-        --set "ingress.hosts[0].paths[0].path.pathType= ImplementationSpecific"
+        , ingress.hosts[0].paths[0].path="/"
+        , ingress.hosts[0].paths[0].pathType= ImplementationSpecific
         --set ingress.tls[0]=hosts=${HOST_URL}
         --set ingress.tls[1]=secretName=${HOST_URL}
         --set ServiceAccount.annotations[0]='app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}'
