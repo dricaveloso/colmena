@@ -29,22 +29,13 @@ const useStyles = makeStyles(() => ({
     alignItems: "stretch",
   },
   verticalList: {
-    padding: 1,
+    padding: 6,
   },
   buttonScrollDown: {
     bottom: 0,
     right: 0,
     position: "absolute",
     marginBottom: 50,
-  },
-  containerScrollSeek: {
-    padding: 8,
-    boxSizing: "border-box",
-    overflow: "hidden",
-  },
-  subContainerScrollSeek: {
-    background: "#f5f5f5",
-    margin: 10,
   },
 }));
 

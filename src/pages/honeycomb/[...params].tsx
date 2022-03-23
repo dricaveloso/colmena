@@ -30,6 +30,25 @@ import { useDispatch } from "react-redux";
 import { setLibraryPath } from "@/store/actions/library";
 import { findGroupFolderByPath } from "@/utils/utils";
 import { makeStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
+
+export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["honeycomb", "library"])),
+  },
+});
+
+export const getStaticPaths: GetStaticPaths = async () => ({
+  paths: [],
+  fallback: "blocking",
+});
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  dir?: string;
+  index: any;
+  value: any;
+}
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -53,26 +72,6 @@ const useStyles = makeStyles(() => ({
     paddingTop: 55,
   },
 }));
-
-import classNames from "classnames";
-
-export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ["honeycomb", "library"])),
-  },
-});
-
-export const getStaticPaths: GetStaticPaths = async () => ({
-  paths: [],
-  fallback: "blocking",
-});
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  dir?: string;
-  index: any;
-  value: any;
-}
 
 function Honeycomb() {
   const classes = useStyles();

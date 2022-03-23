@@ -260,12 +260,12 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
   return (
     <Box
       style={{ direction: currentDirection() }}
-      className="flex w-full justify-between items-center mt-0"
+      className="flex w-full justify-between items-center mt-0 px-2"
       key={id}
     >
-      <div className="flex items-baseline space-s-2 font-normal">
+      <Box className="flex items-baseline space-s-2 font-normal">
         {prepareInfoMessage(message, messageParameters)}
-      </div>
+      </Box>
       <Text variant={TextVariantEnum.CAPTION} color={TextColorEnum.TEXTSECONDARY}>
         {getFormattedDistanceDateFromNow(timestamp, lang)}
       </Text>

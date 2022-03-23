@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 
 export default function ToolbarSection({
   title,
-  link,
+  link = "",
   seeAllTitle,
   showRightButton = true,
   noMargin = false,
