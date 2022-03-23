@@ -101,7 +101,7 @@ configure_cluster:
         --set ingress.tls[0].secretName=${HOST_URL}
         --set ServiceAccount.annotations[0]='app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}'
         --set ServiceAccount.annotations[1]='app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}'
-        --set ingress.annotations[0]='app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}
+        --set ingress.annotations[0]='app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}'
         --set ingress.annotations[0]='app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}'
         --set certificate.name=$CI_COMMIT_REF_SLUG
         --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG
