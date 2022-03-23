@@ -153,5 +153,13 @@
   "bannerMessage4": "Save your files with our specialized cloud service for media.",
   "doneMessage": "Done!",
   "microphonePermissionTitle": "You need to allow the use of the microphone",
-  "unavailableAudio": "Audio is no longer available"
+  "unavailableAudio": "Audio is no longer available",
+  "transfer": {
+    "title": "Transfers",
+    "noResults": "No files to transfer",
+    "fileAddToTransfer": "File added to transfer queue",
+    "cancelTransfer": "Cancel",
+    "cleanTransfer": "Clean",
+    "openDetailsFile": "Open"
+  }
 }

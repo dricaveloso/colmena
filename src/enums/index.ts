@@ -218,3 +218,15 @@ export enum HoneycombContextOptions {
   LEAVE_CONVERSATION = "leave-conversation",
   REMOVE_CONVERSATION = "remove-conversation",
 }
+
+export enum TransferStatusEnum {
+  PENDING = "pending",
+  IN_PROGRESS = "in progress",
+  COMPLETE = "complete",
+  CANCELED = "canceled",
+}
+
+export enum TransferTypeEnum {
+  UPLOAD = "upload",
+  DOWNLOAD = "download",
+}

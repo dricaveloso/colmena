@@ -60,6 +60,7 @@
     "jsx-a11y/no-static-element-interactions": 0,
     "function-paren-newline": 0,
     "no-shadow": 0,
+    "import/no-cycle": 0,
     "import/order": 0,
     "nonblock-statement-body-position": 0,
     "prettier/prettier": ["error"],
@@ -94,15 +95,21 @@
         "allow": ["warn", "error", "log"]
       }
     ],
-    "jsx-a11y/label-has-associated-control": ["error", {
-      "required": {
-        "some": ["nesting", "id"]
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
       }
-    }],
-    "jsx-a11y/label-has-for": ["error", {
-      "required": {
-        "some": ["nesting", "id"]
+    ],
+    "jsx-a11y/label-has-for": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
       }
-    }]
+    ]
   }
 }

@@ -32,6 +32,7 @@ function LayoutApp({
   showFooter = true,
   extraElement = undefined,
   backgroundColor = "#F9F9F9",
+  showUploadProgress = true,
   children,
 }: LayoutInterface) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -52,8 +53,6 @@ function LayoutApp({
   useEffect(() => {
     dispatch(setCurrentAudioPlaying(""));
     dispatch(updateRecordingState("NONE"));
-    // dispatch(setCurrentPage(router.asPath));
-    // dispatch(setChangedLanguage(false));
     updateAccessedPages();
     if (navigator.onLine) {
       (async () => {
@@ -83,6 +82,7 @@ function LayoutApp({
           templateHeader={templateHeader}
           back={back}
           extraElement={extraElement}
+          showUploadProgress={showUploadProgress}
         />
         <>{children}</>
         {showFooter && <FooterApp />}

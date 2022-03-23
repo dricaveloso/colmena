@@ -413,7 +413,7 @@ export function uniqueId() {
 
 export async function findGroupFolderByPath(path: string): Promise<boolean> {
   const arr = path.split("/");
-  const honeycombName = arr[0];
+  const honeycombName = arr[0].toString().toLocaleLowerCase() === "talk" ? arr[1] : arr[0];
   const response = await fetch("/api/list-group-folder");
   const groupFolders = await response.json();
   return groupFolders.data
@@ -631,4 +631,13 @@ function bufferToWave(abuffer: AudioBuffer, len: number) {
 export function getAvailableSocialMedias() {
   const sm = ["facebook", "twitter", "instagram"];
   return sm;
+}
+
+export function getRandomChunkFileName() {
+  let tempFilename = "file";
+  // eslint-disable-next-line no-plusplus
+  for (let count = 1; count < 4; count++) {
+    tempFilename += `-${getRandomInt(1000, 9999)}`;
+  }
+  return tempFilename;
 }

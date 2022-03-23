@@ -16,11 +16,11 @@ import { useSelector } from "react-redux";
 import { arrayBufferToBlob, createObjectURL } from "blob-util";
 import Waves from "@/components/pages/file/AudioWave/Waves";
 import getBlobDuration from "get-blob-duration";
-import { listFile } from "@/services/webdav/files";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { toast } from "@/utils/notifications";
 import { useTranslation } from "react-i18next";
 import { makeStyles } from "@material-ui/core/styles";
+import { listFile } from "@/services/webdav/files";
 
 type Props = {
   filename: string;

@@ -1,5 +1,10 @@
 // eslint-disable-next-line import/no-cycle
-import { UserInfoInterface, RecordingInterface, LibraryItemInterface } from "@/interfaces/index";
+import {
+  UserInfoInterface,
+  RecordingInterface,
+  LibraryItemInterface,
+  TransferItemInterface,
+} from "@/interfaces/index";
 import {
   ChatMessageItemInterface,
   RoomItemInterface,
@@ -22,6 +27,7 @@ import {
   FlexDirectionEnum,
   TextfieldVariantEnum,
   EnvironmentEnum,
+  TransferStatusEnum,
 } from "@/enums/index";
 
 export type PropsUserSelector = {
@@ -41,11 +47,16 @@ export type PropsHoneycombSelector = {
   reloadChatLocalMessage: boolean;
 };
 
-export type PropsConfigSelector = {
-  currentPage: string;
-  lastTwoPagesAccessed: string[];
-  isChangedLanguage: boolean;
+export type PropsTransferSelector = {
+  openTransferModal: boolean;
+  files: TransferItemInterface[];
 };
+
+export type StatusTransferItemProps =
+  | TransferStatusEnum.PENDING
+  | TransferStatusEnum.IN_PROGRESS
+  | TransferStatusEnum.CANCELED
+  | TransferStatusEnum.COMPLETE;
 
 export type PropsAudioData = {
   blob: Blob;
@@ -322,6 +333,12 @@ export type AllIconProps =
   | "arrow_up_left"
   | "trim"
   | "instagram"
+  | "transfer"
+  | "cancel"
+  | "clean"
+  | "show"
+  | "sync_success"
+  | "sync_canceled"
   | "show";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;

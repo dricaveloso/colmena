@@ -14,6 +14,7 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as NextAuthProvider } from "next-auth/client";
 import { verifyIndexedDBBrowserEnable } from "@/utils/utils";
+import Transfer from "@/components/statefull/Transfer";
 import "waveform-playlist/styles/playlist.css";
 import "@/styles/globals.css";
 import LoadingPage from "@/components/ui/LoadingPage";
@@ -56,6 +57,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <GlobalLayout>
               <CssBaseline />
               <Component {...pageProps} />
+              <Transfer />
             </GlobalLayout>
           </ThemeProvider>
         </PersistGate>
