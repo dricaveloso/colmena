@@ -31,6 +31,8 @@ import { setLibraryPath } from "@/store/actions/library";
 import { findGroupFolderByPath } from "@/utils/utils";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
+import IconButton from "@/components/ui/IconButton";
+import { toast } from "@/utils/notifications";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -78,6 +80,7 @@ function Honeycomb() {
   const dispatch = useDispatch();
   const { t } = useTranslation("honeycomb");
   const { t: l } = useTranslation("library");
+  const { t: c } = useTranslation("common");
   const router = useRouter();
   const { params } = router.query;
 
@@ -149,6 +152,10 @@ function Honeycomb() {
     </Box>
   );
 
+  const unavailable = () => {
+    toast(c("featureUnavailable"), "warning");
+  };
+
   return (
     <LayoutApp
       back
@@ -158,10 +165,19 @@ function Honeycomb() {
       fontSizeSubtitle={12}
       drawer={false}
       extraElement={
-        <ContextMenu
-          token={token}
-          handleFallbackLeaveConversation={() => router.push("/honeycomb")}
-        />
+        <Box display="flex" flex={1} justifyContent="flex-end">
+          <IconButton
+            icon="call"
+            iconColor="white"
+            style={{ padding: 0, marginRight: 10, minWidth: 30 }}
+            iconStyle={{ fontSize: 28 }}
+            handleClick={unavailable}
+          />
+          <ContextMenu
+            token={token}
+            handleFallbackLeaveConversation={() => router.push("/honeycomb")}
+          />
+        </Box>
       }
     >
       <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} className={classes.container}>

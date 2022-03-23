@@ -318,7 +318,8 @@ export type AllIconProps =
   | "trim"
   | "instagram"
   | "show"
-  | "arrow_down_circle";
+  | "arrow_down_circle"
+  | "call";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 
