@@ -97,8 +97,8 @@ configure_cluster:
         --set ingress.hosts[0]='host: $HOST_URL'
         --set ingress.hosts[0].paths='path: /'
         --set ingress.hosts[0].paths='pathType: ImplementationSpecific'
-        --set ingress.tls[0]="hosts:${HOST_URL}"
-        --set ingress.tls[1]="secretName:${HOST_URL}"
+        --set ingress.tls[0]="hosts: ${HOST_URL}"
+        --set ingress.tls[1]="secretName: ${HOST_URL}"
         --set ServiceAccount.annotations[0]='app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}'
         --set ServiceAccount.annotations[1]='app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}'
         --set ingress.annotations[0]='app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}'
