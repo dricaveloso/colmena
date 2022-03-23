@@ -187,7 +187,7 @@ function Participants({ token, participantsOut, participantsIn, handleUpdatePart
           }}
           size="small"
         />
-        {participantsInArr.length === 0 ? (
+        {participantsInArr.length === 0 && !search ? (
           <UserListSkeleton />
         ) : (
           <Box style={{ height: "calc(100vh - 130px)", overflow: "scroll" }}>{showUsersList()}</Box>
