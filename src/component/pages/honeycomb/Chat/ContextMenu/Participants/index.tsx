@@ -69,12 +69,12 @@ function Participants({ token, participantsOut, participantsIn, handleUpdatePart
 
   useEffect(() => {
     if (search) {
-      const partIn = participantsInArr.filter(
+      const partIn = participantsIn.filter(
         (item) =>
           item.actorId.toString().indexOf(search) !== -1 ||
           item.displayName.toString().indexOf(search) !== -1,
       );
-      const partOut = participantsOutArr.filter((item) => item.indexOf(search) !== -1);
+      const partOut = participantsOut.filter((item) => item.indexOf(search) !== -1);
       setParticipantsInArr(partIn);
       setParticipantsOutArr(partOut);
     } else {
