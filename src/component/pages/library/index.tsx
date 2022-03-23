@@ -38,6 +38,10 @@ const useStyles = makeStyles(() => ({
   verticalList: {
     padding: "2px 0px",
   },
+  verticalListItem: {
+    paddingTop: "4px",
+    paddingBottom: 0,
+  },
 }));
 
 export function getCurrentItem(): null | LibraryItemInterface {
@@ -291,7 +295,8 @@ export default function Library({
             <ListItem
               key={uuid()}
               disableGutters
-              className={isVerticalList ? classes.verticalList : classes.gridList}
+              classes={{ root: classes.verticalListItem }}
+              className={isVerticalList ? "" : classes.gridList}
             >
               <CardItem
                 {...item}

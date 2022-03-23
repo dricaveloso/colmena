@@ -7,6 +7,7 @@ import EditDescriptionModal from "./EditDescriptionModal";
 import Box from "@material-ui/core/Box";
 import ListItemText from "@material-ui/core/ListItemText";
 import { useTranslation } from "next-i18next";
+import classNames from "classnames";
 
 type Props = {
   data: LibraryItemInterface;
@@ -21,19 +22,19 @@ export default function DescriptionSection({ data, setData, loading }: Props) {
     setOpenModal(!openModal);
   };
 
-  const description = useMemo(() => {
-    if (data.description) {
-      return <ListItemText id="description-item" primary={data.description} />;
-    }
-
-    return (
+  const description = useMemo(
+    () => (
       <ListItemText
         id="description-item"
-        primaryTypographyProps={{ style: { color: "gray" } }}
-        primary={t("addFileDescription")}
+        primary={
+          <div className={classNames("flex flex-start", { "text-gray-500": !data.description })}>
+            {data.description ? data.description : t("addFileDescription")}
+          </div>
+        }
       />
-    );
-  }, [data.description, t]);
+    ),
+    [data.description, t],
+  );
 
   return (
     <>

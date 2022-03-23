@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import Button from "@/components/ui/Button";
 import { toast } from "@/utils/notifications";
@@ -16,6 +16,7 @@ import ResetPasswordModal from "./ResetPasswordModal";
 import { updateUser } from "@/services/ocs/users";
 import { userInfoUpdate } from "@/store/actions/users";
 import BackdropModal from "@/components/ui/Backdrop";
+import { currentDirection } from "@/utils/i18n";
 
 type MyFormValues = {
   user_name: string;
@@ -29,9 +30,14 @@ const useStyles = makeStyles({
       marginBottom: 15,
     },
   },
+  // for the two way not only for the language that begin from the right
+  form: {
+    margin: "auto",
+  },
 });
 
 export default function FormProfile() {
+  const [language, setLanguage] = useState("");
   const { t } = useTranslation("profile");
   const { t: c } = useTranslation("common");
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -45,7 +51,9 @@ export default function FormProfile() {
     emlUser: Yup.string().email(c("form.invalidEmailTitle")).required(c("form.requiredTitle")),
     lastname: Yup.string().required(c("form.requiredTitle")),
   });
-
+  useEffect(() => {
+    setLanguage(currentDirection());
+  }, [language]);
   const initialValues: MyFormValues = {
     user_name: userRdx.user.name.split(" ")[0],
     emlUser: userRdx.user.email,
@@ -104,7 +112,7 @@ export default function FormProfile() {
         }}
       >
         {({ submitForm, isSubmitting, errors, touched }: any) => (
-          <Form autoComplete="off">
+          <Form autoComplete="off" className={classes.form}>
             <Field name="user_name" data-testid="first-name-field" InputProps={{ notched: true }}>
               {({ field }: FieldProps) => (
                 <TextField

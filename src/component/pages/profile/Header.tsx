@@ -20,25 +20,15 @@ export default function HeaderProfile() {
 
   return (
     <Box
-      padding={3}
-      display="flex"
-      justifyContent="flex-start"
-      alignItems="center"
-      flexDirection="row"
+      className="flex p-6"
       style={{ backgroundColor: theme.palette.primary.main, width: "100%" }}
     >
       <UserAvatar size={10} showEditImage />
-      <Box
-        display="flex"
-        flexDirection="column"
-        marginLeft={2}
-        flex={1}
-        justifyContent="flex-start"
-      >
+      <Box className="flex flex-col items-start  w-full justify-center ms-4">
         <Text variant={TextVariantEnum.BODY1} style={{ color: colorBody1, textAlign }}>
           {userRdx.user.media?.name}
         </Text>
-        <Box display="flex" flexDirection="row" alignItems="center">
+        <Box>
           <Text variant={TextVariantEnum.BODY2} style={{ color: colorBody2, textAlign }}>
             {Array.isArray(userRdx.user.subadmin) && userRdx.user.subadmin.length > 0
               ? c("administratorTitle")

@@ -24,6 +24,7 @@ import { getTalkPath, isRootPath, removeInitialPath } from "@/utils/directory";
 import IconButton from "@/components/ui/IconButton";
 import AppBar, { tplHeader } from "@/components/statefull/AppBar";
 import Button from "@/components/ui/Button";
+import { currentDirection } from "@/utils/i18n";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -212,6 +213,7 @@ export default function LibraryModal({
 
   return (
     <Modal
+      dir={currentDirection()}
       data-testid="library-modal"
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"

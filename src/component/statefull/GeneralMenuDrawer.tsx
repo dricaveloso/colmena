@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { ListItemIcon, List, ListItem, ListItemText } from "@material-ui/core";
 import Drawer from "@material-ui/core/Drawer";
@@ -12,12 +12,14 @@ import { signOut } from "next-auth/client";
 import Backdrop from "@/components/ui/Backdrop";
 import SvgIcon from "@/components/ui/SvgIcon";
 import SwitchLanguageModal from "@/components/pages/profile/SwitchLanguageModal";
-// import SliderQuota from "@/components/ui/SliderQuota";
 import { parseCookies } from "nookies";
 import LogoSvg from "../../../public/images/svg/colmena_logo_1612.svg";
 import { isSubadminProfile } from "@/utils/permissions";
 import { useDispatch } from "react-redux";
 import { setOpenTransferModal } from "@/store/actions/transfers/index";
+import { currentDirection } from "@/utils/i18n";
+
+import classNames from "classnames";
 
 type ListItemProps = {
   id: string;
@@ -44,6 +46,28 @@ const useStyles = makeStyles((theme) => ({
       width: "40vw",
     },
   },
+  listSartLeft: {
+    marginLeft: 30,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    color: "#666",
+    [theme.breakpoints.down("sm")]: {
+      width: "80vw",
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "40vw",
+    },
+  },
+  headeItem: {
+    marginRight: 0,
+    display: "flex",
+    flexDirection: "row-reverse",
+  },
+  listItem: {
+    display: "flex",
+    flexDirection: "row-reverse",
+  },
 }));
 
 type Props = {
@@ -53,6 +77,10 @@ type Props = {
 };
 
 function DrawerAux({ open, onClose }: Props) {
+  const [language, setLanguage] = useState("");
+  useEffect(() => {
+    setLanguage(currentDirection());
+  }, [language]);
   const classes = useStyles();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -185,7 +213,13 @@ function DrawerAux({ open, onClose }: Props) {
   );
 
   const drawerMenu = (): React.ReactNode => (
-    <div role="presentation" onClick={onClose} onKeyDown={onClose} className={classes.list}>
+    <div
+      dir={currentDirection()}
+      role="presentation"
+      onClick={onClose}
+      onKeyDown={onClose}
+      className={classNames("ps-4", classes.list)}
+    >
       <div
         style={{
           display: "flex",
@@ -200,7 +234,7 @@ function DrawerAux({ open, onClose }: Props) {
         </div>
       </div>
       <Divider light style={{ backgroundColor: "white", marginTop: 8 }} />
-      <List component="nav">
+      <List component="nav" style={{ width: "100%" }}>
         <ListItem
           key={uuid()}
           onClick={() => {
@@ -227,9 +261,11 @@ function DrawerAux({ open, onClose }: Props) {
             const { id, icon, color, title, url, handleClick } = item;
             if (url)
               return (
-                <Link key={uuid()} href={url}>
-                  {getListItemButton(id, icon, color, title)}
-                </Link>
+                <div>
+                  <Link key={uuid()} href={url}>
+                    {getListItemButton(id, icon, color, title)}
+                  </Link>
+                </div>
               );
 
             return (
@@ -239,9 +275,6 @@ function DrawerAux({ open, onClose }: Props) {
             );
           })}
       </List>
-      {/* <div style={{ marginLeft: 15, paddingRight: 25, marginTop: 20 }}>
-        <SliderQuota />
-      </div> */}
     </div>
   );
 

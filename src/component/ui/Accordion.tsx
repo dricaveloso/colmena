@@ -37,12 +37,12 @@ export default function SimpleAccordion({ data }: Props) {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Text variant={TextVariantEnum.BODY1} style={{ textAlign: "left" }}>
+            <Text variant={TextVariantEnum.BODY1} style={{ textAlign: "start" }}>
               {item.question}
             </Text>
           </AccordionSummary>
           <AccordionDetails>
-            <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "left" }}>
+            <Text variant={TextVariantEnum.BODY2} style={{ textAlign: "start" }}>
               {item.answer}
             </Text>
           </AccordionDetails>

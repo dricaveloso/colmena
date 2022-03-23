@@ -20,6 +20,7 @@ import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import { isPNGImage, isJPGImage } from "@/utils/utils";
 import theme from "@/styles/theme";
+import { currentDirection } from "@/utils/i18n";
 
 type Props = {
   size: number;
@@ -185,6 +186,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
       </Box>
       <Box display="flex" justifyContent="flex-end">
         <Menu
+          dir={currentDirection()}
           key={uuid()}
           id="simple-menu"
           anchorEl={anchorEl}
@@ -199,7 +201,11 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
           onClose={handleCloseContextMenu}
         >
           <MenuItem key="upload" data-testid="upload-menu-option" onClick={onBtnClick}>
-            <ContextMenuItem icon="camera" title={c("contextMenuUserAvatar.upload")} />
+            <ContextMenuItem
+              icon="camera"
+              title={c("contextMenuUserAvatar.upload")}
+              className="m-1.5"
+            />
           </MenuItem>
           <MenuItem
             key="remove"
@@ -208,6 +214,7 @@ function AvatarChangePicture({ size, showEditImage = true }: Props) {
             style={{ color: "#ff6347" }}
           >
             <ContextMenuItem
+              className="m-1.5"
               icon="trash"
               iconColor="#ff6347"
               title={c("contextMenuUserAvatar.remove")}

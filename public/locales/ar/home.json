@@ -1,11 +1,11 @@
 {
     "welcomeTitle": "مرحبا",
-    "myFilesLabel": "ملفاتي",
+    "myFilesLabel": "ملفاتي الخاصة",
     "sharedLabel": "مشترك",
     "publicLabel": "عام",
-    "section3Title": "الخليات النحل المفضلة",
-    "section4Title": "الأخيرة",
-    "exampleHoneycombTitle": "لية النحل{{num}}",
+    "section3Title": "خليات النحل المفضلة",
+    "section4Title": "الملفات الأخيرة",
+    "exampleHoneycombTitle": "خلية النحل {{num}}",
     "exampleFileTitle": "ملف {{num}}",
     "greetingTitle": "مرحبا",
     "seeAllTitle": "عرض الكل"
