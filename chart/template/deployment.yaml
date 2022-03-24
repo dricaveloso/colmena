@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "colmena.fullname" . }}
+  name: {{ include "k8deploy.fullname" . }}
   labels:
-    {{- include "colmena.labels" . | nindent 4 }}
+    {{- include "k8deploy.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "colmena.selectorLabels" . | nindent 6 }}
+      {{- include "k8deploy.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "colmena.selectorLabels" . | nindent 8 }}
+        {{- include "k8deploy.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "colmena.serviceAccountName" . }}
+      serviceAccountName: {{ include "k8deploy.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -34,25 +34,10 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            {{- range .Values.examplemap }}
-            - name: {{ .name }}
-              value: {{ .value }}
-            {{- end }} 
-          # env:
-          #  - name: APP_ENV
-          #    value: {{ .Values.env.app_env }}
-          #  - name: API_BASE_URL
-          #    value: {{ .Values.env.api_base_url }}
-          #  - name: NEXTAUTH_URL
-          #    value: {{ .Values.env.nextauth_url }}
-          #  - name: NEXTCLOUD_TALK_VERSION
-          #    value: {{ .Values.env.nextcloud_talk_version }}
-          #  - name: DEFAULT_USER_PASSWORD
-          #    value: {{ .Values.env.default_user_password }}
-          #  - name: USERNAME_ADMIN_NC
-          #    value: {{ .Values.env.username_admin_nc }}
-          #  - name: PASSWORD_ADMIN_NC
-          #    value: {{ .Values.env.password_admin_nc }}
+              {{- range .Values.examplemap }}
+              - name: {{ .name }}
+                value: {{ .value }}
+              {{- end }} 
           ports:
             - name: http
               containerPort: 3000

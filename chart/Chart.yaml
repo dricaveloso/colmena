@@ -1,6 +1,6 @@
 apiVersion: v2
-name: colmena
-description: A Helm chart for colmena app 
+name: k8deploy
+description: A Helm chart for k8deploy app 
 type: application
 version: 0.1.0
 appVersion: "1.16.0"
