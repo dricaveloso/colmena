@@ -250,3 +250,7 @@ table.envPage td:nth-child(1) {
 .jodit-container {
   height: 450px !important;
 }
+
+img, video {
+  max-width: initial;
+}

@@ -8,27 +8,16 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
 import { toast } from "@/utils/notifications";
 import ContextMenuItem from "@/components/ui/ContextMenuItem";
-import Modal from "@/components/ui/Modal";
-import UsersList from "@/components/ui/FooterApp/ModalTools/NewHoneycombModal/UsersList";
-import { listUsersByGroup } from "@/services/ocs/groups";
-import { getUserGroup } from "@/utils/permissions";
-import Button from "@/components/ui/Button";
-import {
-  ButtonColorEnum,
-  ButtonVariantEnum,
-  PermissionTalkMemberEnum,
-  HoneycombContextOptions,
-} from "@/enums/*";
+import { PermissionTalkMemberEnum, HoneycombContextOptions } from "@/enums/*";
 import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
-import {
-  addParticipantToConversation,
-  getRoomParticipants,
-  removeYourselfFromAConversation,
-} from "@/services/talk/room";
+import { getRoomParticipants, removeYourselfFromAConversation } from "@/services/talk/room";
 import Backdrop from "@/components/ui/Backdrop";
-import { RoomParticipant } from "@/interfaces/talk";
 import theme from "@/styles/theme";
+import ModalAddParticipant from "./ModalAddParticipant";
+import { RoomParticipant } from "@/interfaces/talk";
+import { listUsersByGroup } from "@/services/ocs/groups";
+import { getUserGroup } from "@/utils/permissions";
 
 type PositionProps = {
   mouseX: null | number;
@@ -76,11 +65,20 @@ const ContextMenuOptions = ({
     );
   }
 
+  const isModerator = () => {
+    const result = participantsAddedHoneycomb.find(
+      (item) =>
+        item.actorId === userRdx.user.id &&
+        (item.participantType === PermissionTalkMemberEnum.OWNER ||
+          item.participantType === PermissionTalkMemberEnum.MODERATOR),
+    );
+    return result;
+  };
+
   const { t } = useTranslation("honeycomb");
   const { t: c } = useTranslation("common");
   const [openAddParticipant, setOpenAddParticipant] = useState(false);
   const [showBackdrop, setShowBackdrop] = useState(false);
-  const [participants, setParticipants] = useState<string[]>([]);
   const [position, setPosition] = useState<PositionProps>({
     mouseX: null,
     mouseY: null,
@@ -117,35 +115,6 @@ const ContextMenuOptions = ({
     }
   }
 
-  async function handleInviteParticipants() {
-    try {
-      handleCloseAddParticipant();
-      setShowBackdrop(true);
-      // eslint-disable-next-line no-restricted-syntax
-      for (const participant of participants) {
-        // eslint-disable-next-line no-await-in-loop
-        await addParticipantToConversation(token, participant);
-      }
-      toast(t("contextMenuOptions.participantsAddedSuccessfully"), "success");
-      if (handleFallbackParticipants) handleFallbackParticipants();
-    } catch (e) {
-      console.log(e);
-      toast(c("genericErrorMessage"), "error");
-    } finally {
-      setShowBackdrop(false);
-    }
-  }
-
-  const isModerator = () => {
-    const result = participantsAddedHoneycomb.find(
-      (item) =>
-        item.actorId === userRdx.user.id &&
-        (item.participantType === PermissionTalkMemberEnum.OWNER ||
-          item.participantType === PermissionTalkMemberEnum.MODERATOR),
-    );
-    return result;
-  };
-
   const handleOpenParticipantModal = () => {
     if (!isModerator()) return;
 
@@ -155,11 +124,6 @@ const ContextMenuOptions = ({
 
   const unavailable = () => {
     toast(c("featureUnavailable"), "warning");
-  };
-
-  const ButtonStep1Style = {
-    color: "#fff",
-    margin: 8,
   };
 
   return (
@@ -230,37 +194,14 @@ const ContextMenuOptions = ({
           </MenuItem>
         )}
       </Menu>
-      <Modal
-        title={t("contextMenuOptions.addParticipantContextTitle")}
-        handleClose={handleCloseAddParticipant}
-        open={openAddParticipant}
-        actions={
-          <Box display="flex" flex="1" flexDirection="row" justifyContent="space-between">
-            <Button
-              handleClick={handleCloseAddParticipant}
-              style={{ margin: 8 }}
-              variant={ButtonVariantEnum.OUTLINED}
-              color={ButtonColorEnum.SECONDARY}
-              title={c("form.cancelButton")}
-            />
-            <Button
-              handleClick={handleInviteParticipants}
-              disabled={participants.length === 0}
-              style={participants.length > 0 ? ButtonStep1Style : { margin: 8 }}
-              variant={
-                participants.length > 0 ? ButtonVariantEnum.CONTAINED : ButtonVariantEnum.OUTLINED
-              }
-              title={c("form.submitSaveTitle")}
-            />
-          </Box>
-        }
-      >
-        <UsersList
-          participants={participants}
-          updateParticipants={(part) => setParticipants(part)}
-          users={usersFiltered}
-        />
-      </Modal>
+      <ModalAddParticipant
+        users={usersFiltered}
+        token={token}
+        isOpen={openAddParticipant}
+        closeModal={handleCloseAddParticipant}
+        setShowBackdrop={setShowBackdrop}
+        handleFallbackParticipants={handleFallbackParticipants}
+      />
     </Box>
   );
 };

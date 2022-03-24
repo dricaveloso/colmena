@@ -26,6 +26,7 @@ export interface AppBarInterface {
   headerPosition?: PositionProps | undefined;
   templateHeader?: "variation1" | "variation2" | "variation3";
   extraElement?: React.ReactNode | undefined;
+  leftExtraElement?: React.ReactNode | undefined;
   showUploadProgress?: boolean;
 }
 
@@ -53,6 +54,7 @@ function AppBarSys({
   back = false,
   templateHeader = "variation2",
   extraElement = undefined,
+  leftExtraElement = undefined,
   showUploadProgress = true,
 }: AppBarInterface) {
   const router = useRouter();
@@ -126,6 +128,11 @@ function AppBarSys({
               >
                 <SvgIcon icon="back" htmlColor={tplHeader.get(templateHeader).textColor} />
               </IconButton>
+            )}
+            {leftExtraElement && (
+              <Box display="flex" flexDirection="row" alignItems="center">
+                {leftExtraElement}
+              </Box>
             )}
             <Box display="flex" flexDirection="column" justifyContent="flex-start">
               <Text

@@ -6,7 +6,7 @@ import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { JustifyContentEnum, TextVariantEnum } from "@/enums/index";
+import { JustifyContentEnum, PermissionTalkMemberEnum, TextVariantEnum } from "@/enums/index";
 import FlexBox from "@/components/ui/FlexBox";
 import { useRouter } from "next/router";
 import Tabs from "@material-ui/core/Tabs";
@@ -23,10 +23,16 @@ import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslat
 import HoneycombLibrary from "@/components/pages/honeycomb/HoneycombLibrary";
 import SvgIcon from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
-import { AllIconProps } from "@/types/*";
+import { AllIconProps, PropsUserSelector } from "@/types/*";
 import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
 import { v4 as uuid } from "uuid";
-import { useDispatch } from "react-redux";
+import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
+import { makeStyles } from "@material-ui/core";
+import { getRoomParticipants } from "@/services/talk/room";
+import { RoomParticipant } from "@/interfaces/talk";
+import { listUsersByGroup } from "@/services/ocs/groups";
+import { getUserGroup } from "@/utils/permissions";
+import { useSelector, useDispatch } from "react-redux";
 import { setLibraryPath } from "@/store/actions/library";
 import { findGroupFolderByPath } from "@/utils/utils";
 
@@ -50,7 +56,15 @@ interface TabPanelProps {
   value: any;
 }
 
+const useStyles = makeStyles(() => ({
+  avatar: {
+    marginRight: 10,
+  },
+}));
+
 function Honeycomb() {
+  const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { t } = useTranslation("honeycomb");
   const { t: l } = useTranslation("library");
@@ -100,7 +114,7 @@ function Honeycomb() {
   }
 
   const token = params[0];
-  const displayName = params[1];
+  const displayName: string = params[1];
   const canDeleteConversation = Number(params[2]);
 
   (async () => {
@@ -119,10 +133,51 @@ function Honeycomb() {
     await sendChatMessage(token, message, referenceId);
   }
 
+  const group = getUserGroup();
+  const { data } = listUsersByGroup(group, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
+  const { data: part } = getRoomParticipants(token, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
+
+  let participantsAddedHoneycomb: RoomParticipant[] = [];
+  if (data && data.ocs && part && part.ocs) {
+    participantsAddedHoneycomb = part.ocs.data;
+  }
+
+  const isModerator = () => {
+    const result = participantsAddedHoneycomb.find(
+      (item) =>
+        item.actorId === userRdx.user.id &&
+        (item.participantType === PermissionTalkMemberEnum.OWNER ||
+          item.participantType === PermissionTalkMemberEnum.MODERATOR),
+    );
+    return result;
+  };
+
   const getTabOption = (title: string, icon: AllIconProps) => (
     <Box className={classNames("flex justify-center items-center space-s-2")}>
       <SvgIcon icon={icon} htmlColor="#727272" fontSize="small" />
       <Text variant={TextVariantEnum.CAPTION}>{title}</Text>
+    </Box>
+  );
+
+  const leftExtraElement = (
+    <Box className={classes.avatar}>
+      <HoneycombAvatar
+        fontSize={18}
+        width={46}
+        height={39}
+        displayName={displayName}
+        canDeleteConversation={canDeleteConversation > 0}
+        token={token}
+        canChangeAvatar={isModerator() !== undefined}
+      />
     </Box>
   );
 
@@ -133,6 +188,7 @@ function Honeycomb() {
       fontSizeTitle={16}
       subtitle={<Subtitle token={token} />}
       fontSizeSubtitle={12}
+      leftExtraElement={leftExtraElement}
       extraElement={
         <ContextMenu
           token={token}
