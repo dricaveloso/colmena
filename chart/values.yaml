@@ -15,14 +15,6 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 env:
-  __ENV_FILE__
-  # app_env: staging
-  # api_base_url: "https://cloud.colmena.network"
-  # nextauth_url: "http://localhost:3000"
-  # nextcloud_talk_version: v3
-  # default_user_password: "colmena@123"
-  # username_admin_nc: admin
-  # password_admin_nc: "3577umTUSD2qvb3"
 serviceAccount:
   create: true
   annotations: {}
