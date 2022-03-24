@@ -91,19 +91,16 @@ configure_cluster:
     - echo $CI_ENVIRONMENT_SLUG
     - echo $CI_PROJECT_PATH_SLUG
     - >
-        helm upgrade --install --debug $CI_COMMIT_REF_SLUG chart
-        --set image.tag=$CI_COMMIT_BRANCH
-        --set image.repository=$CI_REGISTRY_IMAGE
-        --set ingress.hosts[0].host=$HOST_URL, ingress.hosts[0].paths[0].path="/", ingress.hosts[0].paths[0].pathType= ImplementationSpecific
-        --set ingress.tls[0]=hosts=${HOST_URL}
-        --set ingress.tls[1]=secretName=${HOST_URL}
-        --set ServiceAccount.annotations[0]='app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}'
-        --set ServiceAccount.annotations[1]='app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}'
-        --set ingress.annotations[0]='app.gitlab.com/app: ${CI_PROJECT_PATH_SLUG}'
-        --set ingress.annotations[0]='app.gitlab.com/env: ${CI_ENVIRONMENT_SLUG}'
-        --set certificate.name=$CI_COMMIT_REF_SLUG
-        --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG
-        --set certificate.email=support@colmena.network
+       helm upgrade --install --debug $CI_COMMIT_REF_SLUG chart \
+        --set image.tag=$CI_COMMIT_BRANCH \
+        --set image.repository=$CI_REGISTRY_IMAGE \
+        -f  ./chart/env-values.yaml \
+        --set certificate.name=$CI_COMMIT_REF_SLUG \
+        --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG \
+        --set certificate.email=support@colmena.network \
+        --set servers[0].port=80,servers[0].host=example \
+        --set ingress.hosts[0].host=$HOST_URL,ingress.hosts[1].paths[0].path=/,ingress.hosts[1].paths[0].pathType=ImplementationSpecific \
+        --set ingress.tls[0].hosts[0]=$HOST_URL,ingress.tls[0].hosts[0].secretName=$HOST_URL \
         -n $KUBE_NAMESPACE
   environment:
     name: testk8
