@@ -162,6 +162,7 @@ export enum ConfigFilesNCEnum {
   USER_PROFILE = ".profile.json",
   MEDIA_PROFILE = ".media.cfg",
   MEDIA_PROFILE_AVATAR = ".avatar.jpg",
+  HONEYCOMB_AVATAR = ".avatar.jpg",
 }
 
 export enum ErrorAuthEnum {

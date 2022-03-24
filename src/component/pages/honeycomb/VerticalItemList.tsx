@@ -8,7 +8,6 @@ import { RoomItemInterface } from "@/interfaces/talk";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
-import { getRandomInt } from "@/utils/utils";
 import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
 import Chip from "@material-ui/core/Chip";
 import { markChatAsRead } from "@/services/talk/chat";
@@ -68,7 +67,6 @@ const VerticalItemList = ({ data }: Props) => {
   const classes = useStyles();
   const router = useRouter();
   const {
-    id,
     displayName,
     token,
     canDeleteConversation,
@@ -108,10 +106,9 @@ const VerticalItemList = ({ data }: Props) => {
       <ListItemAvatar data-testid="honeycomb-avatar" className={classes.avatar}>
         <Clickable handleClick={navigateTo}>
           <HoneycombAvatar
-            showTitle={false}
-            width={55}
-            height={47}
-            image={`/images/honeycombs/honeycomb${getRandomInt(0, 13)}.png`}
+            displayName={displayName}
+            canDeleteConversation={canDeleteConversation}
+            token={token}
           />
         </Clickable>
       </ListItemAvatar>
