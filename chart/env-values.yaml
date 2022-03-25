@@ -2,11 +2,11 @@ env:
   - name: APP_ENV
     value: feature
   - name: API_BASE_URL
-    value: https://claudete.colmena.network
+    value: https://claudio.colmena.network
   - name: NEXTAUTH_URL
     value: http://localhost:3000
   - name: NEXTCLOUD_TALK_VERSION
-    value: v4
+    value: v3
   - name: DEFAULT_USER_PASSWORD
     value: colmena@123
   - name: USERNAME_ADMIN_NC
