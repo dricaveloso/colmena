@@ -7,11 +7,16 @@
     "tab2Title": "Library",
     "emptyTalkDescription": "Click on the plus icon below to create a honeycomb.",
     "downloadAudioFailed": "Unable to download audio",
+    "messages": {
+      "honeycombAvatarSaved": "Image saved",
+      "changingYourAvatar": "We are changing your avatar.."
+    },
     "contextMenuOptions": {
       "addParticipantContextTitle": "Participants",
       "participantsAddedSuccessfully": "Participant added",
       "leaveConversationContextTitle": "Leave conversation",
-      "removeConversationContextTitle": "Delete conversation"
+      "removeConversationContextTitle": "Delete conversation",
+      "changeAvatar": "Change avatar"
     },
     "downloadFileFailed": "Unable to download file",
     "youTitle": "You",

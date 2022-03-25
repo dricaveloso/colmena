@@ -51,7 +51,7 @@ const Participant = ({ user, backgroundColor, selected = false, secondary = "" }
         <AvatarMemoized size={5} userId={user} userName={user} />
       </ListItemAvatar>
       <ListItemText
-        data-testid="title"
+        data-testid={`user-${user}`}
         className={classes.description}
         primary={user}
         secondary={secondary}

@@ -2,9 +2,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Loading from "./Loading";
 import { Box, Fade } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  backdrop: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -15,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     backgroundImage: "url('/images/bg-loading.png')",
     position: "fixed",
-    zIndex: 1200,
     justifyContent: "flex-end",
   },
   loading: {
@@ -42,12 +42,14 @@ export default function LoadingPage({ description, open = true }: Props) {
   const classes = useStyles();
 
   return (
-    <Fade in={open}>
-      <Box className={classes.root}>
-        <Box className={classes.loading}>
-          <Loading description={description} textColor="#fff" loadingColor="#fff" />
+    <Dialog open={open} fullWidth>
+      <Fade in={open}>
+        <Box className={classes.backdrop}>
+          <Box className={classes.loading}>
+            <Loading description={description} textColor="#fff" loadingColor="#fff" />
+          </Box>
         </Box>
-      </Box>
-    </Fade>
+      </Fade>
+    </Dialog>
   );
 }

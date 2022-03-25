@@ -7,6 +7,7 @@ db.version(19).stores({
   chatMessages:
     "++id, token, actorType, actorId, actorDisplayName, timestamp, message, messageParameters, systemMessage, messageType, isReplyable, referenceId, nextcloudId",
   medias: "++id, name, image",
+  honeycombs: "++id, token, name, image, updatedAt",
   transfers:
     "++id, filename, userId, tempFilename, file, currentChunk, progress, type, chatNotify, status, createdAt, updatedAt",
 });

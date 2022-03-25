@@ -10,6 +10,8 @@
     "downloadFileFailed": "Haiwezekani kutoa faili",
     "contextMenuOptions": {
         "addParticipantContextTitle": "Ongeza mshiriki",
-        "participantsAddedSuccessfully": "Washiriki wameongezwa kwa mafanikio."
+        "participantsAddedSuccessfully": "Washiriki wameongezwa kwa mafanikio.",
+        "leaveConversationContextTitle": "Acha Mazungumzo",
+        "removeConversationContextTitle": "Futa Mazungumzo"
     }
 }

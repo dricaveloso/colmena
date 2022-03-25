@@ -17,11 +17,12 @@ import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
 import { getRoomParticipants, removeYourselfFromAConversation } from "@/services/talk/room";
 import Backdrop from "@/components/ui/Backdrop";
-import { RoomParticipant } from "@/interfaces/talk";
 import theme from "@/styles/theme";
 import Drawer from "@material-ui/core/Drawer";
 // eslint-disable-next-line import/no-cycle
 import Participants from "./Participants";
+import ModalAddParticipant from "./ModalAddParticipant";
+import { RoomParticipant } from "@/interfaces/talk";
 
 type PositionProps = {
   mouseX: null | number;
