@@ -650,3 +650,7 @@ export function getRandomChunkFileName() {
   }
   return tempFilename;
 }
+
+export function getBaseUrl() {
+  return document.location.href.replace(/^(.+?\/\/[^/]+).+/, "$1");
+}
