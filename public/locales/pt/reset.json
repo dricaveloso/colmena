@@ -1,9 +1,9 @@
 {
-    "titleCreated": "Crie sua senha.",
-    "titleUpdated": "Atualize sua senha.",
-    "errorMessagePassword": "Senhas não correspondem",
+    "titleCreated": "Crie sua senha",
+    "titleUpdated": "Senha atualizada com sucesso",
+    "errorMessagePassword": "Senhas não são iguais",
     "errorUpdatingPassword": "Não foi possível atualizar sua senha",
     "errorCreatingPassword": "Não foi possível criar sua senha",
-    "successCreatingPassword": "Senha criado com sucesso",
-    "successUpdatingPassword": "Senha atualizada com sucesso"
+    "successCreatingPassword": "Senha criada",
+    "successUpdatingPassword": "Senha atualizada "
 }

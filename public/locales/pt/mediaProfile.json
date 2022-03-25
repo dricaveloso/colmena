@@ -10,7 +10,7 @@
     "placeholderName": "Nome",
     "placeholderEmail": "E-mail",
     "placeholderPermission": "Permissão",
-    "socialMediaTitle": "Coloque o link das suas redes sociais para que estejam visíveis na perfil público da mídia.",
+    "socialMediaTitle": "Coloque o link das suas redes sociais",
     "messageSuccessInvite": "Convite enviado com sucesso.",
     "messageSuccessInformation": "Informações salvas com sucesso",
     "titleModalDialogInvite": "Convidar colaborador",
@@ -23,7 +23,7 @@
     "createdErrorUser": "Erro ao criar usuário",
     "welcomeErrorUser": "Usuário criado mas e-mail não enviado",
     "inviteCollaboratorTitle": "Colaborador(a)",
-    "inviteAdministratorTitle": "Administrador(a)",
+    "inviteAdministratorTitle": "Administrador/a",
     "contextMenuOptions": {
         "settings": "Configurações",
         "edit": "Editar",
