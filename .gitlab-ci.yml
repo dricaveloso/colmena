@@ -94,14 +94,15 @@ configure_cluster:
        helm upgrade --install --debug $CI_COMMIT_REF_SLUG chart \
         --set image.tag=$CI_COMMIT_BRANCH \
         --set image.repository=$CI_REGISTRY_IMAGE \
-        -f  ./chart/env-values.yaml \
-        --set certificate.name=$CI_COMMIT_REF_SLUG \
+        -f ./chart/env-values.yaml \
+        -n $KUBE_NAMESPACE \
+        --set metadata.annotations."app\.gilab\.com\/env"=testk8 \
+        --set metadata.annotations."app\.gilab\.com\/app"=maia-frontend \
         --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG \
+        --set certificate.name=$HOST_URL \
         --set certificate.email=support@colmena.network \
-        --set servers[0].port=80,servers[0].host=example \
+        --set ingress.tls[0].secretName=$HOST_URL,ingress.tls[0].hosts=$HOST_URL \
         --set ingress.hosts[0].host=$HOST_URL,ingress.hosts[1].paths[0].path=/,ingress.hosts[1].paths[0].pathType=ImplementationSpecific \
-        --set ingress.tls[0].hosts[0]=$HOST_URL,ingress.tls[0].hosts[0].secretName=$HOST_URL \
-        -n $KUBE_NAMESPACE
   environment:
     name: testk8
   only: 
