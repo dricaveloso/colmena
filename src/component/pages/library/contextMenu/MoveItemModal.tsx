@@ -8,7 +8,13 @@ import {
   ContextMenuOptionEnum,
   EnvironmentEnum,
 } from "@/enums/*";
-import { pathIsInFilename, convertPrivateToUsername, getPath, isPanal } from "@/utils/directory";
+import {
+  pathIsInFilename,
+  convertPrivateToUsername,
+  getPath,
+  isPanal,
+  isPrivate,
+} from "@/utils/directory";
 import { moveFile, getUniqueName } from "@/services/webdav/files";
 import { useSelector } from "react-redux";
 import { PropsUserSelector } from "@/types/*";
@@ -148,7 +154,7 @@ export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
 
   const checkPermission = async () => {
     const checkRemotePermission = [EnvironmentEnum.REMOTE, EnvironmentEnum.BOTH];
-    if (checkRemotePermission.includes(cardItem.environment)) {
+    if (!isPrivate(cardItem.filename) && checkRemotePermission.includes(cardItem.environment)) {
       const canMove = await isFileOwner(cardItem.filename);
       if (!canMove) {
         toast(t("messages.noMovePermission"), "error");

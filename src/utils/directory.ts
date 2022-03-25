@@ -37,6 +37,14 @@ export function isPanal(path: string): boolean {
   return !ignorePaths.includes(initialFolder);
 }
 
+export function isPrivate(path: string): boolean {
+  const pathSplited = removeFirstSlash(path).split("/");
+  const initialFolder = pathSplited[0];
+  console.log(initialFolder, PRIVATE_PATH);
+
+  return initialFolder === PRIVATE_PATH;
+}
+
 export function hasLocalPath(path: string | undefined | null): boolean {
   if (localPaths().includes(removeFirstSlash(path))) {
     return true;

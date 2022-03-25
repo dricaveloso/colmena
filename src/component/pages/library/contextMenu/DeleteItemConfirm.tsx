@@ -10,6 +10,7 @@ import { deleteFile } from "@/services/webdav/files";
 import ActionConfirm from "@/components/ui/ActionConfirm";
 import { toast } from "@/utils/notifications";
 import { isFileOwner } from "@/services/share/share";
+import { isPrivate } from "@/utils/directory";
 
 type Props = {
   handleOpen: (opt: boolean) => void;
@@ -26,7 +27,7 @@ export default function DeleteItemConfirm({ handleOpen, cardItem }: Props) {
     try {
       setIsLoading(true);
       const checkRemotePermission = [EnvironmentEnum.REMOTE, EnvironmentEnum.BOTH];
-      if (checkRemotePermission.includes(cardItem.environment)) {
+      if (!isPrivate(cardItem.filename) && checkRemotePermission.includes(cardItem.environment)) {
         const canDelete = await isFileOwner(cardItem.filename);
         if (!canDelete) {
           throw new Error(t("messages.noRemovePermission"));
