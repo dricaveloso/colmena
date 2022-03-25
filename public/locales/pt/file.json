@@ -9,7 +9,16 @@
         "deleteAudio": "Deletar áudio"
     },
     "messages": {
-        "descriptionSuccessfullyUpdated": "Descrição atualizada com sucesso"
+        "descriptionSuccessfullyUpdated": "Descrição atualizada.",
+        "titleSuccessfullyUpdated": "Título atualizado.",
+        "fileNotFound": "Arquivo não encontrado",
+        "tagsSuccessfullyCreated": "Etiqueta criada"
     },
-    "editDescription": "Editar descrição"
+    "editDescription": "Editar descrição",
+    "title": "Título",
+    "editTitle": "Editar arquivo",
+    "addFileDescription": "Adicionar descrição do arquivo",
+    "addTitle": "Adicionar título",
+    "fileTitle": "Arquivo",
+    "createTag": "Criar etiqueta"
 }
