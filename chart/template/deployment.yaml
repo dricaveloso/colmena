@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "k8deploy.fullname" . }}
+  name: {{ .Values.application.name }}
   labels:
-    {{- include "k8deploy.labels" . | nindent 4 }}
+   {{ .Values.application.name }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "k8deploy.selectorLabels" . | nindent 6 }}
+    {{ .Values.application.name }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "k8deploy.selectorLabels" . | nindent 8 }}
+      {{ .Values.application.name }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "k8deploy.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.application.name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
