@@ -1,9 +1,9 @@
 {
-    "title": "Insira seu e-mail e passaporte para entrar",
+    "title": "Insira seu e-mail e senha para entrar",
     "loginInvalid": "Nome de usuário ou senha incorreta",
     "permissionDenied": "Acesso negado",
     "userDeactivated": "Usuário desabilitado",
     "mediaNotFound": "Erro na busca de mídia",
-    "loginSuccesfully": "Sessão iniciada com sucesso",
+    "loginSuccesfully": "Sessão iniciada",
     "profileNotFound": "Erro ao acessar seu arquivo de usuário"
 }

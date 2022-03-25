@@ -120,17 +120,10 @@ export function isJWTValidInvitation(tkn: string | string[] | undefined) {
 export function getFirstLettersOfTwoFirstNames(word: string | undefined): string {
   if (!word) return "";
 
-  const arr = String(word).split(" ");
-  let result = arr[0][0];
-
-  if (arr.length > 2) {
-    if (arr[1].length < 4) result += arr[2][0];
-    else result += arr[1][0];
-  } else if (arr.length === 1) {
-    result += arr[0][1];
-  }
-
-  return result.toUpperCase();
+  return word
+    .replace(/^(.).+?\s(.).+$|^(..).+$/gi, "$1$2$3")
+    .toString()
+    .toUpperCase();
 }
 
 export function getFirstname(word: string | undefined): string {
@@ -419,6 +412,22 @@ export async function findGroupFolderByPath(path: string): Promise<boolean> {
   return groupFolders.data
     .map((item: string) => item.toLowerCase().trim())
     .includes(honeycombName.toLowerCase().trim());
+}
+
+export async function getHoneycombPath(
+  conversationName: string,
+  canDeleteConversation: boolean,
+  talkFolderName: string,
+): Promise<string> {
+  let honeycombPath = conversationName;
+  if (!canDeleteConversation) {
+    const isGroupFolder = await findGroupFolderByPath(conversationName);
+    if (!isGroupFolder) {
+      honeycombPath = `${talkFolderName}/${conversationName}`;
+    }
+  }
+
+  return honeycombPath;
 }
 
 export function setBackAfterFinishRecording(flag: string) {

@@ -8,13 +8,18 @@
     "emptyTalkDescription": "Click on the plus icon below to create a honeycomb.",
     "downloadAudioFailed": "Unable to download audio",
     "archivedTitle": "Archived",
+    "messages": {
+      "honeycombAvatarSaved": "Image saved",
+      "changingYourAvatar": "We are changing your avatar.."
+    },
     "contextMenuOptions": {
         "addParticipantContextTitle": "Add participant",
         "participantsAddedSuccessfully": "Participants have been added",
         "leaveConversationContextTitle": "Leave conversation",
         "removeConversationContextTitle": "Delete conversation",
         "archiveConversationContextTitle": "Archive conversation",
-        "dearchiveConversationContextTitle": "Dearchive conversation"
+        "dearchiveConversationContextTitle": "Dearchive conversation",
+        "changeAvatar": "Change avatar"
     },
     "downloadFileFailed": "Unable to download file",
     "youTitle": "You"

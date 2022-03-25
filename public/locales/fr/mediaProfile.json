@@ -7,7 +7,7 @@
     "textInviteCollaborators": "Inviter votre équipe",
     "user1": "Personne 1 (autorisation)",
     "user2": "Personne 2 (autorisation)",
-    "socialMediaTitle": "Reliez les réseaux sociaux de votre média afin qu'ils soient visibles dans le profil public du média.",
+    "socialMediaTitle": "Liez vos réseaux sociaux.",
     "placeholderName": "Nom",
     "placeholderEmail": "Courriel",
     "placeholderPermission": "Autorisation",
@@ -23,7 +23,7 @@
     "welcomeErrorUser": "Utilisateur créé mais courriel ne pas envoyé",
     "buttonCancelModalDialogInvite": "Annuler",
     "inviteCollaboratorTitle": "Collaborateur / Collaboratrice",
-    "inviteAdministratorTitle": "Administrateur",
+    "inviteAdministratorTitle": "Administrateur / Administratrice",
     "contextMenuOptions": {
         "settings": "Paramètres",
         "edit": "Editer",

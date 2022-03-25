@@ -11,9 +11,14 @@
     "messages": {
         "descriptionSuccessfullyUpdated": "Descripción actualizada.",
         "tagsSuccessfullyCreated": "Etiquetas creadas",
-        "fileNotFound": "Archivo no encontrado"
+        "fileNotFound": "Archivo no encontrado",
+        "titleSuccessfullyUpdated": "Título actualizado."
     },
     "editDescription": "Editar Descripción",
     "fileTitle": "Archivo",
-    "createTag": "Crear etiqueta"
+    "createTag": "Crear etiqueta",
+    "title": "Título",
+    "editTitle": "Editar título",
+    "addFileDescription": "Añadir descripción del archivo.",
+    "addTitle": "Añadir un título"
 }

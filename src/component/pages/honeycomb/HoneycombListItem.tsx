@@ -79,7 +79,6 @@ const HoneycombListItem = ({ data, archived = false }: Props) => {
   const classes = useStyles();
   const router = useRouter();
   const {
-    id,
     displayName,
     token,
     canDeleteConversation,
@@ -133,10 +132,9 @@ const HoneycombListItem = ({ data, archived = false }: Props) => {
         <ListItemAvatar data-testid="honeycomb-avatar" className={classes.avatar}>
           <Clickable handleClick={navigateTo}>
             <HoneycombAvatar
-              showTitle={false}
-              width={55}
-              height={47}
-              image="/images/honeycombs/honeycomb10.png"
+              displayName={displayName}
+              canDeleteConversation={canDeleteConversation}
+              token={token}
             />
           </Clickable>
         </ListItemAvatar>

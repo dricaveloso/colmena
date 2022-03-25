@@ -31,6 +31,7 @@ function LayoutApp({
   templateHeader = "variation2",
   showFooter = true,
   extraElement = undefined,
+  leftExtraElement = undefined,
   backgroundColor = "#F9F9F9",
   showUploadProgress = true,
   children,
@@ -82,6 +83,7 @@ function LayoutApp({
           templateHeader={templateHeader}
           back={back}
           extraElement={extraElement}
+          leftExtraElement={leftExtraElement}
           showUploadProgress={showUploadProgress}
         />
         <>{children}</>
