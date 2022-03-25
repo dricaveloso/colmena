@@ -96,12 +96,13 @@ configure_cluster:
         --set image.repository=$CI_REGISTRY_IMAGE \
         -f ./chart/env-values.yaml \
         -n $KUBE_NAMESPACE \
-        --set metadata.annotations."app\.gilab\.com\/env"=testk8 \
-        --set metadata.annotations."app\.gilab\.com\/app"=maia-frontend \
+        --set serviceAccount.annotations."app\.gilab\.com\/env"=testk8 \
+        --set serviceAccount.annotations."app\.gilab\.com\/app"=maia-frontend \
         --set certificate.issuer_name=letsencrypt-$CI_COMMIT_REF_SLUG \
         --set certificate.name=$HOST_URL \
         --set certificate.email=support@colmena.network \
         --set ingress.tls[0].secretName=$HOST_URL,ingress.tls[0].hosts=$HOST_URL \
+        --set service.port=80,service.type=ClusteIP \
         --set ingress.hosts[0].host=$HOST_URL,ingress.hosts[1].paths[0].path=/,ingress.hosts[1].paths[0].pathType=ImplementationSpecific \
   environment:
     name: testk8
