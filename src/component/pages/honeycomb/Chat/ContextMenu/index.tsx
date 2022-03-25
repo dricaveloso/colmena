@@ -39,16 +39,20 @@ type Props = {
   token: string;
   handleFallbackParticipants?: (() => void) | null;
   handleFallbackLeaveConversation?: (() => void) | null;
+  handleFallbackArchiveConversation?: (() => void) | null;
   iconColor?: string;
   blackList?: string[];
+  archived?: boolean;
 };
 
 const ContextMenuOptions = ({
   token,
   handleFallbackParticipants = null,
   handleFallbackLeaveConversation = null,
+  handleFallbackArchiveConversation = null,
   iconColor = "#fff",
   blackList = [],
+  archived = false,
 }: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
@@ -115,6 +119,11 @@ const ContextMenuOptions = ({
     } finally {
       setShowBackdrop(false);
     }
+  }
+
+  async function handleArchiveConversation() {
+    handleCloseContextMenu();
+    if (handleFallbackArchiveConversation) handleFallbackArchiveConversation();
   }
 
   async function handleInviteParticipants() {
@@ -202,6 +211,23 @@ const ContextMenuOptions = ({
             />
           </MenuItem>
         )}
+        {!blackList.includes(HoneycombContextOptions.ARCHIVE_CONVERSATION) && (
+          <MenuItem
+            key={HoneycombContextOptions.ARCHIVE_CONVERSATION}
+            data-testid={HoneycombContextOptions.ARCHIVE_CONVERSATION}
+            onClick={handleArchiveConversation}
+          >
+            <ContextMenuItem
+              icon="archive"
+              iconColor={theme.palette.variation6.main}
+              title={t(
+                !archived
+                  ? "contextMenuOptions.archiveConversationContextTitle"
+                  : "contextMenuOptions.dearchiveConversationContextTitle",
+              )}
+            />
+          </MenuItem>
+        )}
         {!blackList.includes(HoneycombContextOptions.LEAVE_CONVERSATION) && !isModerator() && (
           <MenuItem
             key={HoneycombContextOptions.LEAVE_CONVERSATION}
@@ -212,7 +238,6 @@ const ContextMenuOptions = ({
               icon="close"
               iconColor={theme.palette.variation6.main}
               title={t("contextMenuOptions.leaveConversationContextTitle")}
-              style={{ fontSize: 15 }}
             />
           </MenuItem>
         )}
@@ -224,7 +249,7 @@ const ContextMenuOptions = ({
           >
             <ContextMenuItem
               icon="trash"
-              iconColor="tomato"
+              danger
               title={t("contextMenuOptions.removeConversationContextTitle")}
             />
           </MenuItem>

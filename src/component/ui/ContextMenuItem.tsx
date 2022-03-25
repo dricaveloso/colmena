@@ -4,6 +4,21 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import Box from "@material-ui/core/Box";
 import { TextVariantEnum } from "@/enums/*";
 import theme from "@/styles/theme";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  container: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  title: {
+    marginLeft: 8,
+  },
+}));
 
 type Props = {
   title: string;
@@ -20,15 +35,9 @@ export default function ContextMenuItem({
   danger = false,
   ...props
 }: Props) {
+  const classes = useStyles();
   return (
-    <Box
-      display="flex"
-      flex={1}
-      flexDirection="row"
-      alignContent="center"
-      alignItems="center"
-      justifyContent="flex-start"
-    >
+    <Box className={classes.container}>
       {icon && (
         <SvgIcon
           icon={icon}
@@ -38,8 +47,9 @@ export default function ContextMenuItem({
         />
       )}
       <Text
-        style={{ marginLeft: 8, color: !danger ? iconColor : theme.palette.danger.light }}
+        style={{ color: !danger ? iconColor : theme.palette.danger.light }}
         variant={TextVariantEnum.SUBTITLE2}
+        className={classes.title}
       >
         {title}
       </Text>

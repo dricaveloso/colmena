@@ -9,6 +9,8 @@ import {
   REMOVE_BLOCK_ID_CHAT_CONTROL_BY_TOKEN,
   RELOAD_CHAT_LOCAL_MESSAGES,
   ADD_TOKEN_CHAT_CLEAR_MESSAGES,
+  ADD_TOKEN_HONEYCOMB_ARCHIVED,
+  REMOVE_TOKEN_HONEYCOMB_ARCHIVED,
 } from "@/store/actions/index";
 import {
   RoomItemInterface,
@@ -23,6 +25,16 @@ export const setHoneycombs = (honeycombs: Array<RoomItemInterface>) => ({
 
 export const addHoneycomb = (honeycomb: RoomItemInterface) => ({
   type: ADD_HONEYCOMB,
+  honeycomb,
+});
+
+export const addHoneycombArchived = (honeycomb: string) => ({
+  type: ADD_TOKEN_HONEYCOMB_ARCHIVED,
+  honeycomb,
+});
+
+export const removeHoneycombArchived = (honeycomb: string) => ({
+  type: REMOVE_TOKEN_HONEYCOMB_ARCHIVED,
   honeycomb,
 });
 

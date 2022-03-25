@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import getConfig from "next/config";
 import { parse } from "node-html-parser";
-import { formatCookies } from "@/utils/utils";
+import { formatCookies, prepareLanguageToNextcloud } from "@/utils/utils";
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           headers: {
             Cookie: cookies,
             requesttoken,
-            "Accept-Language": language === "pt" ? "pt-BR" : language,
+            "Accept-Language": prepareLanguageToNextcloud(language),
           },
         },
       );

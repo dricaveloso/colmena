@@ -14,6 +14,8 @@ import {
   REMOVE_BLOCK_ID_CHAT_CONTROL_BY_TOKEN,
   RELOAD_CHAT_LOCAL_MESSAGES,
   ADD_TOKEN_CHAT_CLEAR_MESSAGES,
+  ADD_TOKEN_HONEYCOMB_ARCHIVED,
+  REMOVE_TOKEN_HONEYCOMB_ARCHIVED,
 } from "@/store/actions/index";
 
 type initialStateProps = {
@@ -22,6 +24,7 @@ type initialStateProps = {
   chatMessages: ChatMessageItemInterface[];
   chatMessagesBlockLoad: MessageBlockLoadInterface[];
   reloadChatLocalMessage: boolean;
+  honeycombsArchived: string[];
 };
 
 const myInitialState: initialStateProps = {
@@ -30,6 +33,7 @@ const myInitialState: initialStateProps = {
   chatMessages: [],
   chatMessagesBlockLoad: [],
   reloadChatLocalMessage: false,
+  honeycombsArchived: [],
 };
 
 const reducer = (state = myInitialState, action: any) => {
@@ -47,6 +51,8 @@ const reducer = (state = myInitialState, action: any) => {
       return { ...state, honeycombs: state.honeycombs.concat(action.honeycomb) };
     case ADD_TOKEN_CHAT_CLEAR_MESSAGES:
       return { ...state, clearChatMessages: state.clearChatMessages.concat(action.honeycomb) };
+    case ADD_TOKEN_HONEYCOMB_ARCHIVED:
+      return { ...state, honeycombsArchived: state.honeycombsArchived.concat(action.honeycomb) };
     case ADD_CHAT_MESSAGE:
       return { ...state, chatMessages: state.chatMessages.concat(action.message) };
     case EDIT_HONEYCOMB:
@@ -65,6 +71,13 @@ const reducer = (state = myInitialState, action: any) => {
         ...state,
         honeycombs: state.honeycombs.filter(
           (item: RoomItemInterface) => item.id !== action.honeycomb.id,
+        ),
+      };
+    case REMOVE_TOKEN_HONEYCOMB_ARCHIVED:
+      return {
+        ...state,
+        honeycombsArchived: state.honeycombsArchived.filter(
+          (item: string) => item !== action.honeycomb,
         ),
       };
     case REMOVE_BLOCK_ID_CHAT_CONTROL_BY_TOKEN:

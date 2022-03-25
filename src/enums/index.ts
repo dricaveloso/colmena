@@ -217,6 +217,7 @@ export enum HoneycombContextOptions {
   ADD_PARTICIPANT = "add-participant",
   LEAVE_CONVERSATION = "leave-conversation",
   REMOVE_CONVERSATION = "remove-conversation",
+  ARCHIVE_CONVERSATION = "archive-conversation",
 }
 
 export enum TransferStatusEnum {

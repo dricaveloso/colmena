@@ -10,6 +10,7 @@ import { parseCookies } from "nookies";
 import { toast } from "@/utils/notifications";
 import { Grid } from "@material-ui/core";
 import { LibraryItemInterface } from "@/interfaces/index";
+import { prepareLanguageToNextcloud } from "@/utils/utils";
 
 interface IForm {
   customdescription: string;
@@ -37,7 +38,10 @@ export default function EditDescriptionModal({ open, closeModal, data, setData }
     setIsLoading(true);
 
     try {
-      await setDataFile({ customdescription, language }, `${data.filename}`);
+      await setDataFile(
+        { customdescription, language: prepareLanguageToNextcloud(language) },
+        `${data.filename}`,
+      );
       setData({ ...data, description: customdescription });
       toast(t("messages.descriptionSuccessfullyUpdated"), "success");
       closeModal();

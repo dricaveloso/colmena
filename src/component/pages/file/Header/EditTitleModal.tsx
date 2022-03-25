@@ -10,6 +10,7 @@ import { parseCookies } from "nookies";
 import { toast } from "@/utils/notifications";
 import { Grid } from "@material-ui/core";
 import { LibraryItemInterface } from "@/interfaces/index";
+import { prepareLanguageToNextcloud } from "@/utils/utils";
 
 interface IForm {
   title: string;
@@ -37,7 +38,10 @@ export default function EditTitleModal({ open, closeModal, data, setData }: Prop
     setIsLoading(true);
 
     try {
-      await setDataFile({ customtitle: title, language }, `${data.filename}`);
+      await setDataFile(
+        { customtitle: title, language: prepareLanguageToNextcloud(language) },
+        `${data.filename}`,
+      );
       setData({ ...data, title });
       toast(t("messages.titleSuccessfullyUpdated"), "success");
       closeModal();

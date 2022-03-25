@@ -4,19 +4,13 @@ import { GetStaticProps } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import FlexBox from "@/components/ui/FlexBox";
 import Box from "@material-ui/core/Box";
-import HoneycombList from "@/components/pages/honeycomb/ItemList";
+import HoneycombList from "@/components/pages/honeycomb/HoneycombList";
 import { JustifyContentEnum } from "@/enums/index";
 import { getUsersConversations } from "@/services/talk/room";
 import { useTranslation } from "next-i18next";
 import FileListSkeleton from "@/components/ui/skeleton/FileList";
-import { setHoneycombs } from "@/store/actions/honeycomb/index";
-import { useDispatch } from "react-redux";
 import AlertInfoCenter from "@/components/ui/AlertInfoCenter";
 import { RoomItemInterface } from "@/interfaces/talk";
-// import Tabs from "@material-ui/core/Tabs";
-// import Tab from "@material-ui/core/Tab";
-// import SwipeableViews from "react-swipeable-views";
-// import theme from "@/styles/theme";
 import serverSideTranslations from "@/extensions/next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
@@ -34,7 +28,6 @@ export const filterHoneycombs = (honeycombs: RoomItemInterface[]) => {
 };
 
 export default function Honeycomb() {
-  const dispatch = useDispatch();
   const { data, error } = getUsersConversations();
 
   if (!data && !error)
@@ -51,16 +44,9 @@ export default function Honeycomb() {
       </LayoutWrapper>
     );
 
-  const orderByLastActivity = (a: RoomItemInterface, b: RoomItemInterface) =>
-    a.lastActivity - b.lastActivity;
-
-  const honeycombs: RoomItemInterface[] = filterHoneycombs(data.ocs.data);
-
-  dispatch(setHoneycombs(honeycombs.sort(orderByLastActivity)));
-
   return (
     <LayoutWrapper>
-      <HoneycombList />
+      <HoneycombList data={data.ocs.data} />
     </LayoutWrapper>
   );
 }

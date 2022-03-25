@@ -41,6 +41,7 @@ export type PropsAudioEditorSelector = {
 
 export type PropsHoneycombSelector = {
   honeycombs: RoomItemInterface[];
+  honeycombsArchived: string[];
   clearChatMessages: string[];
   chatMessages: ChatMessageItemInterface[];
   chatMessagesBlockLoad: MessageBlockLoadInterface[];
@@ -339,7 +340,8 @@ export type AllIconProps =
   | "show"
   | "sync_success"
   | "sync_canceled"
-  | "show";
+  | "show"
+  | "archive";
 
 export type Environment = EnvironmentEnum.LOCAL | EnvironmentEnum.REMOTE | EnvironmentEnum.BOTH;
 

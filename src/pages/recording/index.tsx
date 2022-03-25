@@ -60,6 +60,7 @@ import {
   getAccessedPages,
   getMicrophonePermission,
   getIDBEnable,
+  prepareLanguageToNextcloud,
 } from "@/utils/utils";
 import { createShare } from "@/services/share/share";
 import { getUsersConversationsAxios, getSingleConversationAxios } from "@/services/talk/room";
@@ -205,7 +206,10 @@ function Recording() {
           await putFileOnline(userRdx.user.id, `${filenameWithTalkDir}`, localFile.arrayBufferBlob);
           const fileId = await getFileOnlineId(userRdx.user.id, `${filenameWithTalkDir}`);
 
-          await setDataFile({ customtitle: title, language }, `${filenameWithTalkDir}`);
+          await setDataFile(
+            { customtitle: title, language: prepareLanguageToNextcloud(language) },
+            `${filenameWithTalkDir}`,
+          );
 
           const res = await listTags();
           const optionsTag: SelectOptionItem[] = res

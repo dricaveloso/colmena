@@ -6,7 +6,7 @@ import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import { JustifyContentEnum, TextVariantEnum } from "@/enums/index";
+import { JustifyContentEnum, TextVariantEnum, HoneycombContextOptions } from "@/enums/index";
 import FlexBox from "@/components/ui/FlexBox";
 import { useRouter } from "next/router";
 import Tabs from "@material-ui/core/Tabs";
@@ -138,6 +138,7 @@ function Honeycomb() {
           token={token}
           handleFallbackLeaveConversation={() => router.push("/honeycomb")}
           handleFallbackParticipants={() => setTokenUuid(uuid())}
+          blackList={[HoneycombContextOptions.ARCHIVE_CONVERSATION]}
         />
       }
     >

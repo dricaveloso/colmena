@@ -8,16 +8,19 @@ import { RoomItemInterface } from "@/interfaces/talk";
 import { useRouter } from "next/router";
 import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
-import { getRandomInt } from "@/utils/utils";
 import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
 import Chip from "@material-ui/core/Chip";
 import { markChatAsRead } from "@/services/talk/chat";
 import { useTranslation } from "next-i18next";
-import { PropsUserSelector } from "@/types/index";
-import { useSelector } from "react-redux";
+import { PropsUserSelector, PropsHoneycombSelector } from "@/types/index";
+import { useSelector, useDispatch } from "react-redux";
 import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
 import { HoneycombContextOptions } from "@/enums/*";
 import Clickable from "@/components/ui/Clickable";
+import Zoom from "@material-ui/core/Zoom";
+import ListItem from "@material-ui/core/ListItem";
+import { v4 as uuid } from "uuid";
+import { addHoneycombArchived, removeHoneycombArchived } from "@/store/actions/honeycomb";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -55,16 +58,24 @@ const useStyles = makeStyles(() => ({
     margin: 0,
     minWidth: 30,
   },
+  verticalList: {
+    padding: "2px 10px",
+  },
 }));
 
 type Props = {
   data: RoomItemInterface;
+  archived: boolean;
 };
 
-const VerticalItemList = ({ data }: Props) => {
+const HoneycombListItem = ({ data, archived = false }: Props) => {
   const { t } = useTranslation("honeycomb");
+  const dispatch = useDispatch();
   const [removeItem, setRemoveItem] = useState(false);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const honeycombRdx = useSelector(
+    (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
+  );
   const classes = useStyles();
   const router = useRouter();
   const {
@@ -101,51 +112,68 @@ const VerticalItemList = ({ data }: Props) => {
     router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`);
   };
 
+  const handleArchiveConversation = () => {
+    setRemoveItem(true);
+    setTimeout(() => {
+      if (!archived) dispatch(addHoneycombArchived(token));
+      else dispatch(removeHoneycombArchived(token));
+    }, 500);
+  };
+
   if (removeItem) return null;
 
   return (
-    <Box className={classes.card}>
-      <ListItemAvatar data-testid="honeycomb-avatar" className={classes.avatar}>
-        <Clickable handleClick={navigateTo}>
-          <HoneycombAvatar
-            showTitle={false}
-            width={55}
-            height={47}
-            image={`/images/honeycombs/honeycomb${getRandomInt(0, 13)}.png`}
+    <ListItem
+      key={uuid()}
+      disableGutters
+      className={classes.verticalList}
+      style={removeItem ? { display: "none", padding: 0 } : {}}
+    >
+      <Box className={classes.card}>
+        <ListItemAvatar data-testid="honeycomb-avatar" className={classes.avatar}>
+          <Clickable handleClick={navigateTo}>
+            <HoneycombAvatar
+              showTitle={false}
+              width={55}
+              height={47}
+              image="/images/honeycombs/honeycomb10.png"
+            />
+          </Clickable>
+        </ListItemAvatar>
+        <Clickable handleClick={navigateTo} className={classes.description}>
+          <ListItemText
+            data-testid="honeycomb-title"
+            className={classes.description}
+            primary={displayName}
+            onClick={navigateTo}
+            primaryTypographyProps={{
+              style: {
+                color: theme.palette.primary.dark,
+                fontWeight: unreadMessages > 0 ? "bold" : "normal",
+              },
+            }}
+            secondary={`${prepareTitleMessage}: ${prepareSubtitleMessage()}`}
+            secondaryTypographyProps={{
+              style: {
+                fontWeight: unreadMessages > 0 ? "bold" : "normal",
+              },
+            }}
           />
         </Clickable>
-      </ListItemAvatar>
-      <Clickable handleClick={navigateTo} className={classes.description}>
-        <ListItemText
-          data-testid="honeycomb-title"
-          className={classes.description}
-          primary={displayName}
-          onClick={navigateTo}
-          primaryTypographyProps={{
-            style: {
-              color: theme.palette.primary.dark,
-              fontWeight: unreadMessages > 0 ? "bold" : "normal",
-            },
-          }}
-          secondary={`${prepareTitleMessage}: ${prepareSubtitleMessage()}`}
-          secondaryTypographyProps={{
-            style: {
-              fontWeight: unreadMessages > 0 ? "bold" : "normal",
-            },
-          }}
-        />
-      </Clickable>
-      <Box className={classes.options}>
-        {unreadMessages > 0 && <Chip label={unreadMessages} size="small" color="primary" />}
-        <ContextMenu
-          token={token}
-          iconColor={theme.palette.gray.dark}
-          blackList={[HoneycombContextOptions.ADD_PARTICIPANT]}
-          handleFallbackLeaveConversation={() => setRemoveItem(true)}
-        />
+        <Box className={classes.options}>
+          {unreadMessages > 0 && <Chip label={unreadMessages} size="small" color="primary" />}
+          <ContextMenu
+            token={token}
+            iconColor={theme.palette.gray.dark}
+            blackList={[HoneycombContextOptions.ADD_PARTICIPANT]}
+            handleFallbackLeaveConversation={() => setRemoveItem(true)}
+            handleFallbackArchiveConversation={handleArchiveConversation}
+            archived={archived}
+          />
+        </Box>
       </Box>
-    </Box>
+    </ListItem>
   );
 };
 
-export default VerticalItemList;
+export default HoneycombListItem;

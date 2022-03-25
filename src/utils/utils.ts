@@ -641,3 +641,14 @@ export function getRandomChunkFileName() {
   }
   return tempFilename;
 }
+
+export function prepareLanguageToNextcloud(language: string) {
+  switch (language) {
+    case "pt":
+      return "pt_BR";
+    case "sw":
+      return "en";
+    default:
+      return language;
+  }
+}
