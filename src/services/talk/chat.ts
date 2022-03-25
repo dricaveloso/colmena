@@ -37,3 +37,7 @@ export function markChatAsRead(token: string, lastReadMessage: number): Promise<
     lastReadMessage,
   });
 }
+
+export function getHoneycombUrl(token: string, displayName: string, canDeleteConversation: string) {
+  return `/honeycomb/${token}/${encodeURI(displayName)}/${Number(canDeleteConversation)}`;
+}
