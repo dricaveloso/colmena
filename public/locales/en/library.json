@@ -53,7 +53,9 @@
     "directorySuccessfullyRemoved": "Directory has been removed",
     "fileSuccessfullyRemoved": "File has been removed.",
     "itemDuplicationCanceledSuccessfully": "Item duplication has been canceled.",
-    "itemRenamingCanceledSuccessfully": "Item renaming has been canceled."
+    "itemRenamingCanceledSuccessfully": "Item renaming has been canceled.",
+    "noRemovePermission": "You are not allowed to remove this file.",
+    "noMovePermission": "You are not allowed to move this file."
   },
   "renameTitle": "Rename",
   "saveButton": "Save",

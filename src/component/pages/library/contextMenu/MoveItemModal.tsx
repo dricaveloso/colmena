@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import LibraryModal from "@/components/ui/LibraryModal";
 import Button from "@/components/ui/Button";
 import { LibraryItemContextMenuInterface, LibraryItemInterface } from "@/interfaces/index";
@@ -15,7 +15,8 @@ import { PropsUserSelector } from "@/types/*";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/utils/notifications";
 import { updateFile } from "@/store/idb/models/files";
-import { shareInChat } from "@/services/share/share";
+import { isFileOwner, shareInChat } from "@/services/share/share";
+import SimpleBackdrop from "@/components/ui/Backdrop";
 
 type Props = {
   open: boolean;
@@ -25,6 +26,7 @@ type Props = {
 export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [moveIsAllowed, setMoveIsAllowed] = useState(false);
   const [itemIsLoading, setItemIsLoading] = useState({} as LibraryItemInterface);
   const { t } = useTranslation("library");
   const options = (item: LibraryItemInterface) => {
@@ -144,14 +146,40 @@ export default function MoveItemModal({ handleOpen, open, cardItem }: Props) {
 
   const handleFileName = (name: string, path: string) => getUniqueName(userRdx.user.id, path, name);
 
+  const checkPermission = async () => {
+    const checkRemotePermission = [EnvironmentEnum.REMOTE, EnvironmentEnum.BOTH];
+    if (checkRemotePermission.includes(cardItem.environment)) {
+      const canMove = await isFileOwner(cardItem.filename);
+      if (!canMove) {
+        toast(t("messages.noMovePermission"), "error");
+        closeModal();
+
+        return;
+      }
+    }
+
+    setMoveIsAllowed(true);
+  };
+
+  useEffect(() => {
+    checkPermission();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <LibraryModal
-      title={t("moveModalTitle")}
-      handleClose={closeModal}
-      open={open}
-      options={options}
-      isDisabled={isDisabled}
-      footerActions={footerActions}
-    />
+    <>
+      <SimpleBackdrop open={!moveIsAllowed} />
+      {moveIsAllowed && (
+        <LibraryModal
+          title={t("moveModalTitle")}
+          handleClose={closeModal}
+          open={open}
+          options={options}
+          isDisabled={isDisabled}
+          footerActions={footerActions}
+        />
+      )}
+    </>
   );
 }

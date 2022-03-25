@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { ShareCreateInterface } from "@/interfaces/share";
+import { ShareCreateInterface, ShareItemInterface, ShareResultInterface } from "@/interfaces/share";
 import shareInstance from "@/services/share";
 import { findTokenChatByPath } from "@/services/talk/room";
+import { isPanal } from "@/utils/directory";
+import { removeCornerSlash } from "@/utils/utils";
 
 const responseFormat = "?format=json";
 
@@ -27,4 +29,32 @@ export async function shareInChat(
   }
 
   return createShare(token, pathToShare);
+}
+
+export async function getUserShares(): Promise<Array<ShareItemInterface>> {
+  try {
+    const shares: ShareResultInterface = await shareInstance("v1").get(`shares${responseFormat}`);
+    if (typeof shares.data.ocs.data === "object") {
+      return shares.data.ocs.data;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  return [];
+}
+
+export async function isFileOwner(filename: string) {
+  let canDelete = true;
+  const shares = await getUserShares();
+  if (isPanal(filename)) {
+    const exists = shares.find((item) => {
+      const sharefile = removeCornerSlash(item.file_target.replace(/^.+?\/(.*)$/, "$1"));
+      const file = removeCornerSlash(filename.replace(/^.+?\/(.*)$/, "$1"));
+      return sharefile === file;
+    });
+    canDelete = exists !== undefined;
+  }
+
+  return canDelete;
 }

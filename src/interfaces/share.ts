@@ -42,3 +42,12 @@ export interface ShareCreateInterface extends SWRDefaultOptionsInterface {
     };
   };
 }
+
+export interface ShareResultInterface extends SWRDefaultOptionsInterface {
+  data: {
+    ocs: {
+      meta: OCSMetaDefaultInterface;
+      data: Array<ShareItemInterface>;
+    };
+  };
+}
