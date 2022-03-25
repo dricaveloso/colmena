@@ -18,6 +18,9 @@ import ModalAddParticipant from "./ModalAddParticipant";
 import { RoomParticipant } from "@/interfaces/talk";
 import { listUsersByGroup } from "@/services/ocs/groups";
 import { getUserGroup } from "@/utils/permissions";
+import ModalShareLink from "./ModalShareLink";
+import { getHoneycombUrl } from "@/services/talk/chat";
+import { getBaseUrl } from "@/utils/utils";
 
 type PositionProps = {
   mouseX: null | number;
@@ -26,6 +29,8 @@ type PositionProps = {
 
 type Props = {
   token: string;
+  displayName: string;
+  canDeleteConversation: boolean;
   handleFallbackParticipants?: (() => void) | null;
   handleFallbackLeaveConversation?: (() => void) | null;
   iconColor?: string;
@@ -38,9 +43,13 @@ const ContextMenuOptions = ({
   handleFallbackLeaveConversation = null,
   iconColor = "#fff",
   blackList = [],
+  displayName,
+  canDeleteConversation,
 }: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const honeycombUrl =
+    getBaseUrl() + getHoneycombUrl(token, displayName, canDeleteConversation ? "1" : "0");
 
   const group = getUserGroup();
 
@@ -78,6 +87,7 @@ const ContextMenuOptions = ({
   const { t } = useTranslation("honeycomb");
   const { t: c } = useTranslation("common");
   const [openAddParticipant, setOpenAddParticipant] = useState(false);
+  const [openShareLinkModal, setOpenShareLinkModal] = useState(false);
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [position, setPosition] = useState<PositionProps>({
     mouseX: null,
@@ -120,6 +130,11 @@ const ContextMenuOptions = ({
 
     handleCloseContextMenu();
     setOpenAddParticipant(true);
+  };
+
+  const handleOpenShareLinkModal = () => {
+    handleCloseContextMenu();
+    setOpenShareLinkModal(true);
   };
 
   const unavailable = () => {
@@ -166,6 +181,15 @@ const ContextMenuOptions = ({
             />
           </MenuItem>
         )}
+        {!blackList.includes(HoneycombContextOptions.SHARE_LINK) && (
+          <MenuItem
+            key={HoneycombContextOptions.SHARE_LINK}
+            data-testid={HoneycombContextOptions.SHARE_LINK}
+            onClick={() => handleOpenShareLinkModal()}
+          >
+            <ContextMenuItem icon="share" title={t("contextMenuOptions.shareLink")} />
+          </MenuItem>
+        )}
         {!blackList.includes(HoneycombContextOptions.LEAVE_CONVERSATION) && !isModerator() && (
           <MenuItem
             key={HoneycombContextOptions.LEAVE_CONVERSATION}
@@ -201,6 +225,11 @@ const ContextMenuOptions = ({
         closeModal={handleCloseAddParticipant}
         setShowBackdrop={setShowBackdrop}
         handleFallbackParticipants={handleFallbackParticipants}
+      />
+      <ModalShareLink
+        link={honeycombUrl}
+        open={openShareLinkModal}
+        handleClose={() => setOpenShareLinkModal(false)}
       />
     </Box>
   );

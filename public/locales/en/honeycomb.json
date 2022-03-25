@@ -16,8 +16,10 @@
         "participantsAddedSuccessfully": "Participants have been added",
         "leaveConversationContextTitle": "Leave conversation",
         "removeConversationContextTitle": "Delete conversation",
-        "changeAvatar": "Change avatar"
+        "changeAvatar": "Change avatar",
+        "shareLink": "Share link"
     },
     "downloadFileFailed": "Unable to download file",
-    "youTitle": "You"
+    "youTitle": "You",
+    "shareLinkTitle": "Share via"
 }

@@ -194,6 +194,8 @@ function Honeycomb() {
           token={token}
           handleFallbackLeaveConversation={() => router.push("/honeycomb")}
           handleFallbackParticipants={() => setTokenUuid(uuid())}
+          displayName={displayName}
+          canDeleteConversation={canDeleteConversation > 0}
         />
       }
     >

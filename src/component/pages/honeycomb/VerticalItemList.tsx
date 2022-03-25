@@ -10,7 +10,7 @@ import theme from "@/styles/theme";
 import { makeStyles } from "@material-ui/core";
 import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
 import Chip from "@material-ui/core/Chip";
-import { markChatAsRead } from "@/services/talk/chat";
+import { getHoneycombUrl, markChatAsRead } from "@/services/talk/chat";
 import { useTranslation } from "next-i18next";
 import { PropsUserSelector } from "@/types/index";
 import { useSelector } from "react-redux";
@@ -96,7 +96,7 @@ const VerticalItemList = ({ data }: Props) => {
 
   const navigateTo = async () => {
     if (unreadMessages > 0) markChatAsRead(token, lastMessageId);
-    router.push(`/honeycomb/${token}/${displayName}/${Number(canDeleteConversation)}`);
+    router.push(getHoneycombUrl(token, displayName, canDeleteConversation ? "1" : "0"));
   };
 
   if (removeItem) return null;
@@ -136,6 +136,8 @@ const VerticalItemList = ({ data }: Props) => {
         {unreadMessages > 0 && <Chip label={unreadMessages} size="small" color="primary" />}
         <ContextMenu
           token={token}
+          displayName={displayName}
+          canDeleteConversation={canDeleteConversation}
           iconColor={theme.palette.gray.dark}
           blackList={[HoneycombContextOptions.ADD_PARTICIPANT]}
           handleFallbackLeaveConversation={() => setRemoveItem(true)}
