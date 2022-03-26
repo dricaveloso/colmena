@@ -15,9 +15,19 @@ export function receiveChatMessages(
   uuid = "",
 ): ChatMessagesListInterface {
   return useTalkFetch("v1")(
-    `/chat/${token}${responseFormat}&limit=200&lookIntoFuture=0&uuid=${uuid}`,
+    `/chat/${token}${responseFormat}&limit=50&lookIntoFuture=0&uuid=${uuid}`,
     {},
     options,
+  );
+}
+
+export function receiveChatMessagesAxios(
+  token: string,
+  limit: number,
+  lastKnownMessageId: number,
+): Promise<ChatMessagesListInterface> {
+  return talkInstance("v1").get(
+    `/chat/${token}${responseFormat}&limit=${limit}&lastKnownMessageId=${lastKnownMessageId}&lookIntoFuture=0`,
   );
 }
 

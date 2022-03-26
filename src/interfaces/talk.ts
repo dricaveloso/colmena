@@ -1,10 +1,5 @@
 import { OCSMetaDefaultInterface, SWRDefaultOptionsInterface } from "./ocs";
 
-export interface MessageBlockLoadInterface {
-  blockBeginID: number | string;
-  blockEndID: number | string;
-  token: string;
-}
 export interface RoomItemInterface {
   id: number;
   token: string;
@@ -102,14 +97,14 @@ export interface RoomInterface extends SWRDefaultOptionsInterface {
 }
 
 export interface RoomParticipant {
-  inCall: number;
-  lastPing: number;
-  sessionId: number;
-  participantType: number;
-  attendeeId: number;
+  inCall?: number;
+  lastPing?: number;
+  sessionId?: number;
+  participantType?: number;
+  attendeeId?: number;
   actorId: string;
-  actorType: string;
-  attendeePin: string;
+  actorType?: string;
+  attendeePin?: string;
   displayName: string;
 }
 
@@ -167,6 +162,7 @@ export interface ChatMessageItemInterface {
   messageType: string;
   isReplyable?: boolean;
   referenceId?: string;
+  nextcloudId?: number;
 }
 
 export interface ChatMessageItemInterfaceCustom {
@@ -182,6 +178,7 @@ export interface ChatMessageItemInterfaceCustom {
   messageType: string;
   isReplyable?: boolean;
   referenceId?: string;
+  nextcloudId?: number;
 }
 
 export interface ChatMessagesListInterface extends SWRDefaultOptionsInterface {

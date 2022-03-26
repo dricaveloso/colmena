@@ -55,8 +55,8 @@ const useStyles = makeStyles((theme) =>
     },
     sliderQuota: {
       marginTop: 20,
+      marginBottom: 20,
       width: "100%",
-      marginBottom: "20px",
     },
   }),
 );
