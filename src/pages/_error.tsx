@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PropsUserSelector } from "../types";
 import { signOut, getSession } from "next-auth/client";
 import ResourceUnavailable from "@/components/ui/ResourceUnavailable";
 import FullCenterContainer from "@/components/ui/FullCenterContainer";
+import { parseCookies } from "nookies";
 
 type Props = {
   statusCode: any;
@@ -14,13 +15,25 @@ type Props = {
 function Error({ statusCode }: Props) {
   const router = useRouter();
   const userRdx = useSelector((state: { user: PropsUserSelector }) => state.user);
+  const cookies = parseCookies();
+  const dispatch = useDispatch();
+  const locale = cookies.NEXT_LOCALE || "en";
 
   const init = async () => {
+    let url = "/login";
+    const currentPath = document.location.href.replace(/^.+?\/\/[^/]+(.+)/, "$1");
+    if (currentPath) {
+      url += `?redirect=${currentPath}`;
+    }
+
     if (!statusCode) {
       const session = await getSession();
       if (!session || !userRdx?.user) {
+        dispatch({ type: "USER_LOGGED_OUT" });
         await signOut({ redirect: false });
-        router.push("/login?out");
+        router.push(url, "", {
+          locale,
+        });
       }
     }
   };

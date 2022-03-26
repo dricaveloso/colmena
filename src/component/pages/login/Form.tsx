@@ -28,6 +28,7 @@ import { listFile } from "@/services/webdav/files";
 import { v4 as uuid } from "uuid";
 import { makeStyles } from "@material-ui/core/styles";
 import Backdrop from "@/components/ui/Backdrop";
+import { trailingSlash } from "@/utils/utils";
 
 type MyFormValues = {
   emlLogin: string;
@@ -61,6 +62,7 @@ export default function WrapperForm() {
   const { t } = useTranslation("login");
   const cookies = parseCookies();
   const router = useRouter();
+  const { redirect } = router.query;
 
   const color = `white !important`;
   const useOutlinedInputStyles = makeStyles(() => ({
@@ -178,9 +180,16 @@ export default function WrapperForm() {
                 maxAge: 30 * 24 * 60 * 60,
                 path: "/",
               });
-              router.push("/home", "", {
-                locale: user.language,
-              });
+              if (!redirect) {
+                router.push("/home", "", {
+                  locale: user.language,
+                });
+              } else {
+                router.push(trailingSlash(redirect.toString()), "", {
+                  locale: user.language,
+                });
+              }
+
               setSubmitting(false);
               return;
             }
