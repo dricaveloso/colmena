@@ -19,7 +19,7 @@
         "question8": "8 - ¿Cuáles son los formatos de audio y sus metadatos?",
         "answer8": "El formato de audio estandarizado para la Web es Opus/ogg. También se admitirán otros formatos como MP3 y AAC y audio sin comprimir para la edición. El sistema de metadatos seguirá los protocolos internacionales Dublin Core para garantizar la interoperabilidad de los archivos.",
         "question9": "9 - ¿Qué tipo de funcionalidades ofrece Colmena?",
-        "answer9": "Dentro de los grupos, los miembros pueden chatear, así como intercambiar y compartir cualquier texto o archivo de audio.",
+        "answer9": "Dentro de los grupos, cada integrante puede chatear, intercambiar y compartir cualquier texto o archivo de audio.",
         "question10": "10 - ¿Cómo se almacenan mis archivos? ¿Hay un límite?",
         "answer10": "50 GB por cada medio para compartir entre tu equipo. Si necesitas más capacidad, ¡escríbenos!",
         "question11": "11 – ¿Tiene Colmena una sección para publicar audios o noticias?",

@@ -12,14 +12,16 @@
       "changingYourAvatar": "We are changing your avatar.."
     },
     "contextMenuOptions": {
-        "addParticipantContextTitle": "Add participant",
-        "participantsAddedSuccessfully": "Participants have been added",
-        "leaveConversationContextTitle": "Leave conversation",
-        "removeConversationContextTitle": "Delete conversation",
-        "changeAvatar": "Change avatar",
-        "shareLink": "Share link"
+      "addParticipantContextTitle": "Participants",
+      "participantsAddedSuccessfully": "Participant added",
+      "leaveConversationContextTitle": "Leave conversation",
+      "removeConversationContextTitle": "Delete conversation",
+      "changeAvatar": "Change avatar",
+      "shareLink": "Share link"
     },
     "downloadFileFailed": "Unable to download file",
     "youTitle": "You",
+    "addParticipantsTitle": "Add Participants",
+    "moderatorTitle": "moderator",
     "shareLinkTitle": "Share via"
 }

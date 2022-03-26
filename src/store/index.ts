@@ -8,7 +8,7 @@ import reducers from "@/store/reducers/index";
 
 let store: any;
 
-export const persistConfigKey = "rootv2.1";
+export const persistConfigKey = "rootv2.2";
 
 const persistConfig = {
   key: persistConfigKey,

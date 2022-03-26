@@ -1,4 +1,5 @@
 import React from "react";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import ToolbarSection from "../ToolbarSection";
 import HoneycombList from "./HoneycombList";
@@ -13,7 +14,18 @@ import { setHoneycombs } from "@/store/actions/honeycomb/index";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
 
-export default function Section2() {
+const useStyles = makeStyles(() =>
+  createStyles({
+    layoutWrapper: {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+    },
+  }),
+);
+
+export default function Honeycombs() {
   const { t } = useTranslation("home");
   const { t: c } = useTranslation("common");
   const dispatch = useDispatch();
@@ -57,8 +69,9 @@ type LayoutWrapperProps = {
 };
 
 function LayoutWrapper({ children, title }: LayoutWrapperProps) {
+  const classes = useStyles();
   return (
-    <Box width="100%">
+    <Box className={classes.layoutWrapper}>
       <ToolbarSection title={title} link="/honeycomb" noMargin />
       <Divider marginTop={10} />
       {children}

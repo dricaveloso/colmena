@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function Participants({ token }: Props) {
-  const { data } = getRoomParticipants(token, {
+  const { data } = getRoomParticipants(token, "", {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

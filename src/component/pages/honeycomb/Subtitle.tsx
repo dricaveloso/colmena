@@ -7,7 +7,7 @@ type Props = {
 
 export default function Subtitle({ token }: Props) {
   const { t } = useTranslation("honeycomb");
-  const { data } = getRoomParticipants(token, {
+  const { data } = getRoomParticipants(token, "", {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
