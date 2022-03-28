@@ -1,3 +1,7 @@
+# Colmena project
+
+Colmena is a software solution to create and share content, developed together with local and community media from the Global South led by a group of brazillian developers. The digital toolbox enables communicators to extend local offline collaborations like interviews, live broadcasting, audio and text edition and into participatory online workflows. Colmena is a free to use, commonly owned and 100% open source.
+
 # Colmena - Front end
 Welcome To Colmena, The one platform/application that empowers journalists around the world with all the necessary tools they need at their fingertips. The project is open-source, which means anyone is welcome to make contributions to improve the codebase.
 
