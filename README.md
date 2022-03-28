@@ -120,14 +120,23 @@ Colmena nitiative was born as a response to the Covid-19 pandemic. In January 20
 (alphabetical order)
 
 Adriana Veloso Meireles
+
 Carlos Henrique Gontijo Paulino
+
 Jean Habib
+
 Nidhal Abidi
+
 Nilson Rocha
+
 Patrick Oliveira
+
 Rafael Diniz
+
 Thalita Coutinho
+
 Vinicius Gusmão
+
 Wafi Ben Jeddou
 
 
