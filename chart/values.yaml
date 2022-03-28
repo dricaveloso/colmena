@@ -1,13 +1,9 @@
-deployment:
-  replicaCount: 1
-  image:
-    repository: $CI_REGISTRY_IMAGE
-    tag: $CI_BUILD_REF_NAME   
+replicaCount: 1    
 service:
   type: ClusterIP
   port: 80
 ingress:
-  enabled: true
+  enabled: false
   annotations:
    kubernetes.io/ingress.class: nginx
    kubernetes.io/tls-acme: "true"
@@ -27,4 +23,6 @@ certificate:
 serviceAccount:
   create: true
   annotations:
+application:
+  name: test
   
