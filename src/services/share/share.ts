@@ -49,10 +49,12 @@ export async function isFileOwner(filename: string) {
   const shares = await getUserShares();
   if (isPanal(filename)) {
     const exists = shares.find((item) => {
-      const sharefile = removeCornerSlash(item.file_target.replace(/^.+?\/(.*)$/, "$1"));
-      const file = removeCornerSlash(filename.replace(/^.+?\/(.*)$/, "$1"));
+      const sharefile = removeCornerSlash(item.path);
+      const file = removeCornerSlash(filename);
+
       return sharefile === file;
     });
+
     canDelete = exists !== undefined;
   }
 

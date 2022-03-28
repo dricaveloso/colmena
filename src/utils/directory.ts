@@ -40,7 +40,6 @@ export function isPanal(path: string): boolean {
 export function isPrivate(path: string): boolean {
   const pathSplited = removeFirstSlash(path).split("/");
   const initialFolder = pathSplited[0];
-  console.log(initialFolder, PRIVATE_PATH);
 
   return initialFolder === PRIVATE_PATH;
 }
