@@ -63,7 +63,7 @@
   "pasteButton": "Paste here",
   "moveModalTitle": "Choose the destination",
   "chooseButton": "Choose here",
-  "detailsTitle": "Details",
+  "detailsTitle": "Metadata",
   "detailsModal": {
     "name": "Name",
     "path": "Path",
