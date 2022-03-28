@@ -1,8 +1,20 @@
 # Colmena project
 
-Colmena is a software solution to create and share content, developed together with local and community media from the Global South led by a group of brazillian developers. The digital toolbox enables communicators to extend local offline collaborations like interviews, live broadcasting, audio and text edition and into participatory online workflows. Colmena is a free to use, commonly owned and 100% open source.
+Colmena is a software solution to create and share content, developed together with local and community media from the Global South. The digital toolbox enables communicators to extend local offline collaborations like interviews, live broadcasting, audio and text edition and into participatory online workflows. Colmena is a free to use, commonly owned and 100% open source. Amont it main features are;
 
-# Colmena - Front end
+
+
+- toolbox for community radios with audio recording and editing tools
+
+- offline mode which allows some tools to be used without Internet
+
+- collaborative space with chat and file sharing
+
+- secure content synchronization to the Colmena cloud
+
+
+# Getting started - front end
+
 Welcome To Colmena, The one platform/application that empowers journalists around the world with all the necessary tools they need at their fingertips. The project is open-source, which means anyone is welcome to make contributions to improve the codebase.
 
 ## Installation
@@ -42,7 +54,10 @@ Note: As a contributor please ensure to always:
 - Follow the best practices of the tool or framework we use.
 
 ## UI/UX
-Summary on the installed tech
+
+Colmena is a user centerd design progressive web app (PWA) solution for mobile/desktop environments that work both online and offline.
+
+Summary on the installed tech;
 
 - Material UI (With Extra RTL plugins)
 - TailwindCSS (With Extra RTL plugins)
@@ -54,6 +69,7 @@ When we try to create a user interface (UI) which does not have an equivalent in
 Note: TailwindCSS and MUI are already installed and configured and you can start using them directly.
 
 ### RTL
+
 Colmena has an international  audience and thus we support `Right-To-left (RTL)` languages such as Arabic, Hebrew, and Persian. So when making contributions, please be aware of that.
 
 Please learn more about [RTL integration with MUI here](https://mui.com/guides/localization/#rtl-support)
@@ -76,6 +92,7 @@ mr-[X] | me-[X] | Right Margin is now right on `ltr` and left on `rtl`
 Please review the reset of the changes at [the offical tailwindcss-rtl plugin docs](https://www.npmjs.com/package/tailwindcss-rtl)
 
 ### Colors
+
 Colmena's Primary and secondary colors (And other helper colors) are defined in the `src/styles/colors.js` file. Those colors are configured to work with TailwindCSS. For example, to print a hello world `h1` in the primary dark color, secondary main color, and variant1 light color respectively,  here is an example.
 ```html
 <h1 className="text-primary-dark">Hello world Colmena</h1>
@@ -85,7 +102,32 @@ Colmena's Primary and secondary colors (And other helper colors) are defined in 
 If you are curious to know how we did it, please check [the official docs](https://www.npmjs.com/package/tailwindcss-rtl)
 
 ## Building and deployment
+
 At colmena, we use gitlab as the main DEVOPS platform, where we build, test, and deploy each version independently and test it before merges occur.
 
 The building process happens with the help of docker, where we use the main `Dockerfile` to containerize your codebase. (We use node:16-alpine image and as a result, we recommend that you also use node-16 on your local machine as well to ensure version compatibility...)
 Your application will be tested (Work in progress) and then pushed to docker with a unique id (we call it `tag` in docker and it is the same as the git `commit_ref_id`)
+
+
+## Documentation
+
+People can get help with your project consulting [gitlab documentation](https://git.colmena.network/maia/frontend/)
+
+Colmena nitiative was born as a response to the Covid-19 pandemic. In January 2021 DW Akademie and the Mexican NGO Redes por la Diversidad, Equidad y Sustentabilidad A.C. teamed up with a group of brazilian developers to prepare the ground for the first phase of the project: a one year co-creation sprint, together with media partners from Africa, the Middle East and Latin America. The work was supported by the German Federal Ministry of Economic development and Cooperation (BMZ) as part of the Global Crisis Initiative (GKI). With the launch of the first version in April 2022.
+
+## List of contributors 
+
+(alphabetical order)
+
+Adriana Veloso Meireles
+Carlos Henrique Gontijo Paulino
+Jean Habib
+Nidhal Abidi
+Nilson Rocha
+Patrick Oliveira
+Rafael Diniz
+Thalita Coutinho
+Vinicius Gusmão
+Wafi Ben Jeddou
+
+
