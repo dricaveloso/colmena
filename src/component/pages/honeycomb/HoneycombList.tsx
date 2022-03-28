@@ -25,7 +25,7 @@ type Props = {
 };
 
 export const orderByLastActivity = (a: RoomItemInterface, b: RoomItemInterface) =>
-  a.lastActivity - b.lastActivity;
+  b.lastActivity - a.lastActivity;
 
 function HoneycombList({ data }: Props) {
   const classes = useStyles();
@@ -38,16 +38,16 @@ function HoneycombList({ data }: Props) {
 
   return (
     <List className={classes.list}>
-      {archLength > 0 && (
+      {archLength > 0 && showArchiveItems && (
         <ListItem
           key={uuid()}
-          data-testid="archive-honeycomb"
+          data-testid="archive-honeycomb-back"
           disableGutters
           className={classes.verticalList}
         >
           <ArchiveButton
             handleClick={() => setShowArchiveItems(!showArchiveItems)}
-            back={showArchiveItems}
+            back
             amount={archLength}
           />
         </ListItem>
@@ -56,6 +56,20 @@ function HoneycombList({ data }: Props) {
         <HoneycombListActive data={data} />
       )}
       {showArchiveItems && <HoneycombListArchive data={data} />}
+      {archLength > 0 && !showArchiveItems && (
+        <ListItem
+          key={uuid()}
+          data-testid="archive-honeycomb-enter"
+          disableGutters
+          className={classes.verticalList}
+        >
+          <ArchiveButton
+            handleClick={() => setShowArchiveItems(!showArchiveItems)}
+            back={false}
+            amount={archLength}
+          />
+        </ListItem>
+      )}
     </List>
   );
 }

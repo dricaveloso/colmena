@@ -38,8 +38,16 @@ export function getSingleConversationAxios(token: string): Promise<RoomInterface
   return talkInstance(version).get(`/room/${token + responseFormat}`);
 }
 
-export function getRoomParticipants(token: string, options?: {}): RoomParticipantsInterface {
-  return useTalkFetch(version)(`/room/${token}/participants${responseFormat}`, {}, options);
+export function getRoomParticipants(
+  token: string,
+  uuid = "",
+  options?: {},
+): RoomParticipantsInterface {
+  return useTalkFetch(version)(
+    `/room/${token}/participants${responseFormat}&uuid=${uuid}`,
+    {},
+    options,
+  );
 }
 
 export function setReadOnlyConversation(

@@ -9,7 +9,7 @@ import {
   ChatMessageItemMessageParameterInterface,
 } from "@/interfaces/talk";
 import { makeStyles } from "@material-ui/core";
-import Avatar from "@/components/pages/profile/Avatar";
+import { AvatarMemoized } from "@/components/pages/profile/Avatar";
 import AvatarCore from "@material-ui/core/Avatar";
 import {
   getFirstLettersOfTwoFirstNames,
@@ -92,7 +92,7 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
     )
       return (
         <ListItemAvatar key={id} style={{ width: 30, height: 30, display: "flex", justifyContent }}>
-          <Avatar size={6} userName={actorDisplayName} userId={actorId} />
+          <AvatarMemoized size={6} userName={actorDisplayName} userId={actorId} />
         </ListItemAvatar>
       );
 
@@ -260,12 +260,12 @@ export const ChatListItem = ({ item, prevItem, canDeleteConversation, userId }: 
   return (
     <Box
       style={{ direction: currentDirection() }}
-      className="flex w-full justify-between items-center mt-0"
+      className="flex w-full justify-between items-center mt-0 px-2"
       key={id}
     >
-      <div className="flex items-baseline space-s-2 font-normal">
+      <Box className="flex items-baseline space-s-2 font-normal">
         {prepareInfoMessage(message, messageParameters)}
-      </div>
+      </Box>
       <Text variant={TextVariantEnum.CAPTION} color={TextColorEnum.TEXTSECONDARY}>
         {getFormattedDistanceDateFromNow(timestamp, lang)}
       </Text>

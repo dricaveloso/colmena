@@ -1,4 +1,6 @@
 import { initializeStore } from "@/store/index";
+import { PermissionTalkMemberEnum } from "@/enums/*";
+import { RoomParticipant } from "@/interfaces/talk";
 
 export function isSubadminProfile() {
   const { media, subadmin } = initializeStore({}).getState().user.user;
@@ -20,3 +22,13 @@ export function getAllUserGroup() {
   const { media } = initializeStore({}).getState().user.user;
   return media?.groups || [];
 }
+
+export const isModerator = (participantsIn: RoomParticipant[], userId: string) => {
+  const result = participantsIn.find(
+    (item) =>
+      item.actorId === userId &&
+      (item.participantType === PermissionTalkMemberEnum.OWNER ||
+        item.participantType === PermissionTalkMemberEnum.MODERATOR),
+  );
+  return result;
+};

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#fff",
     padding: 4,
     borderRadius: 5,
-    border: "1px solid #eee",
+    border: `1px solid #e2e2e2`,
     justifyContent: "space-between",
   },
   cardContainer: {
@@ -29,11 +29,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     paddingLeft: 10,
     alignContent: "center",
+    alignItems: "center",
   },
   archivedTitle: {
     color: theme.palette.primary.dark,
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 16,
     marginLeft: 10,
   },
   amountTitle: {
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     height: 20,
     backgroundColor: "#DEDEDE",
     textAlign: "center",
+    marginRight: 10,
   },
 }));
 
@@ -64,7 +66,7 @@ export default function ArchiveButton({ handleClick, back = false, amount }: Pro
           <SvgIcon
             icon={`${!back ? "archive" : "back"}`}
             htmlColor={theme.palette.primary.dark}
-            fontSize="small"
+            style={{ fontSize: back ? 24 : 60 }}
           />
           <Text variant={TextVariantEnum.CAPTION} className={classes.archivedTitle}>
             {t("archivedTitle")}

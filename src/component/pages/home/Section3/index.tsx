@@ -13,7 +13,7 @@ import { setHoneycombs } from "@/store/actions/honeycomb/index";
 import Text from "@/components/ui/Text";
 import { TextVariantEnum } from "@/enums/*";
 
-export default function Section2() {
+export default function Honeycombs() {
   const { t } = useTranslation("home");
   const { t: c } = useTranslation("common");
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ type LayoutWrapperProps = {
 
 function LayoutWrapper({ children, title }: LayoutWrapperProps) {
   return (
-    <Box width="100%">
+    <Box flex={1} display="flex" flexDirection="column">
       <ToolbarSection title={title} link="/honeycomb" noMargin />
       <Divider marginTop={10} />
       {children}

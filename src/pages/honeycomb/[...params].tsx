@@ -1,17 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Box from "@material-ui/core/Box";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { I18nInterface } from "@/interfaces/index";
 import LayoutApp from "@/components/statefull/LayoutApp";
-import {
-  JustifyContentEnum,
-  TextVariantEnum,
-  HoneycombContextOptions,
-  PermissionTalkMemberEnum,
-} from "@/enums/index";
+import { JustifyContentEnum, TextVariantEnum, HoneycombContextOptions } from "@/enums/index";
 import FlexBox from "@/components/ui/FlexBox";
 import { useRouter } from "next/router";
 import Tabs from "@material-ui/core/Tabs";
@@ -30,18 +26,18 @@ import SvgIcon from "@/components/ui/SvgIcon";
 import Text from "@/components/ui/Text";
 import { AllIconProps, PropsUserSelector } from "@/types/*";
 import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
-import { v4 as uuid } from "uuid";
 import HoneycombAvatar from "@/components/pages/home/Section3/HoneycombList/Honeycomb";
 import { makeStyles } from "@material-ui/core";
 import { getRoomParticipants } from "@/services/talk/room";
 import { RoomParticipant } from "@/interfaces/talk";
 import { listUsersByGroup } from "@/services/ocs/groups";
-import { getUserGroup } from "@/utils/permissions";
+import { getUserGroup, isModerator } from "@/utils/permissions";
 import { useSelector, useDispatch } from "react-redux";
 import { setLibraryPath } from "@/store/actions/library";
 import { findGroupFolderByPath } from "@/utils/utils";
-
 import classNames from "classnames";
+import IconButton from "@/components/ui/IconButton";
+import { toast } from "@/utils/notifications";
 
 export const getStaticProps: GetStaticProps = async ({ locale }: I18nInterface) => ({
   props: {
@@ -62,6 +58,26 @@ interface TabPanelProps {
 }
 
 const useStyles = makeStyles(() => ({
+  container: {
+    padding: 0,
+    margin: 0,
+    backgroundColor: "#fff",
+  },
+  appBar: {
+    marginTop: 70,
+    height: 40,
+    backgroundColor: theme.palette.primary.main,
+  },
+  tabs: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: "100vw",
+    color: theme.palette.icon.main,
+  },
+  paddingTopAppBarBox: {
+    paddingTop: 55,
+  },
   avatar: {
     marginRight: 10,
   },
@@ -73,12 +89,13 @@ function Honeycomb() {
   const dispatch = useDispatch();
   const { t } = useTranslation("honeycomb");
   const { t: l } = useTranslation("library");
+  const { t: c } = useTranslation("common");
   const router = useRouter();
   const { params } = router.query;
-  const [tokenUuid, setTokenUuid] = useState(uuid());
 
   const [value, setValue] = useState(0);
   const [showInputMessage, setShowInputMessage] = useState(true);
+  const [showReloadMessages, setShowReloadMessages] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -139,12 +156,12 @@ function Honeycomb() {
   }
 
   const group = getUserGroup();
-  const { data } = listUsersByGroup(group, {
+  const { data } = listUsersByGroup(group, "", {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
-  const { data: part } = getRoomParticipants(token, {
+  const { data: part } = getRoomParticipants(token, "", {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -155,22 +172,16 @@ function Honeycomb() {
     participantsAddedHoneycomb = part.ocs.data;
   }
 
-  const isModerator = () => {
-    const result = participantsAddedHoneycomb.find(
-      (item) =>
-        item.actorId === userRdx.user.id &&
-        (item.participantType === PermissionTalkMemberEnum.OWNER ||
-          item.participantType === PermissionTalkMemberEnum.MODERATOR),
-    );
-    return result;
-  };
-
   const getTabOption = (title: string, icon: AllIconProps) => (
     <Box className={classNames("flex justify-center items-center space-s-2")}>
       <SvgIcon icon={icon} htmlColor="#727272" fontSize="small" />
       <Text variant={TextVariantEnum.CAPTION}>{title}</Text>
     </Box>
   );
+
+  const unavailable = () => {
+    toast(c("featureUnavailable"), "warning");
+  };
 
   const leftExtraElement = (
     <Box className={classes.avatar}>
@@ -181,10 +192,14 @@ function Honeycomb() {
         displayName={displayName}
         canDeleteConversation={canDeleteConversation > 0}
         token={token}
-        canChangeAvatar={isModerator() !== undefined}
+        canChangeAvatar={isModerator(participantsAddedHoneycomb, userRdx.user.id) !== undefined}
       />
     </Box>
   );
+
+  const handleShowReloadMessages = useCallback(() => {
+    setShowReloadMessages(true);
+  }, []);
 
   return (
     <LayoutApp
@@ -193,37 +208,33 @@ function Honeycomb() {
       fontSizeTitle={16}
       subtitle={<Subtitle token={token} />}
       fontSizeSubtitle={12}
+      drawer={false}
       leftExtraElement={leftExtraElement}
       extraElement={
-        <ContextMenu
-          token={token}
-          handleFallbackLeaveConversation={() => router.push("/honeycomb")}
-          handleFallbackParticipants={() => setTokenUuid(uuid())}
-          blackList={[HoneycombContextOptions.ARCHIVE_CONVERSATION]}
-        />
+        <Box display="flex" flex={1} justifyContent="flex-end">
+          <IconButton
+            icon="call"
+            iconColor="white"
+            style={{ padding: 0, marginRight: 10, minWidth: 30 }}
+            iconStyle={{ fontSize: 28 }}
+            handleClick={unavailable}
+          />
+          <ContextMenu
+            token={token}
+            handleFallbackLeaveConversation={() => router.push("/honeycomb")}
+            blackList={[HoneycombContextOptions.ARCHIVE_CONVERSATION]}
+          />
+        </Box>
       }
     >
-      <FlexBox
-        justifyContent={JustifyContentEnum.FLEXSTART}
-        extraStyle={{ padding: 0, margin: 0, backgroundColor: "#fff" }}
-      >
-        <Box width="100vw" style={{ paddingTop: 55 }}>
-          <AppBar
-            position="fixed"
-            elevation={0}
-            style={{ marginTop: 70, height: 40, backgroundColor: theme.palette.primary.main }}
-          >
+      <FlexBox justifyContent={JustifyContentEnum.FLEXSTART} className={classes.container}>
+        <Box width="100vw" className={classes.paddingTopAppBarBox}>
+          <AppBar position="fixed" elevation={0} className={classes.appBar}>
             <Tabs
               value={value}
               onChange={handleChange}
               indicatorColor="primary"
-              style={{
-                backgroundColor: "#fff",
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                width: "100vw",
-                color: theme.palette.icon.main,
-              }}
+              className={classes.tabs}
               variant="fullWidth"
             >
               <Tab label={getTabOption(t("tab1Title"), "chat")} {...a11yProps(0)} />
@@ -237,11 +248,12 @@ function Honeycomb() {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0}>
-              <ReloadChatMessages token={token} uuid={tokenUuid} />
+              {showReloadMessages && <ReloadChatMessages token={token} />}
               <MemoizedChat
                 token={token}
                 conversationName={displayName}
                 canDeleteConversation={canDeleteConversation}
+                handleShowReloadMessages={handleShowReloadMessages}
               />
             </TabPanel>
             <TabPanel value={value} index={1}>

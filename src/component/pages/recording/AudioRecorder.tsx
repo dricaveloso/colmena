@@ -60,7 +60,11 @@ type Props = {
 
 export async function getAudioStream() {
   try {
-    const res = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const res = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        channelCount: 2,
+      },
+    });
     await setMicrophonePermission("yes");
     return res;
   } catch (e) {
@@ -105,7 +109,10 @@ function AudioRecorder({
       if (!stream) {
         return;
       }
-      mediaRecorder = new MediaRecorder(stream);
+      const options = {
+        mimeType: "audio/webm; codecs=opus",
+      };
+      mediaRecorder = new MediaRecorder(stream, options);
       setAudioStream(stream);
       setMediaRcdr(mediaRecorder);
     }

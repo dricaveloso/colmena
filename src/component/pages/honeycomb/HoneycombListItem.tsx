@@ -17,9 +17,8 @@ import { useSelector, useDispatch } from "react-redux";
 import ContextMenu from "@/components/pages/honeycomb/Chat/ContextMenu";
 import { HoneycombContextOptions } from "@/enums/*";
 import Clickable from "@/components/ui/Clickable";
-import Zoom from "@material-ui/core/Zoom";
 import ListItem from "@material-ui/core/ListItem";
-import { v4 as uuid } from "uuid";
+import { getUserGroup } from "@/utils/permissions";
 import { addHoneycombArchived, removeHoneycombArchived } from "@/store/actions/honeycomb";
 
 const useStyles = makeStyles(() => ({
@@ -119,17 +118,22 @@ const HoneycombListItem = ({ data, archived = false }: Props) => {
     }, 500);
   };
 
+  const blackList = [HoneycombContextOptions.ADD_PARTICIPANT];
+  if (getUserGroup() === data.displayName) {
+    blackList.push(HoneycombContextOptions.ARCHIVE_CONVERSATION);
+  }
+
   if (removeItem) return null;
 
   return (
     <ListItem
-      key={uuid()}
+      key={data.id}
       disableGutters
       className={classes.verticalList}
       style={removeItem ? { display: "none", padding: 0 } : {}}
     >
       <Box className={classes.card}>
-        <ListItemAvatar data-testid="honeycomb-avatar" className={classes.avatar}>
+        <ListItemAvatar data-testid={`honeycomb-avatar-${data.id}`} className={classes.avatar}>
           <Clickable handleClick={navigateTo}>
             <HoneycombAvatar
               displayName={displayName}
@@ -140,7 +144,7 @@ const HoneycombListItem = ({ data, archived = false }: Props) => {
         </ListItemAvatar>
         <Clickable handleClick={navigateTo} className={classes.description}>
           <ListItemText
-            data-testid="honeycomb-title"
+            data-testid={`honeycomb-title-${data.id}`}
             className={classes.description}
             primary={displayName}
             onClick={navigateTo}
@@ -163,7 +167,7 @@ const HoneycombListItem = ({ data, archived = false }: Props) => {
           <ContextMenu
             token={token}
             iconColor={theme.palette.gray.dark}
-            blackList={[HoneycombContextOptions.ADD_PARTICIPANT]}
+            blackList={blackList}
             handleFallbackLeaveConversation={() => setRemoveItem(true)}
             handleFallbackArchiveConversation={handleArchiveConversation}
             archived={archived}

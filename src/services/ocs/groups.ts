@@ -6,8 +6,8 @@ export function listAllGroups(): GroupsListInterface {
   return useOcsFetch("/groups?format=json");
 }
 
-export function listUsersByGroup(group: string, options?: {}): GroupsItemInterface {
-  return useOcsFetch(`/groups/${group}?format=json`, {}, options);
+export function listUsersByGroup(group: string, uuid = "", options?: {}): GroupsItemInterface {
+  return useOcsFetch(`/groups/${group}?format=json&uuid=${uuid}`, {}, options);
 }
 
 export function getSpecificGroup(group: string): GroupsItemInterface {

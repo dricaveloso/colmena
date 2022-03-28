@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { RoomItemInterface } from "@/interfaces/talk";
 import HoneycombListItem from "./HoneycombListItem";
 import { useSelector } from "react-redux";
@@ -13,23 +13,26 @@ function HoneycombListArchive({ data }: Props) {
   const honeycombRdx = useSelector(
     (state: { honeycomb: PropsHoneycombSelector }) => state.honeycomb,
   );
-  const [honeycombsList, setHoneycombsList] = useState<RoomItemInterface[]>(
-    honeycombRdx.honeycombs,
-  );
+  // const [honeycombsList, setHoneycombsList] = useState<RoomItemInterface[]>(
+  //   honeycombRdx.honeycombs,
+  // );
 
   const honeycombsTokenArchive = honeycombRdx.honeycombsArchived;
 
-  useEffect(() => {
-    const items = filterHoneycombs(data)
-      .sort(orderByLastActivity)
-      .filter((item) => honeycombsTokenArchive.includes(item.token));
-    setHoneycombsList(items);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const items = filterHoneycombs(data)
+    .sort(orderByLastActivity)
+    .filter((item) => honeycombsTokenArchive.includes(item.token));
+
+  // useEffect(() => {
+  //   const items = filterHoneycombs(data)
+  //     .sort(orderByLastActivity)
+  //     .filter((item) => honeycombsTokenArchive.includes(item.token));
+  //   setHoneycombsList(items);
+  // }, []);
 
   return (
     <>
-      {honeycombsList.map((item: RoomItemInterface) => (
+      {items.map((item: RoomItemInterface) => (
         <HoneycombListItem data={item} archived />
       ))}
     </>
