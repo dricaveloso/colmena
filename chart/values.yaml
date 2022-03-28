@@ -1,47 +1,30 @@
-replicaCount: 1
-image:
-  repository: #https://colmena.network:5000/maia/frontend
-  tag: #k8deploy
-env:
-- name: #APP_ENV
-  value: #feature
-- name: #API_BASE_URL
-  value: #https://claudete.colmena.network
-- name: #NEXTAUTH_URL
-  value: #http://localhost:3000
-- name: #NEXTCLOUD_TALK_VERSION
-  value: #v4
-- name: #DEFAULT_USER_PASSWORD
-  value: #colmena@123
-- name: #USERNAME_ADMIN_NC
-  value: #admin
-- name: #PASSWORD_ADMIN_NC
-  value: #3577umTUSD2qvb3
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
+deployment:
+  replicaCount: 1
+  image:
+    repository: $CI_REGISTRY_IMAGE
+    tag: $CI_BUILD_REF_NAME   
 service:
   type: ClusterIP
   port: 80
-
 ingress:
-  enabled: #true
-  #className: "nginx"
+  enabled: true
   annotations:
    kubernetes.io/ingress.class: nginx
    kubernetes.io/tls-acme: "true"
   hosts:
-  - host: #k8deploy.colmena.network
+  - host: $HOST_URL
     paths:
-    - path: #/
-      pathType: #ImplementationSpecific
+    - path: /
+      pathType: ImplementationSpecific
   tls:
   - hosts: 
-      #- k8deploy.colmena.network
-    secretName: #k8deploy.colmena.network
+      - $HOST_URL
+    secretName: $HOST_URL
 certificate:
-  email: #support@colmena.network
-  issuer_name: #letsencrypt-k8deploy
-  name: #k8deploy.colmena.network
+  name: $HOST_URL
+  email: support@colmena.network
+  issuer_name: letsencrypt-k8deploy
+serviceAccount:
+  create: true
+  annotations:
+  

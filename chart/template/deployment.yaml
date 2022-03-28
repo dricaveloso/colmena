@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.application.name }}
+  name: deploy-{{ .Chart.Name }}
+  namespace: {{ .Values.deployment.namespace }}
   labels:
-   {{ .Values.application.name }}
+    app: {{ .Values.deployment.app }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: {{ .Values.deployment.replicas }}
   selector:
     matchLabels:
-    {{ .Values.application.name }}
+      app: {{ .Values.deployment.app }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 33%
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-      {{ .Values.application.name }}
+        app: {{ .Values.deployment.app }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ .Values.application.name }}
+      serviceAccountName: {{ .Values.deployment.app  }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
