@@ -26,6 +26,11 @@ const useStyles = makeStyles({
     flexWrap: "nowrap",
     justifyContent: "space-around",
   },
+  footer: {
+    backgroundColor: "#fff",
+    margin: 0,
+    padding: 0,
+  },
 });
 function FooterApp() {
   const classes = useStyles();
@@ -46,14 +51,14 @@ function FooterApp() {
   return (
     <>
       <Box style={{ width: "100%", paddingBottom: 48 }} />
-      <div className="footer" style={{ backgroundColor: "#fff", margin: 0, padding: 2 }}>
+      <Box className={["footer", classes.footer].join(" ")}>
         <Box
           style={{ margin: 0, ...style }}
           className={language === "rtl" ? classes.footerItemsRtl : classes.footerItemsLtr}
         >
           <AppTab page={router.route} />
         </Box>
-      </div>
+      </Box>
     </>
   );
 }

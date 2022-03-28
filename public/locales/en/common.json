@@ -161,5 +161,11 @@
     "cancelTransfer": "Cancel",
     "cleanTransfer": "Clean",
     "openDetailsFile": "Open"
+  },
+  "navTitles": {
+    "home": "Home",
+    "honeycomb": "Honeycomb",
+    "library": "Files",
+    "tools": "Tools"
   }
 }
